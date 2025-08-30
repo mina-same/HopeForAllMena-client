@@ -15,7 +15,9 @@ import "../assets/css/azino-icons.css";
 import "../assets/css/fontawesome-all.min.css";
 import "../assets/css/main.css";
 import "../assets/css/vision-mission.css";
-import "swiper"
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 
 const Layout = ({ pageTitle, children }) => {
   const [hasMounted, setHasMounted] = useState(false);

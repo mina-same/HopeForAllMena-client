@@ -1,0 +1,75 @@
+.about-two {
+  position: relative;
+}
+
+.about-two__image {
+  position: relative;
+}
+
+.about-two__image img {
+  transition: transform 0.3s ease;
+}
+
+.text-gradient {
+  color: #3498db;
+  font-weight: 700;
+}
+
+.title-line {
+  height: 3px;
+  width: 60px;
+  background: #3498db;
+  margin-left: 0;
+}
+
+.strategy-box {
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.strategy-box:hover, .strategy-box.active {
+  border-left: 3px solid #3498db;
+}
+
+.strategy-box h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.strategy-box .number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: #3498db;
+  color: #fff;
+  border-radius: 50%;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.strategy-box p {
+  color: #666;
+  margin-bottom: 0;
+}
+
+.icon-container {
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+.strategy-icon {
+  font-size: 24px;
+  color: #3498db;
+  margin-right: 10px;
+}
