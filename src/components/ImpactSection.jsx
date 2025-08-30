@@ -12,13 +12,13 @@ const ImpactSection = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-8">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 text-primary font-semibold">
+              <div className="inline-flex items-center gap-2 text-[#2194D1] font-semibold">
                 <BookOpen className="h-5 w-5" />
                 <span>Hope Publications</span>
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
                 Spreading{" "}
-                <span className="text-primary">
+                <span className="text-[#2194D1]">
                   Hope & Faith
                 </span>
               </h2>
@@ -30,15 +30,15 @@ const ImpactSection = () => {
 
             <div className="grid grid-cols-3 gap-6">
               <div className="text-center p-6 bg-card rounded-xl shadow-card border">
-                <div className="text-3xl font-bold text-primary mb-2">100+</div>
+                <div className="text-3xl font-bold text-[#2194D1] mb-2">100+</div>
                 <div className="text-sm text-muted-foreground">Books Published</div>
               </div>
               <div className="text-center p-6 bg-card rounded-xl shadow-card border">
-                <div className="text-3xl font-bold text-primary mb-2">50+</div>
+                <div className="text-3xl font-bold text-[#2194D1] mb-2">50+</div>
                 <div className="text-sm text-muted-foreground">Magazine Issues</div>
               </div>
               <div className="text-center p-6 bg-card rounded-xl shadow-card border">
-                <div className="text-3xl font-bold text-primary mb-2">1K+</div>
+                <div className="text-3xl font-bold text-[#2194D1] mb-2">1K+</div>
                 <div className="text-sm text-muted-foreground">Copies Distributed</div>
               </div>
             </div>
@@ -73,13 +73,13 @@ const ImpactSection = () => {
 
           <div className="space-y-8 lg:order-2">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 text-primary font-semibold">
+              <div className="inline-flex items-center gap-2 text-[#2194D1] font-semibold">
                 <Users className="h-5 w-5" />
                 <span>Discipleship Training</span>
               </div>
               <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
                 Building{" "}
-                <span className="text-primary">
+                <span className="text-[#2194D1]">
                   Strong Leaders
                 </span>
               </h2>
@@ -92,7 +92,7 @@ const ImpactSection = () => {
             <div className="grid gap-6">
               <Card className="bg-card border shadow-card hover:shadow-hover transition-shadow duration-300">
                 <CardContent className="p-6 flex items-center gap-4">
-                  <div className="h-12 w-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center">
+                  <div className="h-12 w-12 bg-[#2194D1] text-white rounded-xl flex items-center justify-center">
                     <Users className="h-6 w-6" />
                   </div>
                   <div>
@@ -104,7 +104,7 @@ const ImpactSection = () => {
 
               <Card className="bg-card border shadow-card hover:shadow-hover transition-shadow duration-300">
                 <CardContent className="p-6 flex items-center gap-4">
-                  <div className="h-12 w-12 bg-primary text-primary-foreground rounded-xl flex items-center justify-center">
+                  <div className="h-12 w-12 bg-[#2194D1] text-white rounded-xl flex items-center justify-center">
                     <Heart className="h-6 w-6" />
                   </div>
                   <div>
@@ -124,13 +124,13 @@ const ImpactSection = () => {
         {/* Jesus Film Section */}
         <div className="text-center space-y-12">
           <div className="space-y-4 max-w-3xl mx-auto">
-            <div className="inline-flex items-center gap-2 text-primary font-semibold">
+            <div className="inline-flex items-center gap-2 text-[#2194D1] font-semibold">
               <Play className="h-5 w-5" />
               <span>The Jesus Film</span>
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
               Experience the{" "}
-              <span className="text-primary">
+              <span className="text-[#2194D1]">
                 Story of Jesus
               </span>
             </h2>
@@ -148,7 +148,7 @@ const ImpactSection = () => {
             ].map((feature, index) => (
               <Card key={index} className="bg-card border shadow-card hover:shadow-hover transition-all duration-300 group">
                 <CardContent className="p-8 text-center space-y-4">
-                  <div className="h-16 w-16 bg-primary text-primary-foreground rounded-xl flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200">
+                  <div className="h-16 w-16 bg-[#2194D1] text-white rounded-xl flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200">
                     <feature.icon className="h-8 w-8" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground">{feature.title}</h3>

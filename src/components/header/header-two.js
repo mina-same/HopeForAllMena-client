@@ -57,7 +57,7 @@ const HeaderTwo = () => {
                 </p>
               </div>
             </div>
-            <div className="header-info__box" style={{padding: '0 8px'}}>
+            <div className="header-info__box" style={{ padding: '0 8px', borderTopLeftRadius: '9999px !important', borderBottomLeftRadius: '9999px !important' }}>
               <i className="azino-icon-address"></i>
               <div className="header-info__box-content">
                 <h3 style={{fontSize: '14px', marginBottom: '4px'}}>Visit</h3>

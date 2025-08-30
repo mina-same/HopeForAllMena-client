@@ -16,7 +16,7 @@ const MinistryCard = ({
       <CardContent className="p-8 space-y-6">
         {/* Icon */}
         <div className="relative">
-          <div className="h-16 w-16 bg-primary text-primary-foreground rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shadow-card">
+          <div className="h-16 w-16 bg-[#2194D1] text-white rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-200 shadow-card">
             <Icon className="h-8 w-8" />
           </div>
         </div>
@@ -35,7 +35,7 @@ const MinistryCard = ({
         <div className="space-y-3">
           {features.map((feature, index) => (
             <div key={index} className="flex items-center gap-3">
-              <div className="h-2 w-2 bg-primary rounded-full"></div>
+              <div className="h-2 w-2 bg-[#2194D1] rounded-full"></div>
               <span className="text-sm text-muted-foreground">{feature}</span>
             </div>
           ))}

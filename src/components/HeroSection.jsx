@@ -11,14 +11,14 @@ const HeroSection = () => {
           {/* Hero Content */}
           <div className="space-y-8">
             <div className="inline-flex items-center gap-3 bg-muted rounded-full px-4 py-2 border">
-              <div className="h-2 w-2 bg-primary rounded-full"></div>
+              <div className="h-2 w-2 bg-[#2194D1] rounded-full"></div>
               <span className="text-sm font-medium text-muted-foreground">Transforming Lives Through Faith</span>
             </div>
 
             <div className="space-y-6">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-foreground">
                 Evangelism &{" "}
-                <span className="text-primary">
+                <span className="text-[#2194D1]">
                   Discipleship
                 </span>
               </h1>
@@ -39,15 +39,15 @@ const HeroSection = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-8 pt-8 border-t">
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-2">500+</div>
+                <div className="text-3xl font-bold text-[#2194D1] mb-2">500+</div>
                 <div className="text-sm text-muted-foreground">Lives Transformed</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-2">50+</div>
+                <div className="text-3xl font-bold text-[#2194D1] mb-2">50+</div>
                 <div className="text-sm text-muted-foreground">Discipleship Groups</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-primary mb-2">25+</div>
+                <div className="text-3xl font-bold text-[#2194D1] mb-2">25+</div>
                 <div className="text-sm text-muted-foreground">Communities Reached</div>
               </div>
             </div>
@@ -64,10 +64,10 @@ const HeroSection = () => {
             </div>
             
             {/* Floating elements */}
-            <div className="absolute -top-4 -left-4 bg-primary text-primary-foreground rounded-xl p-3 shadow-card">
+            <div className="absolute -top-4 -left-4 bg-[#2194D1] text-white rounded-xl p-3 shadow-card">
               <Heart className="h-6 w-6" />
             </div>
-            <div className="absolute -bottom-4 -right-4 bg-secondary text-secondary-foreground rounded-xl p-3 shadow-card border">
+            <div className="absolute -bottom-4 -right-4 bg-secondary text-white rounded-xl p-3 shadow-card border">
               <BookOpen className="h-6 w-6" />
             </div>
           </div>

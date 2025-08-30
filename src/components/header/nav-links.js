@@ -22,10 +22,16 @@ const NavLinks = ({ extraClassName }) => {
         </button>
         <ul className="dropdown-list">
           <li>
-            <Link to="/news">News</Link>
+            <Link to="/development-department">Development Department</Link>
           </li>
           <li>
-            <Link to="/news-details">News Details</Link>
+            <Link to="/evangelism-discipleship">Evangelism & discipleship</Link>
+          </li>
+          <li>
+            <Link to="/studies-education">Studies and Education</Link>
+          </li>
+          <li>
+            <Link to="/publishing-house">Publishing and Distribution House</Link>
           </li>
         </ul>
       </li>

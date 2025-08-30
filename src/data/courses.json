@@ -1,0 +1,337 @@
+{
+  "institutions": [
+    {
+      "id": "1",
+      "name": "Westminster Theological Seminary",
+      "type": "seminary",
+      "accreditation": "ATS Accredited",
+      "location": "Philadelphia, PA",
+      "website": "https://www.wts.edu"
+    },
+    {
+      "id": "2", 
+      "name": "Fuller Theological Seminary",
+      "type": "seminary",
+      "accreditation": "ATS & WSCUC Accredited",
+      "location": "Pasadena, CA",
+      "website": "https://www.fuller.edu"
+    },
+    {
+      "id": "3",
+      "name": "Dallas Theological Seminary",
+      "type": "seminary",
+      "accreditation": "ATS & SACSCOC Accredited", 
+      "location": "Dallas, TX",
+      "website": "https://www.dts.edu"
+    },
+    {
+      "id": "4",
+      "name": "Trinity Evangelical Divinity School",
+      "type": "seminary",
+      "accreditation": "ATS & HLC Accredited",
+      "location": "Deerfield, IL", 
+      "website": "https://www.tiu.edu"
+    },
+    {
+      "id": "5",
+      "name": "Gordon-Conwell Theological Seminary",
+      "type": "seminary", 
+      "accreditation": "ATS & NECHE Accredited",
+      "location": "South Hamilton, MA",
+      "website": "https://www.gordonconwell.edu"
+    }
+  ],
+  "companies": [
+    {
+      "id": "1",
+      "name": "Zondervan Academic",
+      "type": "publisher",
+      "specialization": "Biblical Studies & Theology",
+      "website": "https://zondervanacademic.com"
+    },
+    {
+      "id": "2", 
+      "name": "IVP Academic",
+      "type": "publisher",
+      "specialization": "Christian Scholarship",
+      "website": "https://www.ivpress.com"
+    },
+    {
+      "id": "3",
+      "name": "Biblical Training Institute",
+      "type": "certification",
+      "specialization": "Biblical Studies Certification",
+      "website": "https://www.biblicaltraining.org"
+    }
+  ],
+  "courses": [
+    {
+      "id": "1",
+      "title": "Introduction to Biblical Theology",
+      "instructor": "Dr. Michael Horton", 
+      "description": "A comprehensive introduction to biblical theology, exploring the unified message of Scripture from Genesis to Revelation. This course examines the development of major theological themes throughout the Bible and their application to contemporary Christian life.",
+      "shortDescription": "Explore the unified message of Scripture and major theological themes from Genesis to Revelation.",
+      "category": "Biblical Studies",
+      "subcategory": "Biblical Theology",
+      "duration": "16 weeks",
+      "level": "beginner",
+      "format": "offline",
+      "price": 1200,
+      "currency": "USD",
+      "institution": {
+        "id": "1",
+        "name": "Westminster Theological Seminary",
+        "type": "seminary",
+        "accreditation": "ATS Accredited",
+        "location": "Philadelphia, PA",
+        "website": "https://www.wts.edu"
+      },
+      "company": {
+        "id": "1",
+        "name": "Zondervan Academic",
+        "type": "publisher",
+        "specialization": "Biblical Studies & Theology"
+      },
+      "imageUrl": "/images/courses/biblical-theology.jpg",
+      "syllabus": [
+        "Week 1-2: Introduction to Biblical Theology",
+        "Week 3-4: Old Testament Foundations", 
+        "Week 5-6: Covenant Theology",
+        "Week 7-8: Messianic Prophecies",
+        "Week 9-10: New Testament Fulfillment",
+        "Week 11-12: Kingdom of God",
+        "Week 13-14: Eschatology",
+        "Week 15-16: Practical Applications"
+      ],
+      "prerequisites": ["Basic Bible knowledge"],
+      "certification": "Certificate in Biblical Theology",
+      "startDate": "2024-09-15",
+      "endDate": "2025-01-15", 
+      "schedule": "Tuesdays & Thursdays 7:00-9:00 PM",
+      "language": "English",
+      "averageRating": 4.8,
+      "totalEnrollments": 45,
+      "availableSeats": 15,
+      "tags": ["Bible", "Theology", "Scripture", "Christianity"]
+    },
+    {
+      "id": "2",
+      "title": "Systematic Theology I: Prolegomena & Theology Proper",
+      "instructor": "Dr. Wayne Grudem",
+      "description": "An in-depth study of systematic theology covering prolegomena (introduction to theology) and theology proper (the doctrine of God). Students will explore the nature of theological knowledge, divine revelation, and the attributes and works of God.",
+      "shortDescription": "Master the fundamentals of systematic theology, focusing on theological method and the doctrine of God.",
+      "category": "Systematic Theology", 
+      "subcategory": "Theology Proper",
+      "duration": "12 weeks",
+      "level": "intermediate",
+      "format": "hybrid",
+      "price": 1500,
+      "currency": "USD",
+      "institution": {
+        "id": "2",
+        "name": "Fuller Theological Seminary", 
+        "type": "seminary",
+        "accreditation": "ATS & WSCUC Accredited",
+        "location": "Pasadena, CA",
+        "website": "https://www.fuller.edu"
+      },
+      "imageUrl": "/images/courses/systematic-theology.jpg",
+      "syllabus": [
+        "Week 1-2: Introduction to Systematic Theology",
+        "Week 3-4: Divine Revelation & Scripture",
+        "Week 5-6: The Nature of God",
+        "Week 7-8: Attributes of God",
+        "Week 9-10: Trinity",
+        "Week 11-12: God's Decrees & Works"
+      ],
+      "prerequisites": ["Introduction to Theology", "Biblical Survey"],
+      "certification": "Certificate in Systematic Theology I",
+      "startDate": "2024-10-01",
+      "endDate": "2024-12-15",
+      "schedule": "Online lectures + Weekend intensives",
+      "language": "English", 
+      "averageRating": 4.9,
+      "totalEnrollments": 38,
+      "availableSeats": 12,
+      "tags": ["Systematic Theology", "God", "Trinity", "Doctrine"]
+    },
+    {
+      "id": "3",
+      "title": "Church History: From Apostles to Reformation",
+      "instructor": "Dr. Carl Trueman",
+      "description": "A comprehensive survey of church history from the apostolic age through the Protestant Reformation. This course examines key figures, movements, controversies, and developments that shaped Christianity.",
+      "shortDescription": "Journey through 1500 years of church history from the apostles to the Reformation.",
+      "category": "Church History",
+      "subcategory": "Historical Theology", 
+      "duration": "20 weeks",
+      "level": "intermediate",
+      "format": "offline",
+      "price": 1800,
+      "currency": "USD",
+      "institution": {
+        "id": "1",
+        "name": "Westminster Theological Seminary",
+        "type": "seminary", 
+        "accreditation": "ATS Accredited",
+        "location": "Philadelphia, PA",
+        "website": "https://www.wts.edu"
+      },
+      "company": {
+        "id": "2",
+        "name": "IVP Academic",
+        "type": "publisher",
+        "specialization": "Christian Scholarship"
+      },
+      "imageUrl": "/images/courses/church-history.jpg",
+      "syllabus": [
+        "Week 1-3: Apostolic Age & Early Church",
+        "Week 4-6: Persecution & Martyrdom", 
+        "Week 7-9: Constantine & Christendom",
+        "Week 10-12: Patristic Period",
+        "Week 13-15: Medieval Christianity",
+        "Week 16-18: Scholasticism & Mysticism",
+        "Week 19-20: Protestant Reformation"
+      ],
+      "prerequisites": ["Church History Survey"],
+      "certification": "Diploma in Church History",
+      "startDate": "2024-08-26",
+      "endDate": "2025-01-20",
+      "schedule": "Mondays 6:00-9:00 PM",
+      "language": "English",
+      "averageRating": 4.7,
+      "totalEnrollments": 32,
+      "availableSeats": 8,
+      "tags": ["Church History", "Reformation", "Patristics", "Medieval"]
+    },
+    {
+      "id": "4", 
+      "title": "Biblical Hebrew I: Foundations",
+      "instructor": "Dr. Bruce Waltke",
+      "description": "An introductory course in Biblical Hebrew focusing on grammar, vocabulary, and basic translation skills. Students will learn the Hebrew alphabet, fundamental grammar, and begin reading simple biblical texts.",
+      "shortDescription": "Learn to read Biblical Hebrew with comprehensive grammar and vocabulary training.",
+      "category": "Biblical Languages",
+      "subcategory": "Hebrew",
+      "duration": "24 weeks",
+      "level": "beginner", 
+      "format": "offline",
+      "price": 2000,
+      "currency": "USD",
+      "institution": {
+        "id": "3",
+        "name": "Dallas Theological Seminary",
+        "type": "seminary",
+        "accreditation": "ATS & SACSCOC Accredited",
+        "location": "Dallas, TX",
+        "website": "https://www.dts.edu"
+      },
+      "imageUrl": "/images/courses/biblical-hebrew.jpg",
+      "syllabus": [
+        "Week 1-4: Hebrew Alphabet & Vowels",
+        "Week 5-8: Basic Grammar & Nouns",
+        "Week 9-12: Verbs & Verbal System",
+        "Week 13-16: Syntax & Sentence Structure", 
+        "Week 17-20: Biblical Text Reading",
+        "Week 21-24: Advanced Grammar & Translation"
+      ],
+      "prerequisites": ["None"],
+      "certification": "Certificate in Biblical Hebrew I",
+      "startDate": "2024-09-02",
+      "endDate": "2025-02-28",
+      "schedule": "Mon/Wed/Fri 8:00-9:30 AM",
+      "language": "English",
+      "averageRating": 4.6,
+      "totalEnrollments": 28,
+      "availableSeats": 7,
+      "tags": ["Hebrew", "Biblical Languages", "Grammar", "Translation"]
+    },
+    {
+      "id": "5",
+      "title": "Apologetics: Defending the Faith",
+      "instructor": "Dr. William Lane Craig",
+      "description": "A comprehensive course in Christian apologetics covering philosophical, scientific, and historical arguments for the Christian faith. Students will learn to defend core Christian doctrines and engage with contemporary challenges.",
+      "shortDescription": "Master the art of defending the Christian faith with philosophical and evidential arguments.",
+      "category": "Apologetics",
+      "subcategory": "Philosophical Apologetics",
+      "duration": "14 weeks",
+      "level": "intermediate",
+      "format": "hybrid",
+      "price": 1350,
+      "currency": "USD", 
+      "institution": {
+        "id": "4",
+        "name": "Trinity Evangelical Divinity School",
+        "type": "seminary",
+        "accreditation": "ATS & HLC Accredited", 
+        "location": "Deerfield, IL",
+        "website": "https://www.tiu.edu"
+      },
+      "company": {
+        "id": "3",
+        "name": "Biblical Training Institute",
+        "type": "certification",
+        "specialization": "Biblical Studies Certification"
+      },
+      "imageUrl": "/images/courses/apologetics.jpg",
+      "syllabus": [
+        "Week 1-2: Introduction to Apologetics",
+        "Week 3-4: Cosmological Arguments",
+        "Week 5-6: Teleological Arguments",
+        "Week 7-8: Moral Arguments", 
+        "Week 9-10: Historical Jesus",
+        "Week 11-12: Resurrection Evidence",
+        "Week 13-14: Contemporary Challenges"
+      ],
+      "prerequisites": ["Introduction to Philosophy", "Basic Theology"],
+      "certification": "Certificate in Christian Apologetics",
+      "startDate": "2024-10-15",
+      "endDate": "2025-01-30",
+      "schedule": "Online + Monthly seminars",
+      "language": "English",
+      "averageRating": 4.9,
+      "totalEnrollments": 52,
+      "availableSeats": 18,
+      "tags": ["Apologetics", "Philosophy", "Evidence", "Defense"]
+    },
+    {
+      "id": "6",
+      "title": "Pastoral Ministry & Leadership",
+      "instructor": "Dr. John MacArthur",
+      "description": "A practical course designed for aspiring pastors and church leaders, covering pastoral duties, leadership principles, sermon preparation, counseling, and church administration.",
+      "shortDescription": "Comprehensive training for pastoral ministry covering leadership, preaching, and church administration.",
+      "category": "Practical Ministry",
+      "subcategory": "Pastoral Ministry",
+      "duration": "18 weeks",
+      "level": "advanced",
+      "format": "offline",
+      "price": 1650,
+      "currency": "USD",
+      "institution": {
+        "id": "5",
+        "name": "Gordon-Conwell Theological Seminary",
+        "type": "seminary",
+        "accreditation": "ATS & NECHE Accredited",
+        "location": "South Hamilton, MA", 
+        "website": "https://www.gordonconwell.edu"
+      },
+      "imageUrl": "/images/courses/pastoral-ministry.jpg",
+      "syllabus": [
+        "Week 1-3: Call to Ministry",
+        "Week 4-6: Leadership Principles",
+        "Week 7-9: Sermon Preparation & Preaching",
+        "Week 10-12: Pastoral Counseling",
+        "Week 13-15: Church Administration",
+        "Week 16-18: Crisis Management & Conflict Resolution"
+      ],
+      "prerequisites": ["Systematic Theology", "Biblical Studies", "Ministry Experience"],
+      "certification": "Diploma in Pastoral Ministry",
+      "startDate": "2024-09-09", 
+      "endDate": "2025-01-27",
+      "schedule": "Tuesdays 1:00-4:00 PM",
+      "language": "English",
+      "averageRating": 4.8,
+      "totalEnrollments": 24,
+      "availableSeats": 6,
+      "tags": ["Ministry", "Leadership", "Preaching", "Pastoral Care"]
+    }
+  ]
+}

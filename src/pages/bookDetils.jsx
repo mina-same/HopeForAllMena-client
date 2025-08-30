@@ -1,5 +1,8 @@
+import React from "react"
 import { useState } from "react"
-import { useParams, Link } from "react-router-dom"
+import { Link } from "gatsby"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Autoplay } from "swiper/modules"
 import { Button } from "../components/ui/button"
 import { Badge } from "../components/ui/badge"
 import { BookCard } from "../components/BookCard"
@@ -21,19 +24,21 @@ import {
   Linkedin,
   Instagram
 } from "lucide-react"
-import bookCover1 from "../assets/images/books/book-cover-1.jpg"
-import bookCover2 from "../assets/images/books/book-cover-2.jpg"
-import bookCover3 from "../assets/images/books/book-cover-3.jpg"
-import bookCover4 from "../assets/images/books/book-cover-4.jpg"
-import bookCover5 from "../assets/images/books/book-cover-5.jpg"
-import bookCover6 from "../assets/images/books/book-cover-6.jpg"
+import bookCover1 from "../assets/images/gallery/gallery-1-6.jpg"
+import bookCover2 from "../assets/images/gallery/gallery-1-6.jpg"
+import bookCover3 from "../assets/images/gallery/gallery-1-6.jpg"
+import bookCover4 from "../assets/images/gallery/gallery-1-6.jpg"
+import bookCover5 from "../assets/images/gallery/gallery-1-6.jpg"
+import bookCover6 from "../assets/images/gallery/gallery-1-6.jpg"
+import HeaderTwo from "../components/header/header-two"
+import StickyHeader from "../components/header/sticky-header"
+import Footer from "../components/footer"
 
 const booksData = [
   {
     id: "1",
     title: "Goodbye Again",
     author: "D'Khari Mills",
-    price: 289.38,
     originalPrice: null,
     rating: 4.5,
     reviews: 5,
@@ -46,7 +51,6 @@ const booksData = [
     language: "English",
     isbn: "978-0-123456-78-9",
     publishDate: "2024",
-    sku: "48232333",
     weight: "106 kg",
     dimensions: "150 × 149 × 51 cm",
     inStock: true,
@@ -145,20 +149,10 @@ const relatedBooks = [
     rating: 4.5,
     reviews: 5,
     image: bookCover6
-  },
-  {
-    id: "7",
-    title: "Her Final Goodbye",
-    author: "Jessica Munoz",
-    price: 489.44,
-    rating: 4.25,
-    reviews: 5,
-    image: bookCover1
   }
 ]
 
 export default function BookDetail() {
-  const { id } = useParams()
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState("reviews")
   
@@ -178,7 +172,7 @@ export default function BookDetail() {
         key={i}
         className={`w-4 h-4 ${
           i < Math.floor(rating)
-            ? "fill-primary text-primary"
+            ? "fill-[#2194D1] text-[#2194D1]"
             : "text-muted-foreground"
         }`}
       />
@@ -187,19 +181,24 @@ export default function BookDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container py-8">
+      {/* Header */}
+      <HeaderTwo />
+      <StickyHeader />
+
+      {/* Book Details */}
+      <div className="container py-10 pt-[150px]">
         {/* Product Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
           {/* Product Gallery */}
           <div className="space-y-4">
-            <div className="relative group">
+            <div className="relative group bg-[#2194D1] rounded-xl p-3 shadow-card">
               <div className="aspect-[3/4] relative overflow-hidden rounded-lg bg-surface">
                 <img
                   src={book.image}
                   alt={book.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 />
-                <button className="absolute top-4 right-4 bg-background/80 hover:bg-background p-2 rounded-full transition-colors">
+                <button className="absolute top-4 right-4 bg-background/80 hover:bg-background p-2 rounded-full transition-colors shadow-card">
                   <Search className="w-5 h-5" />
                 </button>
               </div>
@@ -208,47 +207,11 @@ export default function BookDetail() {
 
           {/* Product Info */}
           <div className="space-y-6">
-            {/* Top Section */}
-            <div className="flex items-start justify-between">
-              <div className="space-y-2">
-                <Badge variant="secondary" className="text-xs font-medium">
-                  <span className="mr-1">Availability:</span>
-                  {book.inStock ? "In Stock" : "Out of Stock"}
-                </Badge>
-              </div>
-              
-              {/* Product Navigation */}
-              {book.nextProduct && (
-                <div className="flex items-center gap-2">
-                  <Link 
-                    to={`/book/${book.nextProduct.id}`}
-                    className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-secondary transition-colors group"
-                  >
-                    <div className="text-right">
-                      <div className="text-xs text-muted-foreground">Next</div>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={book.nextProduct.image}
-                        alt={book.nextProduct.title}
-                        className="w-12 h-16 object-cover rounded"
-                      />
-                      <div className="text-left">
-                        <div className="text-sm font-medium line-clamp-1">{book.nextProduct.title}</div>
-                        <div className="text-sm text-price font-semibold">${book.nextProduct.price}</div>
-                      </div>
-                    </div>
-                  </Link>
-                </div>
-              )}
-            </div>
-
             {/* Title & Author */}
             <div className="space-y-3">
-              <h1 className="text-3xl font-bold">{book.title}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{book.title}</h1>
               <div className="text-muted-foreground">
-                Author: <Link to="#" className="text-primary hover:underline">{book.author}</Link>
+                Author: <Link to="#" className="text-[#2194D1] hover:underline">{book.author}</Link>
               </div>
               
               {/* Rating */}
@@ -259,22 +222,11 @@ export default function BookDetail() {
                     Rated {book.rating} out of 5
                   </span>
                 </div>
-                <Link to="#reviews" className="text-sm text-primary hover:underline">
-                  <span className="bg-primary text-primary-foreground px-2 py-1 rounded text-xs">
+                <Link to="#reviews" className="text-sm text-[#2194D1] hover:underline">
+                  <span className="bg-[#2194D1] text-white px-2 py-1 rounded text-xs">
                     {book.reviews}
                   </span>
                 </Link>
-              </div>
-
-              <div className="text-sm text-muted-foreground">
-                SKU: <span className="text-foreground">{book.sku}</span>
-              </div>
-            </div>
-
-            {/* Price */}
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-price">
-                ${book.price.toFixed(2)}
               </div>
             </div>
 
@@ -290,33 +242,6 @@ export default function BookDetail() {
 
             {/* Add to Cart Form */}
             <div className="space-y-4 border-t border-border pt-6">
-              <div className="flex items-center gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Quantity</label>
-                  <div className="flex items-center border border-border rounded-lg">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="p-2 hover:bg-secondary transition-colors"
-                    >
-                      <Minus className="w-4 h-4" />
-                    </button>
-                    <input
-                      type="number"
-                      value={quantity}
-                      onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                      className="w-16 text-center py-2 bg-transparent border-0 focus:outline-none"
-                      min="1"
-                      max="999"
-                    />
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="p-2 hover:bg-secondary transition-colors"
-                    >
-                      <Plus className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
@@ -343,7 +268,7 @@ export default function BookDetail() {
                 <span className="text-muted-foreground">Category: </span>
                 {book.categories.map((cat, index) => (
                   <span key={cat}>
-                    <Link to="#" className="text-primary hover:underline">{cat}</Link>
+                    <Link to="#" className="text-[#2194D1] hover:underline">{cat}</Link>
                     {index < book.categories.length - 1 && ", "}
                   </span>
                 ))}
@@ -352,7 +277,7 @@ export default function BookDetail() {
                 <span className="text-muted-foreground">Tags: </span>
                 {book.tags.map((tag, index) => (
                   <span key={tag}>
-                    <Link to="#" className="text-primary hover:underline">{tag}</Link>
+                    <Link to="#" className="text-[#2194D1] hover:underline">{tag}</Link>
                     {index < book.tags.length - 1 && ", "}
                   </span>
                 ))}
@@ -363,19 +288,19 @@ export default function BookDetail() {
             <div className="flex items-center gap-4 border-t border-border pt-6">
               <span className="text-sm font-medium">Share:</span>
               <div className="flex items-center gap-3">
-                <Link to="#" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link to="#" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors">
                   <Facebook className="w-4 h-4" />
                   <span>Facebook</span>
                 </Link>
-                <Link to="#" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link to="#" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors">
                   <Twitter className="w-4 h-4" />
                   <span>Twitter</span>
                 </Link>
-                <Link to="#" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link to="#" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors">
                   <Linkedin className="w-4 h-4" />
                   <span>LinkedIn</span>
                 </Link>
-                <Link to="#" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link to="#" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors">
                   <Instagram className="w-4 h-4" />
                   <span>Pinterest</span>
                 </Link>
@@ -385,20 +310,19 @@ export default function BookDetail() {
         </div>
 
         {/* Product Tabs */}
-        <div className="border-t border-border">
-          <div className="flex gap-8 border-b border-border">
+        <div className="border-t">
+          <div className="flex justify-center gap-3 border-b py-4">
             {[
               { key: "description", label: "Description" },
-              { key: "additional", label: "Additional information" },
               { key: "reviews", label: `Reviews (${book.reviews})` }
             ].map((tab) => (
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`py-4 text-sm font-medium border-b-2 transition-colors ${
+                className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors border ${
                   activeTab === tab.key
-                    ? "border-primary text-primary"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
+                    ? "bg-[#2194D1] text-white border-[#2194D1]"
+                    : "bg-secondary text-white border-border hover:bg-secondary-hover"
                 }`}
               >
                 {tab.label}
@@ -406,7 +330,7 @@ export default function BookDetail() {
             ))}
           </div>
 
-          <div className="py-8">
+          <div className="py-8 max-w-4xl mx-auto">
             {activeTab === "description" && (
               <div className="max-w-3xl space-y-4">
                 <h2 className="text-xl font-semibold mb-4">Description</h2>
@@ -418,31 +342,13 @@ export default function BookDetail() {
               </div>
             )}
             
-            {activeTab === "additional" && (
-              <div className="max-w-3xl">
-                <h2 className="text-xl font-semibold mb-6">Additional information</h2>
-                <div className="border border-border rounded-lg overflow-hidden">
-                  <table className="w-full">
-                    <tbody>
-                      <tr className="border-b border-border">
-                        <th className="text-left py-3 px-4 bg-muted font-medium w-1/3">Weight</th>
-                        <td className="py-3 px-4">{book.weight}</td>
-                      </tr>
-                      <tr>
-                        <th className="text-left py-3 px-4 bg-muted font-medium">Dimensions</th>
-                        <td className="py-3 px-4">{book.dimensions}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            )}
+            {false && <div />}
             
             {activeTab === "reviews" && (
               <div className="max-w-4xl space-y-8">
                 <div className="space-y-6">
                   <h2 className="text-xl font-semibold">
-                    {book.reviews} reviews for <span className="text-primary">{book.title}</span>
+                    {book.reviews} reviews for <span className="text-[#2194D1]">{book.title}</span>
                   </h2>
                   
                   {/* Reviews List */}
@@ -450,8 +356,8 @@ export default function BookDetail() {
                     {reviews.map((review) => (
                       <div key={review.id} className="flex gap-4 p-6 border border-border rounded-lg">
                         <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center flex-shrink-0">
-                          <span className="text-sm font-medium">
-                            {review.author.split(' ').map(n => n[0]).join('')}
+                          <span className="text-sm font-medium bg-[#2194D1] text-white rounded-full p-2">
+                            {review.author.split(' ').map(n => n[0]).join('').slice(0,2)}
                           </span>
                         </div>
                         <div className="flex-1 space-y-3">
@@ -482,7 +388,7 @@ export default function BookDetail() {
                             <button
                               key={star}
                               type="button"
-                              className="text-muted-foreground hover:text-primary transition-colors"
+                              className="text-[#bcbec0] hover:text-[#2194D1] transition-colors border-none bg-transparent"
                             >
                               <Star className="w-5 h-5" />
                             </button>
@@ -494,7 +400,7 @@ export default function BookDetail() {
                         <textarea
                           placeholder="Your review *"
                           rows={6}
-                          className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+                          className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2194D1] resize-none"
                         />
                       </div>
                       
@@ -502,12 +408,12 @@ export default function BookDetail() {
                         <input
                           type="text"
                           placeholder="Name *"
-                          className="px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                          className="px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2194D1]"
                         />
                         <input
                           type="email"
                           placeholder="Email *"
-                          className="px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                          className="px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2194D1]"
                         />
                       </div>
                       
@@ -531,18 +437,32 @@ export default function BookDetail() {
 
         {/* Related Products */}
         <section className="py-16">
-          <h2 className="text-2xl font-bold mb-8">Related products</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+          <h2 className="text-2xl font-bold mb-8 text-center">Related products</h2>
+          <Swiper
+            modules={[Navigation, Autoplay]}
+            navigation
+            autoplay={{ delay: 3500, disableOnInteraction: false }}
+            spaceBetween={20}
+            breakpoints={{
+              0: { slidesPerView: 1 },
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 4 },
+            }}
+          >
             {relatedBooks.map((relatedBook) => (
-              <BookCard
-                key={`related-${relatedBook.id}`}
-                {...relatedBook}
-                onAddToCart={() => console.log("Adding to cart:", relatedBook.id)}
-              />
+              <SwiperSlide key={`related-${relatedBook.id}`}>
+                <BookCard
+                  {...relatedBook}
+                  onAddToCart={() => console.log("Adding to cart:", relatedBook.id)}
+                />
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
         </section>
       </div>
+
+      {/*  footer */}
+      <Footer />
     </div>
   )
 }

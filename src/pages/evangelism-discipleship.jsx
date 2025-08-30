@@ -22,7 +22,7 @@ const EvangelismDiscipleship = () => {
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-              Our Ministry <span className="text-primary">Focus Areas</span>
+              Our Ministry <span className="text-[#2194D1]">Focus Areas</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Transforming lives through evangelism, discipleship, and community
@@ -69,12 +69,12 @@ const EvangelismDiscipleship = () => {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
-            <div className="inline-flex items-center gap-2 text-primary font-semibold">
+            <div className="inline-flex items-center gap-2 text-[#2194D1] font-semibold">
               <Calendar className="h-5 w-5" />
               <span>Community Engagement</span>
             </div>
             <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-              Festivals & <span className="text-primary">Celebrations</span>
+              Festivals & <span className="text-[#2194D1]">Celebrations</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               We actively participate in Christian festivals and celebrations,
@@ -109,7 +109,7 @@ const EvangelismDiscipleship = () => {
                 className="group hover:shadow-hover transition-all duration-300 bg-card border shadow-card"
               >
                 <CardContent className="p-8 text-center space-y-6">
-                  <div className="h-20 w-20 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200 shadow-card">
+                  <div className="h-20 w-20 bg-[#2194D1] text-white rounded-2xl flex items-center justify-center mx-auto group-hover:scale-105 transition-transform duration-200 shadow-card">
                     <item.icon className="h-10 w-10" />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground">
@@ -131,7 +131,7 @@ const EvangelismDiscipleship = () => {
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="space-y-4">
               <h2 className="text-4xl lg:text-6xl font-bold text-foreground">
-                Ready to <span className="text-primary">Transform Lives?</span>
+                Ready to <span className="text-[#2194D1]">Transform Lives?</span>
               </h2>
               <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
                 Join us in spreading hope, building faith, and transforming
@@ -156,7 +156,7 @@ const EvangelismDiscipleship = () => {
             <div className="pt-8 border-t">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-primary mb-2">
+                  <div className="text-3xl font-bold text-[#2194D1] mb-2">
                     500+
                   </div>
                   <div className="text-sm text-muted-foreground">
@@ -164,7 +164,7 @@ const EvangelismDiscipleship = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-primary mb-2">
+                  <div className="text-3xl font-bold text-[#2194D1] mb-2">
                     50+
                   </div>
                   <div className="text-sm text-muted-foreground">
@@ -172,7 +172,7 @@ const EvangelismDiscipleship = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-primary mb-2">
+                  <div className="text-3xl font-bold text-[#2194D1] mb-2">
                     25+
                   </div>
                   <div className="text-sm text-muted-foreground">
@@ -180,7 +180,7 @@ const EvangelismDiscipleship = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-primary mb-2">
+                  <div className="text-3xl font-bold text-[#2194D1] mb-2">
                     100+
                   </div>
                   <div className="text-sm text-muted-foreground">

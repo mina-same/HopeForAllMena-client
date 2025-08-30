@@ -1,0 +1,112 @@
+export const books = [
+    {
+        id: 77,
+        title: "The Book of Five Rings",
+        author: "Georgia Ramirez",
+        price: 439.83,
+        rating: 3.75,
+        reviewCount: 5,
+        image: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/30.jpg',
+        category: "Contemporary",
+        tags: ["books", "fiction", "romance-contemporary"],
+        inStock: true
+    },
+    {
+        id: 99,
+        title: "Treachery: Alpha Colony Book 8",
+        author: "Jessica Munoz",
+        price: 569.00,
+        rating: 4.00,
+        reviewCount: 5,
+        image: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/35.jpg',
+        category: "Action Adventure",
+        tags: ["books", "fiction", "romance-contemporary"],
+        inStock: false
+    },
+    {
+        id: 79,
+        title: "Blood on the Snow",
+        author: "Rex Rios",
+        price: 129.00,
+        rating: 3.50,
+        reviewCount: 5,
+        image: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/33.jpg',
+        category: "Action Adventure",
+        tags: ["books", "fiction", "romance-contemporary"],
+        inStock: true
+    },
+    {
+        id: 65,
+        title: "The Girl and the Last Sleepover",
+        author: "Suzanne Casey",
+        priceRange: { min: 125.00, max: 450.00 },
+        price: 125.00,
+        rating: 4.00,
+        reviewCount: 5,
+        image: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/32.jpg',
+        category: "Action Adventure",
+        tags: ["books", "fiction", "romance-contemporary"],
+        inStock: true
+    },
+    {
+        id: 45,
+        title: "Feral: Shadow Bred: Book 3",
+        author: "Randal Adkins",
+        price: 938.78,
+        rating: 3.50,
+        reviewCount: 5,
+        image: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/31.jpg',
+        category: "Historical",
+        tags: ["books", "fiction", "romance-contemporary"],
+        inStock: true
+    },
+    {
+        id: 109,
+        title: "The Story of Success",
+        author: "Arthur Gonzalez",
+        price: 50.89,
+        rating: 3.60,
+        reviewCount: 5,
+        image: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/34.jpg',
+        category: "Action Adventure",
+        tags: ["books", "fiction", "romance-contemporary"],
+        featured: true,
+        inStock: true
+    },
+    {
+        id: 75,
+        title: "The Murder of Roger Ackroyd",
+        author: "Karla Newman",
+        price: 283.47,
+        rating: 3.75,
+        reviewCount: 5,
+        image: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/35.jpg',
+        category: "Mystery",
+        tags: ["books", "fiction", "romance-contemporary"],
+        featured: true,
+        inStock: true
+    },
+    {
+        id: 87,
+        title: "City of the Dead",
+        author: "Rita James",
+        price: 502.00,
+        rating: 3.25,
+        reviewCount: 5,
+        image: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/33.jpg',
+        category: "Action Adventure",
+        tags: ["books", "fiction", "romance-contemporary"],
+        inStock: false
+    }
+];
+
+export const categories = [
+    "Action Adventure",
+    "Contemporary",
+    "Historical",
+    "Mystery",
+    "Cultural",
+    "Foreign Language",
+    "Activity Books",
+    "Anthologies"
+];
