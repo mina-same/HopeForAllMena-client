@@ -96,7 +96,7 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => 
           </div>
 
           {/* Price Range */}
-          <div>
+          {/* <div>
             <h3 className="font-semibold text-black mb-4">Price Range</h3>
             <div className="px-2">
               <Slider
@@ -111,7 +111,7 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => 
                 <span>${filters.priceRange[1]}</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Rating */}
           <div>
@@ -151,7 +151,7 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => 
                   }
                 />
                 <label htmlFor="in-stock" className="text-sm text-black cursor-pointer">
-                  In Stock
+                  Published
                 </label>
               </div>
             </div>

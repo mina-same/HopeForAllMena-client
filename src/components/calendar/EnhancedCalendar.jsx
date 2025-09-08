@@ -308,7 +308,7 @@ export const EnhancedCalendar = () => {
               placeholder="Search events..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 w-64 focus:ring-primary"
+              className="pl-[30px] w-64 focus:ring-primary"
             />
           </div>
 

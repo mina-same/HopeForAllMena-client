@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Star, ChevronRight } from 'lucide-react';
-import { Bookstore } from './bookstore';
+import Bookstore from './bookstore';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
-import MainSlider from '../components/slider/main-slider';
+import MainSlider from '../components/slider/main-slider-2';
 import Footer from '../components/footer';
 import Layout from '../components/layout';
 
@@ -166,7 +166,7 @@ const TestimonialsCarousel = () => {
     >
       <div className="relative z-10 h-full flex items-center">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-          <div className="absolute top-[60px] sm:top-[80px] md:top-[100px] h-full w-full">
+          <div className="absolute top-[60px] sm:top-[80px] md:top-[110px] h-full w-full">
             <div className="flex items-center justify-center md:justify-start md:pl-8 lg:pl-16">
               <div className="w-full max-w-sm md:max-w-md">
                 <div className="bg-white rounded-2xl md:rounded-br-none md:rounded-bl-none shadow-2xl px-6 sm:px-8 md:px-10 py-8 sm:py-10 md:py-12 text-center transform transition-all duration-500 ease-in-out">

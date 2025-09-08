@@ -59,7 +59,7 @@ export const EnrollmentsSection = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs md:text-sm font-medium text-muted-foreground">Total Enrollments</p>
-                <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">
                   {enrollments.length}
                 </p>
               </div>
@@ -122,7 +122,7 @@ export const EnrollmentsSection = () => {
                   placeholder="Search enrollments..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9"
+                  className="pl-[30px]"
                 />
               </div>
             </div>

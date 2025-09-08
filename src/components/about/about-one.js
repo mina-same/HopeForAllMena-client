@@ -28,9 +28,9 @@ const AboutOne = () => {
               <div className="block-title">
                 <p>
                   <img src={heart} width="15" alt="" />
-                  Make a Difference
+                  About us
                 </p>
-                <h3>Let’s help them together.</h3>
+                <h3>Hope for all Middle East and North Africa</h3>
               </div>
             </Col>
             <Col md={12} lg={4}>

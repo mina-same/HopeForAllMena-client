@@ -2,9 +2,9 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
-import banner1 from "../../assets/images/main-slider/slider-2-1.jpg";
-import banner2 from "../../assets/images/main-slider/slider-1-2.jpg";
-import banner3 from "../../assets/images/main-slider/slider-1-1.jpg";
+import banner1 from "../../assets/images/main-slider/slider-books.png";
+import banner2 from "../../assets/images/main-slider/slider-books.png";
+import banner3 from "../../assets/images/main-slider/slider-books.png";
 
 // Swiper v11 uses modules via props
 

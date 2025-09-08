@@ -48,104 +48,150 @@ export const BookCard = ({ book, viewMode }) => {
 
   if (viewMode === 'list') {
     return (
-      <div className="group relative bg-card border border-border/50 rounded-2xl overflow-hidden hover:shadow-xl hover:border-primary/20 transition-all duration-300">
-        <div className="flex gap-6 p-6">
-          {/* Book Image Section */}
-          <div className="relative flex-shrink-0">
-            <div className="relative overflow-hidden rounded-xl group-hover:shadow-lg transition-shadow duration-300">
+      <div className="group relative bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-2xl hover:border-[#2194D1]/30 transition-all duration-500 w-full">
+        <div className="grid grid-cols-12 gap-6 p-6">
+          {/* Book Image Section - 2 columns */}
+          <div className="col-span-12 sm:col-span-3 lg:col-span-2">
+            <div className="relative overflow-hidden rounded-xl group-hover:shadow-lg transition-all duration-300">
               <img
                 src={book.image}
                 alt={book.title}
-                className="w-24 sm:w-28 md:w-32 h-32 sm:h-36 md:h-40 object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-48 sm:h-56 lg:h-64 object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              {/* Subtle overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              
               {/* Category Badge */}
-              <div className="absolute top-2 left-2">
-                <span className="bg-[#2194D1]/95 backdrop-blur-sm text-white px-2 py-1 text-xs font-medium rounded-full shadow-sm">
+              <div className="absolute top-3 left-3">
+                <span className="bg-[#2194D1] text-white px-3 py-1.5 text-xs font-semibold rounded-full shadow-lg backdrop-blur-sm">
                   {book.category}
                 </span>
+              </div>
+              
+              {/* Stock status overlay */}
+              {!book.inStock && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <span className="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold text-sm">
+                    Out of Stock
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Book Information Section - 7 columns */}
+          <div className="col-span-12 sm:col-span-6 lg:col-span-7">
+            <div className="h-full flex flex-col justify-between">
+              {/* Title and Author */}
+              <div className="mb-4">
+                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 hover:text-[#2194D1] transition-colors cursor-pointer leading-tight">
+                  {book.title}
+                </h3>
+                <p className="text-lg text-gray-600 font-medium">
+                  by <span className="text-gray-800 font-semibold">{book.author}</span>
+                </p>
+              </div>
+
+              {/* Rating and Reviews */}
+              <div className="mb-4">
+                <div className="flex items-center gap-3">
+                  {renderStars(book.rating)}
+                  <span className="text-sm text-gray-500 font-medium">({book.reviewCount} reviews)</span>
+                  <div className="h-4 w-px bg-gray-300"></div>
+                  <span className="text-sm font-semibold text-[#2194D1]">{book.rating}/5</span>
+                </div>
+              </div>
+
+              {/* Description */}
+              {book.description && (
+                <div className="mb-6">
+                  <p className="text-gray-600 leading-relaxed line-clamp-2 lg:line-clamp-3">
+                    {book.description}
+                  </p>
+                </div>
+              )}
+              
+              {/* Additional Info */}
+              <div className="flex flex-wrap gap-4 mb-4">
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>Available in multiple formats</span>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span>Fast delivery</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Book Information Section */}
-          <div className="flex-1 min-w-0">
-            <div className="flex flex-col h-full">
-              {/* Title and Author */}
-              <div className="mb-3">
-                <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2 hover:text-[#2194D1] transition-colors cursor-pointer leading-tight line-clamp-2">
-                  {book.title}
-                </h3>
-                <p className="text-sm text-muted-foreground font-medium">
-                  by <span className="text-foreground">{book.author}</span>
-                </p>
-              </div>
-
-              {/* Rating */}
-              <div className="mb-4">
-                {renderStars(book.rating)}
-              </div>
-
-              {/* Price and Status */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-                  <span className="text-xl sm:text-2xl font-bold text-[#2194D1]">
+          {/* Price and Actions Section - 3 columns */}
+          <div className="col-span-12 sm:col-span-3 lg:col-span-3">
+            <div className="h-full flex flex-col justify-between">
+              {/* Price Section */}
+              <div className="mb-6">
+                <div className="text-right sm:text-left">
+                  <div className="text-3xl lg:text-4xl font-bold text-[#2194D1] mb-2">
                     {formatPrice()}
-                  </span>
-                  {!book.inStock && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                      Out of Stock
-                    </span>
-                  )}
-                  {book.inStock && (
-                    <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      In Stock
-                    </span>
+                  </div>
+                  {book.inStock ? (
+                    <div className="flex items-center gap-2 justify-end sm:justify-start">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-sm font-medium text-green-600">In Stock</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 justify-end sm:justify-start">
+                      <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                      <span className="text-sm font-medium text-red-600">Out of Stock</span>
+                    </div>
                   )}
                 </div>
               </div>
 
-              {/* Action divs */}
-              <div className="flex flex-wrap gap-2 mt-auto">
-                <div
-                  onClick={handleWishlist}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-200 text-sm font-medium ${isWishlisted
-                      ? 'bg-red-50 border-red-200 text-red-600 hover:bg-red-100'
-                      : 'bg-white border-border text-muted-foreground hover:border-red-200 hover:text-red-600 hover:bg-red-50'
-                    }`}
-                >
-                  <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-current' : ''}`} />
-                  <span className="hidden sm:inline">Wishlist</span>
-                </div>
-
-                <div
-                  onClick={handleQuickView}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg border border-border text-muted-foreground hover:border-blue-200 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 text-sm font-medium"
-                >
-                  <Eye className="h-4 w-4" />
-                  <span className="hidden sm:inline">Quick View</span>
-                </div>
-
-                <div
+              {/* Action Buttons */}
+              <div className="space-y-3">
+                <button
                   onClick={handleAddToCart}
                   disabled={!book.inStock}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${book.inStock
-                      ? 'bg-[#2194D1] text-white hover:bg-[#2194D1]/90 shadow-sm hover:shadow-md'
+                  className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${book.inStock
+                      ? 'bg-[#2194D1] text-white hover:bg-[#1e7fb8] shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]'
                       : 'bg-gray-100 text-gray-400 cursor-not-allowed'
                     }`}
                 >
-                  <ShoppingCart className="h-4 w-4" />
-                  <span className="hidden sm:inline">Add to Cart</span>
+                  <ShoppingCart className="h-5 w-5" />
+                  <span>Add to Cart</span>
+                </button>
+                
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={handleWishlist}
+                    className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 transition-all duration-200 text-sm font-medium ${isWishlisted
+                        ? 'bg-red-50 border-red-200 text-red-600 hover:bg-red-100'
+                        : 'bg-white border-gray-200 text-gray-600 hover:border-red-200 hover:text-red-600 hover:bg-red-50'
+                      }`}
+                  >
+                    <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-current' : ''}`} />
+                    <span className="hidden lg:inline">Wishlist</span>
+                  </button>
+
+                  <button
+                    onClick={handleQuickView}
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border-2 border-gray-200 text-gray-600 hover:border-[#2194D1] hover:text-[#2194D1] hover:bg-blue-50 transition-all duration-200 text-sm font-medium"
+                  >
+                    <Eye className="h-4 w-4" />
+                    <span className="hidden lg:inline">Preview</span>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Hover Effect Border */}
-        <div className="absolute inset-0 rounded-2xl border-2 border-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        {/* Hover Effect */}
+        <div className="absolute inset-0 rounded-2xl ring-2 ring-[#2194D1]/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        
+        {/* Subtle background pattern */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#2194D1]/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
     );
   }

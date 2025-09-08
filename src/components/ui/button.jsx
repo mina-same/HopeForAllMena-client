@@ -5,20 +5,20 @@ import { cva } from "class-variance-authority";
 import { cn } from "../../lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center border-none justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 !border-none !outline-none cursor-pointer",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-white shadow hover:bg-[#2194D1]/90 border-none",
+          "bg-[#2194D1] text-white shadow hover:bg-[#2194D1]/90 !border-none !text-decoration-none",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 border-none",
+          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90 !border-none !text-decoration-none",
         outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground border-none",
+          "border border-input bg-background shadow-sm hover:bg-[#050517] hover:text-accent-foreground !text-decoration-none",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 border-none",
-        ghost: "hover:bg-accent hover:text-accent-foreground border-none",
-        link: "text-primary underline-offset-4 hover:underline border-none",
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 !border-none !text-decoration-none",
+        ghost: "hover:bg-accent hover:text-accent-foreground !border-none !text-decoration-none",
+        link: "text-primary underline-offset-4 hover:underline !border-none",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -38,7 +38,13 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
   const Comp = asChild ? Slot : "button"
   return (
     <Comp
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size }), "!important", className)}
+      style={{
+        border: 'none !important',
+        outline: 'none !important',
+        textDecoration: 'none !important',
+        ...props.style
+      }}
       ref={ref}
       {...props} />
   );

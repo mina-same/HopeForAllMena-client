@@ -1,50 +1,74 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
-import { Book, Users, MessageSquare, Star, BarChart3, TrendingUp, Clock, LogOut } from 'lucide-react';
+import { Book, Users, MessageSquare, Star, BarChart3, TrendingUp, Clock, LogOut, Home, GraduationCap, Calendar, Settings } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
-import { SidebarProvider, SidebarTrigger } from '../components/ui/sidebar';
-import { AdminSidebar } from '../components/admin/AdminSidebar';
+import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../components/ui/sidebar';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../components/ui/collapsible';
+import { LibraryBig, FolderOpen, ChevronRight, ShieldCheck, UserCheck, BookOpen } from 'lucide-react';
 import { AuthorsSection } from '../components/admin/AuthorsSection';
 import { CategoriesSection } from '../components/admin/CategoriesSection';
 import { BooksSection } from '../components/admin/BooksSection';
 import { CoursesSection } from '../components/admin/CoursesSection';
 import { EnrollmentsSection } from '../components/admin/EnrollmentsSection';
 import { MagazinesSection } from '../components/admin/MagazinesSection';
-import ReviewsManagementPage from '../components/admin/ReviewsManagementPage';
-import ContactMessagesPage from '../components/admin/ContactMessagesPage';
+import { ReviewsSection } from '../components/admin/ReviewsSection';
+import { ContactMessagesSection } from '../components/admin/ContactMessagesSection';
 import TrainingBooksSection from '../components/admin/TrainingBooksSection';
 import TrainingRequestsSection from '../components/admin/TrainingRequestsSection';
 import TrainingFollowUpRequestsSection from '../components/admin/TrainingFollowUpRequestsSection';
 import CalendarSection from '../components/admin/CalendarSection';
 import { UserManagementSection } from '../components/admin/UserManagementSection';
+import ProtectedRoute from '../components/auth/ProtectedRoute.js';
+import { useAuth } from '../context/AuthContext.js';
 import { useBookstore } from '../context/BookstoreContext';
-import { useToast } from '../hooks/use-toast';
-import Layout from '../components/layout';
+import { CourseProvider } from '../context/CourseContext';
+import { CalendarProvider } from '../context/CalendarContext';
+import { useToast } from '../hooks/use-toast.jsx';
+import Layout from '../components/layout.jsx';
+import ConfirmationModal from '../components/ui/ConfirmationModal';
 
-const AdminDashboard = () => {
+const AdminDashboardContent = () => {
   const {
     books,
     reviews,
     contacts,
-    isAdmin,
     deleteReview
   } = useBookstore();
+  const { user, logout, hasAnyPermission } = useAuth();
   const { toast } = useToast();
   const [activeSection, setActiveSection] = useState('dashboard');
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-  React.useEffect(() => {
-    if (!isAdmin) {
-      navigate('/admin/login');
-    }
-  }, [isAdmin]);
+  // Define permission mappings for each section
+  const sectionPermissions = {
+    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar'],
+    analytics: ['analytics'],
+    messages: ['contact-messages'],
+    calendar: ['calendar'],
+    'user-management': ['users', 'user-management'],
+    settings: ['settings'],
+    authors: ['authors'],
+    categories: ['categories'],
+    books: ['books'],
+    reviews: ['reviews'],
+    'contact-messages': ['contact-messages'],
+    courses: ['courses'],
+    enrollments: ['enrollments'],
+    magazines: ['magazines'],
+    'training-books': ['training-books'],
+    'training-requests': ['training-requests'],
+    'training-followup-requests': ['training-followup-requests']
+  };
 
-  if (!isAdmin) {
-    return null;
-  }
-
+  // Check if user has permission for a specific section
+  const hasSectionPermission = (sectionId) => {
+    const requiredPermissions = sectionPermissions[sectionId] || [];
+    return hasAnyPermission(requiredPermissions);
+  };
 
   const handleDeleteReview = (reviewId) => {
     if (window.confirm('Are you sure you want to delete this review?')) {
@@ -57,12 +81,48 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      navigate('/admin/login');
+    setShowLogoutModal(true);
+  };
+
+  const confirmLogout = async () => {
+    setIsLoggingOut(true);
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      toast({
+        title: "Logout Error",
+        description: "Failed to logout properly. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoggingOut(false);
+      setShowLogoutModal(false);
     }
   };
 
   const renderDashboardContent = () => {
+    // Check if user has permission for the current section
+    if (!hasSectionPermission(activeSection)) {
+      return (
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">Access Denied</h2>
+            <p className="text-muted-foreground">You don't have permission to access this section.</p>
+          </div>
+          <Card className="border-0 shadow-modern">
+            <CardContent className="text-center py-12">
+              <div className="text-4xl mb-4">🚫</div>
+              <h3 className="text-lg font-semibold mb-2">Insufficient Permissions</h3>
+              <p className="text-muted-foreground">
+                You need the following permissions to access this section: {sectionPermissions[activeSection]?.join(', ')}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      );
+    }
+
     switch (activeSection) {
       case 'authors':
         return <AuthorsSection />;
@@ -71,25 +131,41 @@ const AdminDashboard = () => {
       case 'books':
         return <BooksSection />;
       case 'courses':
-        return <CoursesSection />;
+        return (
+          <CourseProvider>
+            <CoursesSection />
+          </CourseProvider>
+        );
       case 'enrollments':
-        return <EnrollmentsSection />;
+        return (
+          <CourseProvider>
+            <EnrollmentsSection />
+          </CourseProvider>
+        );
       case 'magazines':
         return <MagazinesSection />;
       case 'reviews':
-        return <ReviewsManagementPage />;
+        return <ReviewsSection />;
       case 'contact-messages':
-        return <ContactMessagesPage />;
+        return <ContactMessagesSection />;
       case 'training-books':
         return <TrainingBooksSection />;
       case 'training-requests':
-        return <TrainingRequestsSection />;
+        return (
+          <CalendarProvider>
+            <TrainingRequestsSection />
+          </CalendarProvider>
+        );
       case 'training-followup-requests':
         return <TrainingFollowUpRequestsSection />;
       case 'messages':
         return renderContactMessages();
       case 'calendar':
-        return <CalendarSection />;
+        return (
+          <CalendarProvider>
+            <CalendarSection />
+          </CalendarProvider>
+        );
       case 'user-management':
         return <UserManagementSection />;
       case 'analytics':
@@ -102,178 +178,135 @@ const AdminDashboard = () => {
   };
 
   const renderMainDashboard = () => (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-theme-base">
-            Publishing House Dashboard
-          </h1>
-          <p className="text-muted-foreground mt-2 text-sm md:text-base">Welcome back! Here's an overview of your publishing house.</p>
-        </div>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold text-foreground">Dashboard</h2>
+        <p className="text-muted-foreground">Welcome to your publishing house management dashboard</p>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20 hover:shadow-elegant transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Books</p>
-                <p className="text-3xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">
-                  {books.length}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  <TrendingUp className="h-3 w-3 inline mr-1" />
-                  +2 this month
-                </p>
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {hasSectionPermission('books') && (
+          <Card className="border-0 shadow-modern">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Total Books</p>
+                  <p className="text-2xl font-bold">{books.length}</p>
+                </div>
+                <Book className="h-8 w-8 text-[#2194D1]" />
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-br from-theme-base/20 to-theme-primary/20">
-                <Book className="h-8 w-8 text-theme-primary" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
-        <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20 hover:shadow-elegant transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Authors</p>
-                <p className="text-3xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">
-                  {[...new Set(books.map(book => book.author))].length}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  <Clock className="h-3 w-3 inline mr-1" />
-                  Active authors
-                </p>
+        {hasSectionPermission('reviews') && (
+          <Card className="border-0 shadow-modern">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Reviews</p>
+                  <p className="text-2xl font-bold">{reviews.length}</p>
+                </div>
+                <Star className="h-8 w-8 text-yellow-500" />
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-br from-theme-base/20 to-theme-primary/20">
-                <Users className="h-8 w-8 text-theme-primary" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
-        <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20 hover:shadow-elegant transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Reviews</p>
-                <p className="text-3xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">
-                  {reviews.length}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  <Star className="h-3 w-3 inline mr-1" />
-                  Avg 4.5 rating
-                </p>
+        {hasSectionPermission('contact-messages') && (
+          <Card className="border-0 shadow-modern">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">Messages</p>
+                  <p className="text-2xl font-bold">{contacts.length}</p>
+                </div>
+                <MessageSquare className="h-8 w-8 text-green-500" />
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-br from-theme-base/20 to-theme-primary/20">
-                <Star className="h-8 w-8 text-theme-primary" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
 
-        <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20 hover:shadow-elegant transition-all duration-300">
+        <Card className="border-0 shadow-modern">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Messages</p>
-                <p className="text-3xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">
-                  {contacts.length}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  <MessageSquare className="h-3 w-3 inline mr-1" />
-                  Customer inquiries
-                </p>
+                <p className="text-sm font-medium text-muted-foreground">User</p>
+                <p className="text-2xl font-bold">{user?.name || user?.username || 'Admin'}</p>
               </div>
-              <div className="p-3 rounded-lg bg-gradient-to-br from-theme-base/20 to-theme-primary/20">
-                <MessageSquare className="h-8 w-8 text-theme-primary" />
-              </div>
+              <Users className="h-8 w-8 text-purple-500" />
             </div>
           </CardContent>
         </Card>
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-        <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-muted/30">
+      {hasSectionPermission('contact-messages') && contacts.length > 0 && (
+        <Card className="border-0 shadow-modern">
           <CardHeader>
-            <CardTitle className="text-foreground">Recent Books</CardTitle>
+            <CardTitle>Recent Messages</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {books.slice(0, 5).map((book) => (
-                <div key={book.id} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                  <div className="w-10 h-12 rounded-md overflow-hidden bg-gradient-to-br from-muted to-muted/50">
-                    <img src={book.coverImageUrl} alt={book.title} className="w-full h-full object-cover" />
+              {contacts.slice(0, 3).map((contact, index) => (
+                <div key={index} className="flex items-start space-x-4 p-4 rounded-lg bg-muted/50">
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-medium leading-none">{contact.name}</p>
+                      <p className="text-sm text-muted-foreground">{contact.date}</p>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{contact.message}</p>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-medium text-foreground truncate">{book.title}</p>
-                    <p className="text-sm text-muted-foreground">{book.author}</p>
-                  </div>
-                  <Badge variant="secondary" className="bg-theme-light text-theme-primary">
-                    {book.category}
-                  </Badge>
                 </div>
               ))}
             </div>
           </CardContent>
         </Card>
-
-        <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-muted/30">
-          <CardHeader>
-            <CardTitle className="text-foreground">Recent Reviews</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {reviews.slice(0, 5).map((review) => {
-                const book = books.find(b => b.id === review.bookId);
-                return (
-                  <div key={review.id} className="p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <p className="font-medium text-foreground">{review.name}</p>
-                      <div className="flex items-center">
-                        {Array.from({ length: review.rating }, (_, i) => (
-                          <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-1">{book?.title}</p>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{review.comment}</p>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      )}
     </div>
   );
 
-  const renderContactMessages = () => (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Contact Messages</h2>
-        <p className="text-muted-foreground">Customer inquiries and feedback</p>
-      </div>
-      <div className="space-y-4">
-        {contacts.map((contact) => (
-          <Card key={contact.id} className="border-l-4 border-l-theme-base shadow-modern bg-gradient-to-br from-card to-muted/30">
-            <CardContent className="p-4">
-              <div className="flex justify-between items-start mb-2">
+  const renderContactMessages = () => {
+    if (!hasSectionPermission('contact-messages')) {
+      return (
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">Messages</h2>
+            <p className="text-muted-foreground">Access denied</p>
+          </div>
+          <Card className="border-0 shadow-modern">
+            <CardContent className="text-center py-12">
+              <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+              <p className="text-muted-foreground">You don't have permission to view messages.</p>
+            </CardContent>
+          </Card>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground">Contact Messages</h2>
+          <p className="text-muted-foreground">Manage incoming messages from visitors</p>
+        </div>
+        {contacts.map((contact, index) => (
+          <Card key={index} className="border-0 shadow-modern">
+            <CardContent className="p-6">
+              <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h4 className="font-semibold text-foreground">{contact.name}</h4>
+                  <h3 className="font-semibold">{contact.name}</h3>
                   <p className="text-sm text-muted-foreground">{contact.email}</p>
-                  {contact.bookTitle && (
-                    <Badge variant="outline" className="mt-1 border-theme-primary/20 text-theme-primary">
-                      Book: {contact.bookTitle}
-                    </Badge>
-                  )}
                 </div>
-                <span className="text-sm text-muted-foreground">{contact.date}</span>
+                {contact.bookTitle && (
+                  <Badge variant="secondary" className="ml-2">
+                    Book: {contact.bookTitle}
+                  </Badge>
+                )}
               </div>
               <p className="text-muted-foreground">{contact.message}</p>
+              <div className="mt-4 text-sm text-muted-foreground">{contact.date}</div>
             </CardContent>
           </Card>
         ))}
@@ -286,8 +319,8 @@ const AdminDashboard = () => {
           </Card>
         )}
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderAnalytics = () => (
     <div className="space-y-6">
@@ -322,9 +355,195 @@ const AdminDashboard = () => {
     <Layout pageTitle="Admin Dashboard || Azino || Charity React Next Template">
       <SidebarProvider>
         <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-muted/30">
-          <AdminSidebar activeSection={activeSection} onSectionChange={setActiveSection} />
+          <Sidebar className="border-r border-sidebar-border bg-sidebar">
+            <SidebarHeader className="border-b border-sidebar-border p-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#2194D1] to-[#2194D1]/80 shadow-lg">
+                  <LibraryBig className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-theme-base">Admin Panel</h2>
+                  <p className="text-sm text-[#2194D1]/80">Publishing House</p>
+                  {user && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {user.name || user.username || user.email}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </SidebarHeader>
+            <SidebarContent className="p-2">
+              {/* Main Navigation */}
+              <SidebarGroup>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {[
+                      { title: 'Dashboard', icon: Home, id: 'dashboard' },
+                      { title: 'Analytics', icon: BarChart3, id: 'analytics' },
+                      { title: 'Messages', icon: MessageSquare, id: 'messages' },
+                      { title: 'Calendar', icon: Calendar, id: 'calendar' },
+                      { title: 'User Management', icon: ShieldCheck, id: 'user-management' },
+                      { title: 'Settings', icon: Settings, id: 'settings' }
+                    ].filter(item => hasSectionPermission(item.id)).map((item) => (
+                      <SidebarMenuItem key={item.id}>
+                        <SidebarMenuButton
+                          onClick={() => setActiveSection(item.id)}
+                          isActive={activeSection === item.id}
+                          className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200"
+                        >
+                          <item.icon className="h-4 w-4 flex-shrink-0" />
+                          <span className="font-medium whitespace-nowrap">{item.title}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
 
-          <div className="flex-1 flex flex-col">
+              {/* Management Sections */}
+              <SidebarGroup className="space-y-0">
+                <SidebarGroupLabel className="text-xs font-medium text-sidebar-foreground/60 uppercase tracking-wide px-2 py-2">
+                  Management Links
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {/* Books & Publishing */}
+                    <SidebarMenuItem>
+                      <Collapsible defaultOpen={true}>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90 hover:bg-[#2194D1]">
+                            <LibraryBig className="h-4 w-4 flex-shrink-0" />
+                            <span className="font-medium whitespace-nowrap">Books & Publishing</span>
+                            <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {[
+                              { title: 'Authors', icon: Users, id: 'authors' },
+                              { title: 'Categories', icon: FolderOpen, id: 'categories' },
+                              { title: 'Books', icon: Book, id: 'books' },
+                              { title: 'Reviews', icon: Star, id: 'reviews' },
+                              { title: 'Contact Messages', icon: MessageSquare, id: 'contact-messages' }
+                            ].filter(item => hasSectionPermission(item.id)).map((item) => (
+                              <SidebarMenuSubItem key={item.id}>
+                                <SidebarMenuSubButton
+                                  onClick={() => setActiveSection(item.id)}
+                                  isActive={activeSection === item.id}
+                                  className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
+                                >
+                                  <item.icon className="h-4 w-4 flex-shrink-0" />
+                                  <span className="whitespace-nowrap">{item.title}</span>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    </SidebarMenuItem>
+
+                    {/* Courses */}
+                    <SidebarMenuItem>
+                      <Collapsible defaultOpen={true}>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90 hover:bg-[#2194D1]">
+                            <GraduationCap className="h-4 w-4 flex-shrink-0" />
+                            <span className="font-medium whitespace-nowrap">Courses</span>
+                            <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {[
+                              { title: 'Courses', icon: GraduationCap, id: 'courses' },
+                              { title: 'Enrollments', icon: UserCheck, id: 'enrollments' }
+                            ].filter(item => hasSectionPermission(item.id)).map((item) => (
+                              <SidebarMenuSubItem key={item.id}>
+                                <SidebarMenuSubButton
+                                  onClick={() => setActiveSection(item.id)}
+                                  isActive={activeSection === item.id}
+                                  className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
+                                >
+                                  <item.icon className="h-4 w-4 flex-shrink-0" />
+                                  <span className="whitespace-nowrap">{item.title}</span>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    </SidebarMenuItem>
+
+                    {/* Magazines */}
+                    <SidebarMenuItem>
+                      <Collapsible defaultOpen={true}>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90 hover:bg-[#2194D1]">
+                            <BookOpen className="h-4 w-4 flex-shrink-0" />
+                            <span className="font-medium whitespace-nowrap">Magazine Management</span>
+                            <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {[
+                              { title: 'Magazines', icon: BookOpen, id: 'magazines' }
+                            ].filter(item => hasSectionPermission(item.id)).map((item) => (
+                              <SidebarMenuSubItem key={item.id}>
+                                <SidebarMenuSubButton
+                                  onClick={() => setActiveSection(item.id)}
+                                  isActive={activeSection === item.id}
+                                  className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
+                                >
+                                  <item.icon className="h-4 w-4 flex-shrink-0" />
+                                  <span className="whitespace-nowrap">{item.title}</span>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    </SidebarMenuItem>
+
+                    {/* Training */}
+                    <SidebarMenuItem>
+                      <Collapsible defaultOpen={true}>
+                        <CollapsibleTrigger asChild>
+                          <SidebarMenuButton className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90 hover:bg-[#2194D1]">
+                            <GraduationCap className="h-4 w-4 flex-shrink-0" />
+                            <span className="font-medium whitespace-nowrap">Training Management</span>
+                            <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
+                          </SidebarMenuButton>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent>
+                          <SidebarMenuSub>
+                            {[
+                              { title: 'Training Books', icon: Book, id: 'training-books' },
+                              { title: 'Training Requests', icon: Users, id: 'training-requests' },
+                              { title: 'Training Follow-up', icon: GraduationCap, id: 'training-followup-requests' }
+                            ].filter(item => hasSectionPermission(item.id)).map((item) => (
+                              <SidebarMenuSubItem key={item.id}>
+                                <SidebarMenuSubButton
+                                  onClick={() => setActiveSection(item.id)}
+                                  isActive={activeSection === item.id}
+                                  className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
+                                >
+                                  <item.icon className="h-4 w-4 flex-shrink-0" />
+                                  <span className="whitespace-nowrap">{item.title}</span>
+                                </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                            ))}
+                          </SidebarMenuSub>
+                        </CollapsibleContent>
+                      </Collapsible>
+                    </SidebarMenuItem>
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </SidebarContent>
+          </Sidebar>
+          
+          <SidebarInset>
             {/* Header */}
             <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
               <div className="flex h-full items-center px-4 md:px-6 gap-4">
@@ -332,7 +551,7 @@ const AdminDashboard = () => {
                 <div className="flex-1" />
                 <div className="flex items-center gap-4">
                   <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>Welcome back, Admin</span>
+                    <span>Welcome back, {user?.name || user?.username || 'Admin'}</span>
                   </div>
                   <Button
                     variant="ghost"
@@ -348,13 +567,44 @@ const AdminDashboard = () => {
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 p-4 md:p-6 overflow-auto">
+            <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
               {renderDashboardContent()}
             </main>
-          </div>
+          </SidebarInset>
         </div>
       </SidebarProvider>
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showLogoutModal}
+        onClose={() => setShowLogoutModal(false)}
+        onConfirm={confirmLogout}
+        title="Confirm Logout"
+        description="Are you sure you want to logout? You will need to sign in again to access the admin panel."
+        confirmText="Logout"
+        cancelText="Cancel"
+        variant="warning"
+        isLoading={isLoggingOut}
+        icon={
+          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 border-yellow-200 border-2">
+            <svg className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </div>
+        }
+      />
     </Layout>
+  );
+};
+
+const AdminDashboard = () => {
+  return (
+    <ProtectedRoute 
+      requireAuth={true} 
+      requiredPermissions={['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar']}
+    >
+      <AdminDashboardContent />
+    </ProtectedRoute>
   );
 };
 

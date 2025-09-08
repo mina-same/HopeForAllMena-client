@@ -6,11 +6,11 @@ import { FilterSidebar } from '../components/bookstore/FilterSidebar';
 import { Pagination } from '../components/bookstore/Pagination';
 import { books } from '../data/books';
 
-export const Bookstore = () => {
+const Bookstore = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('default');
-  const [itemsPerPage, setItemsPerPage] = useState(16);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     categories: [],
@@ -115,7 +115,7 @@ export const Bookstore = () => {
             ))}
           </div>
         ) : (
-          <div className="space-y-4 max-w-4xl">
+          <div className="space-y-6 w-full">
             {paginatedBooks.map((book) => (
               <BookCard key={book.id} book={book} viewMode={viewMode} />
             ))}
@@ -141,3 +141,5 @@ export const Bookstore = () => {
     </div>
   );
 };
+
+export default Bookstore;

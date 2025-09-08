@@ -369,7 +369,7 @@ export const CoursesSection = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs md:text-sm font-medium text-muted-foreground">Total Courses</p>
-                <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">{courses.length}</p>
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{courses.length}</p>
               </div>
               <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -381,7 +381,7 @@ export const CoursesSection = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs md:text-sm font-medium text-muted-foreground">Categories</p>
-                <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">{categories.length}</p>
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{categories.length}</p>
               </div>
               <Filter className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -393,7 +393,7 @@ export const CoursesSection = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs md:text-sm font-medium text-muted-foreground">Total Enrollments</p>
-                <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">{courses.reduce((sum, course) => sum + course.totalEnrollments, 0)}</p>
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{courses.reduce((sum, course) => sum + course.totalEnrollments, 0)}</p>
               </div>
               <Users className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -405,7 +405,7 @@ export const CoursesSection = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs md:text-sm font-medium text-muted-foreground">Avg Rating</p>
-                <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-theme-base to-theme-primary bg-clip-text text-transparent">
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">
                   {courses.length > 0 
                     ? (courses.reduce((sum, course) => sum + course.averageRating, 0) / courses.length).toFixed(1)
                     : '0.0'
@@ -429,7 +429,7 @@ export const CoursesSection = () => {
                   placeholder="Search courses, instructors, or institutions..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9"
+                  className="pl-[30px]"
                 />
               </div>
             </div>

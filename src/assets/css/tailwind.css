@@ -1,4 +1,3 @@
-
 /* Removed unresolved tw-animate-css import and unsupported directives */
 @tailwind base;
 @tailwind components;
@@ -12,63 +11,107 @@
   }
 
   :root {
-    /* Core colors */
+    /* Original Base Colors */
     --background: 0 0% 100%;
-    --foreground: 220 13% 18%;
-    --surface: 210 40% 98%;
-
-    /* Card system */
+    --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
-    --card-foreground: 220 13% 18%;
-    --card-hover: 210 40% 98%;
-
-    /* Popover */
+    --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 13% 18%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
 
-    /* Primary - blue theme */
-    --primary: 203 82% 47%;
-    --primary-foreground: #fff;
-    --primary-hover: 211 58% 39%;
+    /* Enhanced Bookstore Brand Colors */
+    --thm-base: 198 84% 47%; /* #2194D1 */
+    --thm-primary: 212 47% 46%; /* #32669C */
+    --thm-secondary: 236 65% 7%; /* #050517 */
+    --thm-dark: 236 65% 7%; /* #050517 */
+    --thm-light: 150 60% 94%; /* #EAFDF8 */
+    --thm-accent: 33 19% 20%; /* #3C362A */
+    --thm-special: 234 55% 58%; /* #5366c2 */
+    
+    /* Status Colors */
+    --status-pending: 45 93% 47%; /* #F59E0B - Warm amber */
+    --status-approved: 142 71% 45%; /* #10B981 - Emerald green */
+    --status-rejected: 0 84% 60%; /* #EF4444 - Bright red */
+    --status-scheduled: 217 91% 60%; /* #3B82F6 - Blue */
+    --status-completed: 142 76% 36%; /* #059669 - Dark green */
+    
+    /* Calendar Colors */
+    --calendar-primary: var(--thm-primary);
+    --calendar-secondary: var(--thm-base);
+    --calendar-accent: var(--thm-special);
+    --calendar-muted: 220 13% 95%; /* #F8FAFC */
+    --calendar-border: 220 13% 91%; /* #E2E8F0 */
 
-    /* Theme colors for Lovable design */
-    --theme-base: 203 82% 47%;
-    --theme-primary: 211 58% 39%;
-    --theme-light: 210 40% 98%;
+    /* Enhanced Theme Colors (override originals for bookstore theme) */
+    --theme-base: var(--thm-base);
+    --theme-primary: var(--thm-primary);
+    --theme-light: var(--thm-light);
 
-    /* Secondary - gray tones */
-    --secondary: 210 40% 98%;
-    --secondary-foreground: 220 13% 18%;
+    /* Enhanced overrides for bookstore theme */
+    --primary: 203 74% 48%; /* #2194D1 */
+    --primary-foreground: var(--thm-light);
+    --secondary: var(--thm-light);
+    --secondary-foreground: var(--thm-dark);
+    --muted: 150 30% 90%;
+    --muted-foreground: var(--thm-accent);
+    --accent: 203 74% 48%; /* #2194D1 - same as primary for consistency */
+    --accent-foreground: 0 0% 100%;
+    --border: 150 25% 85%;
+    --input: 150 25% 85%;
+    --ring: var(--thm-base);
+
+    /* Additional enhanced colors */
+    --surface: 210 40% 98%;
+    --card-hover: 210 40% 98%;
     --secondary-hover: 210 40% 92%;
 
-    /* Muted - subtle grays */
-    --muted: 210 40% 98%;
-    --muted-foreground: 215 16% 47%;
-
-    /* Accent - dark blue */
-    --accent: 211 58% 39%;
-    --accent-foreground: 0 0% 100%;
-
-    /* Success/destructive */
+    /* Success colors */
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    /* Borders and inputs */
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 203 82% 47%;
 
     /* Design tokens */
-    --radius: 0.75rem;
+    --radius: 0.5rem;
     --radius-lg: 1rem;
     --radius-xl: 1.5rem;
 
-    /* Shadows */
-    --shadow-book: 0 4px 12px -2px hsl(25 30% 15% / 0.08);
+    /* Modern Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--thm-base)), hsl(var(--thm-primary)));
+    --gradient-card: linear-gradient(180deg, hsl(var(--card)), hsl(var(--muted)));
+    --gradient-filter: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--muted)) 100%);
+    --gradient-button: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--thm-base)) 100%);
+    --gradient-calendar: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--primary) / 0.02) 100%);
+    --gradient-event: linear-gradient(135deg, hsl(var(--primary) / 0.1) 0%, hsl(var(--primary) / 0.05) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(var(--background) / 0.8) 0%, hsl(var(--card) / 0.9) 100%);
+    
+    /* Modern Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--thm-primary) / 0.3);
+    --shadow-book: 0 4px 20px hsl(var(--thm-base) / 0.15);
+    --shadow-modern: 0 8px 32px hsl(var(--foreground) / 0.1);
+    --shadow-filter: 0 4px 24px hsl(var(--foreground) / 0.05);
+    --shadow-inset: inset 0 1px 0 hsl(var(--background) / 0.1);
+    --shadow-calendar: 0 2px 20px hsl(var(--foreground) / 0.08);
+    --shadow-event: 0 2px 8px hsl(var(--primary) / 0.15);
+    --shadow-glass: 0 8px 32px hsl(var(--foreground) / 0.08), 0 0 0 1px hsl(var(--border) / 0.5);
     --shadow-card: 0 2px 8px -1px hsl(25 30% 15% / 0.05);
     --shadow-hero: 0 8px 32px -4px hsl(25 30% 15% / 0.12);
+    
+    /* Modern Animations */
+    --animation-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --animation-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 
     /* Typography scale */
     --text-xs: 0.75rem;
@@ -89,14 +132,11 @@
     --space-xl: 2rem;
     --space-2xl: 3rem;
 
-    /* Gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(35 20% 94%) 100%);
-    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(35 15% 96%) 100%);
+    /* Legacy support */
+    --transition-smooth: var(--animation-smooth);
+    --transition-bounce: var(--animation-spring);
 
-    /* Animation */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-
+    /* Sidebar colors */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -105,6 +145,27 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* OKLCH Color System (Alternative color space) */
+    --background-oklch: 0.98 0.02 120;
+    --foreground-oklch: 0.15 0.05 240;
+    --card-oklch: 0.98 0.02 120;
+    --card-foreground-oklch: 0.15 0.05 240;
+    --popover-oklch: 0.98 0.02 120;
+    --popover-foreground-oklch: 0.15 0.05 240;
+    --primary-oklch: 0.6 0.15 220;
+    --primary-foreground-oklch: 0.95 0.02 120;
+    --secondary-oklch: 0.85 0.08 180;
+    --secondary-foreground-oklch: 0.15 0.05 240;
+    --muted-oklch: 0.92 0.05 150;
+    --muted-foreground-oklch: 0.45 0.08 200;
+    --accent-oklch: 0.7 0.12 210;
+    --accent-foreground-oklch: 0.95 0.02 120;
+    --destructive-oklch: 0.65 0.2 25;
+    --destructive-foreground-oklch: 0.95 0.02 120;
+    --border-oklch: 0.88 0.05 180;
+    --input-oklch: 0.88 0.05 180;
+    --ring-oklch: 0.6 0.15 220;
   }
 
   .dark {
@@ -152,57 +213,261 @@
   .container {
     max-width: none;
   }
-  /* Brand utility helpers */
+
+  /* Button component overrides to fix styling conflicts with global .thm-btn */
+  [data-sidebar="trigger"],
+  [data-sidebar="menu-button"],
+  [data-sidebar="menu-sub-button"] {
+    border: none !important;
+    outline: none !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    background-image: none !important;
+    border-radius: 0.375rem !important;
+    font-family: inherit !important;
+    font-weight: inherit !important;
+    line-height: inherit !important;
+    margin: 0 !important;
+    vertical-align: baseline !important;
+    display: inline-flex !important;
+  }
+
+  /* Override .thm-btn specifically for sidebar components only */
+  [data-sidebar="trigger"].inline-flex,
+  [data-sidebar="menu-button"].inline-flex,
+  [data-sidebar="menu-sub-button"].inline-flex {
+    all: unset !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    white-space: nowrap !important;
+    border-radius: 0.375rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke !important;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition-duration: 150ms !important;
+    cursor: pointer !important;
+    border: none !important;
+    outline: 2px solid transparent !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Enhanced Brand Utilities */
   .text-price {
     color: hsl(var(--primary));
   }
+
   .bg-success {
-    background-color: #22c55e; /* Tailwind green-500 */
+    background-color: #22c55e;
   }
+
   .text-success-foreground {
     color: #ffffff;
   }
+
   .bg-surface {
     background-color: hsl(var(--card));
   }
-  .bg-gradient-hero {
-    background: var(--gradient-hero);
+
+  /* Enhanced Bookstore Theme Utilities */
+  .bg-thm-base { 
+    background-color: hsl(var(--thm-base)) !important;
+    background-color: #2194D1 !important; /* Fallback */
   }
-  .bg-gradient-card {
-    background: var(--gradient-card);
+  .bg-thm-primary { 
+    background-color: hsl(var(--thm-primary)) !important;
+    background-color: #32669C !important; /* Fallback */
   }
+  .bg-thm-secondary { 
+    background-color: hsl(var(--thm-secondary)) !important;
+    background-color: #050517 !important; /* Fallback */
+  }
+  .bg-thm-dark { 
+    background-color: hsl(var(--thm-dark)) !important;
+    background-color: #050517 !important; /* Fallback */
+  }
+  .bg-thm-light { 
+    background-color: hsl(var(--thm-light)) !important;
+    background-color: #EAFDF8 !important; /* Fallback */
+  }
+  .bg-thm-accent { 
+    background-color: hsl(var(--thm-accent)) !important;
+    background-color: #3C362A !important; /* Fallback */
+  }
+  .bg-thm-special { 
+    background-color: hsl(var(--thm-special)) !important;
+    background-color: #5366c2 !important; /* Fallback */
+  }
+  
+  .text-thm-base { color: hsl(var(--thm-base)); }
+  .text-thm-primary { color: hsl(var(--thm-primary)); }
+  .text-thm-secondary { color: hsl(var(--thm-secondary)); }
+  .text-thm-dark { color: hsl(var(--thm-dark)); }
+  .text-thm-light { color: hsl(var(--thm-light)); }
+  .text-thm-accent { color: hsl(var(--thm-accent)); }
+  .text-thm-special { color: hsl(var(--thm-special)); }
+
+  /* Status Color Utilities */
+  .bg-status-pending { 
+    background-color: hsl(var(--status-pending)) !important;
+    background-color: #F59E0B !important; /* Fallback */
+  }
+  .bg-status-approved { 
+    background-color: hsl(var(--status-approved)) !important;
+    background-color: #10B981 !important; /* Fallback */
+  }
+  .bg-status-rejected { 
+    background-color: hsl(var(--status-rejected)) !important;
+    background-color: #EF4444 !important; /* Fallback */
+  }
+  .bg-status-scheduled { 
+    background-color: hsl(var(--status-scheduled)) !important;
+    background-color: #3B82F6 !important; /* Fallback */
+  }
+  .bg-status-completed { 
+    background-color: hsl(var(--status-completed)) !important;
+    background-color: #059669 !important; /* Fallback */
+  }
+
+  /* Calendar Color Utilities */
+  .bg-calendar-primary { background-color: hsl(var(--calendar-primary)) !important; }
+  .bg-calendar-secondary { background-color: hsl(var(--calendar-secondary)) !important; }
+  .bg-calendar-accent { background-color: hsl(var(--calendar-accent)) !important; }
+  .bg-calendar-muted { background-color: hsl(var(--calendar-muted)) !important; }
+  .border-calendar-border { border-color: hsl(var(--calendar-border)) !important; }
+
+  /* Sidebar Color Utilities */
+  .bg-sidebar-primary { background-color: hsl(var(--sidebar-primary)); }
+  .bg-sidebar-secondary { background-color: hsl(var(--sidebar-accent)); }
+  .bg-sidebar-accent { background-color: hsl(var(--sidebar-ring)); }
+  .bg-sidebar-muted { background-color: hsl(var(--sidebar-background)); }
+  .border-sidebar-border { border-color: hsl(var(--sidebar-border)); }
+
+  /* Modern Gradient Utilities */
+  .bg-gradient-hero { 
+    background: var(--gradient-hero) !important;
+    background: linear-gradient(135deg, #2194D1, #32669C) !important; /* Fallback */
+  }
+  .bg-gradient-card { 
+    background: var(--gradient-card) !important;
+    background: linear-gradient(180deg, #ffffff, #f8fafc) !important; /* Fallback */
+  }
+  .bg-gradient-filter { 
+    background: var(--gradient-filter) !important;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important; /* Fallback */
+  }
+  .bg-gradient-button { 
+    background: var(--gradient-button) !important;
+    background: linear-gradient(135deg, #32669C 0%, #2194D1 100%) !important; /* Fallback */
+  }
+  .bg-gradient-calendar { 
+    background: var(--gradient-calendar) !important;
+    background: linear-gradient(135deg, #ffffff 0%, rgba(50, 102, 156, 0.02) 100%) !important; /* Fallback */
+  }
+  .bg-gradient-event { 
+    background: var(--gradient-event) !important;
+    background: linear-gradient(135deg, rgba(50, 102, 156, 0.1) 0%, rgba(50, 102, 156, 0.05) 100%) !important; /* Fallback */
+  }
+  .bg-gradient-glass { 
+    background: var(--gradient-glass) !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%) !important; /* Fallback */
+  }
+  .bg-gradient-sidebar { background: linear-gradient(135deg, hsl(var(--sidebar-primary)), hsl(var(--sidebar-ring))); }
+  .bg-gradient-nav { background: linear-gradient(90deg, hsl(var(--sidebar-accent)), hsl(var(--sidebar-primary))); }
+
+  /* Modern Shadow Utilities */
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
   .shadow-book { box-shadow: var(--shadow-book); }
+  .shadow-modern { box-shadow: var(--shadow-modern); }
+  .shadow-filter { box-shadow: var(--shadow-filter); }
+  .shadow-inset { box-shadow: var(--shadow-inset); }
+  .shadow-calendar { box-shadow: var(--shadow-calendar); }
+  .shadow-event { box-shadow: var(--shadow-event); }
+  .shadow-glass { box-shadow: var(--shadow-glass); }
   .shadow-card { box-shadow: var(--shadow-card); }
   .shadow-hero { box-shadow: var(--shadow-hero); }
+  .shadow-glow { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+  .shadow-float { box-shadow: 0 10px 40px hsl(var(--foreground) / 0.1); }
+  .shadow-colored { box-shadow: 0 8px 25px hsl(var(--thm-base) / 0.2); }
+
+  /* Animation & Transition Utilities */
+  .transition-smooth { transition: var(--animation-smooth); }
+  .transition-spring { transition: var(--animation-spring); }
+  .transition-fast { transition: all 0.15s ease-out; }
+  .transition-slow { transition: all 0.6s ease-in-out; }
+
+  /* OKLCH Color Utilities */
+  .bg-background-oklch { background-color: oklch(var(--background-oklch)); }
+  .bg-foreground-oklch { background-color: oklch(var(--foreground-oklch)); }
+  .bg-card-oklch { background-color: oklch(var(--card-oklch)); }
+  .bg-primary-oklch { background-color: oklch(var(--primary-oklch)); }
+  .bg-secondary-oklch { background-color: oklch(var(--secondary-oklch)); }
+  .bg-muted-oklch { background-color: oklch(var(--muted-oklch)); }
+  .bg-accent-oklch { background-color: oklch(var(--accent-oklch)); }
+  .bg-destructive-oklch { background-color: oklch(var(--destructive-oklch)); }
   
-  /* Theme color utilities */
+  .text-foreground-oklch { color: oklch(var(--foreground-oklch)); }
+  .text-primary-foreground-oklch { color: oklch(var(--primary-foreground-oklch)); }
+  .text-secondary-foreground-oklch { color: oklch(var(--secondary-foreground-oklch)); }
+  .text-muted-foreground-oklch { color: oklch(var(--muted-foreground-oklch)); }
+  .text-accent-foreground-oklch { color: oklch(var(--accent-foreground-oklch)); }
+  
+  .border-border-oklch { border-color: oklch(var(--border-oklch)); }
+
+  /* Text Status Color Utilities */
+  .text-status-pending { color: hsl(var(--status-pending)); }
+  .text-status-approved { color: hsl(var(--status-approved)); }
+  .text-status-rejected { color: hsl(var(--status-rejected)); }
+  .text-status-scheduled { color: hsl(var(--status-scheduled)); }
+  .text-status-completed { color: hsl(var(--status-completed)); }
+
+  /* Legacy Theme Support */
   .text-theme-primary {
     color: hsl(var(--theme-primary));
   }
+
   .text-theme-base {
     color: hsl(var(--theme-base));
   }
+
   .bg-theme-primary {
     background-color: hsl(var(--theme-primary));
   }
+
   .bg-theme-base {
     background-color: hsl(var(--theme-base));
   }
+
   .from-theme-base {
     --tw-gradient-from: hsl(var(--theme-base));
   }
+
   .to-theme-primary {
     --tw-gradient-to: hsl(var(--theme-primary));
   }
+
   .from-theme-primary {
     --tw-gradient-from: hsl(var(--theme-primary));
   }
+
   .to-theme-base {
     --tw-gradient-to: hsl(var(--theme-base));
   }
+
   .border-theme-primary {
     border-color: hsl(var(--theme-primary));
   }
+
+  /* Additional Animation Utilities */
+  .transition-fast { transition: all 0.15s ease-out; }
+  .transition-slow { transition: all 0.6s ease-in-out; }
+  
+  /* Additional Shadow Utilities */
+  .shadow-glow { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+  .shadow-float { box-shadow: 0 10px 40px hsl(var(--foreground) / 0.1); }
+  .shadow-colored { box-shadow: 0 8px 25px hsl(var(--thm-base) / 0.2); }
 }
 
 /* Inline theme variables for Tailwind usage */
@@ -229,12 +494,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
+  --color-sidebar-background: var(--sidebar-background);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
@@ -244,93 +504,36 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* Root theme tokens */
-:root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
+/* Responsive Design Utilities */
+@media (max-width: 768px) {
+  .sidebar-mobile {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
   }
-  body {
-    @apply bg-background text-foreground;
+  
+  .sidebar-mobile.open {
+    transform: translateX(0);
   }
 }
 
-
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+}
 
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
-

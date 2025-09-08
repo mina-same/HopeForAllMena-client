@@ -18,12 +18,12 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                     variant={currentPage === page ? "default" : "ghost"}
                     size="sm"
                     onClick={() => onPageChange(page)}
-                    className={`w-10 h-10 rounded-full ${currentPage === page
-                            ? 'bg-orange-primary text-white hover:bg-orange-primary'
+                    className={`cursor-pointer flex items-center justify-center w-10 h-10 rounded-full ${currentPage === page
+                            ? 'bg-[#2194D1]/80 text-white hover:bg-[#2194D1]'
                             : 'text-muted-foreground hover:text-foreground'
                         }`}
                 >
-                    {page}
+                    <span className="text-lg font-medium">{page}</span>
                 </div>
             ))}
 
@@ -32,7 +32,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                     variant="ghost"
                     size="sm"
                     onClick={() => onPageChange(currentPage + 1)}
-                    className="flex items-center gap-1 text-muted-foreground hover:text-foreground ml-2"
+                    className="cursor-pointer flex items-center gap-1 text-muted-foreground hover:text-foreground ml-2"
                 >
                     NEXT
                     <ChevronRight className="h-4 w-4" />

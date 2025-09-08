@@ -10,6 +10,8 @@ import TestimonialsOne from "../components/testimonials/testimonials-one";
 import BrandCarousel from "../components/brand-carousel";
 import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
+import VisionMission from "../components/vision-mission/vision-mission";
+
 
 const About = () => {
   return (
@@ -18,6 +20,7 @@ const About = () => {
       <PageHeader title="About Page" crumbTitle="About" />
       <StickyHeader />
       <AboutOne />
+      <VisionMission/>
       <BrandCarousel extraClass="client-carousel__has-border-top" />
       <AboutCounter />
       <TeamHome />
