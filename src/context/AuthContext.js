@@ -13,6 +13,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -31,17 +32,20 @@ export const AuthProvider = ({ children }) => {
         const response = await authAPI.verifyToken();
         if (response.status === 'success') {
           setUser(JSON.parse(savedUser));
+          setToken(token);
           setIsAuthenticated(true);
         } else {
           // Token invalid, clear storage
           localStorage.removeItem('authToken');
           localStorage.removeItem('user');
+          setToken(null);
         }
       }
     } catch (error) {
       console.error('Auth check failed:', error);
       localStorage.removeItem('authToken');
       localStorage.removeItem('user');
+      setToken(null);
     } finally {
       setLoading(false);
     }
@@ -60,6 +64,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('user', JSON.stringify(userData));
         
         setUser(userData);
+        setToken(token);
         setIsAuthenticated(true);
         
         return { success: true, user: userData };
@@ -83,6 +88,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('authToken');
       localStorage.removeItem('user');
       setUser(null);
+      setToken(null);
       setIsAuthenticated(false);
     }
   };
@@ -117,6 +123,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
+    token,
     loading,
     isAuthenticated,
     login,

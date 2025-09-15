@@ -13,7 +13,7 @@ const NavLinks = ({ extraClassName }) => {
         <Link to="/">Home</Link>
       </li>
       <li className="">
-        <Link to="/events">About Us</Link>
+        <Link to="/about">About Us</Link>
       </li>
       <li className="dropdown">
         <Link to="/news">Ministry Departments</Link>

@@ -1,115 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Star, ChevronRight } from 'lucide-react';
-import Bookstore from './bookstore';
+import { Link } from 'gatsby';
+import Bookstore from '../components/bookstore';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
-import MainSlider from '../components/slider/main-slider-2';
+import MainSliderBooks from '../components/slider/MainSliderBooks';
 import Footer from '../components/footer';
 import Layout from '../components/layout';
+import { booksAPI } from '../services/api';
 
 const testimonials = [
   {
     id: 1,
     title: "What people saying!",
-    content: "This is the best book store! A wide variety. The prices are great, and there is always a sale of some kind going on. You can find just what you are looking for here.",
-    name: "PAM PRUITT",
-    location: "NEW YORK"
+    content: "Hope For All Mena has been a blessing to our community! Their collection of Christian literature and spiritual books has helped deepen my faith. The Arabic translations are especially meaningful to our family.",
+    name: "SARAH MANSOUR",
+    location: "Alexandria, Egypt"
   },
   {
     id: 2,
     title: "What people saying!",
-    content: "I am so happy to find a site where I can shop for unusual items. The packaging was phenomenal and my book arrived on time in perfect condition.",
-    name: "JOEL M",
-    location: "NEW YORK"
+    content: "As a pastor serving in the Middle East, I rely on Hope For All Mena for quality theological resources and inspirational books. Their mission to spread hope through literature is truly making a difference in our region.",
+    name: "PASTOR MICHAEL K",
+    location: "Beirut, Lebanon"
   },
   {
     id: 3,
     title: "What people saying!",
-    content: "Excellent service. The books were wrapped securely and arrived in pristine condition. I sent an email after to books arrived to ask about the author.",
-    name: "ELLIE A",
-    location: "NEW YORK"
+    content: "The children's Bible stories and Christian educational materials I ordered have been perfect for our Sunday school. Fast delivery and excellent customer service. God bless this ministry!",
+    name: "MIRIAM IBRAHIM",
+    location: "Cairo, Egypt"
   }
-];
-
-const products = [
-  {
-    id: '111',
-    title: 'Rich Dad Poor Dad',
-    url: 'https://demo2.pavothemes.com/bookory/product/rich-dad-poor-dad/',
-    img: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/35.jpg',
-    author: 'Misty Figueroa',
-    authorUrl: 'https://demo2.pavothemes.com/bookory/book-author/misty-figueroa/',
-    rating: 4.40,
-    ratingWidth: '88%',
-    reviews: 5,
-    description: 'Est numquam harum aut ut. Pariatur cum blanditiis est delectus accusamus eveniet. Quis fugiat eligendi magni eos dignissimos numquam.',
-    price: '170.03',
-  },
-  {
-    id: '109',
-    title: 'The Story of Success',
-    url: 'https://demo2.pavothemes.com/bookory/product/the-story-of-success/',
-    img: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/34.jpg',
-    author: 'Arthur Gonzalez',
-    authorUrl: 'https://demo2.pavothemes.com/bookory/book-author/arthur-gonzalez/',
-    rating: 3.60,
-    ratingWidth: '72%',
-    reviews: 5,
-    description: 'Autem natus sed vero accusamus officiis cumque. Est nobis nihil cumque omnis iusto quia. Est quia qui necessitatibus quo ut.',
-    price: '50.89',
-  },
-  {
-    id: '107',
-    title: 'Annie Leibovitz: Wonderland',
-    url: 'https://demo2.pavothemes.com/bookory/product/annie-leibovitz-wonderland/',
-    img: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/33.jpg',
-    author: 'Dana Chambers',
-    authorUrl: 'https://demo2.pavothemes.com/bookory/book-author/dana-chambers/',
-    rating: 3.75,
-    ratingWidth: '75%',
-    reviews: 5,
-    description: 'Nesciunt repellendus culpa alias pariatur vitae temporibus. Itaque dolorum quod consequuntur aliquid reprehenderit harum architecto. Quaerat minima non quo tempora…',
-    price: '316.15',
-  },
-  {
-    id: '105',
-    title: 'My Dearest Darkest',
-    url: 'https://demo2.pavothemes.com/bookory/product/my-dearest-darkest/',
-    img: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/32.jpg',
-    author: 'Enrique Wallace',
-    authorUrl: 'https://demo2.pavothemes.com/bookory/book-author/enrique-wallace/',
-    rating: 3.25,
-    ratingWidth: '65%',
-    reviews: 5,
-    description: 'Sint magnam sed optio est ut. Rerum facilis eos voluptatum non. Eius asperiores nulla amet.',
-    price: '914.53',
-  },
-  {
-    id: '103',
-    title: 'House of Sky and Breath',
-    url: 'https://demo2.pavothemes.com/bookory/product/house-of-sky-and-breath/',
-    img: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/31.jpg',
-    author: 'Ernesto Wade',
-    authorUrl: 'https://demo2.pavothemes.com/bookory/book-author/ernesto-wade/',
-    rating: 3.50,
-    ratingWidth: '70%',
-    reviews: 5,
-    description: 'Quis est iste et aliquam similique facere. Corrupti et et laborum ab. Voluptatem ea possimus quaerat sit laborum sed non.',
-    price: '72.99',
-  },
-  {
-    id: '101',
-    title: 'Surrounded by Idiots',
-    url: 'https://demo2.pavothemes.com/bookory/product/surrounded-by-idiots/',
-    img: 'https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/30.jpg',
-    author: 'Georgia Ramirez',
-    authorUrl: 'https://demo2.pavothemes.com/bookory/book-author/georgia-ramirez/',
-    rating: 3.75,
-    ratingWidth: '75%',
-    reviews: 5,
-    description: 'Cupiditate voluptatem earum iure nam laudantium. Saepe dolorem ea occaecati eius.',
-    price: '825.85',
-  },
 ];
 
 const StarRating = ({ rating, reviews }) => {
@@ -229,8 +150,86 @@ const TrendingProducts = () => {
   const [velocity, setVelocity] = useState(0);
   const [lastX, setLastX] = useState(0);
   const [lastTime, setLastTime] = useState(0);
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
   const animationRef = useRef(null);
+
+  // Define simple background colors for cards
+  const cardColors = [
+    'bg-blue-50',
+    'bg-green-50', 
+    'bg-purple-50',
+    'bg-pink-50',
+    'bg-yellow-50',
+    'bg-indigo-50',
+    'bg-red-50',
+    'bg-orange-50'
+  ];
+
+  // Calculate current slide based on scroll position
+  const updateCurrentSlide = useCallback(() => {
+    if (sliderRef.current && books.length > 0) {
+      const scrollLeft = sliderRef.current.scrollLeft;
+      const cardWidth = sliderRef.current.scrollWidth / books.length;
+      const newSlide = Math.round(scrollLeft / cardWidth);
+      setCurrentSlide(Math.min(Math.max(newSlide, 0), books.length - 1));
+    }
+  }, [books.length]);
+
+  // Go to specific slide
+  const goToSlide = useCallback((index) => {
+    if (sliderRef.current && books.length > 0) {
+      const cardWidth = sliderRef.current.scrollWidth / books.length;
+      sliderRef.current.scrollTo({
+        left: cardWidth * index,
+        behavior: 'smooth'
+      });
+      setCurrentSlide(index);
+    }
+  }, [books.length]);
+
+  // Fetch latest 8 books from database
+  useEffect(() => {
+    const fetchLatestBooks = async () => {
+      try {
+        setLoading(true);
+        const response = await booksAPI.getBooks({
+          page: 1,
+          limit: 8,
+          sortBy: 'createdAt',
+          sortOrder: 'desc',
+          status: 'published'
+        });
+        
+        if (response.status === 'success') {
+          setBooks(response.data.books);
+        }
+      } catch (error) {
+        console.error('Error fetching latest books:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestBooks();
+  }, []);
+
+  // Update current slide on scroll
+  useEffect(() => {
+    const slider = sliderRef.current;
+    if (slider) {
+      const handleScroll = () => {
+        if (!isDragging) {
+          updateCurrentSlide();
+        }
+      };
+      
+      slider.addEventListener('scroll', handleScroll);
+      return () => slider.removeEventListener('scroll', handleScroll);
+    }
+  }, [updateCurrentSlide, isDragging]);
 
   const handleMouseDown = (e) => {
     e.preventDefault();
@@ -244,26 +243,35 @@ const TrendingProducts = () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
   };
 
-  const handleMouseUp = (e) => {
-    e.stopPropagation(); // Prevent event bubbling
+  const handleMouseUp = useCallback(() => {
+    if (!isDragging) return;
+    
     setIsDragging(false);
-    if (Math.abs(velocity) > 5) {
-      const momentum = velocity * 15;
+    
+    if (Math.abs(velocity) > 0.5 && sliderRef.current) {
+      const momentum = velocity * 50;
       const startScroll = sliderRef.current.scrollLeft;
+      
       let start = null;
       const animateScroll = (timestamp) => {
         if (!start) start = timestamp;
         const progress = timestamp - start;
-        const duration = Math.min(800, Math.abs(momentum) * 2);
+        const duration = Math.min(1000, Math.abs(momentum) * 3);
         if (progress < duration) {
           const easeOut = 1 - Math.pow(1 - progress / duration, 3);
           sliderRef.current.scrollLeft = startScroll + (momentum * easeOut);
           animationRef.current = requestAnimationFrame(animateScroll);
+        } else {
+          // Update slide after animation completes
+          updateCurrentSlide();
         }
       };
       animationRef.current = requestAnimationFrame(animateScroll);
+    } else {
+      // Update slide immediately if no momentum
+      updateCurrentSlide();
     }
-  };
+  }, [isDragging, velocity, updateCurrentSlide]);
 
   const handleMouseMove = (e) => {
     if (!isDragging) return;
@@ -338,7 +346,7 @@ const TrendingProducts = () => {
   return (
     <section className="mx-auto py-4 md:py-8 px-4">
 
-      <div className="container mx-auto px-4 sm:px-8 md:px-16 lg:px-40 relative flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 md:mb-8 gap-4">
+      <div className="container mx-auto px-4 py-10 sm:px-8 md:px-16 lg:px-40 relative flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 md:mb-8 gap-4">
         <div className="flex items-center w-full sm:w-auto">
           <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mr-4">What's In Trend</h2>
           <div className="h-px bg-gray-300 flex-1 sm:w-16 md:w-32"></div>
@@ -368,45 +376,62 @@ const TrendingProducts = () => {
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
-          {products.map((product) => (
-            <div key={product.id} className="flex-shrink-0 w-[280px] sm:w-[380px] md:w-[450px] lg:w-[520px] transition-transform duration-200 hover:scale-[1.02]">
-              <div className="rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden p-3 sm:p-4 md:p-6">
-                <div className="flex flex-col sm:flex-row h-auto sm:h-64 md:h-72">
-                  <div className="w-full sm:w-40 md:w-48 lg:w-56 flex-shrink-0 mb-4 sm:mb-0">
-                    <a href={product.url}>
-                      <img
-                        src={product.img}
-                        alt={product.title}
-                        className="w-full h-48 sm:h-full object-cover transition-transform duration-300 hover:scale-105 rounded-xl md:rounded-2xl"
-                        draggable={false}
-                      />
-                    </a>
-                  </div>
-                  <div className="flex-1 sm:p-4 md:p-7 flex flex-col gap-2 py-2 sm:py-5 justify-center">
-                    <div>
-                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-2 md:mb-3 leading-tight">
-                        <a href={product.url} className="text-[#2194D1] hover:text-[#204b62] transition-colors">
-                          {product.title}
-                        </a>
-                      </h3>
-                      <StarRating rating={product.rating} reviews={product.reviews} />
-                      <p className="text-xs sm:text-sm text-gray-600 mb-2 md:mb-3 font-medium">
-                        by <a href={product.authorUrl} className="text-[#2194D1] hover:text-[#204b62] hover:underline transition-colors">{product.author}</a>
-                      </p>
-                      <p className="text-xs sm:text-sm text-gray-700 mb-3 md:mb-4 line-clamp-2 sm:line-clamp-3 leading-relaxed">{product.description}</p>
+          {loading ? (
+            <div className="flex items-center justify-center w-full h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2194D1]"></div>
+            </div>
+          ) : (
+            books.map((book, index) => (
+              <div key={book._id} className="flex-shrink-0 flex-center w-[280px] sm:w-[380px] md:w-[450px] lg:w-[520px] transition-transform duration-200 hover:scale-[1.02]">
+                <div className={`rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden p-3 sm:p-4 md:p-6 h-[380px] sm:h-[340px] md:h-[360px] ${cardColors[index % cardColors.length]}`}>
+                  <div className="flex flex-col sm:flex-row h-full">
+                    <div className="w-full sm:w-44 md:w-52 lg:w-60 flex-shrink-0 mb-4 sm:mb-0">
+                      <Link to={`/book/${book._id}`}>
+                        <img
+                          src={book.coverImageUrl || '/default-book-cover.jpg'}
+                          alt={book.title}
+                          className="w-[240px] h-[250px] sm:h-full object-cover transition-transform duration-300 hover:scale-105 rounded-xl md:rounded-2xl"
+                          style={{ aspectRatio: '3/4' }}
+                          draggable={false}
+                        />
+                      </Link>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-lg sm:text-xl md:text-2xl font-bold text-[#2194D1] hover:text-[#204b62] hover:underline transition-colors">${product.price}</span>
+                    <div className="flex-1 sm:p-4 md:p-7 flex flex-col justify-between h-full sm:h-auto py-2 sm:py-0">
+                      <div className="flex-1 flex flex-col">
+                        <div className="min-h-[3rem] sm:min-h-[4rem] md:min-h-[5rem] flex items-start mb-2 md:mb-3">
+                          <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                            <Link to={`/book/${book._id}`} className="text-[#2194D1] hover:text-[#204b62] transition-colors">
+                              {book.title}
+                            </Link>
+                          </h3>
+                        </div>
+                        <StarRating rating={book.averageRating || 0} reviews={book.totalReviews || 0} />
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2 md:mb-3 font-medium line-clamp-1">
+                          by <a href={`/author/${book.author?.slug}`} className="text-[#2194D1] hover:text-[#204b62] hover:underline transition-colors">{book.author?.name || 'Unknown Author'}</a>
+                        </p>
+                        <div className="flex-1">
+                          <p className="text-xs sm:text-sm text-gray-700 line-clamp-2 sm:line-clamp-3 leading-relaxed">{book.description || book.shortDescription}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
-        <div className="flex justify-center mt-4 md:mt-6 gap-2">
-          {products.map((_, index) => (
-            <div key={index} className="w-1.5 h-1.5 md:w-2 md:h-2 bg-gray-300 rounded-full transition-colors duration-200" />
+        <div className="flex justify-center mt-4 md:mt-6 space-x-2 md:space-x-3">
+          {books.map((_, index) => (
+            <div
+              key={index}
+              onClick={() => goToSlide(index)}
+              className={`transition-all duration-300 cursor-pointer ${
+                currentSlide === index
+                  ? 'w-6 md:w-8 h-1.5 md:h-2 bg-[#2194D1] rounded-full'
+                  : 'w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-300 rounded-full hover:bg-gray-400'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
           ))}
         </div>
       </div>
@@ -445,7 +470,7 @@ const TrendingPage = () => {
         <StickyHeader />
 
         {/* Hero Section */}
-        <MainSlider />
+        <MainSliderBooks />
 
         {/* Trending Products */}
         <TrendingProducts />

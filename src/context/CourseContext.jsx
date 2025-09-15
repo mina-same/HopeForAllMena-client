@@ -1,15 +1,18 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { coursesAPI, enrollmentsAPI } from '../services/api';
 import coursesData from '../data/courses.json';
 
 const CourseContext = createContext(undefined);
 
 export const CourseProvider = ({ children }) => {
-  const [courses, setCourses] = useState(coursesData.courses);
+  const [courses, setCourses] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
-  const [institutions] = useState(coursesData.institutions);
+  const [institutions, setInstitutions] = useState(coursesData.institutions);
   const [companies] = useState(coursesData.companies);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filters, setFiltersState] = useState({
     search: '',
     category: 'all',
@@ -23,26 +26,101 @@ export const CourseProvider = ({ children }) => {
     sortBy: 'newest'
   });
 
-  const addCourse = (courseData) => {
-    const newCourse = {
-      ...courseData,
-      id: Date.now().toString(),
-      averageRating: 0,
-      totalEnrollments: 0
+  // Load initial data
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Load courses, enrollments, and institutions in parallel
+        const [coursesResponse, enrollmentsResponse, institutionsResponse] = await Promise.allSettled([
+          coursesAPI.getCourses({ status: 'published' }),
+          enrollmentsAPI.getEnrollments(),
+          coursesAPI.getInstitutions()
+        ]);
+        
+        // Handle courses
+        if (coursesResponse.status === 'fulfilled') {
+          setCourses(coursesResponse.value.data?.courses || []);
+        } else {
+          console.warn('Failed to load courses, using fallback data:', coursesResponse.reason);
+          setCourses(coursesData.courses || []);
+        }
+        
+        // Handle enrollments
+        if (enrollmentsResponse.status === 'fulfilled') {
+          setEnrollments(enrollmentsResponse.value.data?.enrollments || []);
+        } else {
+          console.warn('Failed to load enrollments:', enrollmentsResponse.reason);
+        }
+        
+        // Handle institutions
+        if (institutionsResponse.status === 'fulfilled') {
+          setInstitutions(institutionsResponse.value.data?.institutions || coursesData.institutions);
+        }
+        
+      } catch (err) {
+        console.error('Error loading initial data:', err);
+        setError('Failed to load course data');
+        // Use fallback data
+        setCourses(coursesData.courses || []);
+      } finally {
+        setLoading(false);
+      }
     };
-    setCourses(prev => [newCourse, ...prev]);
+    
+    loadInitialData();
+  }, []);
+
+  const addCourse = async (courseData) => {
+    try {
+      setLoading(true);
+      const response = await coursesAPI.createCourse(courseData);
+      const newCourse = response.data.course;
+      setCourses(prev => [newCourse, ...prev]);
+      return newCourse;
+    } catch (error) {
+      console.error('Error creating course:', error);
+      setError('Failed to create course');
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const updateCourse = (id, courseData) => {
-    setCourses(prev => prev.map(course => 
-      course.id === id ? { ...course, ...courseData } : course
-    ));
+  const updateCourse = async (id, courseData) => {
+    try {
+      setLoading(true);
+      const response = await coursesAPI.updateCourse(id, courseData);
+      const updatedCourse = response.data.course;
+      setCourses(prev => prev.map(course => 
+        course._id === id || course.id === id ? updatedCourse : course
+      ));
+      return updatedCourse;
+    } catch (error) {
+      console.error('Error updating course:', error);
+      setError('Failed to update course');
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const deleteCourse = (id) => {
-    setCourses(prev => prev.filter(course => course.id !== id));
-    setReviews(prev => prev.filter(review => review.courseId !== id));
-    setEnrollments(prev => prev.filter(enrollment => enrollment.courseId !== id));
+  const deleteCourse = async (id) => {
+    try {
+      setLoading(true);
+      await coursesAPI.deleteCourse(id);
+      setCourses(prev => prev.filter(course => course._id !== id && course.id !== id));
+      setReviews(prev => prev.filter(review => review.courseId !== id));
+      setEnrollments(prev => prev.filter(enrollment => enrollment.courseId !== id));
+    } catch (error) {
+      console.error('Error deleting course:', error);
+      setError('Failed to delete course');
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const addReview = (reviewData) => {
@@ -75,44 +153,80 @@ export const CourseProvider = ({ children }) => {
     }
   };
 
-  const addEnrollment = (enrollmentData) => {
-    const newEnrollment = {
-      ...enrollmentData,
-      id: Date.now().toString(),
-      enrollmentDate: new Date().toISOString().split('T')[0],
-      status: 'pending'
-    };
-    
-    setEnrollments(prev => [newEnrollment, ...prev]);
-    
-    // Update course total enrollments
-    const course = courses.find(c => c.id === enrollmentData.courseId);
-    if (course) {
-      updateCourse(enrollmentData.courseId, { 
-        totalEnrollments: course.totalEnrollments + 1,
-        availableSeats: Math.max(0, course.availableSeats - 1)
-      });
+  const addEnrollment = async (enrollmentData) => {
+    try {
+      setLoading(true);
+      const response = await enrollmentsAPI.createEnrollment(enrollmentData);
+      const newEnrollment = response.data.enrollment;
+      setEnrollments(prev => [newEnrollment, ...prev]);
+      
+      // Refresh courses to get updated enrollment counts
+      const coursesResponse = await coursesAPI.getCourses({ status: 'published' });
+      if (coursesResponse.data?.courses) {
+        setCourses(coursesResponse.data.courses);
+      }
+      
+      return newEnrollment;
+    } catch (error) {
+      console.error('Error creating enrollment:', error);
+      setError('Failed to create enrollment');
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
-  const updateEnrollmentStatus = (id, status) => {
-    setEnrollments(prev => prev.map(enrollment => 
-      enrollment.id === id ? { ...enrollment, status } : enrollment
-    ));
+  const updateEnrollmentStatus = async (id, status) => {
+    try {
+      setLoading(true);
+      let response;
+      
+      if (status === 'approved') {
+        response = await enrollmentsAPI.approveEnrollment(id);
+      } else if (status === 'rejected') {
+        response = await enrollmentsAPI.rejectEnrollment(id);
+      } else {
+        response = await enrollmentsAPI.updateEnrollment(id, { status });
+      }
+      
+      const updatedEnrollment = response.data.enrollment;
+      setEnrollments(prev => prev.map(enrollment => 
+        enrollment._id === id || enrollment.id === id ? updatedEnrollment : enrollment
+      ));
+      
+      // Refresh courses to get updated enrollment counts
+      const coursesResponse = await coursesAPI.getCourses({ status: 'published' });
+      if (coursesResponse.data?.courses) {
+        setCourses(coursesResponse.data.courses);
+      }
+      
+      return updatedEnrollment;
+    } catch (error) {
+      console.error('Error updating enrollment status:', error);
+      setError('Failed to update enrollment status');
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const deleteEnrollment = (id) => {
-    const enrollment = enrollments.find(e => e.id === id);
-    setEnrollments(prev => prev.filter(e => e.id !== id));
-    
-    if (enrollment) {
-      const course = courses.find(c => c.id === enrollment.courseId);
-      if (course) {
-        updateCourse(enrollment.courseId, { 
-          totalEnrollments: Math.max(0, course.totalEnrollments - 1),
-          availableSeats: course.availableSeats + 1
-        });
+  const deleteEnrollment = async (id) => {
+    try {
+      setLoading(true);
+      await enrollmentsAPI.deleteEnrollment(id);
+      setEnrollments(prev => prev.filter(e => e._id !== id && e.id !== id));
+      
+      // Refresh courses to get updated enrollment counts
+      const coursesResponse = await coursesAPI.getCourses({ status: 'published' });
+      if (coursesResponse.data?.courses) {
+        setCourses(coursesResponse.data.courses);
       }
+    } catch (error) {
+      console.error('Error deleting enrollment:', error);
+      setError('Failed to delete enrollment');
+      throw error;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,6 +243,8 @@ export const CourseProvider = ({ children }) => {
     companies,
     filters,
     currentPage,
+    loading,
+    error,
     setCourses,
     addCourse,
     updateCourse,
@@ -139,7 +255,8 @@ export const CourseProvider = ({ children }) => {
     updateEnrollmentStatus,
     deleteEnrollment,
     setFilters,
-    setCurrentPage
+    setCurrentPage,
+    setError
   };
 
   return (

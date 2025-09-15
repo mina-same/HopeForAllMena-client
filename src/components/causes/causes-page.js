@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "gatsby";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
+import { Link, useNavigate } from "gatsby";
 import PostPaginations from "../post-paginations";
 
 import causeImage1 from "../../assets/images/causes/cause-1-1.jpg";
@@ -67,6 +67,7 @@ const CAUSES_DATA = [
 ];
 
 const CausesPage = () => {
+  const navigate = useNavigate();
   return (
     <section className="causes-page pt-120 pb-120">
       <Container>
@@ -108,7 +109,7 @@ const CausesPage = () => {
                     </h3>
                     <p>{text}</p>
                     <div className="cause-card__bottom">
-                      <Link className="thm-btn " to={link}>
+                      <Link className="thm-btn " to={link} onClick={() => navigate(link)}>
                         Donate Now
                       </Link>
                       <Link className="cause-card__share" to="#">

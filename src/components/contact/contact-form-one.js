@@ -1,8 +1,68 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import BlockTitle from "../block-title";
+import contactMessageService from "../../services/contactMessageService";
 
 const ContactFormOne = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+    setErrorMessage('');
+
+    try {
+      // Get client IP and user agent for tracking
+      const ipResponse = await fetch('https://api.ipify.org?format=json').catch(() => null);
+      const ipData = ipResponse ? await ipResponse.json() : null;
+
+      const messageData = {
+        ...formData,
+        type: 'general',
+        preferredContactMethod: 'email',
+        source: 'website',
+        ipAddress: ipData?.ip || 'unknown',
+        userAgent: navigator.userAgent
+      };
+
+      await contactMessageService.createContactMessage(messageData);
+
+      setSubmitStatus('success');
+      setErrorMessage('');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: ''
+      });
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      setSubmitStatus('error');
+      setErrorMessage(error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="contact-page pt-120 pb-80">
       <Container>
@@ -14,28 +74,22 @@ const ContactFormOne = () => {
                 tagLine="Contact With Us"
               />
               <p className="block-text mb-30 pr-10">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Have you done google research which works all the
-                time.{" "}
+                We'd love to hear from you! Send us a message and we'll respond
+                as soon as possible. Whether you have questions about our ministry,
+                need prayer, or want to get involved, we're here to help.
               </p>
               <div className="footer-social black-hover">
-                <a href="#none" aria-label="twitter">
-                  <i className="fab fa-twitter"></i>
-                </a>
-                <a href="#none" aria-label="facebook">
+                <a href="https://www.facebook.com/profile.php?id=61556019641884" aria-label="facebook">
                   <i className="fab fa-facebook-square"></i>
                 </a>
-                <a href="#none" aria-label="pinterest">
-                  <i className="fab fa-pinterest-p"></i>
-                </a>
-                <a href="#none" aria-label="instagram">
-                  <i className="fab fa-instagram"></i>
+                <a href="https://www.facebook.com/profile.php?id=100083974131611" aria-label="facebook">
+                  <i className="fab fa-facebook-square"></i>
                 </a>
               </div>
             </div>
           </Col>
           <Col lg={7}>
-            <form className="contact-form-validated contact-page__form form-one mb-40">
+            <form className="contact-form-validated contact-page__form form-one mb-40" onSubmit={handleSubmit}>
               <div className="form-group">
                 <div className="form-control">
                   <label htmlFor="name" className="sr-only">
@@ -46,6 +100,9 @@ const ContactFormOne = () => {
                     name="name"
                     id="name"
                     placeholder="Your Name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
                   />
                 </div>
                 <div className="form-control">
@@ -53,10 +110,13 @@ const ContactFormOne = () => {
                     email
                   </label>
                   <input
-                    type="text"
+                    type="email"
                     name="email"
                     id="email"
                     placeholder="Email Address"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
                   />
                 </div>
                 <div className="form-control">
@@ -64,10 +124,12 @@ const ContactFormOne = () => {
                     phone
                   </label>
                   <input
-                    type="text"
+                    type="tel"
                     name="phone"
                     id="phone"
                     placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="form-control">
@@ -78,7 +140,11 @@ const ContactFormOne = () => {
                     type="text"
                     name="subject"
                     id="subject"
-                    placeholder="Subject"
+                    placeholder="Subject (minimum 5 characters)"
+                    value={formData.subject}
+                    onChange={handleInputChange}
+                    required
+                    minLength="5"
                   />
                 </div>
                 <div className="form-control form-control-full">
@@ -87,18 +153,55 @@ const ContactFormOne = () => {
                   </label>
                   <textarea
                     name="message"
-                    placeholder="Write a Message"
+                    placeholder="Write a Message (minimum 10 characters)"
                     id="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    required
+                    minLength="10"
                   ></textarea>
                 </div>
                 <div className="form-control form-control-full">
-                  <button type="submit" className="thm-btn ">
-                    Submit Message
+                  <button
+                    type="submit"
+                    className="thm-btn"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Submit Message'}
                   </button>
                 </div>
               </div>
             </form>
-            <div className="result"></div>
+            <div className="result">
+              {submitStatus === 'success' && (
+                <div className="alert alert-success">
+                  <p>Thank you for your message! We'll get back to you soon.</p>
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="alert alert-danger">
+                  {errorMessage ? (
+                    <div>
+                      <p><strong>Please fix the following errors:</strong></p>
+                      <div style={{ marginTop: '10px', whiteSpace: 'pre-line' }}>
+                        {errorMessage}
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <p>Please check the following requirements:</p>
+                      <ul style={{ marginTop: '10px', paddingLeft: '20px' }}>
+                        <li>Name must be at least 2 characters</li>
+                        <li>Email must be valid</li>
+                        <li>Subject must be at least 5 characters</li>
+                        <li>Message must be at least 10 characters</li>
+                        <li>Phone number is optional</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </Col>
         </Row>
       </Container>

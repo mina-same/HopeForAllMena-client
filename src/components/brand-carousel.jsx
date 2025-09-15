@@ -3,6 +3,8 @@ import { Container } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import brandImage from "../assets/images/resources/brand-1-1.png";
+import brandImage2 from "../assets/images/resources/brand-1-2.png";
+import brandImage3 from "../assets/images/resources/brand-1-3.png";
 
 const BrandCarousel = ({ extraClass }) => {
   const brandCarouselOptions = {
@@ -45,10 +47,10 @@ const BrandCarousel = ({ extraClass }) => {
               <img src={brandImage} alt="" />
             </SwiperSlide>
             <SwiperSlide>
-              <img src={brandImage} alt="" />
+              <img src={brandImage2} alt="" />
             </SwiperSlide>
             <SwiperSlide>
-              <img src={brandImage} alt="" />
+              <img src={brandImage3} alt="" />
             </SwiperSlide>
             <SwiperSlide>
               <img src={brandImage} alt="" />

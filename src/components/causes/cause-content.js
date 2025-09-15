@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link, useNavigate } from "gatsby";
 import causeImage1 from "../../assets/images/causes/cause-d-1-1.jpg";
 import comment1 from "../../assets/images/blog/comment-1-1.jpg";
 import comment2 from "../../assets/images/blog/comment-1-2.jpg";
@@ -8,6 +9,7 @@ import donor1 from "../../assets/images/causes/donor-1-1.jpg";
 import donor2 from "../../assets/images/causes/donor-1-2.jpg";
 
 const CauseContent = () => {
+  const navigate = useNavigate();
   return (
     <section className="cause-details blog-details  pt-120 pb-40">
       <Container>
@@ -70,7 +72,7 @@ const CauseContent = () => {
                 of type and scrambled it to make a type specimen book.{" "}
               </p>
               <div className="cause-card__bottom">
-                <a href="cause-details.html" className="thm-btn dynamic-radius">
+                <a href="cause-details.html" className="thm-btn dynamic-radius" onClick={() => navigate("/donate")}>
                   Donate Now
                 </a>
 

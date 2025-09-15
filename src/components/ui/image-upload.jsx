@@ -40,9 +40,17 @@ const ImageUpload = ({
       const formData = new FormData();
       formData.append('image', file);
 
+      // Check for authentication token
       const token = localStorage.getItem('token') || 
                    localStorage.getItem('authToken') || 
                    localStorage.getItem('accessToken');
+
+      if (!token) {
+        throw new Error('Authentication required. Please login first.');
+      }
+
+      console.log('Uploading to:', `http://localhost:5001/api/upload/${uploadType}`);
+      console.log('Token available:', !!token);
 
       const response = await fetch(`http://localhost:5001/api/upload/${uploadType}`, {
         method: 'POST',
@@ -52,7 +60,17 @@ const ImageUpload = ({
         body: formData
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Server response:', errorText);
+        throw new Error(`Server error (${response.status}): ${errorText}`);
+      }
+
       const result = await response.json();
+      console.log('Upload result:', result);
 
       if (result.success) {
         // Clean up preview URL
@@ -70,7 +88,17 @@ const ImageUpload = ({
       }
     } catch (error) {
       console.error('Upload error:', error);
-      alert(`Upload failed: ${error.message}`);
+      let errorMessage = error.message;
+      
+      if (error.message === 'Failed to fetch') {
+        errorMessage = 'Cannot connect to server. Please check if the server is running.';
+      } else if (error.message.includes('401')) {
+        errorMessage = 'Authentication failed. Please login again.';
+      } else if (error.message.includes('403')) {
+        errorMessage = 'Permission denied. You may not have upload permissions.';
+      }
+      
+      alert(`Upload failed: ${errorMessage}`);
       setPreview(currentImage || null);
     } finally {
       setIsUploading(false);
@@ -151,11 +179,11 @@ const ImageUpload = ({
         />
 
         {preview ? (
-          <div className="relative">
+          <div className="relative group">
             <img
               src={preview}
               alt="Preview"
-              className="max-w-full max-h-64 mx-auto rounded-lg shadow-md"
+              className="w-full h-auto rounded-lg shadow-lg object-cover"
             />
             {!disabled && (
               <button
@@ -164,9 +192,10 @@ const ImageUpload = ({
                   e.stopPropagation();
                   handleRemoveImage();
                 }}
-                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                className="absolute -top-2 -right-2 bg-white text-red-500 rounded-full p-2 shadow-lg border-2 border-red-500 hover:bg-red-500 hover:text-white transition-all duration-200 opacity-0 group-hover:opacity-100 transform hover:scale-110"
+                title="Remove image"
               >
-                <X size={16} />
+                <X size={18} />
               </button>
             )}
             {isUploading && (

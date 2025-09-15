@@ -3,10 +3,9 @@ import { X } from 'lucide-react';
 import { Checkbox } from '../ui/checkbox';
 import { Slider } from '../ui/slider';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../ui/sheet';
-import { categories } from '../../data/books';
 
 
-export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => {
+export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange, categories = [] }) => {
   const handleCategoryChange = (category, checked) => {
     const newCategories = checked 
       ? [...filters.categories, category]
@@ -18,25 +17,26 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => 
     });
   };
 
-  const handlePriceRangeChange = (values) => {
-    onFiltersChange({
-      ...filters,
-      priceRange: [values[0], values[1]]
-    });
-  };
-
   const handleRatingChange = (rating) => {
     onFiltersChange({
       ...filters,
-      rating
+      rating: filters.rating === rating ? 0 : rating
+    });
+  };
+
+  const handleYearChange = (year, checked) => {
+    onFiltersChange({
+      ...filters,
+      publicationYear: checked ? year : ''
     });
   };
 
   const clearAllFilters = () => {
     onFiltersChange({
       categories: [],
-      priceRange: [0, 1000],
-      rating: 0
+      rating: 0,
+      publicationYear: '',
+      inStock: undefined
     });
   };
 
@@ -76,42 +76,25 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => 
             <h3 className="font-semibold text-black mb-4">Categories</h3>
             <div className="space-y-3">
               {categories.map((category) => (
-                <div key={category} className="flex items-center space-x-2">
+                <div key={category._id || category.name_en} className="flex items-center space-x-2">
                   <Checkbox
-                    id={category}
-                    checked={filters.categories.includes(category)}
+                    id={category._id || category.name_en}
+                    checked={filters.categories.includes(category.name_en || category)}
                     onCheckedChange={(checked) => 
-                      handleCategoryChange(category, checked)
+                      handleCategoryChange(category.name_en || category, checked)
                     }
                   />
                   <label
-                    htmlFor={category}
+                    htmlFor={category._id || category.name_en}
                     className="text-sm text-black cursor-pointer"
                   >
-                    {category}
+                    {category.name_en || category}
                   </label>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Price Range */}
-          {/* <div>
-            <h3 className="font-semibold text-black mb-4">Price Range</h3>
-            <div className="px-2">
-              <Slider
-                value={filters.priceRange}
-                onValueChange={handlePriceRangeChange}
-                max={1000}
-                step={10}
-                className="w-full"
-              />
-              <div className="flex justify-between mt-2 text-sm text-[#777]">
-                <span>${filters.priceRange[0]}</span>
-                <span>${filters.priceRange[1]}</span>
-              </div>
-            </div>
-          </div> */}
 
           {/* Rating */}
           <div>
@@ -154,6 +137,30 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange }) => 
                   Published
                 </label>
               </div>
+            </div>
+          </div>
+
+          {/* Publication Year */}
+          <div>
+            <h3 className="font-semibold text-black mb-4">Publication Year</h3>
+            <div className="space-y-3">
+              {['2025', '2024'].map((year) => (
+                <div key={year} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={year}
+                    checked={filters.publicationYear === year}
+                    onCheckedChange={(checked) => 
+                      handleYearChange(year, checked)
+                    }
+                  />
+                  <label
+                    htmlFor={year}
+                    className="text-sm text-black cursor-pointer"
+                  >
+                    {year}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
         </div>

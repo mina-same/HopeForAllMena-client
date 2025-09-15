@@ -16,7 +16,8 @@ import {
   BookOpen,
   Calendar,
   Star,
-  ShieldCheck
+  ShieldCheck,
+  CreditCard
 } from 'lucide-react';
 import {
   Sidebar,
@@ -49,7 +50,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
   // Define permission mappings for each section - using actual permission names from seed data
   const sectionPermissions = {
-    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar'],
+    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids'],
     analytics: ['analytics'],
     messages: ['contact-messages'],
     calendar: ['calendar'],
@@ -65,7 +66,8 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
     magazines: ['magazines'],
     'training-books': ['training-books'],
     'training-requests': ['training-requests'],
-    'training-followup-requests': ['training-followup-requests']
+    'training-followup-requests': ['training-followup-requests'],
+    'generate-ids': ['generate-ids']
   };
 
   // Check if user has permission for a specific section
@@ -174,6 +176,11 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
       title: 'Training Follow-up',
       icon: GraduationCap,
       id: 'training-followup-requests'
+    },
+    {
+      title: 'Generate IDs',
+      icon: CreditCard,
+      id: 'generate-ids'
     }
   ].filter(item => hasSectionPermission(item.id));
 
@@ -182,7 +189,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   };
 
   // If user has no permissions, show a message
-  if (!user || (!hasAnyPermission(['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar']) && mainItems.length === 0)) {
+  if (!user || (!hasAnyPermission(['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids']) && mainItems.length === 0)) {
     return (
       <Sidebar className="border-r border-sidebar-border bg-sidebar">
           <SidebarHeader className="border-b border-sidebar-border p-4">

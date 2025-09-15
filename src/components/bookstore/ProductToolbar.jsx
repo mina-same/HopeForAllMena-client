@@ -53,8 +53,6 @@ export const ProductToolbar = ({
                         <SelectItem value="popularity">Sort by popularity</SelectItem>
                         <SelectItem value="rating">Sort by average rating</SelectItem>
                         <SelectItem value="date">Sort by latest</SelectItem>
-                        <SelectItem value="price-low">Sort by price: low to high</SelectItem>
-                        <SelectItem value="price-high">Sort by price: high to low</SelectItem>
                     </SelectContent>
                 </Select>
 

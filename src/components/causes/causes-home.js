@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "gatsby";
+import { Link, useNavigate } from "gatsby";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Container, Row, Col } from "react-bootstrap";
 import heartImage from "../../assets/images/shapes/heart-2-1.png";
@@ -38,6 +38,7 @@ const CausesHomeData = [
 ];
 
 const CausesHome = () => {
+  const navigate = useNavigate();
   const swiperParams = {
     slidesPerView: 3,
     spaceBetween: 30,
@@ -136,7 +137,7 @@ const CausesHome = () => {
                       </h3>
                       <p>{text}</p>
                       <div className="cause-card__bottom">
-                        <Link className="thm-btn " to={link}>
+                        <Link className="thm-btn " to={link} onClick={() => navigate(link)}>
                           Donate Now
                         </Link>
                         <Link className="cause-card__share" to="#">

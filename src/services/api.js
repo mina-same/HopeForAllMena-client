@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API Configuration
-const API_BASE_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -15,8 +15,16 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
+    // Only add auth token for non-public endpoints
+    const isPublicEndpoint = config.url?.includes('/books') ||
+      config.url?.includes('/categories') ||
+      config.url?.includes('/authors') ||
+      config.url?.includes('/courses') ||
+      config.url?.includes('/enrollments') ||
+      (config.url?.includes('/reviews') && config.method === 'post');
+
     const token = localStorage.getItem('authToken');
-    if (token) {
+    if (token && !isPublicEndpoint) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -32,11 +40,17 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Only redirect to login if we're not already on the login page
-      // and if this is not a login attempt (to prevent refresh on invalid credentials)
+      // and if this is not a login attempt or public endpoint
       const currentPath = window.location.pathname;
       const isLoginAttempt = error.config?.url?.includes('/auth/login');
-      
-      if (currentPath !== '/login' && !isLoginAttempt) {
+      const isPublicEndpoint = error.config?.url?.includes('/books') ||
+        error.config?.url?.includes('/categories') ||
+        error.config?.url?.includes('/authors') ||
+        error.config?.url?.includes('/courses') ||
+        error.config?.url?.includes('/enrollments') ||
+        (error.config?.url?.includes('/reviews') && error.config?.method === 'post');
+
+      if (currentPath !== '/login' && !isLoginAttempt && !isPublicEndpoint) {
         // Token expired or invalid - redirect to login
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
@@ -179,6 +193,297 @@ export const magazineRequestsAPI = {
 
   getPendingCount: async () => {
     const response = await api.get('/magazine-requests/pending-count');
+    return response.data;
+  },
+};
+
+// Books API methods
+export const booksAPI = {
+  getBooks: async (params = {}) => {
+    const response = await api.get('/books', { params });
+    return response.data;
+  },
+
+  getBookById: async (id) => {
+    const response = await api.get(`/books/${id}`);
+    return response.data;
+  },
+
+  getRecentBooks: async (limit = 10) => {
+    const response = await api.get('/books/recent', { params: { limit } });
+    return response.data;
+  },
+
+  getBookStats: async () => {
+    const response = await api.get('/books/stats');
+    return response.data;
+  },
+
+  createBook: async (bookData) => {
+    const response = await api.post('/books', bookData);
+    return response.data;
+  },
+
+  updateBook: async (id, bookData) => {
+    const response = await api.put(`/books/${id}`, bookData);
+    return response.data;
+  },
+
+  deleteBook: async (id) => {
+    const response = await api.delete(`/books/${id}`);
+    return response.data;
+  },
+
+  updateBookStatus: async (id, status) => {
+    const response = await api.patch(`/books/${id}/status`, { status });
+    return response.data;
+  },
+
+  updateBookRating: async (id) => {
+    const response = await api.patch(`/books/${id}/rating`);
+    return response.data;
+  },
+};
+
+// Categories API methods
+export const categoriesAPI = {
+  getCategories: async (params = {}) => {
+    const response = await api.get('/categories', { params });
+    return response.data;
+  },
+
+  getCategoryById: async (id) => {
+    const response = await api.get(`/categories/${id}`);
+    return response.data;
+  },
+};
+
+// Authors API methods
+export const authorsAPI = {
+  getAuthors: async (params = {}) => {
+    const response = await api.get('/authors', { params });
+    return response.data;
+  },
+
+  getAuthorById: async (id) => {
+    const response = await api.get(`/authors/${id}`);
+    return response.data;
+  },
+};
+
+// Reviews API methods
+export const reviewsAPI = {
+  getReviews: async (params = {}) => {
+    const response = await api.get('/reviews', { params });
+    return response.data;
+  },
+
+  getReviewById: async (id) => {
+    const response = await api.get(`/reviews/${id}`);
+    return response.data;
+  },
+
+  getReviewsByBook: async (bookId, params = {}) => {
+    const response = await api.get(`/reviews/book/${bookId}`, { params });
+    return response.data;
+  },
+
+  getReviewsByUser: async (userId, params = {}) => {
+    const response = await api.get(`/reviews/user/${userId}`, { params });
+    return response.data;
+  },
+
+  createReview: async (reviewData) => {
+    const response = await api.post('/reviews', reviewData);
+    return response.data;
+  },
+
+  updateReview: async (id, reviewData) => {
+    const response = await api.put(`/reviews/${id}`, reviewData);
+    return response.data;
+  },
+
+  deleteReview: async (id) => {
+    const response = await api.delete(`/reviews/${id}`);
+    return response.data;
+  },
+
+  moderateReview: async (id, moderationData) => {
+    const response = await api.patch(`/reviews/${id}/moderate`, moderationData);
+    return response.data;
+  },
+
+  getPendingReviews: async (params = {}) => {
+    const response = await api.get('/reviews/pending', { params });
+    return response.data;
+  },
+
+  getReviewStats: async () => {
+    const response = await api.get('/reviews/stats');
+    return response.data;
+  },
+
+  markHelpful: async (id) => {
+    const response = await api.post(`/reviews/${id}/helpful`);
+    return response.data;
+  },
+
+  markNotHelpful: async (id) => {
+    const response = await api.post(`/reviews/${id}/not-helpful`);
+    return response.data;
+  },
+};
+
+// Courses API methods
+export const coursesAPI = {
+  getCourses: async (params = {}) => {
+    const response = await api.get('/courses', { params });
+    return response.data;
+  },
+
+  getCourseById: async (id) => {
+    const response = await api.get(`/courses/${id}`);
+    return response.data;
+  },
+
+  getFeaturedCourses: async (limit = 6) => {
+    const response = await api.get('/courses/featured', { params: { limit } });
+    return response.data;
+  },
+
+  getCoursesByCategory: async (category, limit = 10) => {
+    const response = await api.get(`/courses/category/${category}`, { params: { limit } });
+    return response.data;
+  },
+
+  getCategories: async () => {
+    const response = await api.get('/courses/categories');
+    return response.data;
+  },
+
+  getInstitutions: async () => {
+    const response = await api.get('/courses/institutions');
+    return response.data;
+  },
+
+  getInstructors: async () => {
+    const response = await api.get('/courses/instructors');
+    return response.data;
+  },
+
+  getCourseStats: async () => {
+    const response = await api.get('/courses/stats');
+    return response.data;
+  },
+
+  createCourse: async (courseData) => {
+    const response = await api.post('/courses', courseData);
+    return response.data;
+  },
+
+  updateCourse: async (id, courseData) => {
+    const response = await api.put(`/courses/${id}`, courseData);
+    return response.data;
+  },
+
+  deleteCourse: async (id) => {
+    const response = await api.delete(`/courses/${id}`);
+    return response.data;
+  },
+
+  updateCourseRating: async (id, rating) => {
+    const response = await api.patch(`/courses/${id}/rating`, { rating });
+    return response.data;
+  },
+};
+
+// Enrollments API methods
+export const enrollmentsAPI = {
+  getEnrollments: async (params = {}) => {
+    const response = await api.get('/enrollments', { params });
+    return response.data;
+  },
+
+  getEnrollmentById: async (id) => {
+    const response = await api.get(`/enrollments/${id}`);
+    return response.data;
+  },
+
+  getEnrollmentsByCourse: async (courseId, status = null) => {
+    const params = status ? { status } : {};
+    const response = await api.get(`/enrollments/course/${courseId}`, { params });
+    return response.data;
+  },
+
+  getEnrollmentsByStudent: async (studentId, status = null) => {
+    const params = status ? { status } : {};
+    const response = await api.get(`/enrollments/student/${studentId}`, { params });
+    return response.data;
+  },
+
+  getEnrollmentStats: async () => {
+    const response = await api.get('/enrollments/stats');
+    return response.data;
+  },
+
+  createEnrollment: async (enrollmentData) => {
+    const response = await api.post('/enrollments', enrollmentData);
+    return response.data;
+  },
+
+  updateEnrollment: async (id, enrollmentData) => {
+    const response = await api.put(`/enrollments/${id}`, enrollmentData);
+    return response.data;
+  },
+
+  deleteEnrollment: async (id) => {
+    const response = await api.delete(`/enrollments/${id}`);
+    return response.data;
+  },
+
+  approveEnrollment: async (id, approvedBy = null) => {
+    const response = await api.patch(`/enrollments/${id}/approve`, { approvedBy });
+    return response.data;
+  },
+
+  rejectEnrollment: async (id, rejectedBy = null) => {
+    const response = await api.patch(`/enrollments/${id}/reject`, { rejectedBy });
+    return response.data;
+  },
+
+  updateProgress: async (id, completedLessons, totalLessons) => {
+    const response = await api.patch(`/enrollments/${id}/progress`, {
+      completedLessons,
+      totalLessons
+    });
+    return response.data;
+  },
+
+  addGrade: async (id, assignment, score, feedback = '') => {
+    const response = await api.post(`/enrollments/${id}/grades`, {
+      assignment,
+      score,
+      feedback
+    });
+    return response.data;
+  },
+
+  recordAttendance: async (id, sessionDate, attended, duration = 0, notes = '') => {
+    const response = await api.post(`/enrollments/${id}/attendance`, {
+      sessionDate,
+      attended,
+      duration,
+      notes
+    });
+    return response.data;
+  },
+
+  addFeedback: async (id, rating, review, wouldRecommend) => {
+    const response = await api.post(`/enrollments/${id}/feedback`, {
+      rating,
+      review,
+      wouldRecommend
+    });
     return response.data;
   },
 };

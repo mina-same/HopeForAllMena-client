@@ -58,31 +58,60 @@ const EnrollmentPage = ({ location }) => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!validateForm()) return;
 
         try {
-            addEnrollment({
+            const enrollmentData = {
                 courseId: formData.courseId,
                 studentName: formData.studentName,
                 studentEmail: formData.studentEmail,
                 studentPhone: formData.studentPhone,
-                startDate: formData.startDate
-            });
+                startDate: formData.startDate,
+                additionalInfo: formData.additionalInfo
+            };
+
+            const result = await addEnrollment(enrollmentData);
 
             toast({
-                title: "Enrollment Submitted!",
-                description: "Your enrollment request has been submitted successfully. You will receive a confirmation email shortly.",
+                title: "✅ Enrollment Added Successfully!",
+                description: `Your enrollment for "${course?.title}" has been submitted successfully. You will receive a confirmation email at ${formData.studentEmail} shortly. Your enrollment ID is: ${result.id || result._id}`,
+                duration: 8000,
             });
 
-            navigate('/courses');
+            // Reset form
+            setFormData({
+                courseId: '',
+                studentName: '',
+                studentEmail: '',
+                studentPhone: '',
+                startDate: '',
+                additionalInfo: ''
+            });
+
+            // Navigate after a short delay to let user see the success message
+            setTimeout(() => {
+                navigate('/courses');
+            }, 3000);
         } catch (error) {
+            console.error('Enrollment error:', error);
+            
+            // Extract specific error message from API response
+            let errorMessage = "Failed to submit enrollment. Please check your information and try again.";
+            
+            if (error.response?.data?.message) {
+                errorMessage = error.response.data.message;
+            } else if (error.message) {
+                errorMessage = error.message;
+            }
+            
             toast({
-                title: "Error",
-                description: "Failed to submit enrollment. Please try again.",
+                title: "❌ Enrollment Failed",
+                description: errorMessage,
                 variant: "destructive",
+                duration: 6000,
             });
         }
     };

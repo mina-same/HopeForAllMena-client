@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import about1 from "../../assets/images/shapes/about-bag-1-1.png";
 import about2 from "../../assets/images/resources/about-1-1.jpg";
-import about3 from "../../assets/images/resources/about-1-2.jpg";
+import about3 from "../../assets/images/resources/about-1-1.jpg";
 import heart from "../../assets/images/shapes/heart-2-1.png";
 
 const AboutOne = () => {

@@ -83,7 +83,7 @@ const DonationOptions = () => {
                   <a href="#none">$50</a>
                 </li>
               </ul>
-              <button type="submit" className="thm-btn ">
+              <button type="submit" className="thm-btn" onClick={() => navigate("/donate")}>
                 Donate Now
               </button>
             </form>

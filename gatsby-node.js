@@ -27,6 +27,13 @@ exports.createPages = async ({ actions }) => {
     component: path.resolve('./src/pages/admin.jsx'),
     matchPath: '/admin/*',
   });
+
+  // Create dynamic book detail pages
+  createPage({
+    path: '/book/*',
+    component: path.resolve('./src/pages/bookDetils.jsx'),
+    matchPath: '/book/*',
+  });
 };
 
 // Override development 404 behavior
@@ -42,12 +49,13 @@ exports.onCreateDevServer = ({ app }) => {
 
     // List of valid pages (from your pages directory)
     const validPages = [
-      '/', '/404', '/about', '/admin', '/become-volunteer', '/bookDetils', '/books', '/bookstore',
+      '/', '/404', '/about', '/admin', '/become-volunteer', '/bookDetails', '/books', '/bookstore',
       '/cause-details', '/causes', '/color-test', '/contact', '/development-department',
       '/evangelism-discipleship', '/event-details', '/events', '/gallery', '/index-2',
       '/login', '/magazines', '/news-details', '/news', '/publishing-house', '/services',
       '/studies-education', '/unauthorized', '/volunteers', '/magazines/request', '/courses', '/training',
-      '/enrollment',
+      '/enrollment', '/donate', '/map',
+      '/calendar',
       '/TrainingFollowUpRequestPage', '/TrainingNewRequestPage', '/TrainingSelectionPage'
     ];
 
@@ -55,7 +63,8 @@ exports.onCreateDevServer = ({ app }) => {
     const isValidPage = validPages.some(page =>
       req.url === page ||
       req.url.startsWith(page + '/') ||
-      req.url.startsWith('/admin/')
+      req.url.startsWith('/admin/') ||
+      req.url.startsWith('/book/')
     );
 
     // If not a valid page, redirect to 404

@@ -108,7 +108,7 @@ const HeaderTwo = () => {
           <NavLinks extraClassName="dynamic-radius" />
           <Link
             className="thm-btn"
-            to="/contact"
+            to="/donate"
             style={{
               borderRadius: "0px",
               borderBottomRightRadius: "39.5px",

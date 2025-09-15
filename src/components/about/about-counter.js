@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import CountUp from "react-countup";
-import VisibilitySensor from "react-visibility-sensor";
 import { Container, Row, Col } from "react-bootstrap";
+import VisibilitySensor from "react-visibility-sensor";
+import CountUp from "react-countup";
+import { useNavigate } from "gatsby";
 import heartImage from "../../assets/images/shapes/heart-2-1.png";
 import aboutImage from "../../assets/images/resources/about-counter-1-1.png";
 import aboutHeart from "../../assets/images/shapes/about-count-heart-1-1.png";
 
 const AboutCounter = () => {
+  const navigate = useNavigate();
   const [counter, setCounter] = useState({
     startCounter: false
   });
@@ -41,20 +43,9 @@ const AboutCounter = () => {
               <li>Suspe ndisse suscipit sagittis leo.</li>
               <li>Entum estibulum dignissim posuere.</li>
             </ul>
-            <div className="about-counter__count">
-              <h3 className="odometer">
-                <VisibilitySensor
-                  onChange={onVisibilityChange}
-                  offset={{ top: 10 }}
-                  delayedCall
-                >
-                  <CountUp end={counter.startCounter ? 8860 : 0} />
-                </VisibilitySensor>
-              </h3>
-              <p>
-                Donation campaigns <br /> are running
-              </p>
-            </div>
+            <button className="thm-btn dynamic-radius" onClick={() => navigate("/donate")}>
+              Donate Now
+            </button>
           </Col>
           <Col lg={6}>
             <div className="about-counter__image clearfix">

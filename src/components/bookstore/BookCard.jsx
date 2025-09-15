@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'gatsby';
 import { Heart, Eye, ShoppingCart } from 'lucide-react';
 
 export const BookCard = ({ book, viewMode }) => {
+  const navigate = useNavigate();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -13,8 +15,8 @@ export const BookCard = ({ book, viewMode }) => {
     alert('Quick view opened!');
   };
 
-  const handleAddToCart = () => {
-    alert('Added to cart!');
+  const handleOrderBook = () => {
+    navigate('/orderPage/', { state: { book } });
   };
 
   const renderStars = (rating) => {
@@ -39,12 +41,6 @@ export const BookCard = ({ book, viewMode }) => {
     );
   };
 
-  const formatPrice = () => {
-    if (book.priceRange) {
-      return `$${book.priceRange.min.toFixed(2)} – $${book.priceRange.max.toFixed(2)}`;
-    }
-    return `$${book.price.toFixed(2)}`;
-  };
 
   if (viewMode === 'list') {
     return (
@@ -52,12 +48,13 @@ export const BookCard = ({ book, viewMode }) => {
         <div className="grid grid-cols-12 gap-6 p-6">
           {/* Book Image Section - 2 columns */}
           <div className="col-span-12 sm:col-span-3 lg:col-span-2">
-            <div className="relative overflow-hidden rounded-xl group-hover:shadow-lg transition-all duration-300">
-              <img
-                src={book.image}
-                alt={book.title}
-                className="w-full h-48 sm:h-56 lg:h-64 object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+            <Link to={`/book/${book.id}`} className="block">
+              <div className="relative overflow-hidden rounded-xl group-hover:shadow-lg transition-all duration-300">
+                <img
+                  src={book.image}
+                  alt={book.title}
+                  className="w-full h-48 sm:h-56 lg:h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+                />
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               
@@ -76,7 +73,8 @@ export const BookCard = ({ book, viewMode }) => {
                   </span>
                 </div>
               )}
-            </div>
+              </div>
+            </Link>
           </div>
 
           {/* Book Information Section - 7 columns */}
@@ -84,9 +82,11 @@ export const BookCard = ({ book, viewMode }) => {
             <div className="h-full flex flex-col justify-between">
               {/* Title and Author */}
               <div className="mb-4">
-                <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 hover:text-[#2194D1] transition-colors cursor-pointer leading-tight">
-                  {book.title}
-                </h3>
+                <Link to={`/book/${book.id}`}>
+                  <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3 hover:text-[#2194D1] transition-colors cursor-pointer leading-tight">
+                    {book.title}
+                  </h3>
+                </Link>
                 <p className="text-lg text-gray-600 font-medium">
                   by <span className="text-gray-800 font-semibold">{book.author}</span>
                 </p>
@@ -128,12 +128,9 @@ export const BookCard = ({ book, viewMode }) => {
           {/* Price and Actions Section - 3 columns */}
           <div className="col-span-12 sm:col-span-3 lg:col-span-3">
             <div className="h-full flex flex-col justify-between">
-              {/* Price Section */}
+              {/* Stock Status Section */}
               <div className="mb-6">
                 <div className="text-right sm:text-left">
-                  <div className="text-3xl lg:text-4xl font-bold text-[#2194D1] mb-2">
-                    {formatPrice()}
-                  </div>
                   {book.inStock ? (
                     <div className="flex items-center gap-2 justify-end sm:justify-start">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -151,7 +148,7 @@ export const BookCard = ({ book, viewMode }) => {
               {/* Action Buttons */}
               <div className="space-y-3">
                 <button
-                  onClick={handleAddToCart}
+                  onClick={handleOrderBook}
                   disabled={!book.inStock}
                   className={`w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${book.inStock
                       ? 'bg-[#2194D1] text-white hover:bg-[#1e7fb8] shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]'
@@ -159,7 +156,7 @@ export const BookCard = ({ book, viewMode }) => {
                     }`}
                 >
                   <ShoppingCart className="h-5 w-5" />
-                  <span>Add to Cart</span>
+                  <span>Order Book</span>
                 </button>
                 
                 <div className="grid grid-cols-2 gap-2">
@@ -205,12 +202,13 @@ export const BookCard = ({ book, viewMode }) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Book Cover Image with enhanced aspect ratio */}
-        <div className="aspect-[3/4.2] relative overflow-hidden bg-gradient-to-br from-muted/50 to-muted">
-          <img
-            src={book.image}
-            alt={book.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
+        <Link to={`/book/${book.id}`} className="block">
+          <div className="aspect-[3/4.2] relative overflow-hidden bg-gradient-to-br from-muted/50 to-muted">
+            <img
+              src={book.image}
+              alt={book.title}
+              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
 
           {/* Subtle gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -247,25 +245,19 @@ export const BookCard = ({ book, viewMode }) => {
               <Eye className="w-5 h-5" />
             </div>
 
-            <div
-              onClick={handleAddToCart}
-              className={`p-2 rounded-full bg-white/90 backdrop-blur-sm shadow-lg text-gray-700 hover:text-primary hover:bg-white transition-all duration-300 ease-out transform hover:scale-110 w-10 h-10 flex items-center justify-center ${isHovered ? 'animate-fade-in delay-300' : ''
-                }`}
-              style={{ animationDelay: '300ms' }}
-              aria-label="Add to cart"
-            >
-              <ShoppingCart className="w-5 h-5" />
-            </div>
           </div>
-        </div>
+          </div>
+        </Link>
       </div>
 
       {/* Book Information - Enhanced spacing and typography */}
       <div className="p-4">
         {/* Book Title - Single occurrence with better typography */}
-        <h3 className="text-lg font-bold text-foreground mb-3 hover:text-[#2194D1] cursor-pointer transition-colors duration-200 line-clamp-2 leading-tight">
-          {book.title}
-        </h3>
+        <Link to={`/book/${book.id}`}>
+          <h3 className="text-lg font-bold text-foreground mb-3 hover:text-[#2194D1] cursor-pointer transition-colors duration-200 line-clamp-2 leading-tight">
+            {book.title}
+          </h3>
+        </Link>
 
         {/* Author with enhanced styling */}
         <p className="text-sm text-muted-foreground mb-3 font-medium">
@@ -291,21 +283,6 @@ export const BookCard = ({ book, viewMode }) => {
           <span className="text-sm text-muted-foreground font-medium">({book.reviewCount})</span>
         </div>
 
-        {/* Price and action section */}
-        <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-[#2194D1]">
-            {formatPrice()}
-          </span>
-
-          {/* Enhanced mobile div */}
-          <div
-            onClick={handleAddToCart}
-            className="sm:hidden bg-primary text-primary-foreground px-4 py-2.5 rounded-xl hover:bg-primary/90 transition-all duration-200 flex items-center gap-2 font-medium shadow-sm hover:shadow-md"
-          >
-            <ShoppingCart className="w-4 h-4" />
-            Add to Cart
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
-import { Book, Users, MessageSquare, Star, BarChart3, TrendingUp, Clock, LogOut, Home, GraduationCap, Calendar, Settings } from 'lucide-react';
+import { Book, Users, MessageSquare, Star, BarChart3, TrendingUp, Clock, LogOut, Home, GraduationCap, Calendar, Settings, CreditCard } from 'lucide-react';
+import { reviewsAPI } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
@@ -16,11 +17,14 @@ import { EnrollmentsSection } from '../components/admin/EnrollmentsSection';
 import { MagazinesSection } from '../components/admin/MagazinesSection';
 import { ReviewsSection } from '../components/admin/ReviewsSection';
 import { ContactMessagesSection } from '../components/admin/ContactMessagesSection';
+import ContactMessagesPage from '../components/admin/ContactMessagesPage';
 import TrainingBooksSection from '../components/admin/TrainingBooksSection';
 import TrainingRequestsSection from '../components/admin/TrainingRequestsSection';
 import TrainingFollowUpRequestsSection from '../components/admin/TrainingFollowUpRequestsSection';
 import CalendarSection from '../components/admin/CalendarSection';
 import { UserManagementSection } from '../components/admin/UserManagementSection';
+import IDCardGenerator from '../components/admin/IdManagment';
+import AnalyticsManagement from '../components/admin/AnalyticsManngment';
 import ProtectedRoute from '../components/auth/ProtectedRoute.js';
 import { useAuth } from '../context/AuthContext.js';
 import { useBookstore } from '../context/BookstoreContext';
@@ -29,6 +33,7 @@ import { CalendarProvider } from '../context/CalendarContext';
 import { useToast } from '../hooks/use-toast.jsx';
 import Layout from '../components/layout.jsx';
 import ConfirmationModal from '../components/ui/ConfirmationModal';
+import contactMessageService from '../services/contactMessageService';
 
 const AdminDashboardContent = () => {
   const {
@@ -42,10 +47,54 @@ const AdminDashboardContent = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
+  const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
+
+  // Fetch unread messages and pending reviews count
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const promises = [];
+        
+        // Fetch unread messages if user has permission
+        if (hasSectionPermission('contact-messages')) {
+          promises.push(
+            Promise.all([
+              contactMessageService.getContactMessages({ status: 'new' }),
+              contactMessageService.getContactMessages({ status: 'unread' })
+            ]).then(([newResponse, unreadResponse]) => {
+              const totalUnread = newResponse.data.pagination.totalMessages + unreadResponse.data.pagination.totalMessages;
+              setUnreadMessagesCount(totalUnread);
+            })
+          );
+        }
+        
+        // Fetch pending reviews if user has permission
+        if (hasSectionPermission('reviews')) {
+          promises.push(
+            reviewsAPI.getReviews({ status: 'pending', limit: 1 }).then(response => {
+              if (response.status === 'success') {
+                setPendingReviewsCount(response.data.pagination.totalReviews || 0);
+              }
+            })
+          );
+        }
+        
+        await Promise.all(promises);
+      } catch (error) {
+        console.error('Failed to fetch notification counts:', error);
+      }
+    };
+
+    fetchCounts();
+    // Refresh counts every 30 seconds
+    const interval = setInterval(fetchCounts, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Define permission mappings for each section
   const sectionPermissions = {
-    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar'],
+    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids'],
     analytics: ['analytics'],
     messages: ['contact-messages'],
     calendar: ['calendar'],
@@ -61,7 +110,8 @@ const AdminDashboardContent = () => {
     magazines: ['magazines'],
     'training-books': ['training-books'],
     'training-requests': ['training-requests'],
-    'training-followup-requests': ['training-followup-requests']
+    'training-followup-requests': ['training-followup-requests'],
+    'generate-ids': ['generate-ids']
   };
 
   // Check if user has permission for a specific section
@@ -159,7 +209,7 @@ const AdminDashboardContent = () => {
       case 'training-followup-requests':
         return <TrainingFollowUpRequestsSection />;
       case 'messages':
-        return renderContactMessages();
+        return <ContactMessagesPage />;
       case 'calendar':
         return (
           <CalendarProvider>
@@ -168,6 +218,8 @@ const AdminDashboardContent = () => {
         );
       case 'user-management':
         return <UserManagementSection />;
+      case 'generate-ids':
+        return <IDCardGenerator />;
       case 'analytics':
         return renderAnalytics();
       case 'settings':
@@ -322,20 +374,7 @@ const AdminDashboardContent = () => {
     );
   };
 
-  const renderAnalytics = () => (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Analytics & Reports</h2>
-        <p className="text-muted-foreground">Insights into your publishing house performance</p>
-      </div>
-      <Card className="border-0 shadow-modern">
-        <CardContent className="text-center py-12">
-          <BarChart3 className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-          <p className="text-muted-foreground">Analytics dashboard coming soon...</p>
-        </CardContent>
-      </Card>
-    </div>
-  );
+  const renderAnalytics = () => <AnalyticsManagement />;
 
   const renderSettings = () => (
     <div className="space-y-6">
@@ -388,11 +427,16 @@ const AdminDashboardContent = () => {
                       <SidebarMenuItem key={item.id}>
                         <SidebarMenuButton
                           onClick={() => setActiveSection(item.id)}
-                          isActive={activeSection === item.id}
+                      wwwive={activeSection === item.id}
                           className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200"
                         >
                           <item.icon className="h-4 w-4 flex-shrink-0" />
                           <span className="font-medium whitespace-nowrap">{item.title}</span>
+                          {item.id === 'messages' && unreadMessagesCount > 0 && (
+                            <div className="ml-auto flex-shrink-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
+                              {unreadMessagesCount > 99 ? '99+' : unreadMessagesCount}
+                            </div>
+                          )}
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}
@@ -434,6 +478,11 @@ const AdminDashboardContent = () => {
                                 >
                                   <item.icon className="h-4 w-4 flex-shrink-0" />
                                   <span className="whitespace-nowrap">{item.title}</span>
+                                  {item.id === 'reviews' && pendingReviewsCount > 0 && (
+                                    <div className="ml-auto flex-shrink-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
+                                      {pendingReviewsCount > 99 ? '99+' : pendingReviewsCount}
+                                    </div>
+                                  )}
                                 </SidebarMenuSubButton>
                               </SidebarMenuSubItem>
                             ))}
@@ -520,7 +569,8 @@ const AdminDashboardContent = () => {
                             {[
                               { title: 'Training Books', icon: Book, id: 'training-books' },
                               { title: 'Training Requests', icon: Users, id: 'training-requests' },
-                              { title: 'Training Follow-up', icon: GraduationCap, id: 'training-followup-requests' }
+                              { title: 'Training Follow-up', icon: GraduationCap, id: 'training-followup-requests' },
+                              { title: 'Generate IDs', icon: CreditCard, id: 'generate-ids' }
                             ].filter(item => hasSectionPermission(item.id)).map((item) => (
                               <SidebarMenuSubItem key={item.id}>
                                 <SidebarMenuSubButton
@@ -601,7 +651,7 @@ const AdminDashboard = () => {
   return (
     <ProtectedRoute 
       requireAuth={true} 
-      requiredPermissions={['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar']}
+      requiredPermissions={['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids']}
     >
       <AdminDashboardContent />
     </ProtectedRoute>

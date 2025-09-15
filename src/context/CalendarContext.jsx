@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import eventService from '../services/eventService';
 
 const CalendarContext = createContext(undefined);
 
@@ -26,95 +27,36 @@ export const CalendarProvider = ({ children }) => {
     { id: 'social', name: 'Social', color: 'hsl(320 70% 60%)', icon: 'coffee' }
   ];
 
-  const [events, setEvents] = useState([
-    {
-      id: '1',
-      title: 'Team Strategy Meeting',
-      start: new Date(2024, 11, 15, 10, 0),
-      end: new Date(2024, 11, 15, 12, 0),
-      category: 'meeting',
-      priority: 'high',
-      status: 'confirmed',
-      location: 'Conference Room A, Main Office',
-      description: 'Quarterly strategy planning and goal setting session.',
-      attendees: ['john.smith@company.com', 'sarah.doe@company.com'],
-      organizer: 'admin@company.com',
-      reminders: [15, 60],
-      tags: ['quarterly', 'strategy', 'team'],
-      organizationName: 'TechCorp Inc.',
-      contactPerson: 'John Smith',
-      participants: 12,
-      requestId: '1'
-    },
-    {
-      id: '2',
-      title: 'Product Launch Workshop',
-      start: new Date(2024, 11, 20, 14, 0),
-      end: new Date(2024, 11, 20, 18, 0),
-      category: 'training',
-      priority: 'high',
-      status: 'confirmed',
-      location: 'Innovation Hub, Floor 3',
-      description: 'Interactive workshop for new product launch preparation.',
-      attendees: ['sarah.williams@startup.com'],
-      organizer: 'events@startup.com',
-      reminders: [30, 120],
-      tags: ['product', 'launch', 'workshop'],
-      organizationName: 'StartupLabs',
-      contactPerson: 'Sarah Williams',
-      participants: 35,
-      requestId: '2'
-    },
-    {
-      id: '3',
-      title: 'Leadership Training Program',
-      start: new Date(2024, 12, 1, 9, 0),
-      end: new Date(2024, 12, 1, 15, 0),
-      category: 'training',
-      priority: 'medium',
-      status: 'confirmed',
-      location: 'Training Center, Building B',
-      description: 'Comprehensive leadership development and team management training.',
-      attendees: ['david.brown@company.com'],
-      organizer: 'training@company.com',
-      reminders: [60, 1440],
-      tags: ['leadership', 'management', 'training'],
-      organizationName: 'Professional Development Co.',
-      contactPerson: 'David Brown',
-      participants: 50,
-      requestId: '3'
-    },
-    {
-      id: '4',
-      title: 'Dentist Appointment',
-      start: new Date(2024, 11, 18, 14, 30),
-      end: new Date(2024, 11, 18, 15, 30),
-      category: 'health',
-      priority: 'medium',
-      status: 'confirmed',
-      location: 'Downtown Dental Care',
-      description: 'Regular checkup and cleaning',
-      reminders: [60, 1440],
-      tags: ['health', 'routine']
-    },
-    {
-      id: '5',
-      title: 'Mom\'s Birthday',
-      start: new Date(2024, 11, 25),
-      end: new Date(2024, 11, 25),
-      allDay: true,
-      category: 'birthday',
-      priority: 'high',
-      status: 'confirmed',
-      description: 'Don\'t forget to call!',
-      reminders: [0, 1440],
-      tags: ['family', 'birthday'],
-      recurring: {
-        frequency: 'yearly',
-        interval: 1
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch events from API on component mount
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await eventService.getAllEvents();
+        
+        // Transform API events to calendar format
+        const transformedEvents = response.data.map(event => 
+          eventService.transformEventForCalendar(event)
+        );
+        
+        setEvents(transformedEvents);
+      } catch (err) {
+        console.error('Failed to fetch events:', err);
+        setError('Failed to load events. Please try again.');
+        // Keep empty array on error instead of showing hardcoded events
+        setEvents([]);
+      } finally {
+        setLoading(false);
       }
-    }
-  ]);
+    };
+
+    fetchEvents();
+  }, []);
 
   const addEvent = (eventData) => {
     const newEvent = {
@@ -227,6 +169,8 @@ export const CalendarProvider = ({ children }) => {
     <CalendarContext.Provider
       value={{
         events,
+        loading,
+        error,
         addEvent,
         updateEvent,
         deleteEvent,

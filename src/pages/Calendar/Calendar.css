@@ -1,0 +1,151 @@
+.rbc-event.event-azure {
+  background-color: #1a97f5;
+}
+
+.rbc-event.event-default {
+  background-color: #615dff;
+}
+.rbc-event.event-red {
+  background-color: #fc4b6c;
+}
+.rbc-event.event-green {
+  background-color: #39b69a;
+}
+.rbc-event.event-warning {
+  background-color: #fdd43f;
+}
+.rbc-off-range-bg {
+  background-color: #d2d2d20d;
+}
+.darkbg .rbc-today {
+  background-color: #8fbece;
+}
+.rbc-month-row + .rbc-month-row,
+.rbc-day-bg + .rbc-day-bg,
+.rbc-header,
+.rbc-month-view,
+.rbc-toolbar button,
+.rbc-time-content > * + * > * {
+  border-color: #f6f6f6;
+}
+
+.rbc-toolbar button {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin: 0 2px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #374151;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.rbc-toolbar button:hover {
+  background-color: #f8fafc;
+  border-color: #2194D1;
+  color: #2194D1;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rbc-toolbar button:active,
+.rbc-toolbar button.rbc-active {
+  background-color: #2194D1;
+  border-color: #2194D1;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(33, 148, 209, 0.3);
+}
+
+.rbc-toolbar button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(33, 148, 209, 0.1);
+}
+
+.rbc-btn-group:first-child button {
+  background-color: #f8fafc;
+  border-color: #d1d5db;
+}
+
+.rbc-btn-group:first-child button:hover {
+  background-color: #2194D1;
+  color: #ffffff;
+  border-color: #2194D1;
+}
+
+.rbc-btn-group:last-child button {
+  background-color: #ffffff;
+  border-color: #e5e7eb;
+}
+
+.rbc-btn-group:last-child button.rbc-active {
+  background-color: #2194D1;
+  color: #ffffff;
+  border-color: #2194D1;
+}
+
+.darkbg .rbc-month-row + .rbc-month-row,
+.darkbg .rbc-day-bg + .rbc-day-bg,
+.darkbg .rbc-header,
+.darkbg .rbc-month-view,
+.darkbg .rbc-toolbar button,
+.rbc-time-content > * + * > * {
+  border-color: #343e54;
+}
+
+.rbc-event:focus,
+.rbc-day-slot .rbc-background-event:focus {
+  outline: none;
+}
+
+.darkbg .rbc-toolbar button {
+  color: rgba(255, 255, 255, 0.5);
+}
+.darkbg .rbc-toolbar button:active,
+.darkbg .rbc-toolbar button.rbc-active {
+  background-color: #2194D1;
+  border-color: #d2d2d20d;
+}
+.form-control {
+  height: 50px;
+  line-height: 40px;
+  font-size: 18px;
+  width: 100%;
+  border-width: 1px;
+  padding: 5px;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+.btn {
+  padding: 10px 15px;
+  box-shadow: none !important;
+  border-radius: 5px;
+  text-decoration: none;
+  color: white;
+}
+.btn-primary {
+  background-color: #2b2b2b;
+}
+.btn-secondary {
+  background-color: #1a97f5;
+}
+
+@media (max-width: 767px) {
+  .rbc-btn-group {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  .rbc-toolbar .rbc-toolbar-label {
+    margin-bottom: 15px;
+    display: block;
+  }
+  .rbc-calendar {
+    height: 100vh !important;
+  }
+}
+
+.rbc-calendar {
+  min-height: 600px;
+}

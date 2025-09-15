@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Search, CheckCircle, XCircle, Clock, ThumbsUp, ThumbsDown, MessageSquare } from 'lucide-react';
+import { Star, Search, CheckCircle, XCircle, Clock, ThumbsUp, ThumbsDown, MessageSquare, Check, Trash2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useToast } from '../../hooks/use-toast';
-import { reviewsAPI } from '../../services/publishingAPI';
+import { reviewsAPI } from '../../services/api';
 import ConfirmationModal from '../ui/ConfirmationModal';
 
 export function ReviewsSection() {
@@ -42,9 +42,11 @@ export function ReviewsSection() {
       };
 
       const response = await reviewsAPI.getReviews(params);
-      setReviews(response.data.data.reviews);
-      setTotalPages(response.data.data.pagination.totalPages);
-      setTotalReviews(response.data.data.pagination.totalReviews);
+      if (response.status === 'success') {
+        setReviews(response.data.reviews);
+        setTotalPages(response.data.pagination.totalPages);
+        setTotalReviews(response.data.pagination.totalReviews);
+      }
     } catch (error) {
       console.error('Failed to fetch reviews:', error);
       toast({
@@ -66,6 +68,42 @@ export function ReviewsSection() {
     setModerationStatus('');
     setModerationNotes('');
     setShowModerateModal(true);
+  };
+
+  const handleQuickApprove = async (review) => {
+    try {
+      await reviewsAPI.moderateReview(review._id, { status: 'approved', notes: '' });
+      toast({
+        title: "Review Approved",
+        description: "Review has been approved successfully.",
+      });
+      fetchReviews();
+    } catch (error) {
+      console.error('Failed to approve review:', error);
+      toast({
+        title: "Error",
+        description: "Failed to approve review. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleQuickReject = async (review) => {
+    try {
+      await reviewsAPI.moderateReview(review._id, { status: 'rejected', notes: 'Rejected by admin' });
+      toast({
+        title: "Review Rejected",
+        description: "Review has been rejected successfully.",
+      });
+      fetchReviews();
+    } catch (error) {
+      console.error('Failed to reject review:', error);
+      toast({
+        title: "Error",
+        description: "Failed to reject review. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const confirmModeration = async () => {
@@ -152,7 +190,7 @@ export function ReviewsSection() {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'approved':
-        return <Badge variant="default" className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" />Approved</Badge>;
+        return <Badge variant="default" className="bg-green-100 text-green-800 hover:text-white hover:bg-green-400"><CheckCircle className="h-3 w-3 mr-1" />Approved</Badge>;
       case 'rejected':
         return <Badge variant="destructive"><XCircle className="h-3 w-3 mr-1" />Rejected</Badge>;
       case 'pending':
@@ -230,7 +268,7 @@ export function ReviewsSection() {
           ) : reviews.length > 0 ? (
             <div className="space-y-4">
               {reviews.map((review) => (
-                <div key={review._id} className="p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors">
+                <div key={review._id} className="p-4 border border-border rounded-lg hover:bg-gray-200 transition-colors">
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
@@ -241,19 +279,26 @@ export function ReviewsSection() {
                             Verified Purchase
                           </Badge>
                         )}
+                        {!review.user && review.guestInfo && (
+                          <Badge variant="outline" className="bg-orange-50 text-orange-700">
+                            Guest Review
+                          </Badge>
+                        )}
                       </div>
                       <div className="flex items-center gap-2 mb-2">
                         <div className="flex items-center gap-1">
                           {renderStars(review.rating)}
                         </div>
-                        <span className="text-sm text-muted-foreground">by {review.user.name}</span>
+                        <span className="text-sm text-muted-foreground">by {review.user ? review.user.name : review.guestInfo.name}</span>
                         <span className="text-sm text-muted-foreground">•</span>
                         <span className="text-sm text-muted-foreground">{formatDate(review.createdAt)}</span>
                       </div>
                       <p className="text-sm text-muted-foreground mb-2">
                         Review for: <span className="font-medium">{review.book.title}</span> by {review.book.author.name}
                       </p>
-                      <p className="text-sm text-foreground">{review.content}</p>
+                      {review.status === 'pending' && (
+                        <p className="text-sm text-foreground mb-2">{review.content}</p>
+                      )}
                     </div>
                   </div>
 
@@ -287,14 +332,26 @@ export function ReviewsSection() {
                     </div>
 
                     {review.status === 'pending' && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleModerate(review)}
-                        className="bg-blue-50 text-blue-700 hover:bg-blue-100"
-                      >
-                        Moderate
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleQuickApprove(review)}
+                          className="bg-green-200 text-green-700 hover:bg-green-400 p-2"
+                          title="Approve Review"
+                        >
+                          <Check className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleQuickReject(review)}
+                          className="bg-red-50 text-red-700 hover:bg-red-100 p-2"
+                          title="Reject Review"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     )}
                   </div>
 
@@ -358,7 +415,7 @@ export function ReviewsSection() {
                 <strong>Review:</strong> {reviewToModerate?.title}
               </p>
               <p className="text-sm text-muted-foreground mb-2">
-                <strong>By:</strong> {reviewToModerate?.user.name}
+                <strong>By:</strong> {reviewToModerate?.user ? reviewToModerate.user.name : reviewToModerate?.guestInfo?.name}
               </p>
               <p className="text-sm text-muted-foreground mb-2">
                 <strong>For:</strong> {reviewToModerate?.book.title}

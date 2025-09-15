@@ -4,7 +4,7 @@ import StickyHeader from "../components/header/sticky-header";
 import MainSlider from "../components/slider/main-slider";
 import VideoCardTwo from "../components/videos/video-card-two";
 import ServiceOne from "../components/services/service-one";
-import TeamHome from "../components/team/team-home";
+import WorldMapImpact from "../components/team/WorldMapImpact";
 import CallToActionTwo from "../components/call-to-action/call-to-action-two";
 import GalleryTestimonials from "../components/gallery/gallery-testimonials";
 import GalleryHome from "../components/gallery/gallery-home";
@@ -20,6 +20,7 @@ import ServiceTwo from "../components/services/service-two";
 import VideoCard from "../components/videos/video-card";
 import FactCounter from "../components/fact-counter";
 import PriceOne from "../components/price-one";
+import TrendingProducts from "../components/bookstore/TrendingProducts";
 
 const HomeOne = () => {
   return (
@@ -35,14 +36,15 @@ const HomeOne = () => {
       {/* <AboutCounter /> */}
       {/* <CausesHome /> */}
       <CallToActionTwo />
+      <TrendingProducts />
       {/* <DonationOptions /> */}
-      <TeamHome />
       <FactCounter />
-      <PriceOne />
+      <WorldMapImpact />
       <GalleryTestimonials>
         <GalleryHome />
         <TestimonialsTwo />
       </GalleryTestimonials>
+      {/* <PriceOne /> */}
       <BlogHome />
       <CallToAction />
       <GoogleMap extraClass="home" />

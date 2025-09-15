@@ -4,13 +4,15 @@ import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";
 import AboutOne from "../components/about/about-one";
 import AboutCounter from "../components/about/about-counter";
-import TeamHome from "../components/team/team-home";
+import WorldMapImpact from "../components/team/WorldMapImpact";
 import VideoCard from "../components/videos/video-card";
-import TestimonialsOne from "../components/testimonials/testimonials-one";
 import BrandCarousel from "../components/brand-carousel";
 import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
 import VisionMission from "../components/vision-mission/vision-mission";
+import ServiceTwo from "../components/services/service-two";
+import ServiceOne from "../components/services/service-one";
+import FactCounter from "../components/fact-counter";
 
 
 const About = () => {
@@ -20,12 +22,14 @@ const About = () => {
       <PageHeader title="About Page" crumbTitle="About" />
       <StickyHeader />
       <AboutOne />
-      <VisionMission/>
-      <BrandCarousel extraClass="client-carousel__has-border-top" />
-      <AboutCounter />
-      <TeamHome />
+      <VisionMission />
       <VideoCard />
-      <TestimonialsOne />
+      <ServiceTwo />
+      <ServiceOne />
+      <AboutCounter />
+      <FactCounter />
+      <WorldMapImpact />
+      <BrandCarousel extraClass="client-carousel__has-border-top" />
       <Footer />
     </Layout>
   );
