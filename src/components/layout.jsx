@@ -15,6 +15,7 @@ import "../assets/css/azino-icons.css";
 import "../assets/css/fontawesome-all.min.css";
 import "../assets/css/main.css";
 import "../assets/css/vision-mission.css";
+import "../styles/rtl.css";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
@@ -22,6 +23,8 @@ import "swiper/css/navigation";
 
 const Layout = ({ pageTitle, children }) => {
   const [hasMounted, setHasMounted] = useState(false);
+  // Temporarily disable i18n
+  // const { i18n } = useI18next();
   const handleRadius = () => {
     const dynamicRadius = document.querySelectorAll(".dynamic-radius");
     dynamicRadius.forEach(function (btn) {
@@ -35,6 +38,12 @@ const Layout = ({ pageTitle, children }) => {
     if (typeof window !== "undefined") {
       handleRadius();
       setHasMounted(true);
+      
+      // Set default language to English
+      const htmlElement = document.documentElement;
+      htmlElement.setAttribute('dir', 'ltr');
+      htmlElement.setAttribute('lang', 'en');
+      
       return () => {
         handleRadius();
       };

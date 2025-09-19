@@ -29,19 +29,25 @@ const heroImages = [
   img08, img09, img10, img11, img12, img13, img14
 ];
 
+// Language context will be managed within the component
+
 const magazines = [
   {
     id: '1',
-    title: 'The Great Book, the Book of Hope',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    title: 'The Great Book',
+    titleAr: 'الكتاب العظيم',
+    description: 'This is a magazine for Sunday School children. The Great Book is the Word of God (the Bible). It is a series of stories that reveal God\'s love for mankind. The magazine helps Chris, Joy, and Gizmo understand God\'s ways through eight exciting lessons including love, forgiveness, kindness, and more.',
+    descriptionAr: 'مجلة لأطفال مدارس الأحد، تبين أن الكتاب العظيم هو كلمة الله (الكتاب المقدس). هي سلسلة من القصص التي تعلن محبة الله للبشر، وتساعد أبطال القصة (كريس، جوي، جيزمو) ليفهموا طرق الله من خلال 8 دروس شيقة مثل: المحبة، الغفران، اللطف، وغيرها.',
     coverImageUrl: require('../assets/images/magazines/The Great Book, the Book of Hope.jpg').default,
     publishDate: '2024-03-01',
-    category: 'Lifestyle'
+    category: 'Children'
   },
   {
     id: '2',
     title: 'The Book of Hope',
-    description: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    titleAr: 'كتاب الرجاء',
+    description: 'God created man to live with Him, but sin created a gap between us and Him and required judgment. So Christ, the perfect righteous One, came to redeem us by His death and grant us new life through His resurrection. By accepting Him as Savior, we become children of God, taste fellowship with Him, and inherit eternity.',
+    descriptionAr: 'خلق الله الإنسان ليحيا معه، لكن الخطية صنعت هوة بيننا وبينه واستوجبت العقاب. فجاء المسيح، البار الكامل، ليفدينا بموته ويهبنا حياة جديدة بقيامته. بقبوله مخلّصًا نصير أبناء الله، ونتذوق الشركة معه ونرث الأبدية.',
     coverImageUrl: require('../assets/images/magazines/The Book of Hope.jpg').default,
     publishDate: '2024-02-15',
     category: 'Devotional'
@@ -49,23 +55,29 @@ const magazines = [
   {
     id: '3',
     title: 'The Gift That Changes Everything',
-    description: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.',
+    titleAr: 'الهدية التي تغير كل شيء',
+    description: 'Have you ever been surprised by an amazing gift? Maybe it was given to you on a difficult day when you were sad or hurt. Sometimes we feel like no one in the whole world cares about us, and then receiving a gift at that moment makes a huge difference. That\'s exactly what God did at Christmas. The gift is a person—Jesus. He came down from heaven because He loves us, and His birth is the greatest gift that changed the world.',
+    descriptionAr: 'هل سبق وفاجأك أحدهم بهدية مدهشة؟ ربما قُدمت لك في يوم عصيب أو عندما كنت حزينًا أو مجروحًا. أحيانًا نشعر أنه لا يوجد أحد يهتم بنا، لكن تقديم هدية في تلك اللحظة يصنع فارقًا كبيرًا. هذا ما فعله الله في عيد الميلاد. الهدية هي شخص، يسوع، الذي نزل من السماء لأنه يحبنا، وميلاده هو أعظم هدية غيرت العالم.',
     coverImageUrl: require('../assets/images/magazines/The Gift That Changes Everything.jpg').default,
     publishDate: '2024-02-01',
-    category: 'Youth'
+    category: 'Christmas'
   },
   {
     id: '4',
-    title: 'A Journey in the World of the Bible',
-    description: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.',
+    title: 'Journey in the World of the Bible',
+    titleAr: 'رحلة في عالم الكتاب',
+    description: 'This is an exciting journey that helps you realize how much God loves you and His desire to have a personal relationship with each of you. These stories and activities will take you on an adventure through God\'s great story. Along the way, you will understand what it means to know God and follow Jesus. All the stories you are about to read are part of the Bible App for Kids. In the app, you will find these stories and more, shown in animated form with fun activities.',
+    descriptionAr: 'رحلة مشوقة تساعدك على إدراك محبة الله لك ورغبته في إقامة علاقة شخصية معك. هذه القصص والأنشطة تصحبك في مغامرة عبر قصة الله العظيمة، لتفهم معنى معرفة الله واتباع يسوع. كل هذه القصص مأخوذة من تطبيق الكتاب المقدس للأطفال، حيث ستجد قصصًا أكثر تُعرض كرسوم متحركة مع أنشطة ممتعة.',
     coverImageUrl: require('../assets/images/magazines/A Journey in the World of the Bible.jpg').default,
     publishDate: '2024-01-15',
-    category: 'Family'
+    category: 'Children'
   },
   {
     id: '5',
-    title: 'The Bible for Children',
-    description: 'Similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio.',
+    title: 'The Bible',
+    titleAr: 'الكتاب المقدس',
+    description: 'This book helps you realize God\'s love for you and His desire to have a personal relationship with each of you. The stories and activities will take you on an adventure through God\'s great story. Along the way, you will understand what it means to know God and follow Jesus. All the stories in this book are part of the Bible App for Kids. In this app, you will find these and many more stories presented as animations with music and fun activities. Are you ready to read God\'s great story?',
+    descriptionAr: 'يساعدك هذا الكتاب على إدراك محبة الله لك ورغبته في علاقة شخصية معك. ستأخذك القصص والأنشطة في رحلة عبر قصة الله العظيمة، لتفهم معنى معرفة الله واتباع يسوع. جميع هذه القصص جزء من تطبيق الكتاب المقدس للأطفال، حيث ستجد قصصًا أخرى تُعرض برسوم متحركة مع موسيقى وأنشطة مسلية. هل أنت مستعد لقراءة قصة الله العظيمة؟',
     coverImageUrl: require('../assets/images/magazines/The Bible for Children.jpg').default,
     publishDate: '2024-01-01',
     category: 'Biblical Study',
@@ -73,19 +85,46 @@ const magazines = [
   },
   {
     id: '6',
-    title: 'The Path of Hope',
-    description: 'Cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus.',
+    title: 'The Way of Hope',
+    titleAr: 'طريق الرجاء',
+    description: 'This story revolves around two friends, David and Peter. Through their adventures, they discover important truths such as sin, how it entered the world, and that God wants to give us heaven as a free gift. But sin blocks this gift, and that\'s why He sent His Son Jesus to carry the sin of the world. We must receive this gift by faith, and this is what we will learn with David and Peter through the story.',
+    descriptionAr: 'قصة تدور بين صديقين، ديفيد وبيتر، ومن خلال مغامراتهما يتعرفان على حقائق مهمة مثل الخطية وكيف دخلت إلى العالم، وأن الله يريد أن يمنحنا السماء عطية مجانية، لكن الخطية تعيق هذه العطية. لذلك أرسل ابنه يسوع ليحمل خطية العالم، وعلينا أن نقبل هذه العطية بالإيمان.',
     coverImageUrl: require('../assets/images/magazines/The Path of Hope.jpg').default,
     publishDate: '2023-12-15',
-    category: 'Missions'
+    category: 'Youth',
+    orientation: 'horizontal'
   },
   {
     id: '7',
     title: 'On the Edge',
-    description: 'Saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus.',
-    coverImageUrl: require('../assets/images/magazines/On the Edge.jpg').default,
+    titleAr: 'على الحافة',
+    description: 'This is a real-life story. The aim of this book is to help you see people through God\'s eyes and direct our focus—no matter how different our struggles are—toward God and His promises. He alone can make all things work together for good in our lives. If you ever feel your life is on the edge, don\'t despair. Remember that with Jesus there is hope.',
+    descriptionAr: 'قصة معاشة تهدف إلى أن ننظر للآخرين بعيني الله، وأن نوجّه أنظارنا جميعًا مهما كانت معاناتنا إلى شخص الله ووعوده، فهو وحده القادر أن يجعل كل الأشياء تعمل معًا للخير. إن شعرت يومًا أن حياتك أصبحت على الحافة فلا تيأس، تذكر أنه مع يسوع يوجد رجاء.',
+    coverImageUrl: require('../assets/images/magazines/On the Edge.webp').default,
     publishDate: '2023-12-01',
-    category: 'Worship',
+    category: 'Testimony',
+    orientation: 'horizontal'
+  },
+  {
+    id: '8',
+    title: 'How the Shepherd Saved His Sheep',
+    titleAr: 'كيف أنقذ الراعي خرافه',
+    description: 'This is the greatest story in the history of the world. It is about the Good Shepherd—who He is and what He has done. The Good Shepherd is always with His sheep, even in the hardest circumstances, caring for them and providing for their needs.',
+    descriptionAr: 'هي أعظم قصة في التاريخ، قصة الراعي الصالح: من هو الراعي وما الذي فعله. الراعي الصالح دائمًا مع خرافه، حتى في أصعب الظروف، يهتم بهم ويسدد احتياجاتهم.',
+    coverImageUrl: require('../assets/images/magazines/How the Shepherd Saved His Sheep.webp').default,
+    publishDate: '2023-11-15',
+    category: 'Devotional',
+    orientation: 'horizontal'
+  },
+  {
+    id: '9',
+    title: 'The Good Neighbor',
+    titleAr: 'الجار الصالح',
+    description: 'This magazine tells the story of the Good Samaritan through pictures only, making it easy to use with non-believers and illiterate people. It teaches biblical values in a simple and engaging way.',
+    descriptionAr: 'هي مجلة تحكي قصة السامري الصالح بالصور فقط حتى يسهل استخدامها مع غير المؤمنين وغير المتعلمين لتعلّم قيم الكتاب المقدس بصورة بسيطة وشيقة.',
+    coverImageUrl: require('../assets/images/magazines/The Good Neighbor.webp').default,
+    publishDate: '2023-11-01',
+    category: 'Visual',
     orientation: 'horizontal'
   }
 ];
@@ -210,6 +249,12 @@ const MagazineImage = ({ src, alt, className, isHorizontal = false }) => {
 };
 
 const MagazinePage = () => {
+  const [currentLanguage, setCurrentLanguage] = useState('en');
+
+  const toggleLanguage = () => {
+    setCurrentLanguage(prev => prev === 'en' ? 'ar' : 'en');
+  };
+
   return (
     <Layout >
       <HeaderTwo />
@@ -238,6 +283,13 @@ const MagazinePage = () => {
               <Badge variant="outline" className="text-lg px-6 py-3 bg-white/10 text-white border-white/30 backdrop-blur-sm">
                 {magazines.length} Available Magazines
               </Badge>
+              <Button 
+                onClick={toggleLanguage}
+                variant="outline" 
+                className="text-lg px-6 py-3 bg-white/10 text-white border-white/30 backdrop-blur-sm hover:bg-white/20"
+              >
+                {currentLanguage === 'en' ? 'عربي' : 'English'}
+              </Button>
               <Link to="/magazines/request">
                 <Button size="lg" className="bg-gradient-to-r from-accent to-theme-base text-white shadow-xl hover:shadow-2xl transition-all duration-300 px-8 py-3">
                   Request Magazines
@@ -307,12 +359,12 @@ const MagazinePage = () => {
                       </div>
 
                       <h3 className="text-4xl md:text-5xl font-bold text-foreground leading-tight">
-                        {magazine.title}
+                        {currentLanguage === 'en' ? magazine.title : magazine.titleAr}
                       </h3>
                     </div>
 
-                    <p className="text-lg text-muted-foreground leading-relaxed font-light">
-                      {magazine.description}
+                    <p className="text-lg text-muted-foreground leading-relaxed font-light" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                      {currentLanguage === 'en' ? magazine.description : magazine.descriptionAr}
                     </p>
                   </div>
                 </div>

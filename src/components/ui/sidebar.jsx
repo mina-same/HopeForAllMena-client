@@ -603,7 +603,7 @@ const SidebarMenuSub = React.forwardRef(
       ref={ref}
       data-sidebar="menu-sub"
       className={cn(
-        'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5 list-none p-1',
+        'mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5 list-none m-1 p-1',
         'group-data-[collapsible=icon]:hidden',
         className
       )}
@@ -635,7 +635,7 @@ const SidebarMenuSubButton = React.forwardRef(
         data-size={size}
         data-active={isActive}
         className={cn(
-          '!bl-2 flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-[#2194D1] hover:text-white focus-visible:ring-2 active:bg-[#161616] active:text-white disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-foreground/80',
+          'cursor-pointer !bl-2 flex h-7 min-w-0 -translate-x-px items-center gap-2 overflow-hidden rounded-md px-2 text-sidebar-foreground outline-none ring-sidebar-ring hover:bg-[#2194D1] hover:text-white focus-visible:ring-2 active:bg-[#161616] active:text-white disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&>svg]:size-4 [&>svg]:shrink-0 [&>svg]:text-sidebar-foreground/80',
           'data-[active=true]:bg-[#2194D1] data-[active=true]:text-white data-[active=true]:font-medium data-[active=true]:[&>svg]:text-white',
           size === 'sm' && 'text-xs',
           size === 'md' && 'text-sm',

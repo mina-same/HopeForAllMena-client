@@ -1,6 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
-import { Book, Users, MessageSquare, Star, BarChart3, TrendingUp, Clock, LogOut, Home, GraduationCap, Calendar, Settings, CreditCard } from 'lucide-react';
+import { 
+  BarChart3, 
+  Book, 
+  Calendar, 
+  ChevronRight, 
+  CreditCard, 
+  FileText,
+  FolderOpen, 
+  GraduationCap, 
+  Home,
+  LogOut, 
+  MessageCircle,
+  MessageSquare, 
+  Plus,
+  Settings, 
+  Star, 
+  Users 
+} from 'lucide-react';
 import { reviewsAPI } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
@@ -8,7 +25,7 @@ import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../components/ui/sidebar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../components/ui/collapsible';
-import { LibraryBig, FolderOpen, ChevronRight, ShieldCheck, UserCheck, BookOpen } from 'lucide-react';
+import { LibraryBig, ShieldCheck, UserCheck, BookOpen } from 'lucide-react';
 import { AuthorsSection } from '../components/admin/AuthorsSection';
 import { CategoriesSection } from '../components/admin/CategoriesSection';
 import { BooksSection } from '../components/admin/BooksSection';
@@ -25,6 +42,11 @@ import CalendarSection from '../components/admin/CalendarSection';
 import { UserManagementSection } from '../components/admin/UserManagementSection';
 import IDCardGenerator from '../components/admin/IdManagment';
 import AnalyticsManagement from '../components/admin/AnalyticsManngment';
+import { AdminSidebar } from '../components/admin/AdminSidebar';
+import AllBlogs from '../components/admin/AllBlogs';
+import NewBlog from '../components/admin/NewBlog';
+import EditBlog from '../components/admin/EditBlog';
+import CommentsManagement from '../components/admin/CommentsManagement';
 import ProtectedRoute from '../components/auth/ProtectedRoute.js';
 import { useAuth } from '../context/AuthContext.js';
 import { useBookstore } from '../context/BookstoreContext';
@@ -49,6 +71,7 @@ const AdminDashboardContent = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
   const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
+  const [editBlogId, setEditBlogId] = useState(null);
 
   // Fetch unread messages and pending reviews count
   useEffect(() => {
@@ -94,7 +117,7 @@ const AdminDashboardContent = () => {
 
   // Define permission mappings for each section
   const sectionPermissions = {
-    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids'],
+    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids', 'blogs'],
     analytics: ['analytics'],
     messages: ['contact-messages'],
     calendar: ['calendar'],
@@ -111,7 +134,11 @@ const AdminDashboardContent = () => {
     'training-books': ['training-books'],
     'training-requests': ['training-requests'],
     'training-followup-requests': ['training-followup-requests'],
-    'generate-ids': ['generate-ids']
+    'generate-ids': ['generate-ids'],
+    'new-blog': ['blogs'],
+    'all-blogs': ['blogs'],
+    'edit-blog': ['blogs'],
+    'blog-comments': ['blogs']
   };
 
   // Check if user has permission for a specific section
@@ -148,6 +175,29 @@ const AdminDashboardContent = () => {
     } finally {
       setIsLoggingOut(false);
       setShowLogoutModal(false);
+    }
+  };
+
+  // Handle URL-based routing for edit blog
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname;
+      const editMatch = path.match(/\/admin\/blog\/edit\/([a-f\d]{24})/);
+      
+      if (editMatch) {
+        const blogId = editMatch[1];
+        setEditBlogId(blogId);
+        setActiveSection('edit-blog');
+      }
+    }
+  }, []);
+
+  const handleBackToBlogs = () => {
+    setEditBlogId(null);
+    setActiveSection('all-blogs');
+    // Update URL without page reload
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', '/admin');
     }
   };
 
@@ -224,6 +274,14 @@ const AdminDashboardContent = () => {
         return renderAnalytics();
       case 'settings':
         return renderSettings();
+      case 'new-blog':
+        return <NewBlog />;
+      case 'all-blogs':
+        return <AllBlogs />;
+      case 'edit-blog':
+        return editBlogId ? <EditBlog blogId={editBlogId} onBack={handleBackToBlogs} /> : <AllBlogs />;
+      case 'blog-comments':
+        return <CommentsManagement />;
       default:
         return renderMainDashboard();
     }
@@ -394,204 +452,10 @@ const AdminDashboardContent = () => {
     <Layout pageTitle="Admin Dashboard || Azino || Charity React Next Template">
       <SidebarProvider>
         <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-muted/30">
-          <Sidebar className="border-r border-sidebar-border bg-sidebar">
-            <SidebarHeader className="border-b border-sidebar-border p-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#2194D1] to-[#2194D1]/80 shadow-lg">
-                  <LibraryBig className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-semibold text-theme-base">Admin Panel</h2>
-                  <p className="text-sm text-[#2194D1]/80">Publishing House</p>
-                  {user && (
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {user.name || user.username || user.email}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </SidebarHeader>
-            <SidebarContent className="p-2">
-              {/* Main Navigation */}
-              <SidebarGroup>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {[
-                      { title: 'Dashboard', icon: Home, id: 'dashboard' },
-                      { title: 'Analytics', icon: BarChart3, id: 'analytics' },
-                      { title: 'Messages', icon: MessageSquare, id: 'messages' },
-                      { title: 'Calendar', icon: Calendar, id: 'calendar' },
-                      { title: 'User Management', icon: ShieldCheck, id: 'user-management' },
-                      { title: 'Settings', icon: Settings, id: 'settings' }
-                    ].filter(item => hasSectionPermission(item.id)).map((item) => (
-                      <SidebarMenuItem key={item.id}>
-                        <SidebarMenuButton
-                          onClick={() => setActiveSection(item.id)}
-                      wwwive={activeSection === item.id}
-                          className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200"
-                        >
-                          <item.icon className="h-4 w-4 flex-shrink-0" />
-                          <span className="font-medium whitespace-nowrap">{item.title}</span>
-                          {item.id === 'messages' && unreadMessagesCount > 0 && (
-                            <div className="ml-auto flex-shrink-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
-                              {unreadMessagesCount > 99 ? '99+' : unreadMessagesCount}
-                            </div>
-                          )}
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-
-              {/* Management Sections */}
-              <SidebarGroup className="space-y-0">
-                <SidebarGroupLabel className="text-xs font-medium text-sidebar-foreground/60 uppercase tracking-wide px-2 py-2">
-                  Management Links
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {/* Books & Publishing */}
-                    <SidebarMenuItem>
-                      <Collapsible defaultOpen={true}>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuButton className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90 hover:bg-[#2194D1]">
-                            <LibraryBig className="h-4 w-4 flex-shrink-0" />
-                            <span className="font-medium whitespace-nowrap">Books & Publishing</span>
-                            <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                          </SidebarMenuButton>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {[
-                              { title: 'Authors', icon: Users, id: 'authors' },
-                              { title: 'Categories', icon: FolderOpen, id: 'categories' },
-                              { title: 'Books', icon: Book, id: 'books' },
-                              { title: 'Reviews', icon: Star, id: 'reviews' },
-                              { title: 'Contact Messages', icon: MessageSquare, id: 'contact-messages' }
-                            ].filter(item => hasSectionPermission(item.id)).map((item) => (
-                              <SidebarMenuSubItem key={item.id}>
-                                <SidebarMenuSubButton
-                                  onClick={() => setActiveSection(item.id)}
-                                  isActive={activeSection === item.id}
-                                  className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
-                                >
-                                  <item.icon className="h-4 w-4 flex-shrink-0" />
-                                  <span className="whitespace-nowrap">{item.title}</span>
-                                  {item.id === 'reviews' && pendingReviewsCount > 0 && (
-                                    <div className="ml-auto flex-shrink-0 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center animate-pulse">
-                                      {pendingReviewsCount > 99 ? '99+' : pendingReviewsCount}
-                                    </div>
-                                  )}
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    </SidebarMenuItem>
-
-                    {/* Courses */}
-                    <SidebarMenuItem>
-                      <Collapsible defaultOpen={true}>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuButton className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90 hover:bg-[#2194D1]">
-                            <GraduationCap className="h-4 w-4 flex-shrink-0" />
-                            <span className="font-medium whitespace-nowrap">Courses</span>
-                            <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                          </SidebarMenuButton>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {[
-                              { title: 'Courses', icon: GraduationCap, id: 'courses' },
-                              { title: 'Enrollments', icon: UserCheck, id: 'enrollments' }
-                            ].filter(item => hasSectionPermission(item.id)).map((item) => (
-                              <SidebarMenuSubItem key={item.id}>
-                                <SidebarMenuSubButton
-                                  onClick={() => setActiveSection(item.id)}
-                                  isActive={activeSection === item.id}
-                                  className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
-                                >
-                                  <item.icon className="h-4 w-4 flex-shrink-0" />
-                                  <span className="whitespace-nowrap">{item.title}</span>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    </SidebarMenuItem>
-
-                    {/* Magazines */}
-                    <SidebarMenuItem>
-                      <Collapsible defaultOpen={true}>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuButton className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90 hover:bg-[#2194D1]">
-                            <BookOpen className="h-4 w-4 flex-shrink-0" />
-                            <span className="font-medium whitespace-nowrap">Magazine Management</span>
-                            <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                          </SidebarMenuButton>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {[
-                              { title: 'Magazines', icon: BookOpen, id: 'magazines' }
-                            ].filter(item => hasSectionPermission(item.id)).map((item) => (
-                              <SidebarMenuSubItem key={item.id}>
-                                <SidebarMenuSubButton
-                                  onClick={() => setActiveSection(item.id)}
-                                  isActive={activeSection === item.id}
-                                  className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
-                                >
-                                  <item.icon className="h-4 w-4 flex-shrink-0" />
-                                  <span className="whitespace-nowrap">{item.title}</span>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    </SidebarMenuItem>
-
-                    {/* Training */}
-                    <SidebarMenuItem>
-                      <Collapsible defaultOpen={true}>
-                        <CollapsibleTrigger asChild>
-                          <SidebarMenuButton className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90 hover:bg-[#2194D1]">
-                            <GraduationCap className="h-4 w-4 flex-shrink-0" />
-                            <span className="font-medium whitespace-nowrap">Training Management</span>
-                            <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                          </SidebarMenuButton>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent>
-                          <SidebarMenuSub>
-                            {[
-                              { title: 'Training Books', icon: Book, id: 'training-books' },
-                              { title: 'Training Requests', icon: Users, id: 'training-requests' },
-                              { title: 'Training Follow-up', icon: GraduationCap, id: 'training-followup-requests' },
-                              { title: 'Generate IDs', icon: CreditCard, id: 'generate-ids' }
-                            ].filter(item => hasSectionPermission(item.id)).map((item) => (
-                              <SidebarMenuSubItem key={item.id}>
-                                <SidebarMenuSubButton
-                                  onClick={() => setActiveSection(item.id)}
-                                  isActive={activeSection === item.id}
-                                  className="w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
-                                >
-                                  <item.icon className="h-4 w-4 flex-shrink-0" />
-                                  <span className="whitespace-nowrap">{item.title}</span>
-                                </SidebarMenuSubButton>
-                              </SidebarMenuSubItem>
-                            ))}
-                          </SidebarMenuSub>
-                        </CollapsibleContent>
-                      </Collapsible>
-                    </SidebarMenuItem>
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            </SidebarContent>
-          </Sidebar>
+          <AdminSidebar 
+            activeSection={activeSection} 
+            onSectionChange={setActiveSection}
+          />
           
           <SidebarInset>
             {/* Header */}

@@ -1,0 +1,62 @@
+{
+  "navigation": {
+    "home": "الرئيسية",
+    "about": "من نحن",
+    "ministryDepartments": "أقسام الخدمة",
+    "conferences": "المؤتمرات",
+    "links": "الروابط",
+    "contact": "اتصل بنا",
+    "admin": "الإدارة",
+    "developmentDepartment": "قسم التنمية",
+    "evangelismDiscipleship": "الكرازة والتلمذة",
+    "studiesEducation": "الدراسات والتعليم",
+    "publishingHouse": "دار النشر والتوزيع"
+  },
+  "footer": {
+    "organizationName": "الأمل للجميع الشرق الأوسط",
+    "tagline": "الربط والتجهيز والإكثار",
+    "explore": "استكشف",
+    "ourCauses": "قضايانا",
+    "aboutUs": "من نحن",
+    "newCampaign": "حملة جديدة",
+    "upcomingEvents": "الأحداث القادمة",
+    "siteMap": "خريطة الموقع",
+    "help": "المساعدة",
+    "donate": "تبرع",
+    "contactUs": "اتصل بنا",
+    "latestBlogPosts": "أحدث المقالات",
+    "newsletter": "النشرة الإخبارية",
+    "newsletterDescription": "اشترك الآن للحصول على آخر الأخبار والتحديثات اليومية منا",
+    "emailPlaceholder": "عنوان البريد الإلكتروني",
+    "subscribeNow": "اشترك الآن",
+    "copyright": "© حقوق الطبع والنشر 2025 بواسطة مينا سامي",
+    "loading": "جاري التحميل...",
+    "loadingLatestPosts": "جاري تحميل أحدث المقالات...",
+    "pleaseWait": "يرجى الانتظار...",
+    "defaultPostTitle1": "يمكنك مساعدة الفقراء المحتاجين",
+    "defaultPostTitle2": "جمع تبرعات للطعام الصحي"
+  },
+  "buttons": {
+    "discoverMore": "اكتشف المزيد",
+    "learnMore": "تعلم المزيد",
+    "readMore": "اقرأ المزيد",
+    "subscribe": "اشترك",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "view": "عرض"
+  },
+  "common": {
+    "loading": "جاري التحميل...",
+    "error": "خطأ",
+    "success": "نجح",
+    "warning": "تحذير",
+    "info": "معلومات",
+    "yes": "نعم",
+    "no": "لا",
+    "ok": "موافق",
+    "close": "إغلاق"
+  }
+}

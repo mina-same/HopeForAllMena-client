@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { coursesAPI, enrollmentsAPI } from '../services/api';
 import coursesData from '../data/courses.json';
 
-const CourseContext = createContext(undefined);
+const CourseContext = createContext(null);
 
 export const CourseProvider = ({ children }) => {
   const [courses, setCourses] = useState([]);

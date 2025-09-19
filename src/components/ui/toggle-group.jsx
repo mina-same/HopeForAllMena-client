@@ -5,10 +5,7 @@ import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group"
 import { cn } from "../../lib/utils"
 import { toggleVariants } from "./toggle"
 
-const ToggleGroupContext = React.createContext({
-  size: "default",
-  variant: "default",
-})
+const ToggleGroupContext = React.createContext(null)
 
 const ToggleGroup = React.forwardRef(({ className, variant, size, children, ...props }, ref) => (
   <ToggleGroupPrimitive.Root
@@ -30,8 +27,8 @@ const ToggleGroupItem = React.forwardRef(({ className, children, variant, size, 
     <ToggleGroupPrimitive.Item
       ref={ref}
       className={cn(toggleVariants({
-        variant: context.variant || variant,
-        size: context.size || size,
+        variant: context?.variant || variant || "default",
+        size: context?.size || size || "default",
       }), className)}
       {...props}>
       {children}

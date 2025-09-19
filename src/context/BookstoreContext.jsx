@@ -8,7 +8,7 @@ const aiMlImg = 'https://via.placeholder.com/300x400/7C3AED/FFFFFF?text=AI+ML';
 const cybersecurityImg = 'https://via.placeholder.com/300x400/EA580C/FFFFFF?text=Security';
 const cloudImg = 'https://via.placeholder.com/300x400/0891B2/FFFFFF?text=Cloud';
 
-const BookstoreContext = createContext(undefined);
+const BookstoreContext = createContext(null);
 
 // Sample data
 const sampleBooks = [

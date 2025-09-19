@@ -17,7 +17,10 @@ import {
   Calendar,
   Star,
   ShieldCheck,
-  CreditCard
+  CreditCard,
+  FileText,
+  Edit3,
+  MessageCircle
 } from 'lucide-react';
 import {
   Sidebar,
@@ -44,13 +47,14 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   const [coursesOpen, setCoursesOpen] = useState(true);
   const [magazinesOpen, setMagazinesOpen] = useState(true);
   const [trainingOpen, setTrainingOpen] = useState(true);
+  const [blogOpen, setBlogOpen] = useState(true);
   const { user, hasPermission, hasAnyPermission } = useAuth();
 
   const isCollapsed = state === 'collapsed';
 
   // Define permission mappings for each section - using actual permission names from seed data
   const sectionPermissions = {
-    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids'],
+    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids', 'blogs'],
     analytics: ['analytics'],
     messages: ['contact-messages'],
     calendar: ['calendar'],
@@ -67,7 +71,10 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
     'training-books': ['training-books'],
     'training-requests': ['training-requests'],
     'training-followup-requests': ['training-followup-requests'],
-    'generate-ids': ['generate-ids']
+    'generate-ids': ['generate-ids'],
+    'new-blog': ['blogs'],
+    'all-blogs': ['blogs'],
+    'blog-comments': ['blogs']
   };
 
   // Check if user has permission for a specific section
@@ -181,6 +188,24 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
       title: 'Generate IDs',
       icon: CreditCard,
       id: 'generate-ids'
+    }
+  ].filter(item => hasSectionPermission(item.id));
+
+  const blogItems = [
+    {
+      title: 'New Blog',
+      icon: Edit3,
+      id: 'new-blog'
+    },
+    {
+      title: 'All Blogs',
+      icon: FileText,
+      id: 'all-blogs'
+    },
+    {
+      title: 'Comments',
+      icon: MessageCircle,
+      id: 'blog-comments'
     }
   ].filter(item => hasSectionPermission(item.id));
 
@@ -455,6 +480,49 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                                 )}
                               >
                                 <item.icon className="h-4 w-4 flex-shrink-0 text-sidebar-foreground/80" />
+                                {!isCollapsed && <span className="whitespace-nowrap">{item.title}</span>}
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </SidebarMenuItem>
+                )}
+
+                {/* Blog Management */}
+                {blogItems.length > 0 && (
+                  <SidebarMenuItem>
+                    <Collapsible open={blogOpen} onOpenChange={setBlogOpen}>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton
+                          className={cn(
+                            "w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
+                            "hover:bg-[#2194D1]"
+                          )}
+                        >
+                          <FileText className="h-4 w-4 flex-shrink-0" />
+                          {!isCollapsed && (
+                            <>
+                              <span className="font-medium whitespace-nowrap">Blog Management</span>
+                              <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
+                            </>
+                          )}
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {blogItems.map((item) => (
+                            <SidebarMenuSubItem key={item.id}>
+                              <SidebarMenuSubButton
+                                onClick={() => handleItemClick(item.id)}
+                                isActive={activeSection === item.id}
+                                className={cn(
+                                  "w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
+                                )}
+                              >
+                                <item.icon className="h-4 w-4 flex-shrink-0" />
                                 {!isCollapsed && <span className="whitespace-nowrap">{item.title}</span>}
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>

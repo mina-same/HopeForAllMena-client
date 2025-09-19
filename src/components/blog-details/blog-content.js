@@ -1,82 +1,131 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { navigate } from "gatsby";
 import blogDetailsImage from "../../assets/images/blog/blog-d-1-1.jpg";
+import blogAPI from "../../services/blogAPI";
 
-const BlogContent = () => {
+const BlogContent = ({ blog }) => {
+  const [adjacentBlogs, setAdjacentBlogs] = useState({ previous: null, next: null });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchAdjacentBlogs = async () => {
+      if (!blog || !blog.slug) return;
+      
+      try {
+        setLoading(true);
+        const adjacent = await blogAPI.getAdjacentBlogs(blog.slug);
+        setAdjacentBlogs(adjacent);
+      } catch (error) {
+        console.error('Failed to fetch adjacent blogs:', error);
+        setAdjacentBlogs({ previous: null, next: null });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAdjacentBlogs();
+  }, [blog?.slug]);
+
+  if (!blog) return null;
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      day: 'numeric', 
+      month: 'short' 
+    });
+  };
+
+  const formatContent = (content) => {
+    // Render HTML content directly
+    return <div dangerouslySetInnerHTML={{ __html: content }} />;
+  };
+
   return (
     <div>
       <div className="blog-card__image">
-        <img src={blogDetailsImage} alt="" />
-        <div className="blog-card__date">20 May</div>
+        <img src={blog.image || blogDetailsImage} alt={blog.title} />
+        <div className="blog-card__date">
+          {formatDate(blog.publishedAt || blog.createdAt)}
+        </div>
       </div>
       <div className="blog-card__meta d-flex justify-content-start mt-0 mb-0">
-        <a href="news-details.html">
-          <i className="far fa-user-circle"></i> Admin
+        <a href="#none">
+          <i className="far fa-user-circle"></i> {blog.author?.name || 'Admin'}
         </a>
-        <a href="news-details.html">
-          <i className="far fa-comments"></i> 2 Comments
+        <a href="#none">
+          <i className="far fa-eye"></i> {blog.views || 0} Views
         </a>
       </div>
-      <h3>Our donation is hope for poor childrens</h3>
-      <p>
-        There are many variations of passages of available but majority have
-        alteration in some by inject humour or random words. There are many
-        variations of passages of Lorem Ipsum available, but the majority have
-        suffered alteration in some form, by injected humour, or randomised
-        words which don't look even slightly believable. If you are going to use
-        a passage of Lorem Ipsum, you need to be sure there isn't anything
-        embarrassing hidden in the middle of text. All the Lorem Ipsum
-        generators on the Internet tend to repeat predefined chunks as
-        necessary, making this the first true generator on the Internet. It uses
-        a dictionary of over 200 Latin words, combined with a handful of model
-        sentence structures, to generate Lorem Ipsum which looks reasonable. The
-        generated Lorem Ipsum is therefore always free from repetition, injected
-        humour, or non-characteristic words etc.
-      </p>
-      <p>
-        There are many variations of passages of available but majority have
-        alteration in some by inject humour or random words. There are many
-        variations of passages of Lorem Ipsum available, but the majority have
-        suffered alteration in some form, by injected humour, or randomised
-        words which don't look even slightly believable. If you are going to use
-        a passage of Lorem Ipsum, you need to be sure there isn't anything
-        embarrassing hidden in the middle of text. All the Lorem Ipsum
-        generators on the Internet tend to repeat predefined chunks as
-        necessary, making this the first true generator on the Internet. It uses
-        a dictionary of over 200 Latin words, combined with a handful of model
-        sentence structures, to generate Lorem Ipsum which looks reasonable. The
-        generated Lorem Ipsum is therefore always free from repetition, injected
-        humour, or non-characteristic words etc.
-      </p>
+      <h3>{blog.title}</h3>
+      
+      {/* Render blog content */}
+      <div className="blog-content">
+        {blog.content ? formatContent(blog.content) : (
+          <p>{blog.excerpt}</p>
+        )}
+      </div>
+
       <div className="blog-details__meta">
-        <ul className="list-unstyled blog-details__category">
-          <li>
-            <span>Tags:</span>
-          </li>
-          <li>
-            <a href="#none">charity</a>
-          </li>
-          <li>
-            <a href="#none">donations</a>
-          </li>
-          <li>
-            <a href="#none">savelives</a>
-          </li>
-        </ul>
+        {blog.tags && blog.tags.length > 0 && (
+          <ul className="list-unstyled blog-details__category">
+            <li>
+              <span>Tags:</span>
+            </li>
+            {blog.tags.map((tag, index) => (
+              <li key={index}>
+                <a href="#none">{tag}</a>
+              </li>
+            ))}
+          </ul>
+        )}
+        
         <ul className="list-unstyled blog-details__category">
           <li>
             <span>Category:</span>
           </li>
           <li>
-            <a href="#none">charity</a>
-          </li>
-          <li>
-            <a href="#none">childrens</a>
+            <a href="#none">{blog.category}</a>
           </li>
         </ul>
       </div>
+      
       <div className="blog-navigations">
-        <a href="#none">Our donation is hope for poor childrens</a>
-        <a href="#none">Fundrising for Early Childhood Rise</a>
+        {adjacentBlogs.previous ? (
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(`/blog/${adjacentBlogs.previous.slug}`);
+            }}
+            className="nav-link previous"
+            title={adjacentBlogs.previous.title}
+          >
+            <i className="fas fa-arrow-left"></i> Previous Article
+          </a>
+        ) : (
+          <span className="nav-link disabled">
+            <i className="fas fa-arrow-left"></i> Previous Article
+          </span>
+        )}
+        
+        {adjacentBlogs.next ? (
+          <a 
+            href="#" 
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(`/blog/${adjacentBlogs.next.slug}`);
+            }}
+            className="nav-link next"
+            title={adjacentBlogs.next.title}
+          >
+            Next Article <i className="fas fa-arrow-right"></i>
+          </a>
+        ) : (
+          <span className="nav-link disabled">
+            Next Article <i className="fas fa-arrow-right"></i>
+          </span>
+        )}
       </div>
     </div>
   );

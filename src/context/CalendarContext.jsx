@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import eventService from '../services/eventService';
 
-const CalendarContext = createContext(undefined);
+const CalendarContext = createContext(null);
 
 export const useCalendar = () => {
   const context = useContext(CalendarContext);

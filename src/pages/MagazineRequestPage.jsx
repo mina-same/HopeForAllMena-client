@@ -10,16 +10,170 @@ import { useBookstore } from '../context/BookstoreContext';
 import { useToast } from '../hooks/use-toast';
 import { ArrowLeft, Send, BookOpenCheck, Plus, X } from 'lucide-react';
 
-// Available magazines list
+// Import magazine images
+import theGreatBookImg from '../assets/images/magazines/The Great Book, the Book of Hope.jpg';
+import bookOfHopeImg from '../assets/images/magazines/The Book of Hope.jpg';
+import giftChangesImg from '../assets/images/magazines/The Gift That Changes Everything.jpg';
+import journeyBibleImg from '../assets/images/magazines/A Journey in the World of the Bible.jpg';
+import bibleChildrenImg from '../assets/images/magazines/The Bible for Children.jpg';
+import pathHopeImg from '../assets/images/magazines/The Path of Hope.jpg';
+import onEdgeImg from '../assets/images/magazines/On the Edge.webp';
+import shepherdImg from '../assets/images/magazines/How the Shepherd Saved His Sheep.webp';
+import goodNeighborImg from '../assets/images/magazines/The Good Neighbor.webp';
+
+// Available magazines list with images
 const availableMagazines = [
-  'The Great Book, the Book of Hope',
-  'The Book of Hope',
-  'The Gift That Changes Everything',
-  'A Journey in the World of the Bible',
-  'The Bible for Children',
-  'The Path of Hope',
-  'On the Edge'
+  {
+    id: '1',
+    title: 'The Great Book',
+    titleAr: 'الكتاب العظيم',
+    image: theGreatBookImg,
+    category: 'Children'
+  },
+  {
+    id: '2',
+    title: 'The Book of Hope',
+    titleAr: 'كتاب الرجاء',
+    image: bookOfHopeImg,
+    category: 'Devotional'
+  },
+  {
+    id: '3',
+    title: 'The Gift That Changes Everything',
+    titleAr: 'الهدية التي تغير كل شيء',
+    image: giftChangesImg,
+    category: 'Christmas'
+  },
+  {
+    id: '4',
+    title: 'Journey in the World of the Bible',
+    titleAr: 'رحلة في عالم الكتاب',
+    image: journeyBibleImg,
+    category: 'Children'
+  },
+  {
+    id: '5',
+    title: 'The Bible',
+    titleAr: 'الكتاب المقدس',
+    image: bibleChildrenImg,
+    category: 'Biblical Study'
+  },
+  {
+    id: '6',
+    title: 'The Way of Hope',
+    titleAr: 'طريق الرجاء',
+    image: pathHopeImg,
+    category: 'Youth'
+  },
+  {
+    id: '7',
+    title: 'On the Edge',
+    titleAr: 'على الحافة',
+    image: onEdgeImg,
+    category: 'Testimony'
+  },
+  {
+    id: '8',
+    title: 'How the Shepherd Saved His Sheep',
+    titleAr: 'كيف أنقذ الراعي خرافه',
+    image: shepherdImg,
+    category: 'Devotional'
+  },
+  {
+    id: '9',
+    title: 'The Good Neighbor',
+    titleAr: 'الجار الصالح',
+    image: goodNeighborImg,
+    category: 'Visual'
+  }
 ];
+
+// Custom Magazine Select Component with Images
+const MagazineSelect = ({ value, onValueChange, placeholder = "Choose a magazine", className = "" }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const selectedMagazine = availableMagazines.find(mag => mag.title === value);
+  
+  // Debug: Log magazine count
+  React.useEffect(() => {
+    console.log(`Total magazines available: ${availableMagazines.length}`);
+    console.log('Available magazines:', availableMagazines.map(m => m.title));
+  }, []);
+
+  return (
+    <div className={`relative ${className}`}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full h-14 px-4 py-2 text-left bg-background border border-border/50 rounded-md focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 transition-all duration-200 flex items-center justify-between"
+      >
+        <div className="flex items-center gap-3">
+          {selectedMagazine ? (
+            <>
+              <img
+                src={selectedMagazine.image}
+                alt={selectedMagazine.title}
+                className="w-8 h-8 object-cover rounded border"
+                onError={(e) => {
+                  console.log(`Failed to load selected image for ${selectedMagazine.title}:`, selectedMagazine.image);
+                  e.target.style.display = 'none';
+                }}
+              />
+              <div>
+                <span className="text-foreground font-medium">{selectedMagazine.title}</span>
+                <span className="text-xs text-muted-foreground ml-2 px-2 py-1 bg-accent/10 rounded">
+                  {selectedMagazine.category}
+                </span>
+              </div>
+            </>
+          ) : (
+            <span className="text-muted-foreground">{placeholder}</span>
+          )}
+        </div>
+        <svg
+          className={`w-4 h-4 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 z-50 mt-1 bg-popover border border-border/50 rounded-md shadow-lg max-h-60 overflow-y-auto">
+          {availableMagazines.map((magazine) => (
+            <button
+              key={magazine.id}
+              type="button"
+              onClick={() => {
+                onValueChange(magazine.title);
+                setIsOpen(false);
+              }}
+              className="w-full px-4 py-3 text-left hover:bg-accent/10 focus:bg-accent/10 focus:outline-none transition-colors flex items-center gap-3 border-b border-border/20 last:border-b-0"
+            >
+              <img
+                src={magazine.image}
+                alt={magazine.title}
+                className="w-10 h-10 object-cover rounded border flex-shrink-0"
+                onError={(e) => {
+                  console.log(`Failed to load image for ${magazine.title}:`, magazine.image);
+                  e.target.style.display = 'none';
+                }}
+              />
+              <div className="flex-1 min-w-0">
+                <div className="font-medium text-foreground truncate">{magazine.title}</div>
+                <div className="text-sm text-muted-foreground truncate">{magazine.titleAr}</div>
+                <span className="inline-block text-xs text-muted-foreground mt-1 px-2 py-1 bg-accent/10 rounded">
+                  {magazine.category}
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const MagazineRequestPage = () => {
   const { addMagazineRequest } = useBookstore();
@@ -274,18 +428,11 @@ const MagazineRequestPage = () => {
                       <Label htmlFor="magazineName" className="text-foreground font-medium text-base">
                         Select Magazine *
                       </Label>
-                      <Select value={formData.magazineName} onValueChange={handleSelectChange} required>
-                        <SelectTrigger className="h-14 text-base bg-background border-border/50 focus:border-accent">
-                          <SelectValue placeholder="Choose a magazine" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-popover border-border/50">
-                          {availableMagazines.map((magazine) => (
-                            <SelectItem key={magazine} value={magazine} className="text-base py-3">
-                              {magazine}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <MagazineSelect
+                        value={formData.magazineName}
+                        onValueChange={handleSelectChange}
+                        placeholder="Choose a magazine"
+                      />
                     </div>
 
                     <div className="space-y-3">
@@ -354,21 +501,12 @@ const MagazineRequestPage = () => {
                                 Select Magazine *
                               </Label>
                             </div>
-                            <Select
+                            <MagazineSelect
                               value={additionalMag.magazineName}
                               onValueChange={(value) => updateAdditionalMagazine(additionalMag.id, 'magazineName', value)}
-                            >
-                              <SelectTrigger className="h-14 text-base bg-background/80 backdrop-blur-sm border-2 border-border/50 focus:border-accent focus:ring-2 focus:ring-accent/20 transition-all duration-200 shadow-sm">
-                                <SelectValue placeholder="Choose a magazine" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-popover/95 backdrop-blur-sm border-border/50 shadow-xl">
-                                {availableMagazines.map((magazine) => (
-                                  <SelectItem key={magazine} value={magazine} className="text-base py-4 hover:bg-accent/10 focus:bg-accent/10">
-                                    {magazine}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
+                              placeholder="Choose a magazine"
+                              className="bg-background/80 backdrop-blur-sm"
+                            />
                           </div>
 
                           <div className="space-y-4">

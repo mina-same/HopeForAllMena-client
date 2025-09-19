@@ -1,13 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "gatsby";
 import { Link as ScrollLink } from "react-scroll";
 import { Container, Row, Col } from "react-bootstrap";
 import logoLight from "../assets/images/logos/Hope4allMENADark.png";
 import blogPost1 from "../assets/images/resources/footer-img-1-1.jpg";
 import blogPost2 from "../assets/images/resources/footer-img-1-2.jpg";
+import blogAPI from "../services/blogAPI";
 
 
 const Footer = () => {
+  // Temporarily disable i18n
+  // const { t } = useTranslation();
+  const [latestBlogs, setLatestBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLatestBlogs = async () => {
+      try {
+        setLoading(true);
+        const response = await blogAPI.getRecentBlogs(2);
+        setLatestBlogs(response.blogs || response || []);
+      } catch (error) {
+        console.error('Error fetching latest blogs for footer:', error);
+        setLatestBlogs([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestBlogs();
+  }, []);
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
+
+  const truncateTitle = (title, maxLength = 40) => {
+    return title.length > maxLength ? title.substring(0, maxLength) + '...' : title;
+  };
+
   return (
     <section className="site-footer">
       <div className="main-footer pt-142 pb-80">
@@ -92,24 +127,66 @@ const Footer = () => {
             </Col>
             <Col lg={3} md={6} sm={12}>
               <div className="footer-widget mb-40 footer-widget__blog">
-                <h3 className="footer-widget__title">Blog</h3>
+                <h3 className="footer-widget__title">Latest Blog Posts</h3>
                 <ul className="list-unstyled footer-widget__blog">
-                  <li>
-                    <img src={blogPost1} alt="" />
-                    <p>22 May, 2020</p>
-                    <h3>
-                      <Link to="/news-details">
-                        You can help the poor in need
-                      </Link>
-                    </h3>
-                  </li>
-                  <li>
-                    <img src={blogPost2} alt="" />
-                    <p>22 May, 2020</p>
-                    <h3>
-                      <Link to="/news-details">Rise fund for Healthy Food</Link>
-                    </h3>
-                  </li>
+                  {loading ? (
+                    <>
+                      <li>
+                        <img src={blogPost1} alt="Loading..." width="68" height="70" style={{ objectFit: 'cover' }} />
+                        <p>Loading...</p>
+                        <h3>
+                          <span>Loading latest posts...</span>
+                        </h3>
+                      </li>
+                      <li>
+                        <img src={blogPost2} alt="Loading..." width="68" height="70" style={{ objectFit: 'cover' }} />
+                        <p>Loading...</p>
+                        <h3>
+                          <span>Please wait...</span>
+                        </h3>
+                      </li>
+                    </>
+                  ) : latestBlogs.length > 0 ? (
+                    latestBlogs.map((blog, index) => (
+                      <li key={blog._id}>
+                        <img 
+                          src={blog.image || (index === 0 ? blogPost1 : blogPost2)} 
+                          alt={blog.title}
+                          width="68"
+                          height="70"
+                          style={{ objectFit: 'cover' }}
+                          onError={(e) => {
+                            e.target.src = index === 0 ? blogPost1 : blogPost2;
+                          }}
+                        />
+                        <p>{formatDate(blog.createdAt)}</p>
+                        <h3>
+                          <Link to={`/news-details/${blog.slug || blog._id}`}>
+                            {truncateTitle(blog.title)}
+                          </Link>
+                        </h3>
+                      </li>
+                    ))
+                  ) : (
+                    <>
+                      <li>
+                        <img src={blogPost1} alt="Default post" width="68" height="70" style={{ objectFit: 'cover' }} />
+                        <p>22 May, 2020</p>
+                        <h3>
+                          <Link to="/news-details">
+                            You can help the poor in need
+                          </Link>
+                        </h3>
+                      </li>
+                      <li>
+                        <img src={blogPost2} alt="Default post" width="68" height="70" style={{ objectFit: 'cover' }} />
+                        <p>22 May, 2020</p>
+                        <h3>
+                          <Link to="/news-details">Rise fund for Healthy Food</Link>
+                        </h3>
+                      </li>
+                    </>
+                  )}
                 </ul>
               </div>
             </Col>

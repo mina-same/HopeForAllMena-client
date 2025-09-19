@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from '@reach/router';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
-import { useBookstore } from '../context/BookstoreContext';
 import { useToast } from '../hooks/use-toast';
 import Layout from '../components/layout';
 import StickyHeader from '../components/header/sticky-header';
@@ -15,30 +14,35 @@ import Footer from '../components/footer';
 
 const OrderPage = () => {
   const location = useLocation();
-  const { addContact, setFilters } = useBookstore();
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    subject: ''
   });
 
   useEffect(() => {
     // Pre-fill form if coming from book order
     if (location.state) {
-      const { bookTitle, preFilledMessage } = location.state;
-      if (preFilledMessage) {
-        setForm(prev => ({ ...prev, message: preFilledMessage }));
+      const { bookTitle, bookAuthor, bookId, preFilledMessage } = location.state;
+      if (bookTitle) {
+        setForm(prev => ({
+          ...prev,
+          subject: `Book Order: ${bookTitle}`,
+          message: preFilledMessage || `I would like to order the book "${bookTitle}"${bookAuthor ? ` by ${bookAuthor}` : ''}. Please let me know about availability and pricing.`
+        }));
       }
     }
   }, [location.state]);
 
-  const handleSubmit = () => {
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
+  const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.message || !form.subject) {
       toast({
         title: "Please fill all fields",
-        description: "Name, email, and message are required.",
+        description: "Name, email, message, and subject are required.",
         variant: "destructive"
       });
       return;
@@ -55,33 +59,136 @@ const OrderPage = () => {
       return;
     }
 
-    addContact({
-      name: form.name.trim(),
-      email: form.email.trim(),
-      message: form.message.trim(),
-      bookTitle: location.state?.bookTitle
-    });
+    setIsSubmitting(true);
 
-    setForm({ name: '', email: '', message: '' });
+    try {
+      const contactData = {
+        name: form.name.trim(),
+        email: form.email.trim().toLowerCase(),
+        subject: form.subject.trim() || 'General Inquiry',
+        message: form.message.trim(),
+        type: location.state?.bookId ? 'book-order' : 'general',
+        book: location.state?.bookId || undefined,
+        bookTitle: location.state?.bookTitle || undefined,
+        bookAuthor: location.state?.bookAuthor || undefined,
+        source: 'website',
+        preferredContactMethod: 'email'
+      };
 
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting us. We'll get back to you soon.",
-    });
+      const response = await fetch('http://localhost:5001/api/contact-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(contactData)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setForm({ name: '', email: '', message: '', subject: '' });
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+        });
+      } else {
+        throw new Error(result.message || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Contact form submission error:', error);
+      toast({
+        title: "Error sending message",
+        description: "There was a problem sending your message. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <Layout>
+    <Layout pageTitle="Order Page || Hope For All Mena Ministry">
       <HeaderTwo />
       <StickyHeader />
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background pt-[100px]">
 
         <main className="container mx-auto px-4 py-12">
-          <div className="max-w-4xl mx-auto">
+          <div className="">
+
+
+            {/* Physical Book Locations */}
+            <div className="mb-12">
+              <h2 className="text-2xl font-bold mb-6 text-center">Visit Our Book Locations</h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <MapPin className="h-5 w-5 mr-2 text-theme-base" />
+                      Cairo Office
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-2">
+                      15 Tahrir Square<br />
+                      Downtown Cairo, Egypt
+                    </p>
+                    <p className="text-sm font-semibold text-theme-base">
+                      Phone: +20 2 2792 1234
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Open: Sun-Thu 9AM-6PM
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <MapPin className="h-5 w-5 mr-2 text-theme-base" />
+                      Alexandria Branch
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-2">
+                      45 Corniche Road<br />
+                      Alexandria, Egypt
+                    </p>
+                    <p className="text-sm font-semibold text-theme-base">
+                      Phone: +20 3 487 5678
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Open: Sun-Thu 10AM-7PM
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="flex items-center">
+                      <MapPin className="h-5 w-5 mr-2 text-theme-base" />
+                      Assiut Center
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-2">
+                      28 University Street<br />
+                      Assiut, Egypt
+                    </p>
+                    <p className="text-sm font-semibold text-theme-base">
+                      Phone: +20 88 231 9012
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Open: Sun-Thu 9AM-5PM
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
             <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold mb-4 text-foreground">Contact Us</h1>
+              <h1 className="text-4xl font-bold mb-4 text-foreground">Order Books</h1>
               <p className="text-xl text-muted-foreground">
-                Have questions about our books or need help with an order? We're here to help!
+                Get your books from our physical locations or contact us for delivery!
               </p>
             </div>
 
@@ -100,6 +207,7 @@ const OrderPage = () => {
                       onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
                       placeholder="Enter your full name"
                       required
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -112,6 +220,19 @@ const OrderPage = () => {
                       onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
                       placeholder="Enter your email address"
                       required
+                      disabled={isSubmitting}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="subject">Subject *</Label>
+                    <Input
+                      id="subject"
+                      value={form.subject}
+                      onChange={(e) => setForm(prev => ({ ...prev, subject: e.target.value }))}
+                      placeholder="What is this regarding?"
+                      required
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -124,6 +245,7 @@ const OrderPage = () => {
                       placeholder="Tell us how we can help you..."
                       rows={6}
                       required
+                      disabled={isSubmitting}
                     />
                   </div>
 
@@ -131,9 +253,10 @@ const OrderPage = () => {
                     onClick={handleSubmit}
                     className="w-full bg-gradient-hero hover:opacity-90"
                     size="lg"
+                    disabled={isSubmitting}
                   >
                     <Send className="h-4 w-4 mr-2" />
-                    Send Message
+                    {isSubmitting ? 'Sending...' : 'Send Message'}
                   </Button>
                 </CardContent>
               </Card>
@@ -151,7 +274,7 @@ const OrderPage = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold mb-1">Email</h3>
-                        <p className="text-muted-foreground">info@bookhaven.com</p>
+                        <p className="text-muted-foreground">info@hopeforallmena.org</p>
                         <p className="text-sm text-muted-foreground">We reply within 24 hours</p>
                       </div>
                     </div>
@@ -162,22 +285,8 @@ const OrderPage = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold mb-1">Phone</h3>
-                        <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                        <p className="text-sm text-muted-foreground">Mon-Fri, 9AM-6PM EST</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start space-x-4">
-                      <div className="bg-theme-base/10 p-3 rounded-lg">
-                        <MapPin className="h-6 w-6 text-theme-base" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold mb-1">Address</h3>
-                        <p className="text-muted-foreground">
-                          123 Book Street<br />
-                          Reading City, RC 12345<br />
-                          United States
-                        </p>
+                        <p className="text-muted-foreground">+20 2 2792 1234</p>
+                        <p className="text-sm text-muted-foreground">Sun-Thu, 9AM-6PM Cairo Time</p>
                       </div>
                     </div>
                   </CardContent>
@@ -185,29 +294,29 @@ const OrderPage = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Why Choose BookHaven?</CardTitle>
+                    <CardTitle>Why Choose Hope For All MENA?</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3 text-muted-foreground">
                       <li className="flex items-start">
                         <span className="text-theme-base mr-2">•</span>
-                        Curated collection of high-quality technical books
+                        Educational books promoting hope and positive change
                       </li>
                       <li className="flex items-start">
                         <span className="text-theme-base mr-2">•</span>
-                        Fast and reliable delivery worldwide
+                        Available at multiple locations across Egypt
                       </li>
                       <li className="flex items-start">
                         <span className="text-theme-base mr-2">•</span>
-                        Expert customer support team
+                        Supporting community development in MENA region
                       </li>
                       <li className="flex items-start">
                         <span className="text-theme-base mr-2">•</span>
-                        Competitive pricing and special offers
+                        Affordable pricing for educational materials
                       </li>
                       <li className="flex items-start">
                         <span className="text-theme-base mr-2">•</span>
-                        PDF samples available for most books
+                        Dedicated customer service in Arabic and English
                       </li>
                     </ul>
                   </CardContent>

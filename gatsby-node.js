@@ -1,4 +1,5 @@
 const path = require('path');
+const { languages } = require('./languages');
 
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage, deletePage } = actions;
@@ -28,11 +29,25 @@ exports.createPages = async ({ actions }) => {
     matchPath: '/admin/*',
   });
 
+  // Create specific route for blog editing
+  createPage({
+    path: '/admin/blog/edit/*',
+    component: path.resolve('./src/pages/admin.jsx'),
+    matchPath: '/admin/blog/edit/*',
+  });
+
   // Create dynamic book detail pages
   createPage({
     path: '/book/*',
     component: path.resolve('./src/pages/bookDetils.jsx'),
     matchPath: '/book/*',
+  });
+
+  // Create dynamic news detail pages
+  createPage({
+    path: '/news-details/*',
+    component: path.resolve('./src/pages/news-details.jsx'),
+    matchPath: '/news-details/*',
   });
 };
 
@@ -59,16 +74,31 @@ exports.onCreateDevServer = ({ app }) => {
       '/TrainingFollowUpRequestPage', '/TrainingNewRequestPage', '/TrainingSelectionPage'
     ];
 
-    // Check if the requested URL is a valid page
-    const isValidPage = validPages.some(page =>
-      req.url === page ||
-      req.url.startsWith(page + '/') ||
-      req.url.startsWith('/admin/') ||
-      req.url.startsWith('/book/')
-    );
+    // Check if the requested URL is a valid page or language-prefixed page
+    const isValidPage = validPages.some(page => {
+      // Check direct page match
+      if (req.url === page || req.url.startsWith(page + '/')) {
+        return true;
+      }
+      
+      // Check language-prefixed pages
+      return languages.some(lang => {
+        const langPage = `/${lang}${page === '/' ? '' : page}`;
+        return req.url === langPage || req.url.startsWith(langPage + '/');
+      });
+    });
+
+    // Check for language-prefixed dynamic routes
+    const isDynamicRoute = languages.some(lang => 
+      req.url.startsWith(`/${lang}/admin/`) ||
+      req.url.startsWith(`/${lang}/book/`) ||
+      req.url.startsWith(`/${lang}/news-details/`)
+    ) || req.url.startsWith('/admin/') ||
+        req.url.startsWith('/book/') ||
+        req.url.startsWith('/news-details/');
 
     // If not a valid page, redirect to 404
-    if (!isValidPage) {
+    if (!isValidPage && !isDynamicRoute) {
       return res.redirect('/404/');
     }
 

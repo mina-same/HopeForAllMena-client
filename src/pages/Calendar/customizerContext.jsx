@@ -4,7 +4,7 @@ import React from "react";
 
 
 // Create the context with an initial value
-export const CustomizerContext = createContext(undefined);
+export const CustomizerContext = createContext(null);
 
 // Create the provider component
 export const CustomizerContextProvider = ({ children }) => {

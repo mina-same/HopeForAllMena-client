@@ -1,0 +1,41 @@
+{
+  "home": {
+    "title": "Home One || Azino || Charity React Next Template",
+    "aboutPlatform": "About Azino Platform",
+    "ourStrategy": "Our Strategy",
+    "strategy1": "Engage with Local Churches",
+    "strategy1Description": "Building strong partnerships with local churches to strengthen communities.",
+    "strategy2": "Empower Church Leaders",
+    "strategy2Description": "Providing curricula and resources to enhance church leadership and service.",
+    "strategy3": "Deliver Hope",
+    "strategy3Description": "Bringing the message of hope to underserved communities and areas.",
+    "strategy4": "Support Community Projects",
+    "strategy4Description": "Enabling churches to serve through developmental and social initiatives.",
+    "strategy5": "Serve Refugees",
+    "strategy5Description": "Focusing on refugee support in Egypt and surrounding regions.",
+    "strategy6": "Biblical Education",
+    "strategy6Description": "Providing biblical education and nurturing enlightened writers.",
+    "welcomeMessage": "Welcome to Hope For All Mena Ministry",
+    "missionStatement": "We believe that we can save more lifes with you.",
+    "service1Title": "Evangelism and discipleship",
+    "service1Description": "A new generation that changes and brings change.",
+    "service2Title": "Development Department",
+    "service2Description": "Improving life opportunities for a better future.",
+    "service3Title": "Studies and Education",
+    "service3Description": "Our goal is the mindset of the pioneers.",
+    "service4Title": "Publishing and Distribution House",
+    "service4Description": "Supporting young writers with impactful publishing."
+  },
+  "about": {
+    "title": "About Us",
+    "pageTitle": "About || Hope For All Mena"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "pageTitle": "Contact || Hope For All Mena"
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "pageTitle": "Admin || Hope For All Mena"
+  }
+}

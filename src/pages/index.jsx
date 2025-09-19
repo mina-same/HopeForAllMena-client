@@ -24,7 +24,7 @@ import TrendingProducts from "../components/bookstore/TrendingProducts";
 
 const HomeOne = () => {
   return (
-    <Layout pageTitle="Home One || Azino || Charity React Next Template">
+    <Layout pageTitle="Home One || Hope For All Mena">
       <HeaderTwo />
       <StickyHeader />
       <MainSlider />
@@ -55,3 +55,5 @@ const HomeOne = () => {
 };
 
 export default HomeOne;
+
+// export const query = i18nPageQuery;

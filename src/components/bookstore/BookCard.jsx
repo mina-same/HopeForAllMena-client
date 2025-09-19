@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import { Heart, Eye, ShoppingCart } from 'lucide-react';
 
 export const BookCard = ({ book, viewMode }) => {
-  const navigate = useNavigate();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -12,7 +11,7 @@ export const BookCard = ({ book, viewMode }) => {
   };
 
   const handleQuickView = () => {
-    alert('Quick view opened!');
+    navigate(`/book/${book.id}`);
   };
 
   const handleOrderBook = () => {

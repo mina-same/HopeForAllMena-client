@@ -158,7 +158,7 @@ export default function BookDetail() {
     if (!book) return;
     
     // Navigate to order page with book information
-    navigate('/order', {
+    navigate('/orderPage/', {
       state: {
         bookTitle: book.title,
         bookId: book._id,

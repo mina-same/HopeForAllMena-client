@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useToast } from '../../hooks/use-toast';
-import { contactMessagesAPI } from '../../services/publishingAPI';
+import contactMessageService from '../../services/contactMessageService';
 import ConfirmationModal from '../ui/ConfirmationModal';
 
 export function ContactMessagesSection() {
@@ -42,10 +42,10 @@ export function ContactMessagesSection() {
         sortOrder: 'desc'
       };
 
-      const response = await contactMessagesAPI.getContactMessages(params);
-      setMessages(response.data.data.messages);
-      setTotalPages(response.data.data.pagination.totalPages);
-      setTotalMessages(response.data.data.pagination.totalMessages);
+      const response = await contactMessageService.getContactMessages(params);
+      setMessages(response.data.messages || []);
+      setTotalPages(response.data.pagination?.totalPages || 1);
+      setTotalMessages(response.data.pagination?.totalMessages || 0);
     } catch (error) {
       console.error('Failed to fetch messages:', error);
       toast({
@@ -73,7 +73,7 @@ export function ContactMessagesSection() {
     
     setIsResponding(true);
     try {
-      await contactMessagesAPI.respondToMessage(messageToRespond._id, responseText);
+      await contactMessageService.respondToContactMessage(messageToRespond._id, responseText);
       toast({
         title: "Response Sent",
         description: "Response has been sent successfully.",
@@ -95,7 +95,7 @@ export function ContactMessagesSection() {
 
   const handleMarkAsRead = async (message) => {
     try {
-      await contactMessagesAPI.updateContactMessage(message._id, { status: 'read' });
+      await contactMessageService.updateContactMessageStatus(message._id, 'read');
       toast({
         title: "Message Updated",
         description: "Message marked as read.",
@@ -113,7 +113,7 @@ export function ContactMessagesSection() {
 
   const handleMarkAsResolved = async (message) => {
     try {
-      await contactMessagesAPI.updateContactMessage(message._id, { status: 'resolved' });
+      await contactMessageService.updateContactMessageStatus(message._id, 'resolved');
       toast({
         title: "Message Updated",
         description: "Message marked as resolved.",
@@ -141,9 +141,9 @@ export function ContactMessagesSection() {
 
   const getTypeIcon = (type) => {
     switch (type) {
-      case 'book_order':
+      case 'book-order':
         return <Book className="h-4 w-4" />;
-      case 'general_inquiry':
+      case 'general':
         return <MessageSquare className="h-4 w-4" />;
       case 'support':
         return <User className="h-4 w-4" />;
@@ -154,9 +154,9 @@ export function ContactMessagesSection() {
 
   const getTypeBadge = (type) => {
     switch (type) {
-      case 'book_order':
+      case 'book-order':
         return <Badge variant="default" className="bg-blue-100 text-blue-800"><Book className="h-3 w-3 mr-1" />Book Order</Badge>;
-      case 'general_inquiry':
+      case 'general':
         return <Badge variant="secondary"><MessageSquare className="h-3 w-3 mr-1" />General Inquiry</Badge>;
       case 'support':
         return <Badge variant="outline" className="bg-purple-100 text-purple-800"><User className="h-3 w-3 mr-1" />Support</Badge>;
@@ -223,8 +223,8 @@ export function ContactMessagesSection() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="book_order">Book Order</SelectItem>
-                <SelectItem value="general_inquiry">General Inquiry</SelectItem>
+                <SelectItem value="book-order">Book Order</SelectItem>
+                <SelectItem value="general">General Inquiry</SelectItem>
                 <SelectItem value="support">Support</SelectItem>
               </SelectContent>
             </Select>
@@ -295,7 +295,7 @@ export function ContactMessagesSection() {
                       <p className="text-sm text-foreground mb-2">{message.message}</p>
                       
                       {/* Book Order Details */}
-                      {message.type === 'book_order' && message.book && (
+                      {message.type === 'book-order' && message.book && (
                         <div className="mt-3 p-3 bg-muted/50 rounded-md">
                           <h4 className="font-medium text-sm mb-2">Book Order Details:</h4>
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
@@ -303,7 +303,7 @@ export function ContactMessagesSection() {
                               <span className="text-muted-foreground">Book:</span> {message.book.title}
                             </div>
                             <div>
-                              <span className="text-muted-foreground">Author:</span> {message.book.author.name}
+                              <span className="text-muted-foreground">Author:</span> {message.book.author?.name || message.bookAuthor || 'N/A'}
                             </div>
                             {message.quantity && (
                               <div>

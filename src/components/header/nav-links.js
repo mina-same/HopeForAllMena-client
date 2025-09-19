@@ -3,10 +3,20 @@ import { Link } from "gatsby";
 import flag1 from "../../assets/images/resources/flag-1-1.jpg";
 
 const NavLinks = ({ extraClassName }) => {
+  // Temporarily disable i18n to get basic site working
+  // const { t } = useTranslation();
+  // const { languages, originalPath, i18n } = useI18next();
+  
   const handleDropdownStatus = (e) => {
     let clickedItem = e.currentTarget.parentNode;
     clickedItem.querySelector(".dropdown-list").classList.toggle("show");
   };
+
+  const handleLanguageChange = (e) => {
+    // Temporarily disabled
+    console.log('Language change:', e.target.value);
+  };
+
   return (
     <ul className={`main-menu__list ${extraClassName}`}>
       <li className="">
@@ -46,13 +56,18 @@ const NavLinks = ({ extraClassName }) => {
       </li>
       <li className="language-switcher">
         <div className="language-switcher__inner" style={{ display: "flex", alignItems: "center" }}>
-          <img src={flag1} alt="" style={{ borderRadius: "50%", margin: "7px" }} />
+          <img 
+            src={flag1} 
+            alt="" 
+            style={{ borderRadius: "50%", margin: "7px" }} 
+          />
           <label htmlFor="language-switcher-nav" className="sr-only">
             select language
           </label>
           <select
             className="selectpicker"
             id="language-switcher-nav"
+            onChange={handleLanguageChange}
             style={{
               appearance: "none",
               border: "none",
@@ -63,8 +78,8 @@ const NavLinks = ({ extraClassName }) => {
               width: "50px"
             }}
           >
-            <option value="english">English</option>
-            <option value="arabic">Arabic</option>
+            <option value="en">English</option>
+            <option value="ar">العربية</option>
           </select>
           <i className="fa fa-angle-down" style={{ marginLeft: "5px" }}></i>
         </div>

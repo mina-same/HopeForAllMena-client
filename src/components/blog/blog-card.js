@@ -10,18 +10,20 @@ const BlogCard = ({ image, title, date, text, link, commentCount, author }) => {
           <div className="blog-card__date">{date}</div>
         </div>
         <div className="blog-card__content">
-          <div className="blog-card__meta">
-            <Link to={link}>
-              <i className="far fa-user-circle"></i> {author}
-            </Link>
-            <Link to={link}>
-              <i className="far fa-comments"></i> {commentCount}
-            </Link>
+          <div className="blog-card__content-wrapper">
+            <div className="blog-card__meta">
+              <span>
+                <i className="far fa-user-circle"></i> {author}
+              </span>
+              <span>
+                <i className="far fa-comments"></i> {commentCount}
+              </span>
+            </div>
+            <h3>
+              <Link to={link}>{title}</Link>
+            </h3>
+            <p>{text}</p>
           </div>
-          <h3>
-            <Link to={link}>{title}</Link>
-          </h3>
-          <p>{text}</p>
           <Link className="blog-card__more" to={link}>
             <i className="far fa-angle-right"></i>Read More
           </Link>
