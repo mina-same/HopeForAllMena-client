@@ -9,59 +9,6 @@ import { Textarea } from '../ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 
 
-const mockReviews = [
-  {
-    id: '1',
-    bookTitle: 'Clean Code',
-    reviewer: 'John Doe',
-    rating: 5,
-    comment: 'Excellent book! Really helped me improve my coding practices.',
-    date: '2024-01-15',
-    status: 'pending',
-    isNew: true
-  },
-  {
-    id: '2',
-    bookTitle: 'JavaScript: The Good Parts',
-    reviewer: 'Jane Smith',
-    rating: 4,
-    comment: 'Great insights into JavaScript, though a bit dated now.',
-    date: '2024-01-14',
-    status: 'approved',
-    isNew: false
-  },
-  {
-    id: '3',
-    bookTitle: 'Design Patterns',
-    reviewer: 'Mike Johnson',
-    rating: 5,
-    comment: 'Essential reading for any serious developer.',
-    date: '2024-01-13',
-    status: 'pending',
-    isNew: true
-  },
-  {
-    id: '4',
-    bookTitle: 'Clean Architecture',
-    reviewer: 'Sarah Wilson',
-    rating: 3,
-    comment: 'Good concepts but could be more practical.',
-    date: '2024-01-12',
-    status: 'rejected',
-    isNew: false
-  },
-  {
-    id: '5',
-    bookTitle: 'The Pragmatic Programmer',
-    reviewer: 'Alex Brown',
-    rating: 5,
-    comment: 'Life-changing book for developers!',
-    date: '2024-01-11',
-    status: 'pending',
-    isNew: true
-  }
-];
-
 const ReviewsManagementPage = () => {
   const [reviews, setReviews] = useState(mockReviews);
   const [searchTerm, setSearchTerm] = useState('');

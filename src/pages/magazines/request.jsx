@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { navigate } from 'gatsby';
+import { navigate, graphql } from 'gatsby';
+import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -21,13 +22,15 @@ import Footer from "../../components/footer"
 
 // Available magazines list
 const availableMagazines = [
-  'The Great Book, the Book of Hope',
+  'The Great Book',
   'The Book of Hope',
   'The Gift That Changes Everything',
-  'A Journey in the World of the Bible',
-  'The Bible for Children',
-  'The Path of Hope',
-  'On the Edge'
+  'Journey in the World of the Bible',
+  'The Bible',
+  'The Way of Hope',
+  'On the Edge',
+  'How the Shepherd Saved His Sheep',
+  'The Good Neighbor'
 ];
 
 
@@ -45,8 +48,17 @@ const formSchema = z.object({
 });
 
 const MagazineRequestPage = () => {
+  const { t } = useTranslation('Magazines');
+  const { i18n } = useI18next();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Helper function for language-aware navigation
+  const navigateWithLanguage = (path) => {
+    const currentLanguage = i18n?.resolvedLanguage || 'en';
+    const languagePath = currentLanguage === 'en' ? path : `/${currentLanguage}${path}`;
+    navigate(languagePath);
+  };
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -106,19 +118,19 @@ const MagazineRequestPage = () => {
       await magazineRequestsAPI.createRequest(requestData);
 
       toast({
-        title: "Request Submitted Successfully!",
-        description: "We'll review your magazine request and get back to you soon.",
+        title: t('request.successTitle'),
+        description: t('request.successDescription'),
       });
 
       setTimeout(() => {
-        navigate('/magazines');
+        navigateWithLanguage('/magazines');
       }, 2000);
 
     } catch (error) {
       console.error('Error submitting magazine request:', error);
       toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to submit your request. Please try again.",
+        title: t('request.errorTitle'),
+        description: error.response?.data?.message || t('request.errorDescription'),
         variant: "destructive"
       });
     } finally {
@@ -136,9 +148,9 @@ const MagazineRequestPage = () => {
           <div className="max-w-4xl mx-auto">
             <TrainingHeader
               icon={<BookOpen className="w-4 h-4 text-primary" />}
-              badgeText="Magazine Request"
-              title="Request Our Magazines"
-              description="Fill out the form below to request magazines for your church or community. We'll process your request promptly."
+              badgeText={t('request.badgeText')}
+              title={t('request.title')}
+              description={t('request.description')}
             />
 
             <Form {...form}>
@@ -148,7 +160,7 @@ const MagazineRequestPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
                       <Church className="w-5 h-5 text-primary" />
-                      Personal Information
+                      {t('request.personalInfo')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -158,9 +170,9 @@ const MagazineRequestPage = () => {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Full Name *</FormLabel>
+                            <FormLabel>{t('request.fullName')} *</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter your full name" {...field} />
+                              <Input placeholder={t('request.fullNamePlaceholder')} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -172,9 +184,9 @@ const MagazineRequestPage = () => {
                         name="phoneNumber"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Phone Number *</FormLabel>
+                            <FormLabel>{t('request.phoneNumber')} *</FormLabel>
                             <FormControl>
-                              <Input type="tel" placeholder="Enter your phone number" {...field} />
+                              <Input type="tel" placeholder={t('request.phoneNumberPlaceholder')} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -189,7 +201,7 @@ const MagazineRequestPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
                       <Church className="w-5 h-5 text-primary" />
-                      Church Information
+                      {t('request.churchInfo')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -198,9 +210,9 @@ const MagazineRequestPage = () => {
                       name="churchName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Name of the Church *</FormLabel>
+                          <FormLabel>{t('request.churchName')} *</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter church name" {...field} />
+                            <Input placeholder={t('request.churchNamePlaceholder')} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -212,11 +224,11 @@ const MagazineRequestPage = () => {
                       name="churchAddress"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Church Address *</FormLabel>
+                          <FormLabel>{t('request.churchAddress')} *</FormLabel>
                           <FormControl>
                             <Textarea
                               rows={4}
-                              placeholder="Enter complete church address including city, state, and postal code bg-white"
+                              placeholder={t('request.churchAddressPlaceholder')}
                               className="resize-none"
                               {...field}
                             />
@@ -233,14 +245,14 @@ const MagazineRequestPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
                       <BookOpenCheck className="w-5 h-5 text-primary" />
-                      Magazine Selection
+                      {t('request.magazineSelection')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-4">
                       <div className="flex justify-between items-center">
                         <p className="text-sm text-muted-foreground">
-                          Select magazines and specify the number of copies for each
+                          {t('request.selectionDescription')}
                         </p>
                         <Button
                           type="button"
@@ -250,14 +262,14 @@ const MagazineRequestPage = () => {
                           className="border-primary/30 text-primary hover:bg-primary/10"
                         >
                           <Plus className="w-4 h-4 mr-2" />
-                          Add Another Magazine
+                          {t('request.addAnother')}
                         </Button>
                       </div>
 
                       {fields.map((field, index) => (
                         <div key={field.id} className="space-y-4 p-4 border border-gray-200 rounded-lg bg-gray-50">
                           <div className="flex justify-between items-center">
-                            <h4 className="font-medium text-gray-900">Magazine {index + 1}</h4>
+                            <h4 className="font-medium text-gray-900">{t('request.magazine')} {index + 1}</h4>
                             {fields.length > 1 && (
                               <Button
                                 type="button"
@@ -277,17 +289,17 @@ const MagazineRequestPage = () => {
                               name={`magazines.${index}.magazineName`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Magazine Name *</FormLabel>
+                                  <FormLabel>{t('request.magazineName')} *</FormLabel>
                                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                                     <FormControl>
                                       <SelectTrigger className="bg-white">
-                                        <SelectValue placeholder="Select a magazine" />
+                                        <SelectValue placeholder={t('request.selectMagazine')} />
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
                                       {getAvailableMagazines(index).map((magazine) => (
                                         <SelectItem key={magazine} value={magazine}>
-                                          {magazine}
+                                          {t(`titles.${magazine.replace(/[^a-zA-Z0-9]/g, '')}`)}
                                         </SelectItem>
                                       ))}
                                     </SelectContent>
@@ -302,7 +314,7 @@ const MagazineRequestPage = () => {
                               name={`magazines.${index}.numberOfCopies`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Number of Copies *</FormLabel>
+                                  <FormLabel>{t('request.numberOfCopies')} *</FormLabel>
                                   <FormControl>
                                     <Input
                                       type="number"
@@ -326,21 +338,22 @@ const MagazineRequestPage = () => {
 
                 {/* Submit Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => navigate('/magazines')}
-                    className="px-8"
-                  >
-                    Back to Magazines
-                  </Button>
+                  <Link to="/magazines">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="px-8"
+                    >
+                      {t('request.backToMagazines')}
+                    </Button>
+                  </Link>
 
                   <Button
                     type="submit"
                     disabled={isSubmitting}
                     className="bg-[#2194D1] hover:bg-[#2194D1]/90 px-8"
                   >
-                    {isSubmitting ? 'Submitting Request...' : 'Submit Magazine Request'}
+                    {isSubmitting ? t('request.submitting') : t('request.submitRequest')}
                   </Button>
                 </div>
               </form>
@@ -355,3 +368,17 @@ const MagazineRequestPage = () => {
 };
 
 export default MagazineRequestPage;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

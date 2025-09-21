@@ -1,0 +1,116 @@
+{
+  "title": "Authors Management",
+  "description": "Manage your publishing house authors",
+  "addAuthor": "Add New Author",
+  "searchPlaceholder": "Search authors...",
+  "loading": {
+    "authors": "Loading authors...",
+    "saving": "Saving...",
+    "deleting": "Deleting..."
+  },
+  "filters": {
+    "status": {
+      "placeholder": "Status",
+      "all": "All Status",
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "featured": {
+      "placeholder": "Featured",
+      "all": "All Authors",
+      "featured": "Featured",
+      "notFeatured": "Not Featured"
+    }
+  },
+  "table": {
+    "authorsCount": "Authors ({{count}})",
+    "booksCount": "{{count}} book",
+    "booksCount_plural": "{{count}} books",
+    "addedOn": "Added {{date}}",
+    "featured": "⭐ Featured"
+  },
+  "form": {
+    "createTitle": "Add New Author",
+    "editTitle": "Edit Author",
+    "fields": {
+      "avatar": {
+        "label": "Author Avatar"
+      },
+      "name": {
+        "label": "Name (English)",
+        "placeholder": "Author name in English",
+        "required": true
+      },
+      "nameAr": {
+        "label": "Name (Arabic)",
+        "placeholder": "اسم المؤلف بالعربية",
+        "required": true
+      },
+      "biography": {
+        "label": "Biography (English)",
+        "placeholder": "Enter a detailed biography of the author in English (minimum 10 characters)...",
+        "minLength": "min 10 characters",
+        "required": true
+      },
+      "biographyAr": {
+        "label": "Biography (Arabic)",
+        "placeholder": "أدخل سيرة ذاتية مفصلة للمؤلف باللغة العربية (10 أحرف على الأقل)...",
+        "minLength": "min 10 characters",
+        "required": true
+      }
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Add Author",
+      "update": "Update Author",
+      "saving": "Saving..."
+    },
+    "validation": {
+      "biographyMinLength": "Biography must be at least 10 characters long",
+      "biographyArMinLength": "Arabic biography must be at least 10 characters long",
+      "required": "This field is required"
+    }
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "feature": "Feature",
+    "unfeature": "Unfeature",
+    "toggleStatus": "Toggle Status"
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+  "deleteModal": {
+    "title": "Delete Author",
+    "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone and will permanently remove the author from the system.",
+    "confirmText": "Delete Author",
+    "cancelText": "Cancel"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "pageInfo": "Page {{current}} of {{total}}"
+  },
+  "empty": {
+    "title": "No authors found",
+    "description": "Add your first author to get started."
+  },
+  "toast": {
+    "authorAdded": "{{name}} has been added successfully.",
+    "authorUpdated": "{{name}} has been updated successfully.",
+    "authorDeleted": "{{name}} has been deleted successfully.",
+    "authorFeatured": "{{name}} has been featured.",
+    "authorUnfeatured": "{{name}} has been unfeatured.",
+    "statusUpdated": "{{name}} status has been updated to {{status}}.",
+    "errors": {
+      "fetchAuthors": "Failed to fetch authors. Please try again.",
+      "saveAuthor": "Failed to save author. Please try again.",
+      "deleteAuthor": "Failed to delete author. Please try again.",
+      "toggleFeatured": "Failed to update featured status. Please try again.",
+      "updateStatus": "Failed to update author status. Please try again.",
+      "validationError": "Validation Error"
+    }
+  }
+}

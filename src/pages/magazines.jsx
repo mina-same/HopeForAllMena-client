@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'gatsby';
+import { graphql } from 'gatsby';
+import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 
@@ -249,11 +250,9 @@ const MagazineImage = ({ src, alt, className, isHorizontal = false }) => {
 };
 
 const MagazinePage = () => {
-  const [currentLanguage, setCurrentLanguage] = useState('en');
-
-  const toggleLanguage = () => {
-    setCurrentLanguage(prev => prev === 'en' ? 'ar' : 'en');
-  };
+  const { t } = useTranslation('Magazines');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
 
   return (
     <Layout >
@@ -269,30 +268,23 @@ const MagazinePage = () => {
           <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
             <div className="mb-8">
               <Badge variant="secondary" className="text-sm px-4 py-2 bg-white/20 text-white border-white/30 mb-6">
-                Publishing Excellence
+                {t('publishingExcellence')}
               </Badge>
             </div>
             <h1 className="text-6xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-white to-white/80 bg-clip-text text-transparent leading-tight">
-              Discover Our
-              <span className="block text-accent">Magazines</span>
+              {t('discoverOur')}
+              <span className="block text-accent">{t('magazines')}</span>
             </h1>
             <p className="text-xl md:text-2xl mb-10 text-white/90 max-w-3xl mx-auto leading-relaxed font-light">
-              Inspiring content that strengthens faith, builds community, and guides spiritual growth through carefully curated articles and devotionals
+              {t('heroDescription')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Badge variant="outline" className="text-lg px-6 py-3 bg-white/10 text-white border-white/30 backdrop-blur-sm">
-                {magazines.length} Available Magazines
+                {magazines.length} {t('availableMagazines')}
               </Badge>
-              <Button 
-                onClick={toggleLanguage}
-                variant="outline" 
-                className="text-lg px-6 py-3 bg-white/10 text-white border-white/30 backdrop-blur-sm hover:bg-white/20"
-              >
-                {currentLanguage === 'en' ? 'عربي' : 'English'}
-              </Button>
               <Link to="/magazines/request">
                 <Button size="lg" className="bg-gradient-to-r from-accent to-theme-base text-white shadow-xl hover:shadow-2xl transition-all duration-300 px-8 py-3">
-                  Request Magazines
+                  {t('requestMagazines')}
                 </Button>
               </Link>
             </div>
@@ -305,10 +297,10 @@ const MagazinePage = () => {
             {/* Section Header */}
             <div className="text-center mb-20">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                Featured Publications
+                {t('featuredPublications')}
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Each magazine is carefully crafted to provide meaningful content that enriches your spiritual journey
+                {t('featuredDescription')}
               </p>
             </div>
 
@@ -345,15 +337,18 @@ const MagazinePage = () => {
                     <div className="space-y-6">
                       <div className="flex items-center gap-4">
                         <Badge className="bg-gradient-to-r from-accent to-theme-base text-white px-4 py-2 text-sm font-medium">
-                          {magazine.category}
+                          {t(`categories.${magazine.category}`)}
                         </Badge>
                         <div className="flex items-center gap-2 text-muted-foreground">
                           <div className="w-1 h-1 bg-muted-foreground rounded-full" />
                           <span className="text-sm font-medium">
-                            {new Date(magazine.publishDate).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'long'
-                            })}
+                            {new Date(magazine.publishDate).toLocaleDateString(
+                              currentLanguage === 'ar' ? 'ar-EG' : 'en-US', 
+                              {
+                                year: 'numeric',
+                                month: 'long'
+                              }
+                            )}
                           </span>
                         </div>
                       </div>
@@ -383,15 +378,15 @@ const MagazinePage = () => {
                       </svg>
                     </div>
                     <h3 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-                      Request Our Magazines
+                      {t('requestOurMagazines')}
                     </h3>
                     <p className="text-xl text-muted-foreground mb-10 max-w-3xl mx-auto leading-relaxed">
-                      Bring our inspiring publications to your church or community. Our magazines are designed to strengthen faith and build meaningful connections.
+                      {t('requestDescription')}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                       <Link to="/magazines/request">
                         <Button size="lg" className="bg-gradient-to-r from-accent to-theme-base text-white shadow-xl hover:shadow-2xl transition-all duration-300 text-lg px-10 py-4">
-                          Start Your Request
+                          {t('startYourRequest')}
                         </Button>
                       </Link>
                     </div>
@@ -409,3 +404,17 @@ const MagazinePage = () => {
 };
 
 export default MagazinePage;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

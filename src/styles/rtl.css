@@ -17,6 +17,33 @@ html[dir="rtl"] .dropdown-list {
   left: auto;
 }
 
+/* Navigation items order for RTL */
+html[dir="rtl"] .main-menu__list li:nth-child(1) { order: 6; margin-left: 52px; } /* Home */
+html[dir="rtl"] .main-menu__list li:nth-child(2) { order: 5; } /* About */
+html[dir="rtl"] .main-menu__list li:nth-child(3) { order: 4; } /* Ministry Departments */
+html[dir="rtl"] .main-menu__list li:nth-child(4) { order: 3; } /* Conferences */
+html[dir="rtl"] .main-menu__list li:nth-child(5) { order: 2; } /* Links */
+html[dir="rtl"] .main-menu__list li:nth-child(6) { order: 1; } /* Contact */
+
+html[dir="rtl"] .main-menu__list .language-switcher {
+  order: -1;
+}
+
+html[dir="rtl"] .main-menu__list .search-btn {
+  order: -2;
+}
+
+html[dir="rtl"] .language-switcher__inner i {
+  margin-left: 0;
+  margin-right: 5px;
+}
+
+html[dir="rtl"] .main-menu .main-menu__list > li > a::after,
+html[dir="rtl"] .stricky-header .main-menu__list > li > a::after {
+  margin-left: 0;
+  margin-right: 5px;
+}
+
 /* Footer RTL */
 html[dir="rtl"] .footer-widget__contact li {
   text-align: right;
@@ -26,6 +53,11 @@ html[dir="rtl"] .footer-widget__link-list {
   text-align: right;
 }
 
+
+html[dir="rtl"] .footer-social a + a {
+  margin-left: 0px;
+  margin-right: 10px;
+}
 /* Language Switcher RTL */
 html[dir="rtl"] .language-switcher__inner {
   flex-direction: row-reverse;
@@ -47,7 +79,7 @@ html[dir="rtl"] .text-left {
 }
 
 html[dir="rtl"] .text-right {
-  text-align: left !important;
+  text-align: right !important;
 }
 
 html[dir="rtl"] .float-left {
@@ -55,7 +87,7 @@ html[dir="rtl"] .float-left {
 }
 
 html[dir="rtl"] .float-right {
-  float: left !important;
+  float: right !important;
 }
 
 /* Button and form RTL */
@@ -67,6 +99,25 @@ html[dir="rtl"] input[type="email"],
 html[dir="rtl"] input[type="text"],
 html[dir="rtl"] textarea {
   text-align: right;
+}
+
+/* Header RTL */
+html[dir="rtl"] .main-header__two .header-info__box > i {
+  margin-right: 0;
+  margin-left: 20px;
+}
+
+html[dir="rtl"] .main-header__two .header-info__box-content {
+  text-align: right;
+}
+
+html[dir="rtl"] .main-header__two .header-info {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .main-header__social a + a {
+  margin-left: 0;
+  margin-right: 30px;
 }
 
 /* Service boxes RTL */
@@ -87,4 +138,18 @@ html[dir="rtl"] .about-two__box {
   html[dir="rtl"] .footer-widget {
     text-align: right;
   }
+}
+
+html[dir="rtl"] .main-menu__list[style*="border-top-left-radius"] {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: 43.5px !important;
+  border-bottom-right-radius: 43.5px !important;
+}
+
+html[dir="rtl"] .main-menu .thm-btn {
+  border-bottom-right-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-left-radius: 39.5px !important;
+  border-top-left-radius: 39.5px !important;
 }

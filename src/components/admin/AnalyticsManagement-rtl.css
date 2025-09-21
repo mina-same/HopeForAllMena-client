@@ -1,0 +1,161 @@
+/* RTL Support for Analytics Management Component */
+
+/* Main container RTL styling */
+.analytics-management.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.analytics-management.rtl * {
+  direction: rtl;
+}
+
+/* Header RTL styling */
+.analytics-management.rtl .analytics-header h2,
+.analytics-management.rtl .analytics-header p {
+  text-align: right;
+}
+
+/* Form controls RTL styling */
+.analytics-management.rtl .form-control {
+  text-align: right;
+  direction: rtl;
+}
+
+.analytics-management.rtl .control-label {
+  text-align: right;
+  display: block;
+}
+
+
+.analytics-management.rtl .btn-group {
+  direction: rtl;
+}
+
+/* Summary cards RTL styling */
+.analytics-management.rtl .summary-card {
+  text-align: right;
+}
+
+.analytics-management.rtl .summary-card-title,
+.analytics-management.rtl .summary-card-value,
+.analytics-management.rtl .summary-card-growth {
+  text-align: right;
+}
+
+.analytics-management.rtl .summary-card-icon {
+  right: auto;
+  left: 1rem;
+}
+
+/* Chart containers RTL styling */
+.analytics-management.rtl .chart-card h4,
+.analytics-management.rtl .chart-card h5 {
+  text-align: right;
+}
+
+.analytics-management.rtl .chart-container {
+  direction: ltr; /* Keep charts in LTR for proper rendering */
+}
+
+/* Table RTL styling */
+.analytics-management.rtl .table {
+  direction: rtl;
+}
+
+.analytics-management.rtl .table th,
+.analytics-management.rtl .table td {
+  text-align: right;
+}
+
+.analytics-management.rtl .table thead th {
+  border-bottom: 2px solid #dee2e6;
+  text-align: right;
+}
+
+/* Controls RTL styling */
+.analytics-management.rtl .form-label {
+  text-align: right;
+  display: block;
+}
+
+.analytics-management.rtl .btn {
+  direction: rtl;
+}
+
+
+/* Growth indicators RTL styling */
+.analytics-management.rtl .growth-indicator {
+  text-align: right;
+}
+
+/* Loading states RTL styling */
+.analytics-management.rtl .text-center {
+  text-align: center; /* Keep loading centered */
+}
+
+/* Alert messages RTL styling */
+.analytics-management.rtl .alert {
+  text-align: right;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 768px) {
+  .analytics-management.rtl .d-flex {
+    flex-direction: column;
+  }
+  
+  .analytics-management.rtl .d-flex.gap-2 {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .analytics-management.rtl .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Chart legend RTL adjustments */
+.analytics-management.rtl .chart-container canvas {
+  direction: ltr !important; /* Force LTR for charts */
+}
+
+/* Form input RTL styling */
+.analytics-management.rtl input[type="number"] {
+  text-align: right;
+  padding-right: 0.75rem;
+  padding-left: 0.75rem;
+}
+
+/* Card header RTL styling */
+.analytics-management.rtl .card-header {
+  text-align: right;
+}
+
+.analytics-management.rtl .card-header h5 {
+  text-align: right;
+}
+
+/* Modern button RTL styling */
+.analytics-management.rtl .modern-btn {
+  direction: rtl;
+}
+
+/* Table responsive RTL */
+.analytics-management.rtl .table-responsive {
+  direction: rtl;
+}
+
+/* Flex column RTL adjustments */
+.analytics-management.rtl .d-flex.flex-column {
+  align-items: flex-end;
+}
+
+/* Bootstrap column RTL adjustments */
+.analytics-management.rtl .col-md-6,
+.analytics-management.rtl .col-lg-3,
+.analytics-management.rtl .col-lg-4,
+.analytics-management.rtl .col-lg-8 {
+  text-align: right;
+}

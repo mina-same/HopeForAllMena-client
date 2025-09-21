@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { navigate } from 'gatsby';
+import { graphql } from 'gatsby';
+import { Link, useTranslation, useI18next, navigate } from 'gatsby-plugin-react-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -50,6 +51,10 @@ const formSchema = z.object({
 
 
 const TrainingNewRequestPage = () => {
+  const { t } = useTranslation('TrainingNewRequest');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const { filters, setFilters } = useBookstore();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -97,16 +102,16 @@ const TrainingNewRequestPage = () => {
       const result = await response.json();
 
       toast({
-        title: "Training Request Submitted",
-        description: "We'll contact you within 48 hours to confirm your training schedule.",
+        title: t('toast.success.title'),
+        description: t('toast.success.description'),
       });
 
       navigate('/training');
     } catch (error) {
       console.error('Training request submission error:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to submit training request. Please try again.",
+        title: t('toast.error.title'),
+        description: error.message || t('toast.error.description'),
         variant: "destructive",
       });
     } finally {
@@ -126,29 +131,29 @@ const TrainingNewRequestPage = () => {
   minDate.setDate(minDate.getDate() + 14);
 
   return (
-    <Layout>
+    <Layout pageTitle={t('pageTitle')}>
       <HeaderTwo />
       <StickyHeader />
-      <div className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-16">
+      <div className={`min-h-screen bg-background ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+        <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
           <div className="max-w-4xl mx-auto">
             <TrainingHeader
-              icon={<Church className="w-4 h-4 text-primary" />}
-              badgeText="New Training Request"
-              title="Training Request Form"
-              description="Help us understand your church's training needs so we can create the perfect program for you"
+              icon={<Church className="w-4 h-4 text-[#2194D1]" />}
+              badgeText={t('header.badge')}
+              title={t('header.title')}
+              description={t('header.description')}
             />
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 sm:space-y-8">
                 <BasicInfoCard form={form} />
 
                 {/* Service Information */}
                 <Card className="border-0 shadow-modern bg-card">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
-                      <Church className="w-5 h-5 text-primary" />
-                      Service Information
+                      <Church className="w-5 h-5 text-[#2194D1]" />
+                      {t('serviceInfo.title')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -157,17 +162,17 @@ const TrainingNewRequestPage = () => {
                       name="serviceType"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Type of Service Provided *</FormLabel>
+                          <FormLabel>{t('serviceInfo.serviceType.label')} *</FormLabel>
                           <Select onValueChange={field.onChange} defaultValue={field.value}>
                             <FormControl>
                               <SelectTrigger>
-                                <SelectValue placeholder="Select service type" />
+                                <SelectValue placeholder={t('serviceInfo.serviceType.placeholder')} />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="sunday-school">Sunday School</SelectItem>
-                              <SelectItem value="youth">Youth</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
+                              <SelectItem value="sunday-school">{t('serviceInfo.serviceType.options.sundaySchool')}</SelectItem>
+                              <SelectItem value="youth">{t('serviceInfo.serviceType.options.youth')}</SelectItem>
+                              <SelectItem value="other">{t('serviceInfo.serviceType.options.other')}</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -181,9 +186,9 @@ const TrainingNewRequestPage = () => {
                         name="otherServiceType"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Please specify the kind of service</FormLabel>
+                            <FormLabel>{t('serviceInfo.otherServiceType.label')}</FormLabel>
                             <FormControl>
-                              <Input placeholder="Describe your service type" {...field} />
+                              <Input placeholder={t('serviceInfo.otherServiceType.placeholder')} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -191,17 +196,17 @@ const TrainingNewRequestPage = () => {
                       />
                     )}
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                       <FormField
                         control={form.control}
                         name="numberOfServants"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Number of Servants (Workers) *</FormLabel>
+                            <FormLabel>{t('serviceInfo.numberOfServants.label')} *</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
-                                placeholder="Enter number"
+                                placeholder={t('serviceInfo.numberOfServants.placeholder')}
                                 min="1"
                                 {...field}
                               />
@@ -216,11 +221,11 @@ const TrainingNewRequestPage = () => {
                         name="numberOfServed"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Number of Served (Attendees/Recipients) *</FormLabel>
+                            <FormLabel>{t('serviceInfo.numberOfServed.label')} *</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
-                                placeholder="Enter number"
+                                placeholder={t('serviceInfo.numberOfServed.placeholder')}
                                 min="1"
                                 {...field}
                               />
@@ -237,8 +242,8 @@ const TrainingNewRequestPage = () => {
                 <Card className="border-0 shadow-modern bg-card">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
-                      <Calendar className="w-5 h-5 text-primary" />
-                      Training Schedule
+                      <Calendar className="w-5 h-5 text-[#2194D1]" />
+                      {t('schedule.title')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -247,7 +252,7 @@ const TrainingNewRequestPage = () => {
                       name="suggestedDate"
                       render={({ field }) => (
                         <FormItem className="flex flex-col">
-                          <FormLabel>Suggested Training Date *</FormLabel>
+                          <FormLabel>{t('schedule.suggestedDate.label')} *</FormLabel>
                           <Popover>
                             <PopoverTrigger asChild>
                               <FormControl>
@@ -261,9 +266,9 @@ const TrainingNewRequestPage = () => {
                                   {field.value ? (
                                     format(field.value, "PPP")
                                   ) : (
-                                    <span>Pick a date</span>
+                                    <span>{t('schedule.suggestedDate.placeholder')}</span>
                                   )}
-                                  <Calendar className="ml-auto h-4 w-4 opacity-50" />
+                                  <Calendar className={`${currentLanguage === 'ar' ? 'mr-auto' : 'ml-auto'} h-4 w-4 opacity-50`} />
                                 </Button>
                               </FormControl>
                             </PopoverTrigger>
@@ -283,9 +288,9 @@ const TrainingNewRequestPage = () => {
                             </PopoverContent>
                           </Popover>
                           <p className="text-sm text-muted-foreground">
-                            This is a proposed schedule, not mandatory. Our team will contact you to confirm or make changes.
+                            {t('schedule.suggestedDate.description')}
                             <br />
-                            <strong>Important:</strong> You cannot select a date earlier than two weeks from today.
+                            <strong>{t('schedule.suggestedDate.important')}</strong>
                           </p>
                           <FormMessage />
                         </FormItem>
@@ -299,10 +304,10 @@ const TrainingNewRequestPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
                       <MapPin className="w-5 h-5 text-accent" />
-                      Help Us Impact Nearby Churches (Optional)
+                      {t('nearbyChurches.title')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Share information about nearby churches to help us extend our training impact to the broader community.
+                      {t('nearbyChurches.description')}
                     </p>
                   </CardHeader>
                   <CardContent className="space-y-6">
@@ -310,7 +315,7 @@ const TrainingNewRequestPage = () => {
                       <Card key={field.id} className="border border-border/50 bg-muted/20">
                         <CardContent className="p-4">
                           <div className="flex items-center justify-between mb-4">
-                            <h4 className="font-medium text-foreground">Church {index + 1}</h4>
+                            <h4 className="font-medium text-foreground">{t('nearbyChurches.churchNumber')} {index + 1}</h4>
                             <Button
                               type="button"
                               variant="ghost"
@@ -322,15 +327,15 @@ const TrainingNewRequestPage = () => {
                             </Button>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <FormField
                               control={form.control}
                               name={`nearbyChurches.${index}.name`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Church Name</FormLabel>
+                                  <FormLabel>{t('nearbyChurches.fields.name.label')}</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="Church name" {...field} />
+                                    <Input placeholder={t('nearbyChurches.fields.name.placeholder')} {...field} />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -342,9 +347,9 @@ const TrainingNewRequestPage = () => {
                               name={`nearbyChurches.${index}.responsiblePerson`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Responsible Person</FormLabel>
+                                  <FormLabel>{t('nearbyChurches.fields.responsiblePerson.label')}</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="Name of responsible person" {...field} />
+                                    <Input placeholder={t('nearbyChurches.fields.responsiblePerson.placeholder')} {...field} />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -356,9 +361,9 @@ const TrainingNewRequestPage = () => {
                               name={`nearbyChurches.${index}.phoneNumber`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Phone Number</FormLabel>
+                                  <FormLabel>{t('nearbyChurches.fields.phoneNumber.label')}</FormLabel>
                                   <FormControl>
-                                    <Input placeholder="Contact number" {...field} />
+                                    <Input placeholder={t('nearbyChurches.fields.phoneNumber.placeholder')} {...field} />
                                   </FormControl>
                                   <FormMessage />
                                 </FormItem>
@@ -373,31 +378,32 @@ const TrainingNewRequestPage = () => {
                       type="button"
                       variant="outline"
                       onClick={addNearbyChurch}
-                      className="w-full border-primary/30 text-primary hover:bg-primary/10"
+                      className="w-full border-primary/30 text-[#2194D1] hover:bg-primary/10"
                     >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Another Church
+                      <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                      {t('nearbyChurches.addButton')}
                     </Button>
                   </CardContent>
                 </Card>
 
                 {/* Submit Button */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => navigate('/TrainingSelectionPage')}
-                    className="px-8"
-                  >
-                    Back to Selection
-                  </Button>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                  <Link to="/TrainingSelectionPage" className="w-full sm:w-auto">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full sm:w-auto px-6 sm:px-8"
+                    >
+                      {t('buttons.back')}
+                    </Button>
+                  </Link>
 
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-primary hover:bg-primary/90 px-8"
+                    className="w-full sm:w-auto bg-[#2194D1] hover:bg-[#2194D1]/90 px-6 sm:px-8"
                   >
-                    {isSubmitting ? 'Submitting...' : 'Submit Training Request'}
+                    {isSubmitting ? t('buttons.submitting') : t('buttons.submit')}
                   </Button>
                 </div>
               </form>
@@ -414,3 +420,29 @@ const TrainingNewRequestPage = () => {
 };
 
 export default TrainingNewRequestPage;
+
+// GraphQL query for i18n
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
+
+// Gatsby head export for SEO
+export const Head = ({ data }) => {
+  const { t } = useTranslation('TrainingNewRequest');
+  return (
+    <>
+      <title>{t('pageTitle')}</title>
+      <meta name="description" content={t('seoDescription')} />
+    </>
+  );
+};

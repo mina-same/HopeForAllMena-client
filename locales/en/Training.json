@@ -1,0 +1,36 @@
+{
+  "pageTitle": "Training - Hope For All Mena Ministry",
+  "seoDescription": "Ministry training programs and resources for local churches",
+  "hero": {
+    "badge": "Ministry Training Program",
+    "title": "A New Generation that",
+    "titleHighlight": "Changes & Transforms",
+    "description": "Our goal is to train local churches through evangelistic and discipleship curricula for the new generation. Equip your ministry with proven strategies and resources.",
+    "features": {
+      "localChurches": "Local Churches",
+      "provenCurricula": "Proven Curricula",
+      "expertTraining": "Expert Training"
+    }
+  },
+  "materials": {
+    "title": "Training Materials",
+    "description": "Comprehensive resources designed to transform your ministry approach and impact your community",
+    "loading": "Loading training materials...",
+    "error": "Failed to load training materials",
+    "parts": "Parts",
+    "available": "Available",
+    "emptyState": "No training materials available at the moment."
+  },
+  "cta": {
+    "badge": "Ready to Transform?",
+    "title": "Ready to Impact Your",
+    "titleHighlight": "Community?",
+    "description": "Join hundreds of churches already transforming their communities through our proven training programs.",
+    "button": "Start Your Training Now",
+    "features": {
+      "consultation": "Free Initial Consultation",
+      "customPlans": "Customized Training Plans",
+      "ongoingSupport": "Ongoing Support"
+    }
+  }
+}

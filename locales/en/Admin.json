@@ -1,0 +1,62 @@
+{
+  "sidebar": {
+    "title": "Admin Panel",
+    "managementLinks": "Management Links",
+    "noPermissions": "No permissions assigned",
+    "contactAdmin": "Contact your administrator",
+    "yourPermissions": "Your permissions:"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "analytics": "Analytics",
+    "messages": "Messages",
+    "calendar": "Calendar",
+    "userManagement": "User Management",
+    "settings": "Settings"
+  },
+  "sections": {
+    "booksPublishing": "Books & Publishing",
+    "courseManagement": "Course Management",
+    "magazineManagement": "Magazine Management",
+    "trainingManagement": "Training Management",
+    "blogManagement": "Blog Management"
+  },
+  "items": {
+    "authors": "Authors",
+    "categories": "Categories",
+    "books": "Books",
+    "reviews": "Reviews",
+    "contactMessages": "Contact Messages",
+    "courses": "Courses",
+    "enrollments": "Enrollments",
+    "magazines": "Magazines",
+    "trainingBooks": "Training Books",
+    "trainingRequests": "Training Requests",
+    "trainingFollowUp": "Training Follow-up",
+    "generateIds": "Generate IDs",
+    "newBlog": "New Blog",
+    "allBlogs": "All Blogs",
+    "comments": "Comments"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Welcome to your publishing house management dashboard",
+    "totalBooks": "Total Books",
+    "reviews": "Reviews",
+    "messages": "Messages",
+    "user": "User",
+    "recentMessages": "Recent Messages",
+    "accessDenied": "Access Denied",
+    "insufficientPermissions": "Insufficient Permissions",
+    "needPermissions": "You need the following permissions to access this section:"
+  },
+  "header": {
+    "welcomeBack": "Welcome back"
+  },
+  "modal": {
+    "confirmLogout": "Confirm Logout",
+    "logoutDescription": "Are you sure you want to logout? You will need to sign in again to access the admin panel.",
+    "logout": "Logout",
+    "cancel": "Cancel"
+  }
+}

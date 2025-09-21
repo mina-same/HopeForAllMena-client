@@ -1,0 +1,81 @@
+{
+  "pageTitle": "Bookstore",
+  "crumbTitle": "Bookstore",
+  "filters": {
+    "title": "Filter Books",
+    "categories": {
+      "title": "Categories",
+      "all": "All Categories"
+    },
+    "rating": {
+      "title": "Minimum Rating",
+      "stars": "stars & up"
+    },
+    "publicationYear": {
+      "title": "Publication Year",
+      "placeholder": "Select year"
+    },
+    "clearAll": "Clear All Filters",
+    "applyFilters": "Apply Filters"
+  },
+  "toolbar": {
+    "showingResults": "Showing {{start}}-{{end}} of {{total}} results",
+    "sortBy": {
+      "title": "Sort by",
+      "default": "Default",
+      "title_asc": "Title A-Z",
+      "title_desc": "Title Z-A", 
+      "price_asc": "Price Low to High",
+      "price_desc": "Price High to Low",
+      "rating_desc": "Highest Rated",
+      "newest": "Newest First",
+      "oldest": "Oldest First"
+    },
+    "viewMode": {
+      "grid": "Grid View",
+      "list": "List View"
+    },
+    "itemsPerPage": "Items per page"
+  },
+  "bookCard": {
+    "newBadge": "New",
+    "bestsellerBadge": "Bestseller",
+    "quickView": "Quick View",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "orderNow": "Order Now",
+    "byAuthor": "by",
+    "unknownAuthor": "Unknown Author",
+    "reviews": "{{count}} review",
+    "reviews_plural": "{{count}} reviews",
+    "rating": "Rating: {{rating}} out of 5 stars",
+    "pages": "{{count}} page",
+    "pages_plural": "{{count}} pages",
+    "language": "Language: {{language}}",
+    "publicationYear": "Published: {{year}}"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {{number}}",
+    "goToPage": "Go to page {{number}}"
+  },
+  "loading": {
+    "books": "Loading books...",
+    "categories": "Loading categories...",
+    "filters": "Applying filters..."
+  },
+  "error": {
+    "loadBooks": "Failed to load books. Please try again.",
+    "loadCategories": "Failed to load categories.",
+    "networkError": "Unable to connect to server. Please make sure the server is running.",
+    "notFound": "Books API endpoint not found.",
+    "serverError": "Server error. Please try again later.",
+    "retry": "Retry"
+  },
+  "empty": {
+    "noBooks": "No books found",
+    "noResults": "No books match your current filters.",
+    "tryDifferentFilters": "Try adjusting your filters or search criteria."
+  }
+}

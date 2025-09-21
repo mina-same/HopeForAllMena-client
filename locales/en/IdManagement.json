@@ -1,0 +1,48 @@
+{
+  "header": {
+    "title": "ID Card Generator",
+    "description": "Upload a CSV file and enter club and church information to generate ID cards"
+  },
+  "upload": {
+    "title": "Upload Names File",
+    "description": "Upload a CSV file containing the list of names",
+    "label": "CSV File",
+    "success": "Successfully loaded {{count}} names",
+    "loaded": "Loaded {{count}} names"
+  },
+  "clubChurch": {
+    "title": "Club and Church Information",
+    "description": "Enter the club and church names in Arabic",
+    "clubLabel": "Club",
+    "clubPlaceholder": "Enter club name",
+    "churchLabel": "Church",
+    "churchPlaceholder": "Enter church name"
+  },
+  "preview": {
+    "title": "Design Preview",
+    "description": "This is the ID card design that will be generated",
+    "name": "Name: {{name}}",
+    "club": "Club: {{club}}",
+    "church": "Church: {{church}}",
+    "example": "Example"
+  },
+  "generate": {
+    "button": "Generate and Download PDF",
+    "generating": "Generating PDF...",
+    "error": "Error generating PDF",
+    "pages": "Will generate {{pages}} pages containing {{cards}} cards"
+  },
+  "validation": {
+    "required": "Please fill all required fields",
+    "csvRequired": "Please upload a CSV file",
+    "clubRequired": "Please enter club name",
+    "churchRequired": "Please enter church name"
+  },
+  "icons": {
+    "upload": "📤",
+    "download": "📥",
+    "file": "📄",
+    "users": "👥",
+    "preview": "👁️"
+  }
+}

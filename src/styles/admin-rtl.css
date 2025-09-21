@@ -1,0 +1,349 @@
+/* Admin Dashboard RTL Styles */
+
+/* RTL Layout for Admin Dashboard */
+[dir="rtl"] .admin-dashboard {
+  direction: rtl;
+}
+
+/* Sidebar RTL Positioning */
+[dir="rtl"] .sidebar-container {
+  border-left: 1px solid hsl(var(--border));
+  border-right: none;
+}
+
+/* Force sidebar to right side for Arabic */
+[dir="rtl"] [data-sidebar="sidebar"] {
+  order: 2;
+}
+
+[dir="rtl"] [data-sidebar="content"] {
+  order: 1;
+}
+
+/* SidebarProvider RTL Layout */
+[dir="rtl"] .flex-row-reverse > [data-sidebar="sidebar"] {
+  border-left: 1px solid hsl(var(--sidebar-border));
+  border-right: none;
+}
+
+[dir="rtl"] .flex-row-reverse > [data-sidebar="content"] {
+  border-right: none;
+  border-left: none;
+}
+
+/* RTL Content Area */
+.rtl-content {
+  direction: rtl;
+}
+
+/* Sidebar Toggle Support for RTL */
+[dir="rtl"] .sidebar-collapsed {
+  margin-right: 64px !important;
+}
+
+[dir="rtl"] .sidebar-expanded {
+  margin-right: 256px !important;
+}
+
+/* Sidebar Toggle Animation */
+[dir="rtl"] .sidebar-content-area {
+  transition: margin-right 0.3s ease-in-out;
+}
+
+/* Ensure sidebars completely disappear */
+.sidebar-hidden {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Full width content when sidebar is closed */
+.content-full-width {
+  width: 100vw !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* Smooth transitions for all sidebar states */
+.sidebar-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ensure proper flex order for RTL */
+[dir="rtl"] .min-h-screen.flex.flex-row-reverse {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+/* Additional RTL sidebar positioning */
+[dir="rtl"] .sidebar-provider {
+  direction: rtl;
+}
+
+[dir="rtl"] .sidebar-provider > div {
+  flex-direction: row-reverse;
+}
+
+/* RTL Layout Class */
+.rtl-layout {
+  direction: rtl;
+}
+
+.rtl-layout > div {
+  flex-direction: row-reverse !important;
+}
+
+/* Force sidebar positioning */
+.rtl-layout [data-sidebar="sidebar"] {
+  order: 2 !important;
+}
+
+.rtl-layout [data-sidebar="content"] {
+  order: 1 !important;
+}
+
+/* Header RTL Layout */
+[dir="rtl"] .admin-header {
+  direction: rtl;
+}
+
+[dir="rtl"] .admin-header .flex {
+  flex-direction: row-reverse;
+}
+
+/* Header Flipped Layout for Arabic */
+[dir="rtl"] header {
+  direction: rtl;
+}
+
+[dir="rtl"] header .flex {
+  direction: rtl;
+}
+
+/* Button icon spacing for RTL */
+[dir="rtl"] .logout-button {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .logout-button .lucide {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+/* Sidebar trigger positioning */
+[dir="rtl"] .sidebar-trigger {
+  order: 2;
+}
+
+/* Header items positioning */
+[dir="rtl"] .header-items {
+  order: 1;
+}
+
+/* Language Switcher RTL */
+[dir="rtl"] .language-switcher {
+  direction: rtl;
+}
+
+/* Cards RTL Layout */
+[dir="rtl"] .dashboard-card {
+  text-align: right;
+}
+
+[dir="rtl"] .dashboard-card .flex {
+  flex-direction: row-reverse;
+}
+
+/* Stats Cards RTL */
+[dir="rtl"] .stats-grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .stat-card .flex {
+  flex-direction: row-reverse;
+}
+
+/* Recent Messages RTL */
+[dir="rtl"] .recent-messages {
+  direction: rtl;
+}
+
+[dir="rtl"] .recent-messages .message-item {
+  text-align: right;
+}
+
+[dir="rtl"] .recent-messages .message-item .flex {
+  flex-direction: row-reverse;
+}
+
+/* Sidebar Menu RTL */
+[dir="rtl"] .sidebar-menu {
+  direction: rtl;
+}
+
+[dir="rtl"] .sidebar-menu-item {
+  text-align: right;
+}
+
+[dir="rtl"] .sidebar-menu-item .flex {
+  flex-direction: row-reverse;
+}
+
+/* Collapsible Menu RTL */
+[dir="rtl"] .collapsible-trigger {
+  text-align: right;
+}
+
+[dir="rtl"] .collapsible-trigger .flex {
+  flex-direction: row-reverse;
+}
+
+/* Chevron Icons RTL */
+[dir="rtl"] .chevron-icon {
+  transform: scaleX(-1);
+}
+
+/* Badge RTL Positioning */
+[dir="rtl"] .notification-badge {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+/* Form Elements RTL */
+[dir="rtl"] .form-group {
+  text-align: right;
+}
+
+[dir="rtl"] .form-label {
+  text-align: right;
+}
+
+[dir="rtl"] .form-input {
+  text-align: right;
+}
+
+/* Button RTL */
+[dir="rtl"] .button-with-icon {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .button-with-icon .icon {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+/* Table RTL */
+[dir="rtl"] .table-container {
+  direction: rtl;
+}
+
+[dir="rtl"] .table-header {
+  text-align: right;
+}
+
+[dir="rtl"] .table-cell {
+  text-align: right;
+}
+
+/* Modal RTL */
+[dir="rtl"] .modal-content {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Dropdown RTL */
+[dir="rtl"] .dropdown-menu {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Pagination RTL */
+[dir="rtl"] .pagination {
+  direction: rtl;
+}
+
+[dir="rtl"] .pagination .flex {
+  flex-direction: row-reverse;
+}
+
+/* Search RTL */
+[dir="rtl"] .search-input {
+  text-align: right;
+}
+
+/* Breadcrumb RTL */
+[dir="rtl"] .breadcrumb {
+  direction: rtl;
+}
+
+[dir="rtl"] .breadcrumb .flex {
+  flex-direction: row-reverse;
+}
+
+/* Responsive RTL Adjustments */
+@media (max-width: 768px) {
+  [dir="rtl"] .mobile-menu {
+    direction: rtl;
+  }
+  
+  [dir="rtl"] .mobile-header {
+    direction: rtl;
+  }
+  
+  [dir="rtl"] .mobile-sidebar {
+    right: 0;
+    left: auto;
+  }
+}
+
+/* Animation RTL */
+[dir="rtl"] .slide-in-right {
+  animation: slideInLeft 0.3s ease-in-out;
+}
+
+[dir="rtl"] .slide-in-left {
+  animation: slideInRight 0.3s ease-in-out;
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* Scrollbar RTL */
+[dir="rtl"] .scrollbar-container {
+  direction: rtl;
+}
+
+/* Focus States RTL */
+[dir="rtl"] .focus-visible {
+  outline-offset: -2px;
+}
+
+/* Loading States RTL */
+[dir="rtl"] .loading-spinner {
+  direction: rtl;
+}
+
+/* Error States RTL */
+[dir="rtl"] .error-message {
+  text-align: right;
+}
+
+/* Success States RTL */
+[dir="rtl"] .success-message {
+  text-align: right;
+}

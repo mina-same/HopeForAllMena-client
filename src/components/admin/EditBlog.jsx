@@ -10,10 +10,14 @@ const EditBlog = ({ blogId, onBack }) => {
   const { user, token } = useAuth();
   const [formData, setFormData] = useState({
     title: '',
+    titleAr: '',
     content: '',
+    contentAr: '',
     excerpt: '',
+    excerptAr: '',
     category: 'news',
     tags: '',
+    tagsAr: '',
     status: 'draft',
     featured: false
   });
@@ -43,10 +47,14 @@ const EditBlog = ({ blogId, onBack }) => {
         if (blog) {
           setFormData({
             title: blog.title || '',
+            titleAr: blog.titleAr || '',
             content: blog.content || '',
+            contentAr: blog.contentAr || '',
             excerpt: blog.excerpt || '',
+            excerptAr: blog.excerptAr || '',
             category: blog.category || 'news',
             tags: Array.isArray(blog.tags) ? blog.tags.join(', ') : (blog.tags || ''),
+            tagsAr: Array.isArray(blog.tagsAr) ? blog.tagsAr.join(', ') : (blog.tagsAr || ''),
             status: blog.status || 'draft',
             featured: blog.featured || false
           });
@@ -102,6 +110,7 @@ const EditBlog = ({ blogId, onBack }) => {
       const blogData = {
         ...formData,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
+        tagsAr: formData.tagsAr.split(',').map(tag => tag.trim()).filter(tag => tag),
         author: user._id
       };
 
@@ -185,47 +194,95 @@ const EditBlog = ({ blogId, onBack }) => {
                 <h5 className="card-title mb-4 text-dark fw-semibold">Blog Content</h5>
                 
                 {/* Title */}
-                <Form.Group className="mb-4">
-                  <Form.Label className="fw-medium text-dark">Title *</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    placeholder="Enter blog title..."
-                    required
-                    className="form-control-lg border-2"
-                    style={{ 
-                      borderColor: '#e9ecef',
-                      backgroundColor: '#f8f9fa'
-                    }}
-                  />
-                </Form.Group>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-4">
+                      <Form.Label className="fw-medium text-dark">Title (English) *</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="title"
+                        value={formData.title}
+                        onChange={handleChange}
+                        placeholder="Enter blog title..."
+                        required
+                        className="form-control-lg border-2"
+                        style={{ 
+                          borderColor: '#e9ecef',
+                          backgroundColor: '#f8f9fa'
+                        }}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-4">
+                      <Form.Label className="fw-medium text-dark">Title (Arabic)</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="titleAr"
+                        value={formData.titleAr}
+                        onChange={handleChange}
+                        placeholder="أدخل عنوان المقال باللغة العربية..."
+                        className="form-control-lg border-2"
+                        style={{ 
+                          borderColor: '#e9ecef',
+                          backgroundColor: '#f8f9fa',
+                          direction: 'rtl'
+                        }}
+                      />
+                    </Form.Group>
+                  </Col>
+                </Row>
 
                 {/* Excerpt */}
-                <Form.Group className="mb-4">
-                  <Form.Label className="fw-medium text-dark">Excerpt</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={3}
-                    name="excerpt"
-                    value={formData.excerpt}
-                    onChange={handleChange}
-                    placeholder="Brief description of the blog post..."
-                    className="border-2"
-                    style={{ 
-                      borderColor: '#e9ecef',
-                      backgroundColor: '#f8f9fa'
-                    }}
-                  />
-                  <Form.Text className="text-muted">
-                    This will be shown in blog previews and search results
-                  </Form.Text>
-                </Form.Group>
+                <Row>
+                  <Col md={6}>
+                    <Form.Group className="mb-4">
+                      <Form.Label className="fw-medium text-dark">Excerpt (English)</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="excerpt"
+                        value={formData.excerpt}
+                        onChange={handleChange}
+                        placeholder="Brief description of the blog post..."
+                        className="border-2"
+                        style={{ 
+                          borderColor: '#e9ecef',
+                          backgroundColor: '#f8f9fa'
+                        }}
+                      />
+                      <Form.Text className="text-muted">
+                        This will be shown in blog previews and search results
+                      </Form.Text>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group className="mb-4">
+                      <Form.Label className="fw-medium text-dark">Excerpt (Arabic)</Form.Label>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
+                        name="excerptAr"
+                        value={formData.excerptAr}
+                        onChange={handleChange}
+                        placeholder="وصف مختصر للمقال..."
+                        className="border-2"
+                        style={{ 
+                          borderColor: '#e9ecef',
+                          backgroundColor: '#f8f9fa',
+                          direction: 'rtl'
+                        }}
+                      />
+                      <Form.Text className="text-muted">
+                        سيظهر في معاينات المقالات ونتائج البحث
+                      </Form.Text>
+                    </Form.Group>
+                  </Col>
+                </Row>
 
                 {/* Content */}
                 <Form.Group className="mb-4">
-                  <Form.Label className="fw-medium text-dark">Content *</Form.Label>
+                  <Form.Label className="fw-medium text-dark">Content (English) *</Form.Label>
                   <div style={{ backgroundColor: '#f8f9fa', borderRadius: '8px', padding: '1px' }}>
                     <ReactQuill
                       theme="snow"
@@ -234,9 +291,39 @@ const EditBlog = ({ blogId, onBack }) => {
                       modules={quillModules}
                       placeholder="Write your blog content here..."
                       style={{ 
-                        minHeight: '300px',
+                        minHeight: '350px',
                         backgroundColor: 'white',
                         borderRadius: '7px'
+                      }}
+                    />
+                  </div>
+                </Form.Group>
+
+                <Form.Group className="mb-4">
+                  <Form.Label className="fw-medium text-dark">Content (Arabic)</Form.Label>
+                  <div style={{ backgroundColor: '#f8f9fa', borderRadius: '8px', padding: '1px' }}>
+                    <ReactQuill
+                      theme="snow"
+                      value={formData.contentAr}
+                      onChange={(content) => setFormData(prev => ({ ...prev, contentAr: content }))}
+                      modules={{
+                        ...quillModules,
+                        toolbar: [
+                          [{ 'header': [1, 2, 3, false] }],
+                          ['bold', 'italic', 'underline', 'strike'],
+                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                          ['blockquote', 'code-block'],
+                          [{ 'direction': 'rtl' }],
+                          ['link', 'image'],
+                          ['clean']
+                        ]
+                      }}
+                      placeholder="اكتب محتوى المقال هنا..."
+                      style={{ 
+                        minHeight: '350px',
+                        backgroundColor: 'white',
+                        borderRadius: '7px',
+                        direction: 'rtl'
                       }}
                     />
                   </div>
@@ -292,7 +379,7 @@ const EditBlog = ({ blogId, onBack }) => {
 
                 {/* Tags */}
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-medium text-dark">Tags</Form.Label>
+                  <Form.Label className="fw-medium text-dark">Tags (English)</Form.Label>
                   <Form.Control
                     type="text"
                     name="tags"
@@ -307,6 +394,27 @@ const EditBlog = ({ blogId, onBack }) => {
                   />
                   <Form.Text className="text-muted">
                     Separate tags with commas
+                  </Form.Text>
+                </Form.Group>
+
+                {/* Arabic Tags */}
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-medium text-dark">Tags (Arabic)</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="tagsAr"
+                    value={formData.tagsAr}
+                    onChange={handleChange}
+                    placeholder="علامة1، علامة2، علامة3..."
+                    className="border-2"
+                    style={{ 
+                      borderColor: '#e9ecef',
+                      backgroundColor: '#f8f9fa',
+                      direction: 'rtl'
+                    }}
+                  />
+                  <Form.Text className="text-muted">
+                    افصل العلامات بفواصل
                   </Form.Text>
                 </Form.Group>
 

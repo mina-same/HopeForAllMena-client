@@ -1,0 +1,152 @@
+{
+  "pageTitle": "Training Follow-up Request - Hope For All Mena Ministry",
+  "seoDescription": "Request additional training materials and resources for your ongoing program",
+  "header": {
+    "badge": "Follow-up Training Request",
+    "title": "Training Follow-up Request",
+    "description": "Request additional training materials and resources for your ongoing program"
+  },
+  "trainerInfo": {
+    "title": "Trainer & Contact Information",
+    "trainerName": {
+      "label": "Full Name of the Trainer",
+      "placeholder": "Enter the full name of the trainer who trained you",
+      "description": "If you don't know, {{contactLink}} to know which trainer full name trained you",
+      "contactText": "contact us"
+    },
+    "name": {
+      "label": "Your Name",
+      "placeholder": "Enter your full name"
+    },
+    "phoneNumber": {
+      "label": "Phone Number",
+      "placeholder": "Enter your phone number"
+    },
+    "churchName": {
+      "label": "Church Name",
+      "placeholder": "Enter church name"
+    },
+    "churchAddress": {
+      "label": "Church Address",
+      "placeholder": "Enter complete church address"
+    },
+    "numberOfServed": {
+      "label": "Number of Served (Attendees/Recipients)",
+      "placeholder": "Enter number"
+    }
+  },
+  "trainingBooks": {
+    "title": "Training Books Available",
+    "description": "Reference guide for available training materials and their parts",
+    "showButton": "Show Training Books Available",
+    "hideButton": "Hide Training Books Available",
+    "availableBooks": "Available Books & Parts:",
+    "books": {
+      "lookAndLearn": {
+        "name": "Look and Learn",
+        "parts": ["Part One", "Part Two"]
+      },
+      "storyTime": {
+        "name": "Story Time", 
+        "parts": ["Part One", "Part Two"]
+      },
+      "explorersClub": {
+        "name": "Explorers Club",
+        "parts": ["Part One", "Part Two"]
+      },
+      "seventeenStories": {
+        "name": "17 Stories",
+        "parts": ["The Student's Part"]
+      },
+      "seventyFiveStories": {
+        "name": "75 Stories",
+        "parts": ["The Student's Part"]
+      },
+      "rajaaForChildren": {
+        "name": "Rajaa for Children",
+        "parts": ["The Student's Part"]
+      },
+      "beALeader": {
+        "name": "Be a Leader",
+        "parts": ["The Student's Part"]
+      },
+      "bestFriends": {
+        "name": "Best Friends",
+        "parts": ["Part One", "Part Two"]
+      }
+    }
+  },
+  "bookRequests": {
+    "title": "Book Requests",
+    "description": "Select the books and parts you need for your training program",
+    "bookRequestNumber": "Book Request",
+    "fields": {
+      "bookName": {
+        "label": "Book Name",
+        "placeholder": "Choose book"
+      },
+      "partName": {
+        "label": "Book Part",
+        "placeholder": "Choose part",
+        "selectBookFirst": "Select book first"
+      },
+      "copies": {
+        "label": "Number of Copies",
+        "placeholder": "Enter number"
+      }
+    },
+    "addButton": "Add Another Book"
+  },
+  "fileUpload": {
+    "title": "Served List File",
+    "description": "Upload a file with the names of served attendees (PDF, Word, or Image format)",
+    "label": "File with Names of Served",
+    "acceptedFormats": "Accepted formats: PDF, Word (.doc, .docx), Images (.jpg, .png)",
+    "chooseFile": "Choose File",
+    "noFileChosen": "No file chosen",
+    "dragDrop": "Drag and drop a file here, or click to select"
+  },
+  "tshirtGuide": {
+    "title": "T-shirt Size Guide",
+    "description": "Please refer to this sizing chart when requesting t-shirts",
+    "altText": "T-shirt sizing guide with measurements in Arabic"
+  },
+  "tshirtRequests": {
+    "title": "T-shirt Requests",
+    "description": "How many t-shirts do you need for each size?",
+    "sizes": {
+      "size6": "Size 6",
+      "size8": "Size 8", 
+      "size10": "Size 10",
+      "sizeL": "Size L",
+      "sizeXL": "Size XL",
+      "sizeXXL": "Size XXL"
+    }
+  },
+  "buttons": {
+    "back": "Back to Selection",
+    "submit": "Submit Follow-up Request",
+    "submitting": "Submitting..."
+  },
+  "toast": {
+    "success": {
+      "title": "✅ Successfully Submitted!",
+      "description": "Your follow-up training request has been submitted successfully. We'll process your request and contact you within 24 hours."
+    },
+    "error": {
+      "title": "Error",
+      "description": "Failed to submit follow-up request. Please try again."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "bookNameRequired": "Book name is required",
+    "partNameRequired": "Part name is required",
+    "copiesRequired": "Number of copies is required",
+    "copiesInvalid": "Must be a valid number greater than 0",
+    "numberOfServedRequired": "Number of served is required",
+    "numberOfServedInvalid": "Must be a valid number greater than 0",
+    "atLeastOneBook": "At least one book is required",
+    "validNumber": "Must be a valid number"
+  }
+}

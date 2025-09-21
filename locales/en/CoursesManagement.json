@@ -1,0 +1,142 @@
+{
+  "title": "Course Management",
+  "description": "Manage your educational courses and programs",
+  "addCourse": "Add Course",
+  "searchPlaceholder": "Search courses, instructors, or institutions...",
+  "coursesCount": "Courses ({{count}})",
+  
+  "stats": {
+    "totalCourses": "Total Courses",
+    "categories": "Categories",
+    "totalEnrollments": "Total Enrollments",
+    "avgRating": "Avg Rating"
+  },
+  
+  "form": {
+    "createTitle": "Add New Course",
+    "editTitle": "Edit Course",
+    "basicInformation": "Basic Information",
+    "courseDetails": "Course Details",
+    "datesEnrollment": "Dates and Enrollment",
+    "institutionInstructor": "Institution and Instructor",
+    
+    "fields": {
+      "title": "Course Title",
+      "titlePlaceholder": "Enter course title",
+      "description": "Description",
+      "descriptionPlaceholder": "Enter course description",
+      "category": "Category",
+      "categoryPlaceholder": "e.g., Technology, Business, Design",
+      "subcategory": "Subcategory",
+      "subcategoryPlaceholder": "e.g., Web Development, Data Analysis",
+      "level": "Level",
+      "format": "Format",
+      "duration": "Duration",
+      "durationPlaceholder": "e.g., 8 weeks, 3 months",
+      "price": "Price",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "maxStudents": "Max Students",
+      "availableSeats": "Available Seats",
+      "institutionName": "Institution",
+      "instructorName": "Instructor Name",
+      "instructorPlaceholder": "Enter instructor name"
+    },
+    
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    
+    "formats": {
+      "online": "Online",
+      "offline": "Offline",
+      "hybrid": "Hybrid"
+    },
+    
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Add Course",
+      "update": "Update Course",
+      "creating": "Creating...",
+      "updating": "Updating..."
+    },
+    
+    "placeholders": {
+      "selectInstitution": "Select institution"
+    }
+  },
+  
+  "filters": {
+    "allCategories": "All Categories",
+    "filterByCategory": "Filter by category"
+  },
+  
+  "table": {
+    "headers": {
+      "course": "Course",
+      "instructor": "Instructor",
+      "institution": "Institution",
+      "category": "Category",
+      "level": "Level",
+      "format": "Format",
+      "price": "Price",
+      "enrollment": "Enrollment",
+      "rating": "Rating",
+      "actions": "Actions"
+    },
+    "free": "Free",
+    "seatsLeft": "seats left"
+  },
+  
+  "status": {
+    "draft": "Draft",
+    "published": "Published",
+    "archived": "Archived",
+    "cancelled": "Cancelled"
+  },
+  
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View"
+  },
+  
+  "deleteModal": {
+    "title": "Delete Course",
+    "description": "Are you sure you want to delete \"{{courseName}}\"? This action cannot be undone.",
+    "confirmText": "Yes, delete course",
+    "cancelText": "Cancel"
+  },
+  
+  "loading": {
+    "courses": "Loading courses...",
+    "creating": "Creating course...",
+    "updating": "Updating course...",
+    "deleting": "Deleting course..."
+  },
+  
+  "success": {
+    "courseAdded": "Course added successfully",
+    "courseUpdated": "Course updated successfully", 
+    "courseDeleted": "Course deleted successfully"
+  },
+  
+  "errors": {
+    "loadCourses": "Failed to load courses",
+    "createCourse": "Failed to create course",
+    "updateCourse": "Failed to update course",
+    "deleteCourse": "Failed to delete course",
+    "required": "This field is required",
+    "invalidPrice": "Please enter a valid price",
+    "invalidDate": "Please enter a valid date",
+    "endDateAfterStart": "End date must be after start date"
+  },
+  
+  "empty": {
+    "title": "No courses found",
+    "description": "No courses match your filters.",
+    "noCoursesYet": "No courses added yet."
+  }
+}

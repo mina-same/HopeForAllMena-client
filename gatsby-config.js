@@ -23,6 +23,22 @@ module.exports = {
       }
     },
     `gatsby-transformer-json`,
+    {
+      resolve: 'gatsby-plugin-react-i18next',
+      options: {
+        localeJsonSourceName: `locale`,
+        languages: ['en', 'ar'],
+        defaultLanguage: 'en',
+        siteUrl: 'http://localhost:8000',
+        i18nextOptions: {
+          interpolation: {
+            escapeValue: false
+          },
+          keySeparator: '.',
+          nsSeparator: false
+        }
+      }
+    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`
   ]

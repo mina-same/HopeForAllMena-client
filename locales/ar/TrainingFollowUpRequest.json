@@ -1,0 +1,152 @@
+{
+  "pageTitle": "طلب متابعة التدريب - خدمة الأمل للجميع الشرق الأوسط",
+  "seoDescription": "اطلب مواد تدريبية إضافية وموارد لبرنامجك المستمر",
+  "header": {
+    "badge": "طلب متابعة التدريب",
+    "title": "طلب متابعة التدريب",
+    "description": "اطلب مواد تدريبية إضافية وموارد لبرنامجك المستمر"
+  },
+  "trainerInfo": {
+    "title": "معلومات المدرب والاتصال",
+    "trainerName": {
+      "label": "الاسم الكامل للمدرب",
+      "placeholder": "أدخل الاسم الكامل للمدرب الذي دربك",
+      "description": "إذا كنت لا تعرف، {{contactLink}} لمعرفة الاسم الكامل للمدرب الذي دربك",
+      "contactText": "تواصل معنا"
+    },
+    "name": {
+      "label": "اسمك",
+      "placeholder": "أدخل اسمك الكامل"
+    },
+    "phoneNumber": {
+      "label": "رقم الهاتف",
+      "placeholder": "أدخل رقم هاتفك"
+    },
+    "churchName": {
+      "label": "اسم الكنيسة",
+      "placeholder": "أدخل اسم الكنيسة"
+    },
+    "churchAddress": {
+      "label": "عنوان الكنيسة",
+      "placeholder": "أدخل العنوان الكامل للكنيسة"
+    },
+    "numberOfServed": {
+      "label": "عدد المخدومين (الحضور/المستفيدين)",
+      "placeholder": "أدخل العدد"
+    }
+  },
+  "trainingBooks": {
+    "title": "الكتب التدريبية المتاحة",
+    "description": "دليل مرجعي للمواد التدريبية المتاحة وأجزائها",
+    "showButton": "إظهار الكتب التدريبية المتاحة",
+    "hideButton": "إخفاء الكتب التدريبية المتاحة",
+    "availableBooks": "الكتب والأجزاء المتاحة:",
+    "books": {
+      "lookAndLearn": {
+        "name": "انظر وتعلم",
+        "parts": ["الجزء الأول", "الجزء الثاني"]
+      },
+      "storyTime": {
+        "name": "وقت القصة", 
+        "parts": ["الجزء الأول", "الجزء الثاني"]
+      },
+      "explorersClub": {
+        "name": "نادي المستكشفين",
+        "parts": ["الجزء الأول", "الجزء الثاني"]
+      },
+      "seventeenStories": {
+        "name": "17 قصة",
+        "parts": ["جزء الطالب"]
+      },
+      "seventyFiveStories": {
+        "name": "75 قصة",
+        "parts": ["جزء الطالب"]
+      },
+      "rajaaForChildren": {
+        "name": "رجاء للأطفال",
+        "parts": ["جزء الطالب"]
+      },
+      "beALeader": {
+        "name": "كن قائداً",
+        "parts": ["جزء الطالب"]
+      },
+      "bestFriends": {
+        "name": "أفضل الأصدقاء",
+        "parts": ["الجزء الأول", "الجزء الثاني"]
+      }
+    }
+  },
+  "bookRequests": {
+    "title": "طلبات الكتب",
+    "description": "اختر الكتب والأجزاء التي تحتاجها لبرنامجك التدريبي",
+    "bookRequestNumber": "طلب كتاب",
+    "fields": {
+      "bookName": {
+        "label": "اسم الكتاب",
+        "placeholder": "اختر كتاباً"
+      },
+      "partName": {
+        "label": "جزء الكتاب",
+        "placeholder": "اختر جزءاً",
+        "selectBookFirst": "اختر الكتاب أولاً"
+      },
+      "copies": {
+        "label": "عدد النسخ",
+        "placeholder": "أدخل العدد"
+      }
+    },
+    "addButton": "إضافة كتاب آخر"
+  },
+  "fileUpload": {
+    "title": "ملف قائمة المخدومين",
+    "description": "ارفع ملفاً يحتوي على أسماء الحضور المخدومين (PDF، Word، أو صورة)",
+    "label": "ملف بأسماء المخدومين",
+    "acceptedFormats": "الصيغ المقبولة: PDF، Word (.doc، .docx)، الصور (.jpg، .png)",
+    "chooseFile": "اختر ملف",
+    "noFileChosen": "لم يتم اختيار ملف",
+    "dragDrop": "اسحب وأفلت ملفاً هنا، أو انقر للاختيار"
+  },
+  "tshirtGuide": {
+    "title": "دليل مقاسات التيشرت",
+    "description": "يرجى الرجوع إلى جدول المقاسات هذا عند طلب التيشرتات",
+    "altText": "دليل مقاسات التيشرت مع القياسات بالعربية"
+  },
+  "tshirtRequests": {
+    "title": "طلبات التيشرت",
+    "description": "كم تيشرت تحتاج لكل مقاس؟",
+    "sizes": {
+      "size6": "مقاس 6",
+      "size8": "مقاس 8", 
+      "size10": "مقاس 10",
+      "sizeL": "مقاس L",
+      "sizeXL": "مقاس XL",
+      "sizeXXL": "مقاس XXL"
+    }
+  },
+  "buttons": {
+    "back": "العودة إلى الاختيار",
+    "submit": "إرسال طلب المتابعة",
+    "submitting": "جاري الإرسال..."
+  },
+  "toast": {
+    "success": {
+      "title": "✅ تم الإرسال بنجاح!",
+      "description": "تم إرسال طلب متابعة التدريب بنجاح. سنقوم بمعالجة طلبك والتواصل معك خلال 24 ساعة."
+    },
+    "error": {
+      "title": "خطأ",
+      "description": "فشل في إرسال طلب المتابعة. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب",
+    "bookNameRequired": "اسم الكتاب مطلوب",
+    "partNameRequired": "اسم الجزء مطلوب",
+    "copiesRequired": "عدد النسخ مطلوب",
+    "copiesInvalid": "يجب أن يكون رقماً صحيحاً أكبر من 0",
+    "numberOfServedRequired": "عدد المخدومين مطلوب",
+    "numberOfServedInvalid": "يجب أن يكون رقماً صحيحاً أكبر من 0",
+    "atLeastOneBook": "كتاب واحد على الأقل مطلوب",
+    "validNumber": "يجب أن يكون رقماً صحيحاً"
+  }
+}

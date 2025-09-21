@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Star, ChevronRight } from 'lucide-react';
-import { Link } from 'gatsby';
+import { Link, graphql } from 'gatsby';
+import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import Bookstore from '../components/bookstore';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
@@ -9,37 +10,41 @@ import Footer from '../components/footer';
 import Layout from '../components/layout';
 import { booksAPI } from '../services/api';
 
-const testimonials = [
+const getTestimonials = (t) => [
   {
     id: 1,
-    title: "What people saying!",
-    content: "Hope For All Mena has been a blessing to our community! Their collection of Christian literature and spiritual books has helped deepen my faith. The Arabic translations are especially meaningful to our family.",
-    name: "SARAH MANSOUR",
-    location: "Alexandria, Egypt"
+    title: t('testimonials.title'),
+    content: t('testimonials.items.0.content'),
+    name: t('testimonials.items.0.name'),
+    location: t('testimonials.items.0.location')
   },
   {
     id: 2,
-    title: "What people saying!",
-    content: "As a pastor serving in the Middle East, I rely on Hope For All Mena for quality theological resources and inspirational books. Their mission to spread hope through literature is truly making a difference in our region.",
-    name: "PASTOR MICHAEL K",
-    location: "Beirut, Lebanon"
+    title: t('testimonials.title'),
+    content: t('testimonials.items.1.content'),
+    name: t('testimonials.items.1.name'),
+    location: t('testimonials.items.1.location')
   },
   {
     id: 3,
-    title: "What people saying!",
-    content: "The children's Bible stories and Christian educational materials I ordered have been perfect for our Sunday school. Fast delivery and excellent customer service. God bless this ministry!",
-    name: "MIRIAM IBRAHIM",
-    location: "Cairo, Egypt"
+    title: t('testimonials.title'),
+    content: t('testimonials.items.2.content'),
+    name: t('testimonials.items.2.name'),
+    location: t('testimonials.items.2.location')
   }
 ];
 
 const StarRating = ({ rating, reviews }) => {
+  const { t } = useTranslation('Books');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const fullStars = Math.floor(rating);
   const hasHalfStar = rating % 1 !== 0;
   const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 
   return (
-    <div className="flex items-center gap-1 mb-2 md:mb-3">
+    <div className={`flex items-center gap-1 mb-2 md:mb-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
       <div className="flex items-center">
         {[...Array(fullStars)].map((_, i) => (
           <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 fill-amber-400 text-amber-400" />
@@ -56,13 +61,18 @@ const StarRating = ({ rating, reviews }) => {
           <Star key={i} className="w-3 h-3 sm:w-4 sm:h-4 text-gray-300" />
         ))}
       </div>
-      <span className="text-xs sm:text-sm text-gray-600 ml-1">({reviews})</span>
+      <span className={`text-xs sm:text-sm text-gray-600 ${currentLanguage === 'ar' ? 'mr-1' : 'ml-1'}`}>({reviews} {t('trending.reviews')})</span>
     </div>
   );
 };
 
 const TestimonialsCarousel = () => {
+  const { t } = useTranslation('Books');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const [currentSlide, setCurrentSlide] = useState(0);
+  const testimonials = getTestimonials(t);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -76,47 +86,65 @@ const TestimonialsCarousel = () => {
   };
 
   return (
-    <section
-      className="relative w-full h-[400px] sm:h-[450px] md:h-[500px] overflow-hidden"
-      style={{
-        backgroundImage: `url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/h1-bg2.jpg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}
-    >
+    <>
+      {/* RTL-specific styles for Arabic */}
+      {currentLanguage === 'ar' && (
+        <style jsx>{`
+          .testimonials-carousel h3,
+          .testimonials-carousel p,
+          .testimonials-carousel span {
+            text-align: center;
+            direction: rtl;
+          }
+          .testimonials-carousel [dir="rtl"] .space-x-2,
+          .testimonials-carousel [dir="rtl"] .space-x-3 {
+            --tw-space-x-reverse: 1;
+          }
+        `}</style>
+      )}
+      <section
+        className="testimonials-carousel relative w-full h-[350px] xs:h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] overflow-hidden"
+        style={{
+          backgroundImage: `url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/h1-bg2.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+        dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+      >
       <div className="relative z-10 h-full flex items-center">
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-          <div className="absolute top-[60px] sm:top-[80px] md:top-[110px] h-full w-full">
+        <div className="w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 md:px-8">
+          <div className="absolute top-[180px] xs:top-[180px] sm:top-[180px] md:top-[180px] h-full w-full">
             <div className="flex items-center justify-center md:justify-start md:pl-8 lg:pl-16">
-              <div className="w-full max-w-sm md:max-w-md">
-                <div className="bg-white rounded-2xl md:rounded-br-none md:rounded-bl-none shadow-2xl px-6 sm:px-8 md:px-10 py-8 sm:py-10 md:py-12 text-center transform transition-all duration-500 ease-in-out">
-                  <div className="mb-6 md:mb-8">
-                    <h3 className="text-gray-500 text-base sm:text-lg font-normal mb-2 md:mb-3">
+              <div className="w-full max-w-xs xs:max-w-sm md:max-w-md lg:max-w-lg">
+                <div className="bg-white rounded-xl xs:rounded-2xl md:rounded-br-none md:rounded-bl-none shadow-2xl px-4 xs:px-6 sm:px-8 md:px-10 py-6 xs:py-8 sm:py-10 md:py-12 text-center transform transition-all duration-500 ease-in-out">
+                  <div className="mb-4 xs:mb-6 md:mb-8">
+                    <h3 className="text-gray-500 text-sm xs:text-base sm:text-lg md:text-xl font-normal mb-2 md:mb-3">
                       {testimonials[currentSlide].title}
                     </h3>
-                    <div className="w-12 sm:w-16 h-0.5 bg-gray-300 mx-auto"></div>
+                    <div className="w-8 xs:w-12 sm:w-16 h-0.5 bg-gray-300 mx-auto"></div>
                   </div>
-                  <div className="mb-6 md:mb-8">
-                    <p className="text-gray-900 text-sm sm:text-base md:text-lg leading-relaxed font-medium">
+                  <div className="mb-4 xs:mb-6 md:mb-8">
+                    <p className="text-gray-900 text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-medium px-2 xs:px-0">
                       "{testimonials[currentSlide].content}"
                     </p>
                   </div>
-                  <div className="mb-6 md:mb-8">
-                    <div className="text-xs sm:text-sm font-semibold text-gray-600 tracking-wider">
+                  <div className="mb-4 xs:mb-6 md:mb-8">
+                    <div className="text-xs sm:text-sm md:text-base font-semibold text-gray-600 tracking-wider">
                       <span className="block">{testimonials[currentSlide].name}</span>
-                      <span className="text-gray-400 font-normal">/ {testimonials[currentSlide].location}</span>
+                      <span className="text-gray-400 font-normal text-xs sm:text-sm">/ {testimonials[currentSlide].location}</span>
                     </div>
                   </div>
-                  <div className="flex justify-center space-x-2 md:space-x-3">
+                  <div className={`flex justify-center ${currentLanguage === 'ar' ? 'flex-row-reverse gap-1.5 xs:gap-2 md:gap-3' : 'space-x-1.5 xs:space-x-2 md:space-x-3'}`}>
                     {testimonials.map((_, index) => (
                       <div
                         key={index}
                         onClick={() => goToSlide(index)}
-                        className={`transition-all duration-300 cursor-pointer ${currentSlide === index
-                            ? 'w-6 md:w-8 h-1.5 md:h-2 bg-[#2194D1] rounded-full'
-                            : 'w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-300 rounded-full hover:bg-gray-400'
+                        className={`transition-all duration-300 cursor-pointer touch-manipulation ${currentSlide === index
+                            ? 'w-4 xs:w-5 sm:w-6 md:w-8 h-1.5 md:h-2 bg-[#2194D1] rounded-full'
+                            : 'w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-300 rounded-full hover:bg-gray-400 active:bg-gray-500'
                           }`}
+                        role="button"
                         aria-label={`Go to slide ${index + 1}`}
                       />
                     ))}
@@ -140,10 +168,15 @@ const TestimonialsCarousel = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
 const TrendingProducts = () => {
+  const { t } = useTranslation('Books');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -195,13 +228,28 @@ const TrendingProducts = () => {
     const fetchLatestBooks = async () => {
       try {
         setLoading(true);
-        const response = await booksAPI.getBooks({
+        const apiParams = {
           page: 1,
           limit: 8,
           sortBy: 'createdAt',
           sortOrder: 'desc',
-          status: 'published'
-        });
+          status: 'published',
+          language: currentLanguage // Add language parameter for API
+        };
+        
+        console.log('=== API CALL DEBUG ===');
+        console.log('API Parameters:', apiParams);
+        console.log('Current Language:', currentLanguage);
+        
+        const response = await booksAPI.getBooks(apiParams);
+        
+        console.log('=== API RESPONSE DEBUG ===');
+        console.log('Response Status:', response.status);
+        console.log('Response Data:', response.data);
+        if (response.data?.books?.length > 0) {
+          console.log('First Book Sample:', response.data.books[0]);
+          console.log('First Book Author:', response.data.books[0].author);
+        }
         
         if (response.status === 'success') {
           setBooks(response.data.books);
@@ -214,7 +262,7 @@ const TrendingProducts = () => {
     };
 
     fetchLatestBooks();
-  }, []);
+  }, [currentLanguage]); // Re-fetch when language changes
 
   // Update current slide on scroll
   useEffect(() => {
@@ -346,16 +394,16 @@ const TrendingProducts = () => {
   return (
     <section className="mx-auto py-4 md:py-8 px-4">
 
-      <div className="container mx-auto px-4 py-10 sm:px-8 md:px-16 lg:px-40 relative flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 md:mb-8 gap-4">
-        <div className="flex items-center w-full sm:w-auto">
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mr-4">What's In Trend</h2>
+      <div className="container mx-auto px-4 py-10 sm:px-8 md:px-16 lg:px-40 relative flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 md:mb-8 gap-4" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+        <div className={`flex items-center w-full sm:w-auto ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <h2 className={`text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 ${currentLanguage === 'ar' ? 'ml-4' : 'mr-4'}`}>{t('trending.title')}</h2>
           <div className="h-px bg-gray-300 flex-1 sm:w-16 md:w-32"></div>
         </div>
-        <div className="flex items-center gap-2 bg-[#2194D1] text-white px-4 md:px-6 py-2 rounded-full hover:bg-[#2194D1]/90 transition-colors cursor-pointer text-sm md:text-base">
-          <span className="hidden sm:inline">View All</span>
-          <span className="sm:hidden">View All</span>
-          <ChevronRight className="w-4 h-4" />
-        </div>
+        <Link to="/books" className="flex items-center gap-2 bg-[#2194D1] text-white px-4 md:px-6 py-2 rounded-full hover:bg-[#2194D1]/90 transition-colors cursor-pointer text-sm md:text-base">
+          <span className="hidden sm:inline">{t('trending.viewAll')}</span>
+          <span className="sm:hidden">{t('trending.viewAll')}</span>
+          <ChevronRight className={`w-4 h-4 ${currentLanguage === 'ar' ? 'rotate-180' : ''}`} />
+        </Link>
       </div>
 
       <div className="w-full px-2 sm:px-4">
@@ -379,57 +427,105 @@ const TrendingProducts = () => {
           {loading ? (
             <div className="flex items-center justify-center w-full h-64">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2194D1]"></div>
+              <span className="ml-3 text-gray-600">{t('trending.loading')}</span>
             </div>
           ) : (
-            books.map((book, index) => (
-              <div key={book._id} className="flex-shrink-0 flex-center w-[280px] sm:w-[380px] md:w-[450px] lg:w-[520px] transition-transform duration-200 hover:scale-[1.02]">
-                <div className={`rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden p-3 sm:p-4 md:p-6 h-[380px] sm:h-[340px] md:h-[360px] ${cardColors[index % cardColors.length]}`}>
-                  <div className="flex flex-col sm:flex-row h-full">
-                    <div className="w-full sm:w-44 md:w-52 lg:w-60 flex-shrink-0 mb-4 sm:mb-0">
-                      <Link to={`/book/${book._id}`}>
-                        <img
-                          src={book.coverImageUrl || '/default-book-cover.jpg'}
-                          alt={book.title}
-                          className="w-[240px] h-[250px] sm:h-full object-cover transition-transform duration-300 hover:scale-105 rounded-xl md:rounded-2xl"
-                          style={{ aspectRatio: '3/4' }}
-                          draggable={false}
-                        />
-                      </Link>
-                    </div>
-                    <div className="flex-1 sm:p-4 md:p-7 flex flex-col justify-between h-full sm:h-auto py-2 sm:py-0">
-                      <div className="flex-1 flex flex-col">
-                        <div className="min-h-[3rem] sm:min-h-[4rem] md:min-h-[5rem] flex items-start mb-2 md:mb-3">
-                          <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 leading-tight">
-                            <Link to={`/book/${book._id}`} className="text-[#2194D1] hover:text-[#204b62] transition-colors">
-                              {book.title}
-                            </Link>
-                          </h3>
-                        </div>
-                        <StarRating rating={book.averageRating || 0} reviews={book.totalReviews || 0} />
-                        <p className="text-xs sm:text-sm text-gray-600 mb-2 md:mb-3 font-medium line-clamp-1">
-                          by <a href={`/author/${book.author?.slug}`} className="text-[#2194D1] hover:text-[#204b62] hover:underline transition-colors">{book.author?.name || 'Unknown Author'}</a>
-                        </p>
-                        <div className="flex-1">
-                          <p className="text-xs sm:text-sm text-gray-700 line-clamp-2 sm:line-clamp-3 leading-relaxed">{book.description || book.shortDescription}</p>
+            books.map((book, index) => {
+              // Handle Arabic content based on language - using correct database field names
+              const bookTitle = currentLanguage === 'ar' ? 
+                (book.titleAr || book.title) : 
+                book.title;
+              
+              const bookDescription = currentLanguage === 'ar' ? 
+                (book.descriptionAr || book.shortDescriptionAr || book.description || book.shortDescription) : 
+                (book.description || book.shortDescription);
+              
+              const authorName = currentLanguage === 'ar' ? 
+                (book.author?.nameAr || book.author?.name) : 
+                book.author?.name;
+              
+              // Debug: Log complete book data to see what's being returned
+              if (currentLanguage === 'ar' && index === 0) {
+                console.log('=== COMPLETE BOOK DATA DEBUG ===');
+                console.log('Current Language:', currentLanguage);
+                console.log('Full Book Object:', book);
+                console.log('Book Keys:', Object.keys(book));
+                console.log('Book Title (EN):', book.title);
+                console.log('Book Title (AR):', book.titleAr);
+                console.log('Author Object:', book.author);
+                if (book.author) {
+                  console.log('Author Keys:', Object.keys(book.author));
+                  console.log('Author Name (EN):', book.author.name);
+                  console.log('Author Name (AR):', book.author.nameAr);
+                }
+                console.log('=== FINAL RENDERED VALUES ===');
+                console.log('Rendered Book Title:', bookTitle);
+                console.log('Rendered Author Name:', authorName);
+                console.log('Rendered Description:', bookDescription);
+              }
+              
+              return (
+                <div key={book._id} className="flex-shrink-0 flex-center w-[280px] xs:w-[320px] sm:w-[380px] md:w-[450px] lg:w-[520px] xl:w-[580px] transition-transform duration-200 hover:scale-[1.02]">
+                  <div className={`rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden p-3 sm:p-4 md:p-6 h-[420px] xs:h-[440px] sm:h-[340px] md:h-[360px] lg:h-[380px] ${cardColors[index % cardColors.length]}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                    <div className={`flex ${currentLanguage === 'ar' ? 'flex-col-reverse sm:flex-row-reverse' : 'flex-col sm:flex-row'} h-full`}>
+                      <div className="w-full sm:w-44 md:w-52 lg:w-60 xl:w-64 flex-shrink-0 mb-4 sm:mb-0">
+                        <Link to={`/book/${book._id}`}>
+                          <img
+                            src={book.coverImageUrl || '/default-book-cover.jpg'}
+                            alt={bookTitle}
+                            className="w-full max-w-[220px] xs:max-w-[240px] sm:w-full h-[220px] xs:h-[240px] sm:h-full object-cover transition-transform duration-300 hover:scale-105 rounded-lg sm:rounded-xl md:rounded-2xl mx-auto sm:mx-0"
+                            style={{ aspectRatio: '3/4' }}
+                            draggable={false}
+                          />
+                        </Link>
+                      </div>
+                      <div className={`flex-1 sm:p-4 md:p-6 lg:p-7 flex flex-col justify-between h-full sm:h-auto py-1 xs:py-2 sm:py-0 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        <div className="flex-1 flex flex-col justify-between">
+                          {/* Title - Optimized spacing */}
+                          <div className="mb-1 xs:mb-2 sm:mb-3">
+                            <h3 className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-gray-900 leading-tight line-clamp-2">
+                              <Link to={`/book/${book._id}`} className="text-[#2194D1] hover:text-[#204b62] transition-colors">
+                                {bookTitle}
+                              </Link>
+                            </h3>
+                          </div>
+                          
+                          {/* Rating - Compact */}
+                          <div className="mb-1 xs:mb-2 sm:mb-3">
+                            <StarRating rating={book.averageRating || 0} reviews={book.totalReviews || 0} />
+                          </div>
+                          
+                          {/* Author - Compact */}
+                          <div className="mb-1 xs:mb-2 sm:mb-3">
+                            <p className="text-xs sm:text-sm md:text-base text-gray-600 font-medium line-clamp-1">
+                              {t('trending.byAuthor')} <Link to={`/author/${book.author?.slug}`} className="text-[#2194D1] hover:text-[#204b62] hover:underline transition-colors">{authorName || t('trending.unknownAuthor')}</Link>
+                            </p>
+                          </div>
+                          
+                          {/* Description - Flexible */}
+                          <div className="flex-1 min-h-0">
+                            <p className="text-xs sm:text-sm md:text-base text-gray-700 line-clamp-2 xs:line-clamp-3 sm:line-clamp-3 md:line-clamp-4 leading-relaxed">{bookDescription}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           )}
         </div>
-        <div className="flex justify-center mt-4 md:mt-6 space-x-2 md:space-x-3">
+        <div className={`flex justify-center mt-4 md:mt-6 ${currentLanguage === 'ar' ? 'flex-row-reverse gap-1.5 sm:gap-2 md:gap-3' : 'space-x-1.5 sm:space-x-2 md:space-x-3'}`}>
           {books.map((_, index) => (
             <div
               key={index}
               onClick={() => goToSlide(index)}
-              className={`transition-all duration-300 cursor-pointer ${
+              className={`transition-all duration-300 cursor-pointer touch-manipulation ${
                 currentSlide === index
-                  ? 'w-6 md:w-8 h-1.5 md:h-2 bg-[#2194D1] rounded-full'
-                  : 'w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-300 rounded-full hover:bg-gray-400'
+                  ? 'w-4 xs:w-5 sm:w-6 md:w-8 h-1.5 md:h-2 bg-[#2194D1] rounded-full'
+                  : 'w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-300 rounded-full hover:bg-gray-400 active:bg-gray-500'
               }`}
+              role="button"
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
@@ -462,8 +558,10 @@ const TrendingProducts = () => {
 };
 
 const TrendingPage = () => {
+  const { t } = useTranslation('Books');
+
   return (
-    <Layout pageTitle="Books || Hope For All Mena Ministry">
+    <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`}>
       <HeaderTwo />
       <div className="min-h-screen">
         {/* Header */}
@@ -477,12 +575,12 @@ const TrendingPage = () => {
         <TestimonialsCarousel />
 
         {/* Shop Section */}
-        <section className="container sm:py-12 md:py-16 bg-background">
+        <section className="container pt-8 xs:pt-12 sm:py-12 md:py-16 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="text-center mb-8 md:mb-12">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">Our Complete Book Collection</h2>
+            <div className="text-center mb-6 xs:mb-8 md:mb-12">
+              <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-bold text-foreground mb-2 md:mb-4">{t('collection.title')}</h2>
               <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
-                Discover thousands of books across all genres. Filter by category, price, or rating to find your perfect read.
+                {t('collection.description')}
               </p>
             </div>
             <Bookstore />
@@ -497,3 +595,17 @@ const TrendingPage = () => {
 };
 
 export default TrendingPage;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

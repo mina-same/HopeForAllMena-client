@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { graphql, Link } from 'gatsby';
+import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { Mail, Search, Clock, CheckCircle, XCircle, MessageSquare, Book, User, Phone, Calendar } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -8,8 +10,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useToast } from '../../hooks/use-toast';
 import contactMessageService from '../../services/contactMessageService';
 import ConfirmationModal from '../ui/ConfirmationModal';
+import '../../styles/ContactMessages-rtl.css';
 
 export function ContactMessagesSection() {
+  const { t } = useTranslation('ContactMessages');
+  const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,8 +54,8 @@ export function ContactMessagesSection() {
     } catch (error) {
       console.error('Failed to fetch messages:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch messages. Please try again.",
+        title: t('toast.error.title'),
+        description: t('toast.error.fetchFailed'),
         variant: "destructive"
       });
     } finally {
@@ -75,8 +80,8 @@ export function ContactMessagesSection() {
     try {
       await contactMessageService.respondToContactMessage(messageToRespond._id, responseText);
       toast({
-        title: "Response Sent",
-        description: "Response has been sent successfully.",
+        title: t('toast.responseSent.title'),
+        description: t('toast.responseSent.description'),
       });
       fetchMessages();
       setShowResponseModal(false);
@@ -84,8 +89,8 @@ export function ContactMessagesSection() {
     } catch (error) {
       console.error('Failed to send response:', error);
       toast({
-        title: "Error",
-        description: "Failed to send response. Please try again.",
+        title: t('toast.error.title'),
+        description: t('toast.error.responseFailed'),
         variant: "destructive"
       });
     } finally {
@@ -97,15 +102,15 @@ export function ContactMessagesSection() {
     try {
       await contactMessageService.updateContactMessageStatus(message._id, 'read');
       toast({
-        title: "Message Updated",
-        description: "Message marked as read.",
+        title: t('toast.messageUpdated.title'),
+        description: t('toast.messageUpdated.description', { status: t('statuses.read') }),
       });
       fetchMessages();
     } catch (error) {
       console.error('Failed to update message:', error);
       toast({
-        title: "Error",
-        description: "Failed to update message. Please try again.",
+        title: t('toast.error.title'),
+        description: t('toast.error.updateFailed'),
         variant: "destructive"
       });
     }
@@ -115,22 +120,23 @@ export function ContactMessagesSection() {
     try {
       await contactMessageService.updateContactMessageStatus(message._id, 'resolved');
       toast({
-        title: "Message Updated",
-        description: "Message marked as resolved.",
+        title: t('toast.messageUpdated.title'),
+        description: t('toast.messageUpdated.description', { status: t('statuses.resolved') }),
       });
       fetchMessages();
     } catch (error) {
       console.error('Failed to update message:', error);
       toast({
-        title: "Error",
-        description: "Failed to update message. Please try again.",
+        title: t('toast.error.title'),
+        description: t('toast.error.updateFailed'),
         variant: "destructive"
       });
     }
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    const locale = currentLanguage === 'ar' ? 'ar-SA' : 'en-US';
+    return new Date(dateString).toLocaleDateString(locale, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',

@@ -1,0 +1,32 @@
+{
+  "pageTitle": "Support Our Mission",
+  "crumbTitle": "Donate",
+  "header": {
+    "badge": "Make a Difference Today",
+    "title": "Support Our Mission",
+    "description": "Your generous donation helps us continue our work and make a positive impact in our community. Every contribution, no matter the size, makes a difference."
+  },
+  "qrSection": {
+    "title": "Instant Payment",
+    "description": "Scan the QR code below to make a quick and secure donation",
+    "security": "Secure & Instant Transfer",
+    "instructions": "Simply open your payment app, scan the code, and enter your desired amount"
+  },
+  "donationOptions": {
+    "title": "Quick Donation Amounts",
+    "customAmount": "Custom Amount"
+  },
+  "trustIndicators": {
+    "title": "Why Donate?",
+    "benefits": [
+      "100% of donations go directly to our programs",
+      "Transparent reporting on fund usage",
+      "Secure and encrypted payment processing"
+    ]
+  },
+  "support": {
+    "title": "Need Help?",
+    "description": "If you have any questions about donating or need assistance, please don't hesitate to contact our support team.",
+    "contactButton": "Contact Support"
+  }
+}

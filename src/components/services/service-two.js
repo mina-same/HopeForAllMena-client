@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "gatsby";
 import { Container } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import image1 from "../../assets/images/resources/service-1-1.jpg";
 import image2 from "../../assets/images/resources/service-1-2.jpg";
 import image3 from "../../assets/images/resources/service-1-3.jpg";
@@ -9,35 +10,40 @@ import hoverImage1 from "../../assets/images/gallery/gallery-2-1.jpg";
 import hoverImage2 from "../../assets/images/gallery/gallery-2-2.jpg";
 import hoverImage3 from "../../assets/images/gallery/gallery-2-3.jpg";
 
-const SERVICE_TWO_DATA = [
+const getServiceTwoData = (t) => [
   {
     extraClassName: "background-primary",
     image: image1,
     hoverImage: hoverImage1,
-    title: "Teaching",
-    text: "Start Donating",
+    titleKey: "serviceTwo.items.teaching.title",
+    textKey: "serviceTwo.items.teaching.text",
     link: "#"
   },
   {
     extraClassName: "background-secondary",
     image: image2,
     hoverImage: hoverImage2,
-    title: "Preaching",
-    text: "Let's Join",
+    titleKey: "serviceTwo.items.preaching.title",
+    textKey: "serviceTwo.items.preaching.text",
     link: "#"
   },
   {
     extraClassName: "background-base",
     image: image3,
     hoverImage: hoverImage3,
-    title: "Healing",
-    text: "Quick Funding",
+    titleKey: "serviceTwo.items.healing.title",
+    textKey: "serviceTwo.items.healing.text",
     link: "#"
   }
 ];
 
 const ServiceTwo = () => {
+  const { t } = useTranslation('About');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const serviceData = getServiceTwoData(t);
   const sliderOptions = {
     slidesPerView: 3,
     spaceBetween: 30,
@@ -73,37 +79,49 @@ const ServiceTwo = () => {
     }
   };
   return (
-    <section className="service-two">
-      <Container>
-        <Swiper {...sliderOptions}>
-          {SERVICE_TWO_DATA.map(
-            ({ extraClassName, image, hoverImage, title, text, link }, index) => (
-              <SwiperSlide key={`service-two-key-${index}`}>
-                <div
-                  className={`service-two__box ${extraClassName}`}
-                  style={{ backgroundImage: `url(${hoveredIndex === index ? hoverImage : image})` }}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  role="button"
-                  tabIndex="0"
-                >
-                  <div className="service-two__box-inner">
-                    <i className="fas fa-heart" style={{color: "#FFD701"}}></i>
-                    <p>{text}</p>
-                    <h3>
-                      <Link to={link} style={{ ':hover': { color: '#ffffff' } }}>{title}</Link>
-                    </h3>
-                    <Link className="service-two__box-link" to={link}>
-                      <i className="far fa-angle-right"></i>
-                    </Link>
+    <>
+      {/* RTL-specific styles for Arabic */}
+      {currentLanguage === 'ar' && (
+        <style jsx>{`
+          .service-two h3,
+          .service-two p {
+            text-align: center;
+            direction: rtl;
+          }
+        `}</style>
+      )}
+      <section className="service-two" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+        <Container>
+          <Swiper {...sliderOptions}>
+            {serviceData.map(
+              ({ extraClassName, image, hoverImage, titleKey, textKey, link }, index) => (
+                <SwiperSlide key={`service-two-key-${index}`}>
+                  <div
+                    className={`service-two__box ${extraClassName}`}
+                    style={{ backgroundImage: `url(${hoveredIndex === index ? hoverImage : image})` }}
+                    onMouseEnter={() => setHoveredIndex(index)}
+                    onMouseLeave={() => setHoveredIndex(null)}
+                    role="button"
+                    tabIndex="0"
+                  >
+                    <div className="service-two__box-inner">
+                      <i className="fas fa-heart" style={{color: "#FFD701"}}></i>
+                      <p>{t(textKey)}</p>
+                      <h3>
+                        <Link to={link} style={{ ':hover': { color: '#ffffff' } }}>{t(titleKey)}</Link>
+                      </h3>
+                      <Link className="service-two__box-link" to={link}>
+                        <i className={`far ${currentLanguage === 'ar' ? 'fa-angle-left' : 'fa-angle-right'}`}></i>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-            )
-          )}
-        </Swiper>
-      </Container>
-    </section>
+                </SwiperSlide>
+              )
+            )}
+          </Swiper>
+        </Container>
+      </section>
+    </>
   );
 };
 

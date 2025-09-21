@@ -1,0 +1,100 @@
+{
+  "pageTitle": "New Training Request - Hope For All Mena Ministry",
+  "seoDescription": "Submit a new training request for your church - comprehensive ministry training programs",
+  "header": {
+    "badge": "New Training Request",
+    "title": "Training Request Form",
+    "description": "Help us understand your church's training needs so we can create the perfect program for you"
+  },
+  "basicInfo": {
+    "title": "Basic Information",
+    "name": {
+      "label": "Your Name",
+      "placeholder": "Enter your full name"
+    },
+    "phoneNumber": {
+      "label": "Phone Number",
+      "placeholder": "Enter your phone number"
+    },
+    "churchName": {
+      "label": "Church Name",
+      "placeholder": "Enter church name"
+    },
+    "churchAddress": {
+      "label": "Church Address",
+      "placeholder": "Enter complete church address"
+    }
+  },
+  "serviceInfo": {
+    "title": "Service Information",
+    "serviceType": {
+      "label": "Type of Service Provided",
+      "placeholder": "Select service type",
+      "options": {
+        "sundaySchool": "Sunday School",
+        "youth": "Youth",
+        "other": "Other"
+      }
+    },
+    "otherServiceType": {
+      "label": "Please specify the kind of service",
+      "placeholder": "Describe your service type"
+    },
+    "numberOfServants": {
+      "label": "Number of Servants (Workers)",
+      "placeholder": "Enter number"
+    },
+    "numberOfServed": {
+      "label": "Number of Served (Attendees/Recipients)",
+      "placeholder": "Enter number"
+    }
+  },
+  "schedule": {
+    "title": "Training Schedule",
+    "suggestedDate": {
+      "label": "Suggested Training Date",
+      "placeholder": "Pick a date",
+      "description": "This is a proposed schedule, not mandatory. Our team will contact you to confirm or make changes.",
+      "important": "Important: You cannot select a date earlier than two weeks from today."
+    }
+  },
+  "nearbyChurches": {
+    "title": "Help Us Impact Nearby Churches (Optional)",
+    "description": "Share information about nearby churches to help us extend our training impact to the broader community.",
+    "churchNumber": "Church",
+    "fields": {
+      "name": {
+        "label": "Church Name",
+        "placeholder": "Church name"
+      },
+      "responsiblePerson": {
+        "label": "Responsible Person",
+        "placeholder": "Name of responsible person"
+      },
+      "phoneNumber": {
+        "label": "Phone Number",
+        "placeholder": "Contact number"
+      }
+    },
+    "addButton": "Add Another Church"
+  },
+  "buttons": {
+    "back": "Back to Selection",
+    "submit": "Submit Training Request",
+    "submitting": "Submitting..."
+  },
+  "toast": {
+    "success": {
+      "title": "Training Request Submitted",
+      "description": "We'll contact you within 48 hours to confirm your training schedule."
+    },
+    "error": {
+      "title": "Error",
+      "description": "Failed to submit training request. Please try again."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "minDate": "Date must be at least two weeks from today"
+  }
+}

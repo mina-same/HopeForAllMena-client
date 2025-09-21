@@ -13,28 +13,43 @@
     "publishingHouse": "دار النشر والتوزيع"
   },
   "footer": {
-    "organizationName": "الأمل للجميع الشرق الأوسط",
-    "tagline": "الربط والتجهيز والإكثار",
+    "organizationName": "الأمل للجميع الشرق الأوسط وشمال أفريقيا",
+    "tagline": "الربط والتجهيز والمضاعفة",
     "explore": "استكشف",
     "ourCauses": "قضايانا",
     "aboutUs": "من نحن",
     "newCampaign": "حملة جديدة",
     "upcomingEvents": "الأحداث القادمة",
     "siteMap": "خريطة الموقع",
-    "help": "المساعدة",
+    "help": "مساعدة",
     "donate": "تبرع",
     "contactUs": "اتصل بنا",
-    "latestBlogPosts": "أحدث المقالات",
+    "latestBlogPosts": "أحدث منشورات المدونة",
     "newsletter": "النشرة الإخبارية",
     "newsletterDescription": "اشترك الآن للحصول على آخر الأخبار والتحديثات اليومية منا",
     "emailPlaceholder": "عنوان البريد الإلكتروني",
     "subscribeNow": "اشترك الآن",
-    "copyright": "© حقوق الطبع والنشر 2025 بواسطة مينا سامي",
+    "copyright": " حقوق الطبع والنشر 2025 بواسطة مينا سامي",
     "loading": "جاري التحميل...",
     "loadingLatestPosts": "جاري تحميل أحدث المقالات...",
     "pleaseWait": "يرجى الانتظار...",
     "defaultPostTitle1": "يمكنك مساعدة الفقراء المحتاجين",
     "defaultPostTitle2": "جمع تبرعات للطعام الصحي"
+  },
+  "header": {
+    "welcome": "مرحباً بكم في خدمة رجاء لجميع الشرق الأوسط وشمال أفريقيا",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "visit": "العنوان",
+    "donateNow": "تبرع الآن",
+    "locations": {
+      "alexandria": "الإسكندرية",
+      "cairo": "القاهرة"
+    },
+    "addresses": {
+      "alexandria": "37 شارع سيدي المتولي",
+      "cairo": "11 شارع المسعود، متفرع من شارع العباسية"
+    }
   },
   "buttons": {
     "discoverMore": "اكتشف المزيد",

@@ -1,0 +1,185 @@
+{
+  "title": "إدارة المستخدمين",
+  "description": "إدارة حسابات المستخدمين والصلاحيات ({{count}} إجمالي)",
+  "addUser": "إضافة مستخدم",
+  "searchPlaceholder": "البحث عن المستخدمين بالاسم أو البريد الإلكتروني أو اسم المستخدم...",
+  "loading": {
+    "users": "جاري تحميل المستخدمين...",
+    "creating": "جاري الإنشاء...",
+    "updating": "جاري التحديث...",
+    "deleting": "جاري الحذف..."
+  },
+  "table": {
+    "headers": {
+      "user": "المستخدم",
+      "role": "الدور",
+      "permissions": "الصلاحيات",
+      "status": "الحالة",
+      "lastLogin": "آخر تسجيل دخول",
+      "actions": "الإجراءات"
+    },
+    "usersCount": "المستخدمون ({{count}})",
+    "morePermissions": "+{{count}} المزيد"
+  },
+  "form": {
+    "createTitle": "إنشاء مستخدم جديد",
+    "editTitle": "تعديل المستخدم",
+    "fields": {
+      "fullName": {
+        "label": "الاسم الكامل",
+        "placeholder": "أدخل الاسم الكامل",
+        "required": true
+      },
+      "email": {
+        "label": "عنوان البريد الإلكتروني",
+        "placeholder": "أدخل عنوان البريد الإلكتروني",
+        "required": true
+      },
+      "username": {
+        "label": "اسم المستخدم",
+        "placeholder": "أدخل اسم المستخدم",
+        "required": true
+      },
+      "password": {
+        "label": "كلمة المرور",
+        "labelEdit": "كلمة المرور",
+        "placeholder": "أدخل كلمة المرور",
+        "placeholderEdit": "اتركه فارغاً للاحتفاظ بالحالي",
+        "required": true
+      },
+      "role": {
+        "label": "الدور",
+        "placeholder": "مثال: محرر، مدير، مسؤول",
+        "required": true
+      },
+      "permissions": {
+        "label": "الصلاحيات",
+        "required": true,
+        "description": "اختر الصلاحيات المناسبة لدور هذا المستخدم ومسؤولياته."
+      },
+      "status": {
+        "label": "مستخدم نشط"
+      }
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "create": "إنشاء مستخدم",
+      "update": "تحديث المستخدم",
+      "creating": "جاري الإنشاء...",
+      "updating": "جاري التحديث..."
+    },
+    "validation": {
+      "suggestions": {
+        "nameTaken": "💡 جرب استخدام اسم مختلف أو إضافة أرقام",
+        "emailTaken": "💡 جرب استخدام عنوان بريد إلكتروني مختلف",
+        "emailFormat": "💡 مثال: user@example.com",
+        "usernameTaken": "💡 جرب إضافة أرقام أو تغيير اسم المستخدم",
+        "usernamePattern": "💡 استخدم الحروف والأرقام والنقاط والشرطات السفلية والواصلات فقط",
+        "passwordPattern": "💡 قم بتضمين حرف صغير واحد على الأقل وحرف كبير واحد ورقم واحد"
+      }
+    }
+  },
+  "permissions": {
+    "books": {
+      "label": "الكتب والنشر",
+      "description": "إدارة الكتب والمؤلفين والفئات والمراجعات"
+    },
+    "courses": {
+      "label": "إدارة الدورات",
+      "description": "إدارة الدورات والتسجيلات"
+    },
+    "magazines": {
+      "label": "إدارة المجلات",
+      "description": "إدارة محتوى المجلات وتوزيعها"
+    },
+    "training": {
+      "label": "إدارة التدريب",
+      "description": "إدارة برامج التدريب والطلبات"
+    },
+    "users": {
+      "label": "إدارة المستخدمين",
+      "description": "إدارة حسابات المستخدمين والصلاحيات"
+    },
+    "analytics": {
+      "label": "التحليلات والتقارير",
+      "description": "عرض التحليلات وإنشاء التقارير"
+    },
+    "settings": {
+      "label": "إعدادات النظام",
+      "description": "تكوين الإعدادات على مستوى النظام"
+    },
+    "authors": {
+      "label": "إدارة المؤلفين",
+      "description": "إدارة ملفات المؤلفين والمحتوى"
+    },
+    "categories": {
+      "label": "إدارة الفئات",
+      "description": "إدارة فئات المحتوى"
+    },
+    "reviews": {
+      "label": "إدارة المراجعات",
+      "description": "إدارة مراجعات المستخدمين والتقييمات"
+    },
+    "enrollments": {
+      "label": "إدارة التسجيلات",
+      "description": "إدارة تسجيلات الدورات"
+    },
+    "contact-messages": {
+      "label": "رسائل الاتصال",
+      "description": "التعامل مع رسائل نموذج الاتصال"
+    },
+    "training-books": {
+      "label": "كتب التدريب",
+      "description": "إدارة محتوى كتب التدريب"
+    },
+    "training-requests": {
+      "label": "طلبات التدريب",
+      "description": "التعامل مع طلبات التدريب"
+    },
+    "training-followup-requests": {
+      "label": "متابعة التدريب",
+      "description": "إدارة طلبات متابعة التدريب"
+    },
+    "calendar": {
+      "label": "إدارة التقويم",
+      "description": "إدارة أحداث التقويم والجدولة"
+    },
+    "user-management": {
+      "label": "إدارة المستخدمين المتقدمة",
+      "description": "ميزات إدارة المستخدمين المتقدمة"
+    },
+    "generate-ids": {
+      "label": "إنشاء الهويات",
+      "description": "إنشاء وإدارة بطاقات الهوية"
+    },
+    "blogs": {
+      "label": "إدارة المدونة",
+      "description": "إدارة منشورات المدونة والمحتوى"
+    }
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "suspended": "معلق"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف",
+    "toggleStatus": "تبديل الحالة"
+  },
+  "deleteModal": {
+    "title": "حذف المستخدم",
+    "description": "هل أنت متأكد من أنك تريد حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء وسيؤدي إلى إزالة حساب المستخدم نهائياً.",
+    "confirmText": "حذف المستخدم",
+    "cancelText": "إلغاء",
+    "cannotDeleteSelf": "لا يمكن حذف حسابك الخاص"
+  },
+  "errors": {
+    "loadUsers": "فشل في تحميل المستخدمين. يرجى المحاولة مرة أخرى.",
+    "createUser": "فشل في إنشاء المستخدم. يرجى المحاولة مرة أخرى.",
+    "updateUser": "فشل في تحديث المستخدم. يرجى المحاولة مرة أخرى.",
+    "deleteUser": "فشل في حذف المستخدم. يرجى المحاولة مرة أخرى.",
+    "updateStatus": "فشل في تحديث حالة المستخدم. يرجى المحاولة مرة أخرى.",
+    "general": "حدث خطأ. يرجى المحاولة مرة أخرى."
+  }
+}

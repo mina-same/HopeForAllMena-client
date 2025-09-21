@@ -1,4 +1,6 @@
 import React from "react";
+import { graphql } from "gatsby";
+import { useTranslation } from "gatsby-plugin-react-i18next";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";
@@ -16,10 +18,12 @@ import FactCounter from "../components/fact-counter";
 
 
 const About = () => {
+  const { t } = useTranslation('About');
+
   return (
-    <Layout pageTitle="About Page || Azino || Charity React Next Template">
+    <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`}>
       <HeaderTwo />
-      <PageHeader title="About Page" crumbTitle="About" />
+      <PageHeader title={t('pageTitle')} crumbTitle={t('crumbTitle')} />
       <StickyHeader />
       <AboutOne />
       <VisionMission />
@@ -36,3 +40,17 @@ const About = () => {
 };
 
 export default About;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

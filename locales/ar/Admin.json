@@ -1,0 +1,62 @@
+{
+  "sidebar": {
+    "title": "لوحة الإدارة",
+    "managementLinks": "روابط الإدارة",
+    "noPermissions": "لا توجد صلاحيات مخصصة",
+    "contactAdmin": "تواصل مع المدير",
+    "yourPermissions": "صلاحياتك:"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم",
+    "analytics": "التحليلات",
+    "messages": "الرسائل",
+    "calendar": "التقويم",
+    "userManagement": "إدارة المستخدمين",
+    "settings": "الإعدادات"
+  },
+  "sections": {
+    "booksPublishing": "الكتب والنشر",
+    "courseManagement": "إدارة الدورات",
+    "magazineManagement": "إدارة المجلات",
+    "trainingManagement": "إدارة التدريب",
+    "blogManagement": "إدارة المدونة"
+  },
+  "items": {
+    "authors": "المؤلفون",
+    "categories": "الفئات",
+    "books": "الكتب",
+    "reviews": "المراجعات",
+    "contactMessages": "رسائل التواصل",
+    "courses": "الدورات",
+    "enrollments": "التسجيلات",
+    "magazines": "المجلات",
+    "trainingBooks": "كتب التدريب",
+    "trainingRequests": "طلبات التدريب",
+    "trainingFollowUp": "متابعة التدريب",
+    "generateIds": "إنشاء الهويات",
+    "newBlog": "مدونة جديدة",
+    "allBlogs": "جميع المدونات",
+    "comments": "التعليقات"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "subtitle": "مرحباً بك في لوحة إدارة دار النشر",
+    "totalBooks": "إجمالي الكتب",
+    "reviews": "المراجعات",
+    "messages": "الرسائل",
+    "user": "المستخدم",
+    "recentMessages": "الرسائل الحديثة",
+    "accessDenied": "تم رفض الوصول",
+    "insufficientPermissions": "صلاحيات غير كافية",
+    "needPermissions": "تحتاج إلى الصلاحيات التالية للوصول إلى هذا القسم:"
+  },
+  "header": {
+    "welcomeBack": "مرحباً بعودتك"
+  },
+  "modal": {
+    "confirmLogout": "تأكيد تسجيل الخروج",
+    "logoutDescription": "هل أنت متأكد من أنك تريد تسجيل الخروج؟ ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى لوحة الإدارة.",
+    "logout": "تسجيل الخروج",
+    "cancel": "إلغاء"
+  }
+}

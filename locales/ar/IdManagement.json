@@ -1,0 +1,48 @@
+{
+  "header": {
+    "title": "مولد بطاقات الهوية",
+    "description": "قم بتحميل ملف CSV وإدخال بيانات النادي والكنيسة لإنشاء بطاقات الهوية"
+  },
+  "upload": {
+    "title": "تحميل ملف الأسماء",
+    "description": "قم بتحميل ملف CSV يحتوي على قائمة الأسماء",
+    "label": "ملف CSV",
+    "success": "تم تحميل {{count}} اسم بنجاح",
+    "loaded": "تم تحميل {{count}} اسم"
+  },
+  "clubChurch": {
+    "title": "بيانات النادي والكنيسة",
+    "description": "أدخل اسم النادي والكنيسة باللغة العربية",
+    "clubLabel": "النادي",
+    "clubPlaceholder": "أدخل اسم النادي",
+    "churchLabel": "الكنيسة",
+    "churchPlaceholder": "أدخل اسم الكنيسة"
+  },
+  "preview": {
+    "title": "معاينة التصميم",
+    "description": "هذا هو تصميم بطاقة الهوية التي سيتم إنشاؤها",
+    "name": "الاسم: {{name}}",
+    "club": "النادي: {{club}}",
+    "church": "الكنيسة: {{church}}",
+    "example": "مثال"
+  },
+  "generate": {
+    "button": "إنشاء وتحميل PDF",
+    "generating": "جاري إنشاء PDF...",
+    "error": "خطأ في إنشاء PDF",
+    "pages": "سيتم إنشاء {{pages}} صفحة تحتوي على {{cards}} بطاقة"
+  },
+  "validation": {
+    "required": "يرجى ملء جميع الحقول المطلوبة",
+    "csvRequired": "يرجى تحميل ملف CSV",
+    "clubRequired": "يرجى إدخال اسم النادي",
+    "churchRequired": "يرجى إدخال اسم الكنيسة"
+  },
+  "icons": {
+    "upload": "📤",
+    "download": "📥",
+    "file": "📄",
+    "users": "👥",
+    "preview": "👁️"
+  }
+}

@@ -269,9 +269,19 @@ const AllBlogs = () => {
                       <TableCell>
                         <div>
                           <p className="font-medium">{blog.title}</p>
+                          {blog.titleAr && (
+                            <p className="font-medium text-sm text-blue-600 mt-1" dir="rtl">
+                              {blog.titleAr}
+                            </p>
+                          )}
                           <p className="text-sm text-muted-foreground truncate max-w-xs">
                             {blog.excerpt || 'No excerpt available'}
                           </p>
+                          {blog.excerptAr && (
+                            <p className="text-sm text-muted-foreground truncate max-w-xs mt-1" dir="rtl">
+                              {blog.excerptAr}
+                            </p>
+                          )}
                         </div>
                       </TableCell>
                       <TableCell>{blog.author?.name || 'Unknown'}</TableCell>

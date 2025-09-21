@@ -1,0 +1,48 @@
+{
+  "pageTitle": "Contact Us",
+  "crumbTitle": "Contact",
+  "form": {
+    "title": "Feel free to write us \n a message.",
+    "tagLine": "Contact With Us",
+    "description": "We'd love to hear from you! Send us a message and we'll respond as soon as possible. Whether you have questions about our ministry, need prayer, or want to get involved, we're here to help.",
+    "namePlaceholder": "Your Name",
+    "emailPlaceholder": "Email Address",
+    "phonePlaceholder": "Phone Number",
+    "subjectPlaceholder": "Subject (minimum 5 characters)",
+    "messagePlaceholder": "Write a Message (minimum 10 characters)",
+    "submitButton": "Submit Message",
+    "submitting": "Sending...",
+    "successMessage": "Thank you for your message! We'll get back to you soon.",
+    "errorTitle": "Please fix the following errors:",
+    "requirementsTitle": "Please check the following requirements:",
+    "requirements": {
+      "name": "Name must be at least 2 characters",
+      "email": "Email must be valid",
+      "subject": "Subject must be at least 5 characters",
+      "message": "Message must be at least 10 characters",
+      "phone": "Phone number is optional"
+    }
+  },
+  "contactCards": {
+    "email": {
+      "title": "Email",
+      "address": "hope4allmena@gmail.com"
+    },
+    "address": {
+      "title": "Address",
+      "alexandria": "37 Sidi El-Metwally Street",
+      "alexandriaCity": "Alexandria, Egypt",
+      "cairo": "11 El-Masoud Street, Cairo"
+    },
+    "phone": {
+      "title": "Phone"
+    }
+  },
+  "map": {
+    "locations": {
+      "alexandria": "Alexandria",
+      "cairo": "Cairo"
+    },
+    "title": "Hope For All Mena Ministry - {{location}} Location"
+  }
+}

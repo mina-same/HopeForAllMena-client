@@ -1,0 +1,167 @@
+{
+  "title": "Books Management",
+  "description": "Manage your publishing house book catalog",
+  "addBook": "Add New Book",
+  "searchPlaceholder": "Search books...",
+  "booksCount": "Books ({{count}})",
+  
+  "form": {
+    "createTitle": "Add New Book",
+    "editTitle": "Edit Book",
+    "fields": {
+      "title": "Title",
+      "titlePlaceholder": "Enter book title",
+      "titleAr": "Title (Arabic)",
+      "titleArPlaceholder": "Book title in Arabic",
+      "author": "Author",
+      "authorPlaceholder": "Select author",
+      "category": "Category",
+      "categoryPlaceholder": "Select category",
+      "shortDescription": "Short Description",
+      "shortDescriptionPlaceholder": "Brief description of the book...",
+      "shortDescriptionAr": "Short Description (Arabic)",
+      "shortDescriptionArPlaceholder": "Brief description in Arabic...",
+      "description": "Description",
+      "descriptionPlaceholder": "Detailed description of the book...",
+      "descriptionAr": "Description (Arabic)",
+      "descriptionArPlaceholder": "Detailed description in Arabic...",
+      "coverImage": "Book Cover Image",
+      "pages": "Pages (Optional)",
+      "pagesPlaceholder": "350",
+      "language": "Language",
+      "languagePlaceholder": "English",
+      "publicationYear": "Publication Year",
+      "publicationYearPlaceholder": "2024",
+      "format": "Format",
+      "ageGroup": "Age Group",
+      "status": "Status",
+      "statusPlaceholder": "Select status",
+      "tags": "Tags",
+      "tagsPlaceholder": "fiction, adventure, fantasy (comma-separated)",
+      "metaTitle": "Meta Title",
+      "metaTitlePlaceholder": "SEO meta title",
+      "metaTitleAr": "Meta Title (Arabic)",
+      "metaTitleArPlaceholder": "SEO meta title in Arabic",
+      "metaDescription": "Meta Description",
+      "metaDescriptionPlaceholder": "SEO meta description",
+      "metaDescriptionAr": "Meta Description (Arabic)",
+      "metaDescriptionArPlaceholder": "SEO meta description in Arabic"
+    },
+    "validation": {
+      "missingFields": "Please fill in all required fields: {{fields}}",
+      "shortDescriptionMinLength": "Arabic short description must be at least 10 characters long.",
+      "invalidYear": "Please enter a valid publication year between 1000 and {{maxYear}}",
+      "invalidImageUrl": "Cover image URL must be a valid image URL ending with .jpg, .jpeg, .png, .gif, or .webp"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Add Book",
+      "update": "Update Book",
+      "saving": "Saving..."
+    }
+  },
+  
+  "filters": {
+    "status": {
+      "all": "All Status",
+      "published": "Published",
+      "notPublished": "Not Published"
+    },
+    "category": {
+      "all": "All Categories"
+    },
+    "author": {
+      "all": "All Authors"
+    },
+    "featured": {
+      "all": "All Books",
+      "featured": "Featured",
+      "notFeatured": "Not Featured"
+    }
+  },
+  
+  "formats": {
+    "paperback": "Paperback",
+    "hardcover": "Hardcover"
+  },
+  
+  "ageGroups": {
+    "children": "Children",
+    "youngAdult": "Young Adult",
+    "adult": "Adult",
+    "allAges": "All Ages"
+  },
+  
+  "table": {
+    "headers": {
+      "book": "Book",
+      "author": "Author",
+      "category": "Category",
+      "pages": "Pages",
+      "year": "Year",
+      "format": "Format",
+      "reviews": "Reviews",
+      "rating": "Rating",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "unknownAuthor": "Unknown Author",
+    "unknownCategory": "Unknown Category",
+    "pagesCount": "{{count}} pages",
+    "reviewsCount": "{{count}} review",
+    "reviewsCount_plural": "{{count}} reviews"
+  },
+  
+  "status": {
+    "published": "Published",
+    "notPublished": "Not Published"
+  },
+  
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "toggleStatus": "Toggle Status"
+  },
+  
+  "deleteModal": {
+    "title": "Delete Book",
+    "description": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone and will permanently remove the book from the system.",
+    "confirmText": "Delete Book",
+    "cancelText": "Cancel"
+  },
+  
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {{current}} of {{total}}"
+  },
+  
+  "loading": {
+    "books": "Loading books...",
+    "creating": "Creating book...",
+    "updating": "Updating book...",
+    "deleting": "Deleting book..."
+  },
+  
+  "success": {
+    "bookCreated": "{{title}} has been added successfully.",
+    "bookUpdated": "{{title}} has been updated successfully.",
+    "bookDeleted": "{{title}} has been deleted successfully.",
+    "statusUpdated": "{{title}} status has been updated to {{status}}."
+  },
+  
+  "errors": {
+    "loadBooks": "Failed to fetch books. Please try again.",
+    "createBook": "Failed to save book. Please try again.",
+    "updateBook": "Failed to update book. Please try again.",
+    "deleteBook": "Failed to delete book. Please try again.",
+    "updateStatus": "Failed to update book status. Please try again.",
+    "loadAuthorsCategories": "Failed to load authors and categories.",
+    "unexpectedError": "An unexpected error occurred. Please try again."
+  },
+  
+  "empty": {
+    "noBooks": "No books found. Add your first book to get started.",
+    "noResults": "No books match your search criteria."
+  }
+}

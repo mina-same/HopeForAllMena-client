@@ -13,9 +13,14 @@ import { useToast } from '../../hooks/use-toast';
 import { authorsAPI } from '../../services/publishingAPI';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import ImageUpload from '../ui/image-upload';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
 
 export function AuthorsSection() {
   const { toast } = useToast();
+  const { t } = useTranslation();
+  const { language: currentLanguage } = useI18next();
   const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -52,7 +57,8 @@ export function AuthorsSection() {
         status: statusFilter === 'all' ? '' : statusFilter,
         featured: featuredFilter === 'all' ? '' : featuredFilter,
         sortBy: 'createdAt',
-        sortOrder: 'desc'
+        sortOrder: 'desc',
+        language: currentLanguage
       };
 
       const response = await authorsAPI.getAuthors(params);
@@ -62,8 +68,8 @@ export function AuthorsSection() {
     } catch (error) {
       console.error('Failed to fetch authors:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch authors. Please try again.",
+        title: t('toast.errors.validationError'),
+        description: t('toast.errors.fetchAuthors'),
         variant: "destructive"
       });
     } finally {
@@ -73,7 +79,7 @@ export function AuthorsSection() {
 
   useEffect(() => {
     fetchAuthors();
-  }, [currentPage, searchTerm, statusFilter, featuredFilter]);
+  }, [currentPage, searchTerm, statusFilter, featuredFilter, currentLanguage]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -105,8 +111,8 @@ export function AuthorsSection() {
     // Validate form data before submission
     if (authorForm.biography.length < 10) {
       toast({
-        title: "Validation Error",
-        description: "English biography must be at least 10 characters long.",
+        title: t('toast.errors.validationError'),
+        description: t('form.validation.biographyMinLength'),
         variant: "destructive"
       });
       setIsSubmitting(false);
@@ -115,8 +121,8 @@ export function AuthorsSection() {
 
     if (authorForm.biographyAr.length < 10) {
       toast({
-        title: "Validation Error", 
-        description: "Arabic biography must be at least 10 characters long.",
+        title: t('toast.errors.validationError'), 
+        description: t('form.validation.biographyArMinLength'),
         variant: "destructive"
       });
       setIsSubmitting(false);
@@ -131,15 +137,15 @@ export function AuthorsSection() {
       if (editingAuthor) {
         await authorsAPI.updateAuthor(editingAuthor._id, authorForm);
         toast({
-          title: "Author Updated",
-          description: `${authorForm.name} has been updated successfully.`,
+          title: t('toast.authorUpdated', { name: currentLanguage === 'ar' ? authorForm.nameAr || authorForm.name : authorForm.name }),
+          description: t('toast.authorUpdated', { name: currentLanguage === 'ar' ? authorForm.nameAr || authorForm.name : authorForm.name }),
         });
       } else {
         console.log('Creating new author with data:', authorForm);
         await authorsAPI.createAuthor(authorForm);
         toast({
-          title: "Author Added",
-          description: `${authorForm.name} has been added successfully.`,
+          title: t('toast.authorAdded', { name: currentLanguage === 'ar' ? authorForm.nameAr || authorForm.name : authorForm.name }),
+          description: t('toast.authorAdded', { name: currentLanguage === 'ar' ? authorForm.nameAr || authorForm.name : authorForm.name }),
         });
       }
 
@@ -156,8 +162,8 @@ export function AuthorsSection() {
     } catch (error) {
       console.error('Failed to save author:', error);
       toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to save author. Please try again.",
+        title: t('toast.errors.validationError'),
+        description: error.response?.data?.message || t('toast.errors.saveAuthor'),
         variant: "destructive"
       });
     } finally {
@@ -189,15 +195,15 @@ export function AuthorsSection() {
     try {
       await authorsAPI.deleteAuthor(authorToDelete._id);
       toast({
-        title: "Author Deleted",
-        description: `${authorToDelete.name} has been deleted successfully.`,
+        title: t('toast.authorDeleted', { name: currentLanguage === 'ar' ? authorToDelete.nameAr || authorToDelete.name : authorToDelete.name }),
+        description: t('toast.authorDeleted', { name: currentLanguage === 'ar' ? authorToDelete.nameAr || authorToDelete.name : authorToDelete.name }),
       });
       fetchAuthors();
     } catch (error) {
       console.error('Failed to delete author:', error);
       toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to delete author. Please try again.",
+        title: t('toast.errors.validationError'),
+        description: error.response?.data?.message || t('toast.errors.deleteAuthor'),
         variant: "destructive"
       });
     } finally {
@@ -210,16 +216,17 @@ export function AuthorsSection() {
   const handleToggleFeatured = async (author) => {
     try {
       await authorsAPI.toggleAuthorFeatured(author._id);
+      const authorName = currentLanguage === 'ar' ? author.nameAr || author.name : author.name;
       toast({
-        title: "Author Updated",
-        description: `${author.name} has been ${author.featured ? 'unfeatured' : 'featured'}.`,
+        title: author.featured ? t('toast.authorUnfeatured', { name: authorName }) : t('toast.authorFeatured', { name: authorName }),
+        description: author.featured ? t('toast.authorUnfeatured', { name: authorName }) : t('toast.authorFeatured', { name: authorName }),
       });
       fetchAuthors();
     } catch (error) {
       console.error('Failed to toggle featured status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update featured status. Please try again.",
+        title: t('toast.errors.validationError'),
+        description: t('toast.errors.toggleFeatured'),
         variant: "destructive"
       });
     }
@@ -228,16 +235,18 @@ export function AuthorsSection() {
   const handleStatusChange = async (author, newStatus) => {
     try {
       await authorsAPI.updateAuthorStatus(author._id, newStatus);
+      const authorName = currentLanguage === 'ar' ? author.nameAr || author.name : author.name;
+      const statusText = t(`status.${newStatus}`);
       toast({
-        title: "Author Updated",
-        description: `${author.name} status has been updated to ${newStatus}.`,
+        title: t('toast.statusUpdated', { name: authorName, status: statusText }),
+        description: t('toast.statusUpdated', { name: authorName, status: statusText }),
       });
       fetchAuthors();
     } catch (error) {
       console.error('Failed to update status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update author status. Please try again.",
+        title: t('toast.errors.validationError'),
+        description: t('toast.errors.updateStatus'),
         variant: "destructive"
       });
     }
@@ -264,23 +273,28 @@ export function AuthorsSection() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Authors Management</h2>
-          <p className="text-muted-foreground text-sm md:text-base">Manage your publishing house authors</p>
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center ${currentLanguage === 'ar' ? 'justify-between flex-row-reverse' : 'justify-between'} gap-4`}>
+        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">{t('title')}</h2>
+          <p className="text-muted-foreground text-sm md:text-base">{t('description')}</p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={openAddDialog} className=" text-white shadow-elegant hover:shadow-lg transition-all duration-300">
-              <Plus className="h-4 w-4 mr-2" />
-              Add New Author
+              <div className={`flex items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                {t('addAuthor')}
+              </div>
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent 
+            className={`max-w-2xl max-h-[90vh] overflow-y-auto ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`}
+            dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+          >
             <DialogHeader>
-              <DialogTitle>
-                {editingAuthor ? 'Edit Author' : 'Add New Author'}
+              <DialogTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                {editingAuthor ? t('form.editTitle') : t('form.createTitle')}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -288,33 +302,40 @@ export function AuthorsSection() {
                 onImageUpload={handleImageUpload}
                 currentImage={authorForm.avatarUrl}
                 uploadType="author-image"
-                label="Author Avatar"
+                label={t('form.fields.avatar.label')}
                 disabled={isSubmitting}
               />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">Name (English) *</Label>
+                  <Label htmlFor="name" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                    {t('form.fields.name.label')} *
+                  </Label>
                   <Input
                     id="name"
                     name="name"
                     value={authorForm.name}
                     onChange={handleInputChange}
-                    placeholder="Author name in English"
+                    placeholder={t('form.fields.name.placeholder')}
                     required
                     disabled={isSubmitting}
+                    className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="nameAr">Name (Arabic) *</Label>
+                  <Label htmlFor="nameAr" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                    {t('form.fields.nameAr.label')} *
+                  </Label>
                   <Input
                     id="nameAr"
                     name="nameAr"
                     value={authorForm.nameAr}
                     onChange={handleInputChange}
-                    placeholder="اسم المؤلف بالعربية"
+                    placeholder={t('form.fields.nameAr.placeholder')}
                     required
                     disabled={isSubmitting}
+                    className="text-right"
                     dir="rtl"
                   />
                 </div>
@@ -322,48 +343,60 @@ export function AuthorsSection() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="biography">Biography (English) * (min 10 characters)</Label>
+                  <Label htmlFor="biography" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                    {t('form.fields.biography.label')} * ({t('form.fields.biography.minLength')})
+                  </Label>
                   <Textarea
                     id="biography"
                     name="biography"
                     value={authorForm.biography}
                     onChange={handleInputChange}
-                    placeholder="Enter a detailed biography of the author in English (minimum 10 characters)..."
+                    placeholder={t('form.fields.biography.placeholder')}
                     rows={4}
                     required
                     minLength={10}
                     disabled={isSubmitting}
-                    className={authorForm.biography.length > 0 && authorForm.biography.length < 10 ? 'border-red-300' : ''}
+                    className={`${authorForm.biography.length > 0 && authorForm.biography.length < 10 ? 'border-red-300' : ''} ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                   />
                   {authorForm.biography.length > 0 && authorForm.biography.length < 10 && (
-                    <p className="text-sm text-red-600">Biography must be at least 10 characters long</p>
+                    <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      {t('form.validation.biographyMinLength')}
+                    </p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="biographyAr">Biography (Arabic) * (min 10 characters)</Label>
+                  <Label htmlFor="biographyAr" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                    {t('form.fields.biographyAr.label')} * ({t('form.fields.biographyAr.minLength')})
+                  </Label>
                   <Textarea
                     id="biographyAr"
                     name="biographyAr"
                     value={authorForm.biographyAr}
                     onChange={handleInputChange}
-                    placeholder="أدخل سيرة ذاتية مفصلة للمؤلف باللغة العربية (10 أحرف على الأقل)..."
+                    placeholder={t('form.fields.biographyAr.placeholder')}
                     rows={4}
                     required
                     minLength={10}
                     disabled={isSubmitting}
                     dir="rtl"
-                    className={authorForm.biographyAr.length > 0 && authorForm.biographyAr.length < 10 ? 'border-red-300' : ''}
+                    className={`${authorForm.biographyAr.length > 0 && authorForm.biographyAr.length < 10 ? 'border-red-300' : ''} text-right`}
                   />
+                  {authorForm.biographyAr.length > 0 && authorForm.biographyAr.length < 10 && (
+                    <p className="text-sm text-red-600 text-right">
+                      {t('form.validation.biographyArMinLength')}
+                    </p>
+                  )}
                 </div>
               </div>
 
 
-              <div className="flex justify-end gap-2">
+              <div className={`flex gap-2 ${currentLanguage === 'ar' ? 'justify-start flex-row-reverse' : 'justify-end'}`}>
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isSubmitting}>
-                  Cancel
+                  {t('form.buttons.cancel')}
                 </Button>
                 <Button type="submit" className=" text-white" disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : (editingAuthor ? 'Update Author' : 'Add Author')}
+                  {isSubmitting ? t('form.buttons.saving') : (editingAuthor ? t('form.buttons.update') : t('form.buttons.create'))}
                 </Button>
               </div>
             </form>
@@ -377,33 +410,34 @@ export function AuthorsSection() {
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Search className={`absolute ${currentLanguage === 'ar' ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4`} />
                 <Input
-                  placeholder="Search authors..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-[30px]"
+                  className={`${currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px] text-left'}`}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Status" />
+                <SelectValue placeholder={t('filters.status.placeholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="active">{t('filters.status.active')}</SelectItem>
+                <SelectItem value="inactive">{t('filters.status.inactive')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={featuredFilter} onValueChange={setFeaturedFilter}>
               <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Featured" />
+                <SelectValue placeholder={t('filters.featured.placeholder')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Authors</SelectItem>
-                <SelectItem value="true">Featured</SelectItem>
-                <SelectItem value="false">Not Featured</SelectItem>
+                <SelectItem value="all">{t('filters.featured.all')}</SelectItem>
+                <SelectItem value="true">{t('filters.featured.featured')}</SelectItem>
+                <SelectItem value="false">{t('filters.featured.notFeatured')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -412,8 +446,10 @@ export function AuthorsSection() {
 
       <div className="bg-white rounded-lg border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-gray-900">Authors ({totalAuthors})</h3>
+          <div className={`flex items-center ${currentLanguage === 'ar' ? 'justify-between flex-row-reverse' : 'justify-between'}`}>
+            <h3 className={`text-lg font-semibold text-gray-900 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+              {t('table.authorsCount', { count: totalAuthors })}
+            </h3>
           </div>
         </div>
         
@@ -421,32 +457,34 @@ export function AuthorsSection() {
           {loading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-300 mx-auto"></div>
-              <p className="text-gray-500 mt-3">Loading authors...</p>
+              <p className="text-gray-500 mt-3">{t('loading.authors')}</p>
             </div>
           ) : authors.length > 0 ? (
             <div className="space-y-3">
-              {authors.map((author) => (
+              {authors.map((author) => {
+                const displayName = currentLanguage === 'ar' ? author.nameAr || author.name : author.name;
+                return (
                 <div key={author._id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md hover:border-gray-300 transition-all duration-200">
-                  <div className="flex gap-6">
+                  <div className={`flex gap-6 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                     {/* Author Image */}
                     <div className="flex-shrink-0">
                       <Avatar className="h-20 w-20 border-2 border-gray-100 shadow-sm">
-                        <AvatarImage src={author.avatarUrl} alt={author.name} />
+                        <AvatarImage src={author.avatarUrl} alt={displayName} />
                         <AvatarFallback className="bg-gradient-to-br from-gray-100 to-gray-200 text-gray-700 font-semibold text-xl">
-                          {author.name.split(' ').map(n => n[0]).join('')}
+                          {displayName.split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
                     </div>
                     
                     {/* Author Details */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-3 mb-3">
-                            <h4 className="font-semibold text-gray-900 text-xl">{author.name}</h4>
+                      <div className={`flex items-start ${currentLanguage === 'ar' ? 'justify-between flex-row-reverse' : 'justify-between'}`}>
+                        <div className={`flex-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          <div className={`flex items-center gap-3 mb-3 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                            <h4 className="font-semibold text-gray-900 text-xl">{displayName}</h4>
                             {author.featured && (
                               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                                ⭐ Featured
+                                {t('table.featured')}
                               </span>
                             )}
                             <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
@@ -454,25 +492,27 @@ export function AuthorsSection() {
                                 ? 'bg-green-50 text-green-700 border-green-200' 
                                 : 'bg-gray-50 text-gray-700 border-gray-200'
                             }`}>
-                              {author.status}
+                              {t(`status.${author.status}`)}
                             </span>
                           </div>
                           
-                          <div className="flex items-center gap-4 text-sm text-gray-500">
-                            <span className="font-medium">{author.booksCount} book{author.booksCount !== 1 ? 's' : ''}</span>
+                          <div className={`flex items-center gap-4 text-sm text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                            <span className="font-medium">
+                              {t('table.booksCount', { count: author.booksCount })}
+                            </span>
                             <span>•</span>
-                            <span>Added {formatDate(author.createdAt)}</span>
+                            <span>{t('table.addedOn', { date: formatDate(author.createdAt) })}</span>
                           </div>
                         </div>
                         
                         {/* Action Buttons */}
-                        <div className="flex items-center gap-2 ml-4">
+                        <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'mr-4' : 'ml-4'}`}>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handleToggleFeatured(author)}
                             className="h-9 w-9 p-0 hover:bg-gray-100 rounded-lg"
-                            title={author.featured ? 'Unfeature' : 'Feature'}
+                            title={author.featured ? t('actions.unfeature') : t('actions.feature')}
                           >
                             {author.featured ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                           </Button>
@@ -481,8 +521,8 @@ export function AuthorsSection() {
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="active">Active</SelectItem>
-                              <SelectItem value="inactive">Inactive</SelectItem>
+                              <SelectItem value="active">{t('status.active')}</SelectItem>
+                              <SelectItem value="inactive">{t('status.inactive')}</SelectItem>
                             </SelectContent>
                           </Select>
                           <Button
@@ -490,6 +530,7 @@ export function AuthorsSection() {
                             size="sm"
                             onClick={() => handleEdit(author)}
                             className="h-9 w-9 p-0 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+                            title={t('actions.edit')}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
@@ -498,6 +539,7 @@ export function AuthorsSection() {
                             size="sm"
                             onClick={() => handleDelete(author)}
                             className="h-9 w-9 p-0 hover:bg-red-50 text-gray-500 hover:text-red-600 rounded-lg"
+                            title={t('actions.delete')}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -506,18 +548,21 @@ export function AuthorsSection() {
                     </div>
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           ) : (
             <div className="text-center py-12">
               <Users className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-              <p className="text-gray-500">No authors found. Add your first author to get started.</p>
+              <p className={`text-gray-500 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                {t('empty.description')}
+              </p>
             </div>
           )}
           
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center items-center gap-3 mt-8 pt-6 border-t border-gray-200">
+            <div className={`flex justify-center items-center gap-3 mt-8 pt-6 border-t border-gray-200 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
               <Button
                 variant="outline"
                 size="sm"
@@ -525,10 +570,10 @@ export function AuthorsSection() {
                 disabled={currentPage === 1}
                 className="border-gray-300"
               >
-                Previous
+                {t('pagination.previous')}
               </Button>
               <span className="text-sm text-gray-600 px-3">
-                Page {currentPage} of {totalPages}
+                {t('pagination.pageInfo', { current: currentPage, total: totalPages })}
               </span>
               <Button
                 variant="outline"
@@ -537,7 +582,7 @@ export function AuthorsSection() {
                 disabled={currentPage === totalPages}
                 className="border-gray-300"
               >
-                Next
+                {t('pagination.next')}
               </Button>
             </div>
           )}
@@ -552,10 +597,14 @@ export function AuthorsSection() {
           setAuthorToDelete(null);
         }}
         onConfirm={confirmDeleteAuthor}
-        title="Delete Author"
-        description={`Are you sure you want to delete "${authorToDelete?.name}"? This action cannot be undone and will permanently remove the author from the system.`}
-        confirmText="Delete Author"
-        cancelText="Cancel"
+        title={t('deleteModal.title')}
+        description={t('deleteModal.description', { 
+          name: currentLanguage === 'ar' 
+            ? authorToDelete?.nameAr || authorToDelete?.name 
+            : authorToDelete?.name 
+        })}
+        confirmText={t('deleteModal.confirmText')}
+        cancelText={t('deleteModal.cancelText')}
         variant="danger"
         isLoading={isDeleting}
         icon={
@@ -569,3 +618,18 @@ export function AuthorsSection() {
     </div>
   );
 }
+
+// GraphQL query for i18n support
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

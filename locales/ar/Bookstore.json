@@ -1,0 +1,81 @@
+{
+  "pageTitle": "المكتبة",
+  "crumbTitle": "المكتبة",
+  "filters": {
+    "title": "تصفية الكتب",
+    "categories": {
+      "title": "الفئات",
+      "all": "جميع الفئات"
+    },
+    "rating": {
+      "title": "الحد الأدنى للتقييم",
+      "stars": "نجوم وأكثر"
+    },
+    "publicationYear": {
+      "title": "سنة النشر",
+      "placeholder": "اختر السنة"
+    },
+    "clearAll": "مسح جميع المرشحات",
+    "applyFilters": "تطبيق المرشحات"
+  },
+  "toolbar": {
+    "showingResults": "عرض {{start}}-{{end}} من {{total}} نتيجة",
+    "sortBy": {
+      "title": "ترتيب حسب",
+      "default": "افتراضي",
+      "title_asc": "العنوان أ-ي",
+      "title_desc": "العنوان ي-أ",
+      "price_asc": "السعر من الأقل للأعلى",
+      "price_desc": "السعر من الأعلى للأقل",
+      "rating_desc": "الأعلى تقييماً",
+      "newest": "الأحدث أولاً",
+      "oldest": "الأقدم أولاً"
+    },
+    "viewMode": {
+      "grid": "عرض الشبكة",
+      "list": "عرض القائمة"
+    },
+    "itemsPerPage": "عدد العناصر في الصفحة"
+  },
+  "bookCard": {
+    "newBadge": "جديد",
+    "bestsellerBadge": "الأكثر مبيعاً",
+    "quickView": "عرض سريع",
+    "addToFavorites": "إضافة للمفضلة",
+    "removeFromFavorites": "إزالة من المفضلة",
+    "orderNow": "اطلب الآن",
+    "byAuthor": "بقلم",
+    "unknownAuthor": "مؤلف غير معروف",
+    "reviews": "{{count}} مراجعة",
+    "reviews_plural": "{{count}} مراجعة",
+    "rating": "التقييم: {{rating}} من 5 نجوم",
+    "pages": "{{count}} صفحة",
+    "pages_plural": "{{count}} صفحة",
+    "language": "اللغة: {{language}}",
+    "publicationYear": "نُشر: {{year}}"
+  },
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "page": "الصفحة {{number}}",
+    "goToPage": "انتقل للصفحة {{number}}"
+  },
+  "loading": {
+    "books": "جاري تحميل الكتب...",
+    "categories": "جاري تحميل الفئات...",
+    "filters": "جاري تطبيق المرشحات..."
+  },
+  "error": {
+    "loadBooks": "فشل في تحميل الكتب. يرجى المحاولة مرة أخرى.",
+    "loadCategories": "فشل في تحميل الفئات.",
+    "networkError": "غير قادر على الاتصال بالخادم. يرجى التأكد من تشغيل الخادم.",
+    "notFound": "نقطة نهاية API للكتب غير موجودة.",
+    "serverError": "خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقاً.",
+    "retry": "إعادة المحاولة"
+  },
+  "empty": {
+    "noBooks": "لم يتم العثور على كتب",
+    "noResults": "لا توجد كتب تطابق المرشحات الحالية.",
+    "tryDifferentFilters": "جرب تعديل المرشحات أو معايير البحث."
+  }
+}

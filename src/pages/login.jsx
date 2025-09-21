@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
-import { Link, navigate } from 'gatsby';
+import { Link, navigate, graphql } from 'gatsby';
+import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import Layout from '../components/layout';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
@@ -9,6 +10,10 @@ import lotiAuth from '../assets/images/auth/loti-auth.svg';
 import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
+    const { t } = useTranslation('Login');
+    const { i18n } = useI18next();
+    const currentLanguage = i18n?.resolvedLanguage || 'en';
+    
     const [formData, setFormData] = useState({
         identifier: '',
         password: '',
@@ -64,14 +69,14 @@ const LoginPage = () => {
                         navigate('/admin');
                     }, 100);
                 } else {
-                    setError('Access denied. Admin privileges required.');
+                    setError(t('errors.accessDenied'));
                 }
             } else {
-                setError(result.error || 'Login failed. Please check your credentials.');
+                setError(result.error || t('errors.loginFailed'));
             }
         } catch (err) {
             console.error('Login error:', err);
-            setError('An unexpected error occurred. Please try again.');
+            setError(t('errors.unexpectedError'));
         } finally {
             setIsLoading(false);
         }
@@ -82,10 +87,42 @@ const LoginPage = () => {
     const controlRadius = '12px';
 
     return (
-        <Layout pageTitle="Sign In || Hope For All Mena Ministry">
+        <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`}>
             <HeaderTwo />
             <StickyHeader />
-            <div className="d-flex align-items-center" >
+            {/* RTL-specific styles for Arabic */}
+            {currentLanguage === 'ar' && (
+                <style jsx>{`
+                    .form-control {
+                        text-align: right !important;
+                        direction: rtl !important;
+                    }
+                    .form-check-label {
+                        padding-right: 0 !important;
+                        padding-left: 1.25em !important;
+                    }
+                    .form-check-input {
+                        margin-right: 0 !important;
+                        margin-left: -1.25em !important;
+                    }
+                    .position-relative .btn {
+                        left: 10px !important;
+                        right: auto !important;
+                    }
+                    .password-field-rtl {
+                        padding: 12px 16px 12px 50px !important;
+                    }
+                    .d-flex.flex-column.flex-sm-row {
+                        flex-direction: row-reverse !important;
+                    }
+                    @media (max-width: 575px) {
+                        .d-flex.flex-column.flex-sm-row {
+                            flex-direction: column-reverse !important;
+                        }
+                    }
+                `}</style>
+            )}
+            <div className="d-flex align-items-center" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
                 <div className="w-100 py-3 py-md-5" style={{ 
                     background: "#F1F1F1", 
                     margin: "10px", 
@@ -115,8 +152,8 @@ const LoginPage = () => {
                                         }} 
                                     />
                                     <div className="mt-3 mt-md-4">
-                                        <h3 className="h4 h-md-3 fw-semibold mb-2 mb-md-3" style={{ color: '#211F2D' }}>Welcome back!</h3>
-                                        <p className="text-muted mb-0 small">Whether you're launching a stunning online store optimizing your our object-oriented</p>
+                                        <h3 className="h4 h-md-3 fw-semibold mb-2 mb-md-3" style={{ color: '#211F2D' }}>{t('welcome.title')}</h3>
+                                        <p className="text-muted mb-0 small">{t('welcome.description')}</p>
                                     </div>
                                 </div>
                             </Col>
@@ -141,8 +178,8 @@ const LoginPage = () => {
                                 >
                                     <Card.Body className="p-3 p-md-4 p-lg-5">
                                         <div className="mb-3 mb-md-4">
-                                            <h3 className="h4 h-md-3 fw-semibold mb-2" style={{ color: '#211F2D' }}>Admin Sign In</h3>
-                                            <p className="text-muted mb-0 small">Welcome Back! Log in to your admin account</p>
+                                            <h3 className="h4 h-md-3 fw-semibold mb-2" style={{ color: '#211F2D' }}>{t('form.title')}</h3>
+                                            <p className="text-muted mb-0 small">{t('form.subtitle')}</p>
                                         </div>
                                         
                                         {error && (
@@ -161,13 +198,13 @@ const LoginPage = () => {
 
                                         <Form onSubmit={handleSubmit}>
                                             <Form.Group className="mb-3" controlId="identifier">
-                                                <Form.Label className="fw-medium">Email or Username</Form.Label>
+                                                <Form.Label className="fw-medium">{t('form.emailLabel')}</Form.Label>
                                                 <Form.Control 
                                                     type="text" 
                                                     name="identifier"
                                                     value={formData.identifier}
                                                     onChange={handleInputChange}
-                                                    placeholder="admin@azino.com or admin" 
+                                                    placeholder={t('form.emailPlaceholder')} 
                                                     required 
                                                     disabled={isLoading}
                                                     style={{ 
@@ -188,19 +225,20 @@ const LoginPage = () => {
                                                 />
                                             </Form.Group>
                                             <Form.Group className="mb-3" controlId="password">
-                                                <Form.Label className="fw-medium">Password</Form.Label>
+                                                <Form.Label className="fw-medium">{t('form.passwordLabel')}</Form.Label>
                                                 <div className="position-relative">
                                                     <Form.Control 
                                                         type={showPassword ? "text" : "password"} 
                                                         name="password"
                                                         value={formData.password}
                                                         onChange={handleInputChange}
-                                                        placeholder="Password" 
+                                                        placeholder={t('form.passwordPlaceholder')} 
                                                         required 
                                                         disabled={isLoading}
+                                                        className={currentLanguage === 'ar' ? 'password-field-rtl' : ''}
                                                         style={{ 
                                                             borderRadius: controlRadius,
-                                                            padding: '12px 50px 12px 16px',
+                                                            padding: currentLanguage === 'ar' ? '12px 16px 12px 50px' : '12px 50px 12px 16px',
                                                             fontSize: '16px',
                                                             border: '2px solid #e9ecef',
                                                             transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out'
@@ -216,7 +254,7 @@ const LoginPage = () => {
                                                     />
                                                     <button
                                                         type="button"
-                                                        className="btn btn-link position-absolute top-50 end-0 translate-middle-y pe-3"
+                                                        className={`btn btn-link position-absolute top-50 translate-middle-y ${currentLanguage === 'ar' ? 'start-0 ps-3' : 'end-0 pe-3'}`}
                                                         onClick={() => setShowPassword(!showPassword)}
                                                         disabled={isLoading}
                                                         style={{
@@ -248,12 +286,12 @@ const LoginPage = () => {
                                                     name="rememberMe"
                                                     checked={formData.rememberMe}
                                                     onChange={handleInputChange}
-                                                    label="Remember Me" 
+                                                    label={t('form.rememberMe')} 
                                                     disabled={isLoading}
                                                     style={{ fontSize: '14px' }}
                                                 />
                                                 <Link to="/contact" className="small text-decoration-none" style={{ color: brandPrimary }}>
-                                                    Forgot password?
+                                                    {t('form.forgotPassword')}
                                                 </Link>
                                             </div>
                                             <Button 
@@ -289,10 +327,10 @@ const LoginPage = () => {
                                                             aria-hidden="true"
                                                             className="me-2"
                                                         />
-                                                        Signing In...
+                                                        {t('form.signingIn')}
                                                     </>
                                                 ) : (
-                                                    'Sign In'
+                                                    t('form.signInButton')
                                                 )}
                                             </Button>
                                         </Form>
@@ -307,5 +345,19 @@ const LoginPage = () => {
         </Layout>
     );
 };
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
 
 export default LoginPage;

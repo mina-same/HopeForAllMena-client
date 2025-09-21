@@ -1,0 +1,154 @@
+{
+  "pageTitle": "About Us",
+  "crumbTitle": "About",
+  "aboutOne": {
+    "tagLine": "About us",
+    "title": "Hope for all Middle East and North Africa",
+    "description1": "Tincidunt elit magnis nulla facilisis sagittis is maecenas. Sapien nunced amet ultrices, dolores sit ipsum velit purus aliquet, massa fringilla leo orci ipsum dolor sit.",
+    "description2": "Sapien nunced amet ultrices, dolores sit ipsum velit purus aliquet, massa fringilla leo orci. Lorem ipsum dolor sit amet. consectetur adipisi cing elit dolo."
+  },
+  "aboutTwo": {
+    "tagLine": "About Azino Platform",
+    "title": "Our Strategy",
+    "strategies": {
+      "1": {
+        "title": "Engage with Local Churches",
+        "description": "Building strong partnerships with local churches to strengthen communities."
+      },
+      "2": {
+        "title": "Empower Church Leaders",
+        "description": "Providing curricula and resources to enhance church leadership and service."
+      },
+      "3": {
+        "title": "Deliver Hope",
+        "description": "Bringing the message of hope to underserved communities and areas."
+      },
+      "4": {
+        "title": "Support Community Projects",
+        "description": "Enabling churches to serve through developmental and social initiatives."
+      },
+      "5": {
+        "title": "Serve Refugees",
+        "description": "Focusing on refugee support in Egypt and surrounding regions."
+      },
+      "6": {
+        "title": "Biblical Education",
+        "description": "Providing biblical education and nurturing enlightened writers."
+      }
+    },
+    "discoverButton": "Discover More"
+  },
+  "aboutCounter": {
+    "tagLine": "Help Share the Hope Around the Globe",
+    "title": "Hope for the people \n you care about.",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Have you done google research which works all the time.",
+    "listItems": {
+      "1": "Nsectetur cing elit.",
+      "2": "Suspe ndisse suscipit sagittis leo.",
+      "3": "Entum estibulum dignissim posuere."
+    },
+    "donateButton": "Donate Now",
+    "supportText": "We're here to support you every step of the way."
+  },
+  "factCounter": {
+    "members": "Members",
+    "leadersTraining": "Leaders Training",
+    "publishedBooks": "Published Books",
+    "givenMagazines": "Given Magazines"
+  },
+  "visionMission": {
+    "header": {
+      "badge": "Our Foundation",
+      "title": "Vision &",
+      "titleHighlight": "Mission",
+      "description": "Empowering church leaders across the Middle East and North Africa to transform communities through intentional discipleship"
+    },
+    "vision": {
+      "label": "Our Vision",
+      "imageAlt": "Our Vision - Transforming Communities",
+      "quote": {
+        "text": "What you have heard from me in the presence of many witnesses entrust to faithful men, who will be able to teach others also.",
+        "reference": "2 Timothy 2:2, ESV"
+      },
+      "title": "Multiplying Disciples Across Nations",
+      "description": "Our vision is to equip local church leaders across Egypt, the Middle East, and North Africa to become disciple-makers who multiply, establish healthy churches, and reach unreached areas—proclaiming Christ to all.",
+      "stats": {
+        "disciples": "Making Disciples",
+        "churches": "Building Churches",
+        "nations": "Transforming Nations"
+      }
+    },
+    "mission": {
+      "label": "Our Mission",
+      "title": "Equipping Leaders for Kingdom Impact",
+      "description1": "We are committed to equipping and empowering local church leaders by providing comprehensive and accessible training resources for all.",
+      "description2": "We focus on developing a network of qualified trainers who will:",
+      "points": {
+        "discipleship": "Promote intentional discipleship",
+        "communities": "Support marginalized communities",
+        "societies": "Engage their societies with the hope of Christ"
+      },
+      "unity": "Maintaining the unity of the Church as the Body of Christ",
+      "imageAlt": "Our Mission - Training Leaders"
+    }
+  },
+  "worldMapImpact": {
+    "tagLine": "Our Global Impact",
+    "title": "Serving communities across the MENA region.",
+    "description": "Through our dedicated volunteers and ministry partners, Hope For All MENA reaches communities across the Middle East, North Africa, and beyond with hope, education, and transformational resources."
+  },
+  "videoCard": {
+    "tagLine": "Ministry Departments",
+    "title": "Christ's three-fold ministry centers on teaching, preaching, and healing.",
+    "quote": {
+      "text": "And Jesus went about all the cities and villages,",
+      "teaching": "teaching",
+      "middle1": "in their synagogues, and",
+      "preaching": "preaching",
+      "middle2": "the gospel of the kingdom, and",
+      "healing": "healing",
+      "end": "every sickness and every disease among the people.",
+      "reference": "Matthew 9:35"
+    }
+  },
+  "serviceTwo": {
+    "items": {
+      "teaching": {
+        "title": "Teaching",
+        "text": "Start Donating"
+      },
+      "preaching": {
+        "title": "Preaching",
+        "text": "Let's Join"
+      },
+      "healing": {
+        "title": "Healing",
+        "text": "Quick Funding"
+      }
+    }
+  },
+  "serviceOne": {
+    "header": {
+      "tagLine": "Welcome to Hope For All Mena Ministry",
+      "title": "We believe that we can save more lifes with you."
+    },
+    "items": {
+      "evangelism": {
+        "title": "Evangelism and discipleship",
+        "text": "A new generation that changes and brings change."
+      },
+      "development": {
+        "title": "Development Department",
+        "text": "Improving life opportunities for a better future."
+      },
+      "education": {
+        "title": "Studies and Education",
+        "text": "Our goal is the mindset of the pioneers."
+      },
+      "publishing": {
+        "title": "Publishing and Distribution House",
+        "text": "Supporting young writers with impactful publishing."
+      }
+    }
+  }
+}

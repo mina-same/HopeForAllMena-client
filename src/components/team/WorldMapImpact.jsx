@@ -1,13 +1,31 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import heartImage from "../../assets/images/shapes/heart-2-1.png";
 import bgImage from "../../assets/images/team/team-map-1-1.png";
 import WorldVectorMap from "../map/WorldVectorMap";
 
 const WorldMapImpact = () => {
+  const { t } = useTranslation('About');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+
   return (
     <>
-      <section className="team-about pt-[200px]">
+      {/* RTL-specific styles for Arabic */}
+      {currentLanguage === 'ar' && (
+        <style jsx>{`
+          .world-map-impact h3,
+          .world-map-impact p {
+            text-align: right;
+            direction: rtl;
+          }
+          .world-map-impact .block-title {
+            text-align: right;
+          }
+        `}</style>
+      )}
+      <section className="world-map-impact team-about pt-[200px]" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <Container>
           <div className="team-about__top">
             <Row className=" align-items-center">
@@ -15,18 +33,16 @@ const WorldMapImpact = () => {
                 <div className="block-title">
                   <p>
                     <img src={heartImage} width="15" alt="" />
-                    Our Global Impact
+                    {t('worldMapImpact.tagLine')}
                   </p>
                   <h3>
-                    Serving communities <br /> across the MENA region.
+                    {t('worldMapImpact.title')}
                   </h3>
                 </div>
               </Col>
               <Col md={12} lg={5}>
                 <p className="team-about__top-text">
-                  Through our dedicated volunteers and ministry partners, Hope For All MENA
-                  reaches communities across the Middle East, North Africa, and beyond with
-                  hope, education, and transformational resources.
+                  {t('worldMapImpact.description')}
                 </p>
               </Col>
             </Row>

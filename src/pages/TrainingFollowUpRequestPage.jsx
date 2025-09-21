@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { navigate } from 'gatsby';
+import { graphql } from 'gatsby';
+import { Link, useTranslation, useI18next, Trans, navigate } from 'gatsby-plugin-react-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -9,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../components/ui/form';
+import FileUpload from '../components/ui/file-upload';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
 import Footer from '../components/footer';
@@ -17,31 +19,32 @@ import { useBookstore } from '../context/BookstoreContext';
 import { useToast } from '../hooks/use-toast';
 import Layout from '../components/layout';
 
-const bookRequestSchema = z.object({
-  bookName: z.string().min(1, 'Book name is required'),
-  partName: z.string().min(1, 'Part name is required'),
-  copies: z.string().min(1, 'Number of copies is required').refine(val => !isNaN(parseInt(val)) && parseInt(val) > 0, 'Must be a valid number greater than 0'),
+// Schema will be created inside component to access translations
+const createBookRequestSchema = (t) => z.object({
+  bookName: z.string().min(1, t('validation.bookNameRequired')),
+  partName: z.string().min(1, t('validation.partNameRequired')),
+  copies: z.string().min(1, t('validation.copiesRequired')).refine(val => !isNaN(parseInt(val)) && parseInt(val) > 0, t('validation.copiesInvalid')),
 });
 
-const tshirtSizeSchema = z.object({
-  size6: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), 'Must be a valid number'),
-  size8: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), 'Must be a valid number'),
-  size10: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), 'Must be a valid number'),
-  sizeL: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), 'Must be a valid number'),
-  sizeXL: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), 'Must be a valid number'),
-  sizeXXL: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), 'Must be a valid number'),
+const createTshirtSizeSchema = (t) => z.object({
+  size6: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), t('validation.validNumber')),
+  size8: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), t('validation.validNumber')),
+  size10: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), t('validation.validNumber')),
+  sizeL: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), t('validation.validNumber')),
+  sizeXL: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), t('validation.validNumber')),
+  sizeXXL: z.string().optional().refine(val => !val || (!isNaN(parseInt(val)) && parseInt(val) >= 0), t('validation.validNumber')),
 });
 
-const formSchema = z.object({
-  trainerName: z.string().min(1, 'Trainer name is required'),
-  name: z.string().min(1, 'Name is required'),
-  churchName: z.string().min(1, 'Church name is required'),
-  churchAddress: z.string().min(1, 'Church address is required'),
-  phoneNumber: z.string().min(1, 'Phone number is required'),
-  numberOfServed: z.string().min(1, 'Number of served is required').refine(val => !isNaN(parseInt(val)) && parseInt(val) > 0, 'Must be a valid number greater than 0'),
-  books: z.array(bookRequestSchema).min(1, 'At least one book is required'),
+const createFormSchema = (t) => z.object({
+  trainerName: z.string().min(1, t('validation.required')),
+  name: z.string().min(1, t('validation.required')),
+  churchName: z.string().min(1, t('validation.required')),
+  churchAddress: z.string().min(1, t('validation.required')),
+  phoneNumber: z.string().min(1, t('validation.required')),
+  numberOfServed: z.string().min(1, t('validation.numberOfServedRequired')).refine(val => !isNaN(parseInt(val)) && parseInt(val) > 0, t('validation.numberOfServedInvalid')),
+  books: z.array(createBookRequestSchema(t)).min(1, t('validation.atLeastOneBook')),
   servedListFile: z.any().optional(),
-  tshirtSizes: tshirtSizeSchema,
+  tshirtSizes: createTshirtSizeSchema(t),
 });
 
 
@@ -69,6 +72,11 @@ const defaultBookPartsMapping = {
 };
 
 const TrainingFollowUpRequestPage = () => {
+  const { t } = useTranslation('TrainingFollowUpRequest');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  const isRTL = currentLanguage === 'ar';
+  
   const { filters, setFilters } = useBookstore();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,7 +86,7 @@ const TrainingFollowUpRequestPage = () => {
   const [loadingBooks, setLoadingBooks] = useState(true);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createFormSchema(t)),
     defaultValues: {
       trainerName: '',
       name: '',
@@ -110,11 +118,15 @@ const TrainingFollowUpRequestPage = () => {
         const response = await fetch('http://localhost:5001/api/training-books', {});
         if (response.ok) {
           const books = await response.json();
-          const bookNames = books.map(book => book.name);
+          // Use appropriate language field based on current language
+          const bookNames = books.map(book => currentLanguage === 'ar' && book.nameAr ? book.nameAr : book.name);
           const partsMapping = {};
           
           books.forEach(book => {
-            partsMapping[book.name] = book.parts.map(part => part.name);
+            const bookName = currentLanguage === 'ar' && book.nameAr ? book.nameAr : book.name;
+            partsMapping[bookName] = book.parts.map(part => 
+              currentLanguage === 'ar' && part.nameAr ? part.nameAr : part.name
+            );
           });
           
           setTrainingBooks(bookNames);
@@ -129,7 +141,7 @@ const TrainingFollowUpRequestPage = () => {
     };
 
     loadTrainingBooks();
-  }, []);
+  }, [currentLanguage]);
 
   const handleSearchChange = (search) => {
     setFilters({ search });
@@ -201,8 +213,8 @@ const TrainingFollowUpRequestPage = () => {
       console.log('Success response:', result);
 
       toast({
-        title: "✅ Successfully Submitted!",
-        description: "Your follow-up training request has been submitted successfully. We'll process your request and contact you within 24 hours.",
+        title: t('toast.success.title'),
+        description: t('toast.success.description'),
         duration: 5000,
       });
 
@@ -216,8 +228,8 @@ const TrainingFollowUpRequestPage = () => {
     } catch (error) {
       console.error('Follow-up request submission error:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to submit follow-up request. Please try again.",
+        title: t('toast.error.title'),
+        description: error.message || t('toast.error.description'),
         variant: "destructive",
       });
     } finally {
@@ -239,54 +251,60 @@ const TrainingFollowUpRequestPage = () => {
     <Layout>
       <HeaderTwo />
       <StickyHeader />
-      <div className="min-h-screen bg-background">
+      <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
 
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-8 sm:py-12 lg:py-16">
           <div className="max-w-4xl mx-auto">
             <TrainingHeader
               icon={<Shirt className="w-4 h-4 text-accent" />}
-              badgeText="Follow-up Training Request"
-              title="Training Follow-up Request"
-              description="Request additional training materials and resources for your ongoing program"
+              badgeText={t('header.badge')}
+              title={t('header.title')}
+              description={t('header.description')}
             />
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 sm:space-y-8">
                 {/* Trainer & Contact Information */}
                 <Card className="border-0 shadow-modern bg-card">
                   <CardHeader>
-                    <CardTitle className="text-foreground">Trainer & Contact Information</CardTitle>
+                    <CardTitle className="text-foreground">{t('trainerInfo.title')}</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-4 sm:space-y-6">
                     <FormField
                       control={form.control}
                       name="trainerName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name of the Trainer *</FormLabel>
+                          <FormLabel>{t('trainerInfo.trainerName.label')} *</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="Enter the full name of the trainer who trained you"
+                              placeholder={t('trainerInfo.trainerName.placeholder')}
                               {...field}
                             />
                           </FormControl>
                           <p className="text-sm text-muted-foreground">
-                            If you don't know, <a href="/contact" className="text-primary hover:underline">contact us</a> to know which trainer full name trained you
+                            <Trans
+                              i18nKey="trainerInfo.trainerName.description"
+                              ns="TrainingFollowUpRequest"
+                              components={{
+                                contactLink: <Link to="/contact" className="text-[#2194D1] hover:underline" />
+                              }}
+                            />
                           </p>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                       <FormField
                         control={form.control}
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Your Name *</FormLabel>
+                            <FormLabel>{t('trainerInfo.name.label')} *</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter your full name" {...field} />
+                              <Input placeholder={t('trainerInfo.name.placeholder')} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -298,9 +316,9 @@ const TrainingFollowUpRequestPage = () => {
                         name="phoneNumber"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Phone Number *</FormLabel>
+                            <FormLabel>{t('trainerInfo.phoneNumber.label')} *</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter your phone number" {...field} />
+                              <Input placeholder={t('trainerInfo.phoneNumber.placeholder')} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -308,15 +326,15 @@ const TrainingFollowUpRequestPage = () => {
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                       <FormField
                         control={form.control}
                         name="churchName"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Church Name *</FormLabel>
+                            <FormLabel>{t('trainerInfo.churchName.label')} *</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter church name" {...field} />
+                              <Input placeholder={t('trainerInfo.churchName.placeholder')} {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -328,11 +346,11 @@ const TrainingFollowUpRequestPage = () => {
                         name="numberOfServed"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Number of Served (Attendees/Recipients) *</FormLabel>
+                            <FormLabel>{t('trainerInfo.numberOfServed.label')} *</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
-                                placeholder="Enter number"
+                                placeholder={t('trainerInfo.numberOfServed.placeholder')}
                                 min="1"
                                 {...field}
                               />
@@ -348,9 +366,9 @@ const TrainingFollowUpRequestPage = () => {
                       name="churchAddress"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Church Address *</FormLabel>
+                          <FormLabel>{t('trainerInfo.churchAddress.label')} *</FormLabel>
                           <FormControl>
-                            <Input placeholder="Enter complete church address" {...field} />
+                            <Input placeholder={t('trainerInfo.churchAddress.placeholder')} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -362,20 +380,21 @@ const TrainingFollowUpRequestPage = () => {
                 {/* Training Books Available - Collapsible */}
                 <Card className="border-0 shadow-modern bg-card">
                   <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-foreground">Training Books Available</CardTitle>
-                        <p className="text-sm text-muted-foreground">
-                          Reference guide for available training materials and their parts
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex-1">
+                        <CardTitle className="text-foreground text-lg sm:text-xl">{t('trainingBooks.title')}</CardTitle>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {t('trainingBooks.description')}
                         </p>
                       </div>
                       <Button
                         type="button"
                         variant="ghost"
                         onClick={() => setShowTrainingBooks(!showTrainingBooks)}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-2 w-full sm:w-auto justify-center sm:justify-start text-sm sm:text-base"
                       >
-                        {showTrainingBooks ? 'Hide' : 'Show'} Training Books Available
+                        <span className="hidden sm:inline">{showTrainingBooks ? t('trainingBooks.hideButton') : t('trainingBooks.showButton')}</span>
+                        <span className="sm:hidden">{showTrainingBooks ? 'إخفاء' : 'إظهار'}</span>
                         {showTrainingBooks ? (
                           <ChevronUp className="h-4 w-4" />
                         ) : (
@@ -385,50 +404,62 @@ const TrainingFollowUpRequestPage = () => {
                     </div>
                   </CardHeader>
                   {showTrainingBooks && (
-                    <CardContent className="space-y-6">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-4">
-                          <h4 className="font-semibold text-foreground mb-3">Available Books & Parts:</h4>
-                          <div className="space-y-3 text-sm">
-                            <div className="p-3 rounded-lg bg-muted/30">
-                              <div className="font-medium text-foreground">1. Look and Learn</div>
-                              <div className="text-muted-foreground ml-4">• Part One</div>
-                              <div className="text-muted-foreground ml-4">• Part Two</div>
+                    <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+                        <div className="space-y-3 sm:space-y-4">
+                          <h4 className="font-semibold text-foreground mb-2 sm:mb-3 text-base sm:text-lg">{t('trainingBooks.availableBooks')}</h4>
+                          <div className="space-y-2 sm:space-y-3 text-sm">
+                            <div className="p-2 sm:p-3 rounded-lg bg-muted/30 border border-muted">
+                              <div className="font-medium text-foreground text-sm sm:text-base mb-1">1. {t('trainingBooks.books.lookAndLearn.name')}</div>
+                              {t('trainingBooks.books.lookAndLearn.parts', { returnObjects: true }).map((part, index) => (
+                                <div key={index} className={`text-muted-foreground text-xs sm:text-sm ${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'}`}>• {part}</div>
+                              ))}
                             </div>
-                            <div className="p-3 rounded-lg bg-muted/30">
-                              <div className="font-medium text-foreground">2. Story Time</div>
-                              <div className="text-muted-foreground ml-4">• Part One</div>
-                              <div className="text-muted-foreground ml-4">• Part Two</div>
+                            <div className="p-2 sm:p-3 rounded-lg bg-muted/30 border border-muted">
+                              <div className="font-medium text-foreground text-sm sm:text-base mb-1">2. {t('trainingBooks.books.storyTime.name')}</div>
+                              {t('trainingBooks.books.storyTime.parts', { returnObjects: true }).map((part, index) => (
+                                <div key={index} className={`text-muted-foreground text-xs sm:text-sm ${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'}`}>• {part}</div>
+                              ))}
                             </div>
-                            <div className="p-3 rounded-lg bg-muted/30">
-                              <div className="font-medium text-foreground">3. Explorers Club</div>
-                              <div className="text-muted-foreground ml-4">• Part One</div>
-                              <div className="text-muted-foreground ml-4">• Part Two</div>
+                            <div className="p-2 sm:p-3 rounded-lg bg-muted/30 border border-muted">
+                              <div className="font-medium text-foreground text-sm sm:text-base mb-1">3. {t('trainingBooks.books.explorersClub.name')}</div>
+                              {t('trainingBooks.books.explorersClub.parts', { returnObjects: true }).map((part, index) => (
+                                <div key={index} className={`text-muted-foreground text-xs sm:text-sm ${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'}`}>• {part}</div>
+                              ))}
                             </div>
-                            <div className="p-3 rounded-lg bg-muted/30">
-                              <div className="font-medium text-foreground">4. 17 Stories</div>
-                              <div className="text-muted-foreground ml-4">• The Student's Part</div>
+                            <div className="p-2 sm:p-3 rounded-lg bg-muted/30 border border-muted">
+                              <div className="font-medium text-foreground text-sm sm:text-base mb-1">4. {t('trainingBooks.books.seventeenStories.name')}</div>
+                              {t('trainingBooks.books.seventeenStories.parts', { returnObjects: true }).map((part, index) => (
+                                <div key={index} className={`text-muted-foreground text-xs sm:text-sm ${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'}`}>• {part}</div>
+                              ))}
                             </div>
                           </div>
                         </div>
-                        <div className="space-y-4">
-                          <div className="space-y-3 text-sm">
-                            <div className="p-3 rounded-lg bg-muted/30">
-                              <div className="font-medium text-foreground">5. 75 Stories</div>
-                              <div className="text-muted-foreground ml-4">• The Student's Part</div>
+                        <div className="space-y-3 sm:space-y-4">
+                          <div className="space-y-2 sm:space-y-3 text-sm">
+                            <div className="p-2 sm:p-3 rounded-lg bg-muted/30 border border-muted">
+                              <div className="font-medium text-foreground text-sm sm:text-base mb-1">5. {t('trainingBooks.books.seventyFiveStories.name')}</div>
+                              {t('trainingBooks.books.seventyFiveStories.parts', { returnObjects: true }).map((part, index) => (
+                                <div key={index} className={`text-muted-foreground text-xs sm:text-sm ${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'}`}>• {part}</div>
+                              ))}
                             </div>
-                            <div className="p-3 rounded-lg bg-muted/30">
-                              <div className="font-medium text-foreground">6. Rajaa for Children</div>
-                              <div className="text-muted-foreground ml-4">• The Student's Part</div>
+                            <div className="p-2 sm:p-3 rounded-lg bg-muted/30 border border-muted">
+                              <div className="font-medium text-foreground text-sm sm:text-base mb-1">6. {t('trainingBooks.books.rajaaForChildren.name')}</div>
+                              {t('trainingBooks.books.rajaaForChildren.parts', { returnObjects: true }).map((part, index) => (
+                                <div key={index} className={`text-muted-foreground text-xs sm:text-sm ${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'}`}>• {part}</div>
+                              ))}
                             </div>
-                            <div className="p-3 rounded-lg bg-muted/30">
-                              <div className="font-medium text-foreground">7. Be a Leader</div>
-                              <div className="text-muted-foreground ml-4">• The Student's Part</div>
+                            <div className="p-2 sm:p-3 rounded-lg bg-muted/30 border border-muted">
+                              <div className="font-medium text-foreground text-sm sm:text-base mb-1">7. {t('trainingBooks.books.beALeader.name')}</div>
+                              {t('trainingBooks.books.beALeader.parts', { returnObjects: true }).map((part, index) => (
+                                <div key={index} className={`text-muted-foreground text-xs sm:text-sm ${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'}`}>• {part}</div>
+                              ))}
                             </div>
-                            <div className="p-3 rounded-lg bg-muted/30">
-                              <div className="font-medium text-foreground">8. Best Friends</div>
-                              <div className="text-muted-foreground ml-4">• Part One</div>
-                              <div className="text-muted-foreground ml-4">• Part Two</div>
+                            <div className="p-2 sm:p-3 rounded-lg bg-muted/30 border border-muted">
+                              <div className="font-medium text-foreground text-sm sm:text-base mb-1">8. {t('trainingBooks.books.bestFriends.name')}</div>
+                              {t('trainingBooks.books.bestFriends.parts', { returnObjects: true }).map((part, index) => (
+                                <div key={index} className={`text-muted-foreground text-xs sm:text-sm ${isRTL ? 'mr-3 sm:mr-4' : 'ml-3 sm:ml-4'}`}>• {part}</div>
+                              ))}
                             </div>
                           </div>
                         </div>
@@ -440,17 +471,17 @@ const TrainingFollowUpRequestPage = () => {
                 {/* Book Requests */}
                 <Card className="border-0 shadow-modern bg-card">
                   <CardHeader>
-                    <CardTitle className="text-foreground">Book Requests</CardTitle>
+                    <CardTitle className="text-foreground">{t('bookRequests.title')}</CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Select the books and parts you need for your training program
+                      {t('bookRequests.description')}
                     </p>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-4 sm:space-y-6">
                     {fields.map((field, index) => (
                       <Card key={field.id} className="border border-border/50 bg-muted/20">
-                        <CardContent className="p-4">
-                          <div className="flex items-center justify-between mb-4">
-                            <h4 className="font-medium text-foreground">Book Request {index + 1}</h4>
+                        <CardContent className="p-3 sm:p-4">
+                          <div className="flex items-center justify-between mb-3 sm:mb-4">
+                            <h4 className="font-medium text-foreground">{t('bookRequests.bookRequestNumber')} {index + 1}</h4>
                             {fields.length > 1 && (
                               <Button
                                 type="button"
@@ -464,13 +495,13 @@ const TrainingFollowUpRequestPage = () => {
                             )}
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <FormField
                               control={form.control}
                               name={`books.${index}.bookName`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Book Name *</FormLabel>
+                                  <FormLabel>{t('bookRequests.fields.bookName.label')} *</FormLabel>
                                   <Select
                                     onValueChange={(value) => {
                                       field.onChange(value);
@@ -481,7 +512,7 @@ const TrainingFollowUpRequestPage = () => {
                                   >
                                     <FormControl>
                                       <SelectTrigger>
-                                        <SelectValue placeholder="Choose book" />
+                                        <SelectValue placeholder={t('bookRequests.fields.bookName.placeholder')} />
                                       </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -506,7 +537,7 @@ const TrainingFollowUpRequestPage = () => {
 
                                 return (
                                   <FormItem>
-                                    <FormLabel>Book Part *</FormLabel>
+                                    <FormLabel>{t('bookRequests.fields.partName.label')} *</FormLabel>
                                     <Select
                                       onValueChange={field.onChange}
                                       defaultValue={field.value}
@@ -514,7 +545,7 @@ const TrainingFollowUpRequestPage = () => {
                                     >
                                       <FormControl>
                                         <SelectTrigger>
-                                          <SelectValue placeholder={selectedBook ? "Choose part" : "Select book first"} />
+                                          <SelectValue placeholder={selectedBook ? t('bookRequests.fields.partName.placeholder') : t('bookRequests.fields.partName.selectBookFirst')} />
                                         </SelectTrigger>
                                       </FormControl>
                                       <SelectContent>
@@ -536,11 +567,11 @@ const TrainingFollowUpRequestPage = () => {
                               name={`books.${index}.copies`}
                               render={({ field }) => (
                                 <FormItem>
-                                  <FormLabel>Number of Copies *</FormLabel>
+                                  <FormLabel>{t('bookRequests.fields.copies.label')} *</FormLabel>
                                   <FormControl>
                                     <Input
                                       type="number"
-                                      placeholder="Enter number"
+                                      placeholder={t('bookRequests.fields.copies.placeholder')}
                                       min="1"
                                       {...field}
                                     />
@@ -558,10 +589,10 @@ const TrainingFollowUpRequestPage = () => {
                       type="button"
                       variant="outline"
                       onClick={addBook}
-                      className="w-full border-primary/30 text-primary hover:bg-primary/10"
+                      className="w-full border-primary/30 text-[#2194D1] hover:bg-primary/10"
                     >
                       <Plus className="h-4 w-4 mr-2" />
-                      Add Another Book
+                      {t('bookRequests.addButton')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -571,10 +602,10 @@ const TrainingFollowUpRequestPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
                       <Upload className="w-5 h-5" />
-                      Served List File
+                      {t('fileUpload.title')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Upload a file with the names of served attendees (PDF, Word, or Image format)
+                      {t('fileUpload.description')}
                     </p>
                   </CardHeader>
                   <CardContent>
@@ -583,17 +614,19 @@ const TrainingFollowUpRequestPage = () => {
                       name="servedListFile"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>File with Names of Served</FormLabel>
+                          <FormLabel>{t('fileUpload.label')}</FormLabel>
                           <FormControl>
-                            <Input
-                              type="file"
+                            <FileUpload
                               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                              onChange={(e) => field.onChange(e.target.files?.[0])}
-                              className="file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                              onFileChange={(file) => field.onChange(file)}
+                              placeholder={t('fileUpload.chooseFile')}
+                              noFileText={t('fileUpload.noFileChosen')}
+                              dragDropText={t('fileUpload.dragDrop')}
+                              isRTL={isRTL}
                             />
                           </FormControl>
                           <p className="text-sm text-muted-foreground">
-                            Accepted formats: PDF, Word (.doc, .docx), Images (.jpg, .png)
+                            {t('fileUpload.acceptedFormats')}
                           </p>
                           <FormMessage />
                         </FormItem>
@@ -605,17 +638,17 @@ const TrainingFollowUpRequestPage = () => {
                 {/* T-shirt Size Guide */}
                 <Card className="border-0 shadow-modern bg-card">
                   <CardHeader>
-                    <CardTitle className="text-foreground">T-shirt Size Guide</CardTitle>
+                    <CardTitle className="text-foreground">{t('tshirtGuide.title')}</CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      Please refer to this sizing chart when requesting t-shirts
+                      {t('tshirtGuide.description')}
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <div className="flex justify-center">
+                    <div className="flex justify-center px-4">
                       <img
                         src="/traning.png"
-                        alt="T-shirt sizing guide with measurements in Arabic"
-                        className="max-w-full h-auto rounded-lg border shadow-sm"
+                        alt={t('tshirtGuide.altText')}
+                        className="max-w-full h-auto rounded-lg border shadow-sm w-full sm:w-auto max-w-md sm:max-w-full"
                       />
                     </div>
                   </CardContent>
@@ -626,25 +659,26 @@ const TrainingFollowUpRequestPage = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-foreground">
                       <Shirt className="w-5 h-5 text-accent" />
-                      T-shirt Requests
+                      {t('tshirtRequests.title')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">
-                      How many t-shirts do you need for each size?
+                      {t('tshirtRequests.description')}
                     </p>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
                       <FormField
                         control={form.control}
                         name="tshirtSizes.size6"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Size 6</FormLabel>
+                            <FormLabel className="text-sm">{t('tshirtRequests.sizes.size6')}</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
                                 placeholder="0"
                                 min="0"
+                                className="text-center sm:text-left"
                                 {...field}
                               />
                             </FormControl>
@@ -658,12 +692,13 @@ const TrainingFollowUpRequestPage = () => {
                         name="tshirtSizes.size8"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Size 8</FormLabel>
+                            <FormLabel className="text-sm">{t('tshirtRequests.sizes.size8')}</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
                                 placeholder="0"
                                 min="0"
+                                className="text-center sm:text-left"
                                 {...field}
                               />
                             </FormControl>
@@ -677,12 +712,13 @@ const TrainingFollowUpRequestPage = () => {
                         name="tshirtSizes.size10"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Size 10</FormLabel>
+                            <FormLabel className="text-sm">{t('tshirtRequests.sizes.size10')}</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
                                 placeholder="0"
                                 min="0"
+                                className="text-center sm:text-left"
                                 {...field}
                               />
                             </FormControl>
@@ -696,12 +732,13 @@ const TrainingFollowUpRequestPage = () => {
                         name="tshirtSizes.sizeL"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Size L</FormLabel>
+                            <FormLabel className="text-sm">{t('tshirtRequests.sizes.sizeL')}</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
                                 placeholder="0"
                                 min="0"
+                                className="text-center sm:text-left"
                                 {...field}
                               />
                             </FormControl>
@@ -715,12 +752,13 @@ const TrainingFollowUpRequestPage = () => {
                         name="tshirtSizes.sizeXL"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Size XL</FormLabel>
+                            <FormLabel className="text-sm">{t('tshirtRequests.sizes.sizeXL')}</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
                                 placeholder="0"
                                 min="0"
+                                className="text-center sm:text-left"
                                 {...field}
                               />
                             </FormControl>
@@ -734,12 +772,13 @@ const TrainingFollowUpRequestPage = () => {
                         name="tshirtSizes.sizeXXL"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Size XXL</FormLabel>
+                            <FormLabel className="text-sm">{t('tshirtRequests.sizes.sizeXXL')}</FormLabel>
                             <FormControl>
                               <Input
                                 type="number"
                                 placeholder="0"
                                 min="0"
+                                className="text-center sm:text-left"
                                 {...field}
                               />
                             </FormControl>
@@ -752,22 +791,23 @@ const TrainingFollowUpRequestPage = () => {
                 </Card>
 
                 {/* Submit Button */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => navigate('/TrainingSelectionPage')}
-                    className="px-8"
-                  >
-                    Back to Selection
-                  </Button>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                  <Link to="/TrainingSelectionPage" className="w-full sm:w-auto">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full sm:w-auto px-6 sm:px-8"
+                    >
+                      {t('buttons.back')}
+                    </Button>
+                  </Link>
 
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="bg-accent hover:bg-accent/90 px-8"
+                    className="w-full sm:w-auto bg-accent hover:bg-accent/90 px-6 sm:px-8"
                   >
-                    {isSubmitting ? 'Submitting...' : 'Submit Follow-up Request'}
+                    {isSubmitting ? t('buttons.submitting') : t('buttons.submit')}
                   </Button>
                 </div>
               </form>
@@ -781,5 +821,31 @@ const TrainingFollowUpRequestPage = () => {
     </Layout>
   );
 };
+
+// Gatsby head export for SEO
+export const Head = ({ data }) => {
+  const { t } = useTranslation('TrainingFollowUpRequest');
+  return (
+    <>
+      <title>{t('pageTitle')}</title>
+      <meta name="description" content={t('seoDescription')} />
+    </>
+  );
+};
+
+// GraphQL query for i18n
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
 
 export default TrainingFollowUpRequestPage;

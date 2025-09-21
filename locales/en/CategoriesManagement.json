@@ -1,0 +1,137 @@
+{
+  "title": "Categories Management",
+  "description": "Manage your publishing house book categories",
+  "addCategory": "Add New Category",
+  "searchPlaceholder": "Search categories...",
+  "categoriesCount": "Categories ({{count}})",
+  
+  "form": {
+    "createTitle": "Add New Category",
+    "editTitle": "Edit Category",
+    "fields": {
+      "nameEn": "Name (English)",
+      "nameEnPlaceholder": "Category name in English",
+      "nameAr": "Name (Arabic)",
+      "nameArPlaceholder": "Category name in Arabic",
+      "descriptionEn": "Description (English)",
+      "descriptionEnPlaceholder": "Enter a detailed description of the category in English (minimum 10 characters)...",
+      "descriptionAr": "Description (Arabic)",
+      "descriptionArPlaceholder": "Enter a detailed description of the category in Arabic (minimum 10 characters)...",
+      "sortOrder": "Sort Order",
+      "sortOrderPlaceholder": "0",
+      "icon": "Icon",
+      "colorTheme": "Color Theme",
+      "parentCategory": "Parent Category",
+      "parentCategoryPlaceholder": "Select parent category (optional)",
+      "noParentCategory": "No parent category"
+    },
+    "validation": {
+      "nameEnRequired": "Category name (English) is required.",
+      "nameArRequired": "Category name (Arabic) is required.",
+      "descriptionEnMinLength": "Category description (English) must be at least 10 characters long.",
+      "descriptionArMinLength": "Category description (Arabic) must be at least 10 characters long.",
+      "descriptionMinLength": "Description must be at least 10 characters long"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Add Category",
+      "update": "Update Category",
+      "saving": "Saving..."
+    }
+  },
+  
+  "table": {
+    "headers": {
+      "category": "Category",
+      "books": "Books",
+      "sortOrder": "Sort",
+      "created": "Created",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "booksCount": "{{count}} book",
+    "booksCount_plural": "{{count}} books",
+    "sortOrder": "Sort: {{order}}",
+    "subcategory": "Subcategory"
+  },
+  
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "all": "All Status"
+  },
+  
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "toggleStatus": "Toggle Status"
+  },
+  
+  "deleteModal": {
+    "title": "Delete Category",
+    "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone and will permanently remove the category from the system.",
+    "confirmText": "Delete Category",
+    "cancelText": "Cancel"
+  },
+  
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {{current}} of {{total}}"
+  },
+  
+  "loading": {
+    "categories": "Loading categories...",
+    "creating": "Creating category...",
+    "updating": "Updating category...",
+    "deleting": "Deleting category..."
+  },
+  
+  "success": {
+    "categoryAdded": "{{name}} has been added successfully.",
+    "categoryUpdated": "{{name}} has been updated successfully.",
+    "categoryDeleted": "{{name}} has been deleted successfully.",
+    "statusUpdated": "{{name}} status has been updated to {{status}}."
+  },
+  
+  "errors": {
+    "loadCategories": "Failed to fetch categories. Please try again.",
+    "createCategory": "Failed to save category. Please try again.",
+    "updateCategory": "Failed to update category. Please try again.",
+    "deleteCategory": "Failed to delete category. Please try again.",
+    "updateStatus": "Failed to update category status. Please try again.",
+    "authError": "Please log in again to access categories.",
+    "unexpectedError": "An unexpected error occurred. Please try again."
+  },
+  
+  "empty": {
+    "noCategories": "No categories found. Add your first category to get started.",
+    "noResults": "No categories match your search criteria."
+  },
+  
+  "colors": {
+    "blue": "Blue",
+    "green": "Green", 
+    "purple": "Purple",
+    "orange": "Orange",
+    "red": "Red",
+    "yellow": "Yellow",
+    "indigo": "Indigo",
+    "pink": "Pink"
+  },
+  
+  "icons": {
+    "FolderOpen": "Folder Open",
+    "Book": "Book",
+    "Tag": "Tag",
+    "Code": "Code",
+    "Database": "Database",
+    "Shield": "Shield",
+    "Cloud": "Cloud",
+    "Brain": "Brain",
+    "Heart": "Heart",
+    "Star": "Star",
+    "Rocket": "Rocket",
+    "Search": "Search"
+  }
+}

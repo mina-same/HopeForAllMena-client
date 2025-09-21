@@ -5,8 +5,12 @@ import Comments from "./comments";
 import CommentForm from "./comment-form";
 import BlogSidebar from "./blog-sidebar";
 import blogAPI from "../../services/blogAPI";
+import { useTranslation } from "gatsby-plugin-react-i18next";
+import { useI18next } from "gatsby-plugin-react-i18next";
 
 const BlogDetails = ({ slug }) => {
+  const { t } = useTranslation();
+  const { language: currentLanguage } = useI18next();
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,7 +45,7 @@ const BlogDetails = ({ slug }) => {
     };
 
     fetchBlogData();
-  }, [slug]);
+  }, [slug, currentLanguage]);
 
   const handleNewComment = (newComment) => {
     setComments(prev => [newComment, ...prev]);
@@ -49,11 +53,11 @@ const BlogDetails = ({ slug }) => {
 
   if (loading) {
     return (
-      <section className="blog-details pt-120 pb-40">
+      <section className={`blog-details pt-120 pb-40 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <Container>
           <div className="text-center">
             <div className="spinner-border" role="status">
-              <span className="sr-only">Loading...</span>
+              <span className="sr-only">{t('blog:details.loading')}</span>
             </div>
           </div>
         </Container>
@@ -63,11 +67,11 @@ const BlogDetails = ({ slug }) => {
 
   if (error || !blog) {
     return (
-      <section className="blog-details pt-120 pb-40">
+      <section className={`blog-details pt-120 pb-40 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <Container>
           <div className="text-center">
-            <h3>Blog post not found</h3>
-            <p>The blog post you're looking for doesn't exist or has been removed.</p>
+            <h3>{t('blog:details.notFound')}</h3>
+            <p>{t('blog:details.notFoundMessage')}</p>
           </div>
         </Container>
       </section>
@@ -75,16 +79,16 @@ const BlogDetails = ({ slug }) => {
   }
 
   return (
-    <section className="blog-details pt-120 pb-40">
+    <section className={`blog-details pt-120 pb-40 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <Container>
         <Row>
           <Col md={12} lg={8}>
-            <BlogContent blog={blog} />
-            <Comments comments={comments} blogId={blog._id} />
-            <CommentForm blogId={blog._id} onCommentAdded={handleNewComment} />
+            <BlogContent blog={blog} currentLanguage={currentLanguage} />
+            <Comments comments={comments} blogId={blog._id} currentLanguage={currentLanguage} />
+            <CommentForm blogId={blog._id} onCommentAdded={handleNewComment} currentLanguage={currentLanguage} />
           </Col>
           <Col md={12} lg={4}>
-            <BlogSidebar />
+            <BlogSidebar currentLanguage={currentLanguage} />
           </Col>
         </Row>
       </Container>

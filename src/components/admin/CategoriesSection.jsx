@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, FolderOpen, Book, Search, Star, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit, Trash2, FolderOpen, Book, Search, Star, Eye, EyeOff, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
@@ -11,6 +11,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useToast } from '../../hooks/use-toast';
 import { categoriesAPI } from '../../services/publishingAPI';
 import ConfirmationModal from '../ui/ConfirmationModal';
+import { Link } from 'gatsby';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
 
 const categoryIcons = [
   'FolderOpen', 'Book', 'Tag', 'Code', 'Database', 'Shield', 'Cloud', 'Brain', 'Heart', 'Star', 'Rocket', 'Search'
@@ -29,6 +33,8 @@ const categoryColors = [
 
 export function CategoriesSection() {
   const { toast } = useToast();
+  const { t } = useTranslation('CategoriesManagement');
+  const { language: currentLanguage } = useI18next();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -88,14 +94,14 @@ export function CategoriesSection() {
 
       if (error.response?.status === 401) {
         toast({
-          title: "Authentication Error",
-          description: "Please log in again to access categories.",
+          title: t('errors.authError'),
+          description: t('errors.authError'),
           variant: "destructive"
         });
       } else {
         toast({
-          title: "Error",
-          description: error.response?.data?.message || "Failed to fetch categories. Please try again.",
+          title: t('errors.loadCategories'),
+          description: error.response?.data?.message || t('errors.loadCategories'),
           variant: "destructive"
         });
       }
@@ -124,8 +130,8 @@ export function CategoriesSection() {
       // Validate required fields
       if (!categoryForm.name_en.trim()) {
         toast({
-          title: "Validation Error",
-          description: "Category name (English) is required.",
+          title: t('form.validation.nameEnRequired'),
+          description: t('form.validation.nameEnRequired'),
           variant: "destructive"
         });
         setIsSubmitting(false);
@@ -134,8 +140,8 @@ export function CategoriesSection() {
 
       if (!categoryForm.name_ar.trim()) {
         toast({
-          title: "Validation Error",
-          description: "Category name (Arabic) is required.",
+          title: t('form.validation.nameArRequired'),
+          description: t('form.validation.nameArRequired'),
           variant: "destructive"
         });
         setIsSubmitting(false);
@@ -144,8 +150,8 @@ export function CategoriesSection() {
 
       if (categoryForm.description_en.trim().length < 10) {
         toast({
-          title: "Validation Error",
-          description: "Category description (English) must be at least 10 characters long.",
+          title: t('form.validation.descriptionEnMinLength'),
+          description: t('form.validation.descriptionEnMinLength'),
           variant: "destructive"
         });
         setIsSubmitting(false);
@@ -154,8 +160,8 @@ export function CategoriesSection() {
 
       if (categoryForm.description_ar.trim().length < 10) {
         toast({
-          title: "Validation Error",
-          description: "Category description (Arabic) must be at least 10 characters long.",
+          title: t('form.validation.descriptionArMinLength'),
+          description: t('form.validation.descriptionArMinLength'),
           variant: "destructive"
         });
         setIsSubmitting(false);
@@ -185,14 +191,14 @@ export function CategoriesSection() {
       if (editingCategory) {
         await categoriesAPI.updateCategory(editingCategory._id, formData);
         toast({
-          title: "Category Updated",
-          description: `${categoryForm.name_en} has been updated successfully.`,
+          title: t('success.categoryUpdated', { name: categoryForm.name_en }),
+          description: t('success.categoryUpdated', { name: categoryForm.name_en }),
         });
       } else {
         await categoriesAPI.createCategory(formData);
         toast({
-          title: "Category Added",
-          description: `${categoryForm.name_en} has been added successfully.`,
+          title: t('success.categoryAdded', { name: categoryForm.name_en }),
+          description: t('success.categoryAdded', { name: categoryForm.name_en }),
         });
       }
 
@@ -218,8 +224,8 @@ export function CategoriesSection() {
         console.error('First validation error:', error.response.data.errors[0]);
       }
       toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to save category. Please try again.",
+        title: t('errors.createCategory'),
+        description: error.response?.data?.message || t('errors.createCategory'),
         variant: "destructive"
       });
     } finally {
@@ -254,15 +260,15 @@ export function CategoriesSection() {
     try {
       await categoriesAPI.deleteCategory(categoryToDelete._id);
       toast({
-        title: "Category Deleted",
-        description: `${categoryToDelete.name} has been deleted successfully.`,
+        title: t('success.categoryDeleted', { name: categoryToDelete.name_en || categoryToDelete.name }),
+        description: t('success.categoryDeleted', { name: categoryToDelete.name_en || categoryToDelete.name }),
       });
       fetchCategories();
     } catch (error) {
       console.error('Failed to delete category:', error);
       toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to delete category. Please try again.",
+        title: t('errors.deleteCategory'),
+        description: error.response?.data?.message || t('errors.deleteCategory'),
         variant: "destructive"
       });
     } finally {
@@ -277,15 +283,15 @@ export function CategoriesSection() {
     try {
       await categoriesAPI.updateCategoryStatus(category._id, newStatus);
       toast({
-        title: "Category Updated",
-        description: `${category.name} status has been updated to ${newStatus}.`,
+        title: t('success.statusUpdated', { name: category.name_en || category.name, status: t(`status.${newStatus}`) }),
+        description: t('success.statusUpdated', { name: category.name_en || category.name, status: t(`status.${newStatus}`) }),
       });
       fetchCategories();
     } catch (error) {
       console.error('Failed to update status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update category status. Please try again.",
+        title: t('errors.updateStatus'),
+        description: t('errors.updateStatus'),
         variant: "destructive"
       });
     }
@@ -315,47 +321,57 @@ export function CategoriesSection() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
         <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Categories Management</h2>
-          <p className="text-muted-foreground text-sm md:text-base">Manage your publishing house book categories</p>
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">{t('title')}</h2>
+          <p className="text-muted-foreground text-sm md:text-base">{t('description')}</p>
         </div>
-        <Button onClick={openAddDialog} className=" text-white shadow-elegant hover:shadow-lg transition-all duration-300">
-          <Plus className="h-4 w-4 mr-2" />
-          Add New Category
+        <Button onClick={openAddDialog} className={`text-white shadow-elegant hover:shadow-lg transition-all duration-300 ${currentLanguage === 'ar' ? '' : ''}`}>
+          <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+          {t('addCategory')}
         </Button>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {editingCategory ? 'Edit Category' : 'Add New Category'}
+          <DialogContent className={`max-w-2xl max-h-[90vh] overflow-y-auto ${currentLanguage === 'ar' ? 'rtl' : 'ltr'} [&>button]:hidden`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+            <DialogHeader className="relative pb-4">
+              <DialogTitle className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'} text-lg font-semibold`}>
+                {editingCategory ? t('form.editTitle') : t('form.createTitle')}
               </DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsDialogOpen(false)}
+                className={`absolute -top-2 ${currentLanguage === 'ar' ? '-left-2' : '-right-2'} h-8 w-8 p-0 hover:bg-gray-100 rounded-full transition-colors duration-200 z-10`}
+                disabled={isSubmitting}
+              >
+                <X className="h-4 w-4 text-gray-500 hover:text-gray-700" />
+              </Button>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name_en">Name (English) *</Label>
+                  <Label htmlFor="name_en" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.nameEn')} *</Label>
                   <Input
                     id="name_en"
                     name="name_en"
                     value={categoryForm.name_en}
                     onChange={handleInputChange}
-                    placeholder="Category name in English"
+                    placeholder={t('form.fields.nameEnPlaceholder')}
                     required
                     disabled={isSubmitting}
                     className="pl-2"
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="name_ar">Name (Arabic) *</Label>
+                  <Label htmlFor="name_ar" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.nameAr')} *</Label>
                   <Input
                     id="name_ar"
                     name="name_ar"
                     value={categoryForm.name_ar}
                     onChange={handleInputChange}
-                    placeholder="اسم الفئة بالعربية"
+                    placeholder={t('form.fields.nameArPlaceholder')}
                     required
                     disabled={isSubmitting}
                     className="pl-2"
@@ -364,33 +380,34 @@ export function CategoriesSection() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="description_en">Description (English) * (min 10 characters)</Label>
+                  <Label htmlFor="description_en" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.descriptionEn')} * (min 10 characters)</Label>
                   <Textarea
                     id="description_en"
                     name="description_en"
                     value={categoryForm.description_en}
                     onChange={handleInputChange}
-                    placeholder="Enter a detailed description of the category in English (minimum 10 characters)..."
+                    placeholder={t('form.fields.descriptionEnPlaceholder')}
                     rows={3}
                     required
                     minLength={10}
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                     className={categoryForm.description_en.length > 0 && categoryForm.description_en.length < 10 ? 'border-red-300' : ''}
                   />
                   {categoryForm.description_en.length > 0 && categoryForm.description_en.length < 10 && (
-                    <p className="text-sm text-red-600">Description must be at least 10 characters long</p>
+                    <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.validation.descriptionMinLength')}</p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="description_ar">Description (Arabic) * (min 10 characters)</Label>
+                  <Label htmlFor="description_ar" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.descriptionAr')} * (min 10 characters)</Label>
                   <Textarea
                     id="description_ar"
                     name="description_ar"
                     value={categoryForm.description_ar}
                     onChange={handleInputChange}
-                    placeholder="أدخل وصفاً مفصلاً للفئة باللغة العربية (10 أحرف على الأقل)..."
+                    placeholder={t('form.fields.descriptionArPlaceholder')}
                     rows={3}
                     required
                     minLength={10}
@@ -398,52 +415,56 @@ export function CategoriesSection() {
                     dir="rtl"
                     className={categoryForm.description_ar.length > 0 && categoryForm.description_ar.length < 10 ? 'border-red-300' : ''}
                   />
+                  {categoryForm.description_ar.length > 0 && categoryForm.description_ar.length < 10 && (
+                    <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.validation.descriptionMinLength')}</p>
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="sortOrder">Sort Order</Label>
+                  <Label htmlFor="sortOrder" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.sortOrder')}</Label>
                   <Input
                     id="sortOrder"
                     name="sortOrder"
                     type="number"
                     value={categoryForm.sortOrder}
                     onChange={handleInputChange}
-                    placeholder="0"
+                    placeholder={t('form.fields.sortOrderPlaceholder')}
                     min="0"
                     disabled={isSubmitting}
                     className="pl-2"
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="icon">Icon</Label>
+                  <Label htmlFor="icon" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.icon')}</Label>
                   <Select value={categoryForm.icon} onValueChange={(value) => setCategoryForm(prev => ({ ...prev, icon: value }))} disabled={isSubmitting}>
-                    <SelectTrigger>
+                    <SelectTrigger className={`bg-white border border-gray-200 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {categoryIcons.map(icon => (
-                        <SelectItem key={icon} value={icon}>{icon}</SelectItem>
+                        <SelectItem key={icon} value={icon}>{t(`icons.${icon}`)}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="color">Color Theme</Label>
+                  <Label htmlFor="color" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.colorTheme')}</Label>
                   <Select value={categoryForm.color} onValueChange={(value) => setCategoryForm(prev => ({ ...prev, color: value }))} disabled={isSubmitting}>
-                    <SelectTrigger>
+                    <SelectTrigger className={`bg-white border border-gray-200 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {categoryColors.map(color => (
                         <SelectItem key={color} value={color}>
-                          <div className="flex items-center gap-2">
+                          <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
                             <div className={`w-4 h-4 rounded ${color.split(' ')[0]}`}></div>
-                            {color.split(' ')[0].replace('bg-', '').replace('-100', '')}
+                            {t(`colors.${color.split(' ')[0].replace('bg-', '').replace('-100', '')}`)}
                           </div>
                         </SelectItem>
                       ))}
@@ -453,26 +474,34 @@ export function CategoriesSection() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="parentCategory">Parent Category</Label>
+                <Label htmlFor="parentCategory" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.parentCategory')}</Label>
                 <Select value={categoryForm.parentCategory} onValueChange={(value) => setCategoryForm(prev => ({ ...prev, parentCategory: value }))} disabled={isSubmitting}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select parent category (optional)" />
+                  <SelectTrigger className={`bg-white border border-gray-200 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <SelectValue placeholder={t('form.fields.parentCategoryPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">No parent category</SelectItem>
+                    <SelectItem value="none">{t('form.fields.noParentCategory')}</SelectItem>
                     {categories.filter(cat => cat._id !== editingCategory?._id).map(category => (
-                      <SelectItem key={category._id} value={category._id}>{category.name_en || category.name}</SelectItem>
+                      <SelectItem key={category._id} value={category._id}>
+                        {currentLanguage === 'ar' ? (category.name_ar || category.name_en || category.name) : (category.name_en || category.name)}
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isSubmitting}>
-                  Cancel
+              <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start flex-row-reverse'}`}>
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200" disabled={isSubmitting}>
+                  {isSubmitting ? t('form.buttons.saving') : (editingCategory ? t('form.buttons.update') : t('form.buttons.create'))}
                 </Button>
-                <Button type="submit" className=" text-white" disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : (editingCategory ? 'Update Category' : 'Add Category')}
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsDialogOpen(false)} 
+                  disabled={isSubmitting}
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2 rounded-lg font-medium transition-colors duration-200"
+                >
+                  {t('form.buttons.cancel')}
                 </Button>
               </div>
             </form>
@@ -483,26 +512,27 @@ export function CategoriesSection() {
       {/* Filters */}
       <Card className="border-0 shadow-modern">
         <CardContent className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className={`flex flex-col sm:flex-row gap-4 ${currentLanguage === 'ar' ? 'sm:' : ''}`}>
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Search className={`absolute top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 ${currentLanguage === 'ar' ? 'right-3' : 'left-3'}`} />
                 <Input
-                  placeholder="Search categories..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-[30px]"
+                  className={currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Status" />
+              <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-40 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                <SelectValue placeholder={t('status.all')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="all">{t('status.all')}</SelectItem>
+                <SelectItem value="active">{t('status.active')}</SelectItem>
+                <SelectItem value="inactive">{t('status.inactive')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -511,68 +541,71 @@ export function CategoriesSection() {
 
       <Card className="border-0 shadow-modern">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? ' text-right' : 'text-left'}`}>
             <FolderOpen className="h-5 w-5 text-theme-base" />
-            Categories ({totalCategories})
+            {t('categoriesCount', { count: totalCategories })}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-base mx-auto"></div>
-              <p className="text-muted-foreground mt-2">Loading categories...</p>
+              <p className="text-muted-foreground mt-2">{t('loading.categories')}</p>
             </div>
           ) : categories.length > 0 ? (
             <div className="space-y-4">
               {categories.map((category) => (
-                <div key={category._id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center gap-4">
+                <div key={category._id} className={`flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors ${currentLanguage === 'ar' ? '' : ''}`}>
+                  <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? '' : ''}`}>
                     <div className={`p-3 rounded-lg ${category.color}`}>
                       <FolderOpen className="h-6 w-6" />
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-foreground">{category.name_en || category.name}</h3>
+                    <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
+                        <h3 className="font-semibold text-foreground">
+                          {currentLanguage === 'ar' ? (category.name_ar || category.name_en || category.name) : (category.name_en || category.name)}
+                        </h3>
                         <Badge variant={category.status === 'active' ? 'default' : 'secondary'}>
-                          {category.status}
+                          {t(`status.${category.status}`)}
                         </Badge>
                         {category.parentCategory && (
                           <Badge variant="outline">
-                            Subcategory
+                            {t('table.subcategory')}
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-4 mt-1">
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                      <div className={`flex items-center gap-4 mt-1 ${currentLanguage === 'ar' ? '' : ''}`}>
+                        <div className={`flex items-center gap-1 text-sm text-muted-foreground ${currentLanguage === 'ar' ? '' : ''}`}>
                           <Book className="h-4 w-4" />
-                          {category.booksCount || 0} book{(category.booksCount || 0) !== 1 ? 's' : ''}
+                          {t('table.booksCount', { count: category.booksCount || 0 })}
                         </div>
                         <div className="text-sm text-muted-foreground">
-                          Sort: {category.sortOrder}
+                          {t('table.sortOrder', { order: category.sortOrder })}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
+                  <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? '' : ''}`}>
+                    <div className={currentLanguage === 'ar' ? 'text-left' : 'text-right'}>
                       <div className="text-sm text-muted-foreground">
                         {formatDate(category.createdAt)}
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className={`flex gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
                       <Select value={category.status} onValueChange={(value) => handleStatusChange(category, value)}>
-                        <SelectTrigger className="w-24">
+                        <SelectTrigger className={`bg-white border border-gray-200 w-24 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="inactive">Inactive</SelectItem>
+                          <SelectItem value="active">{t('status.active')}</SelectItem>
+                          <SelectItem value="inactive">{t('status.inactive')}</SelectItem>
                         </SelectContent>
                       </Select>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleEdit(category)}
+                        title={t('actions.edit')}
                       >
                         <Edit className="h-4 w-4" />
                       </Button>
@@ -581,6 +614,7 @@ export function CategoriesSection() {
                         size="sm"
                         onClick={() => handleDelete(category)}
                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        title={t('actions.delete')}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
@@ -591,17 +625,17 @@ export function CategoriesSection() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-6">
+                <div className={`flex justify-center items-center gap-2 mt-6 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
                   >
-                    Previous
+                    {t('pagination.previous')}
                   </Button>
                   <span className="text-sm text-muted-foreground">
-                    Page {currentPage} of {totalPages}
+                    {t('pagination.page', { current: currentPage, total: totalPages })}
                   </span>
                   <Button
                     variant="outline"
@@ -609,7 +643,7 @@ export function CategoriesSection() {
                     onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages}
                   >
-                    Next
+                    {t('pagination.next')}
                   </Button>
                 </div>
               )}
@@ -617,7 +651,7 @@ export function CategoriesSection() {
           ) : (
             <div className="text-center py-8">
               <FolderOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">No categories found. Add your first category to get started.</p>
+              <p className="text-muted-foreground">{t('empty.noCategories')}</p>
             </div>
           )}
         </CardContent>
@@ -631,10 +665,14 @@ export function CategoriesSection() {
           setCategoryToDelete(null);
         }}
         onConfirm={confirmDeleteCategory}
-        title="Delete Category"
-        description={`Are you sure you want to delete "${categoryToDelete?.name}"? This action cannot be undone and will permanently remove the category from the system.`}
-        confirmText="Delete Category"
-        cancelText="Cancel"
+        title={t('deleteModal.title')}
+        description={t('deleteModal.description', { 
+          name: currentLanguage === 'ar' 
+            ? (categoryToDelete?.name_ar || categoryToDelete?.name_en || categoryToDelete?.name)
+            : (categoryToDelete?.name_en || categoryToDelete?.name)
+        })}
+        confirmText={t('deleteModal.confirmText')}
+        cancelText={t('deleteModal.cancelText')}
         variant="danger"
         isLoading={isDeleting}
         icon={
@@ -648,3 +686,18 @@ export function CategoriesSection() {
     </div>
   );
 }
+
+// GraphQL query for i18n support
+export const query = graphql`
+  query {
+    locales: allLocale {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

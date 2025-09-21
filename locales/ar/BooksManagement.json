@@ -1,0 +1,167 @@
+{
+  "title": "إدارة الكتب",
+  "description": "إدارة كتالوج كتب دار النشر الخاصة بك",
+  "addBook": "إضافة كتاب جديد",
+  "searchPlaceholder": "البحث في الكتب...",
+  "booksCount": "الكتب ({{count}})",
+  
+  "form": {
+    "createTitle": "إضافة كتاب جديد",
+    "editTitle": "تعديل الكتاب",
+    "fields": {
+      "title": "العنوان",
+      "titlePlaceholder": "أدخل عنوان الكتاب",
+      "titleAr": "العنوان (بالعربية)",
+      "titleArPlaceholder": "عنوان الكتاب بالعربية",
+      "author": "المؤلف",
+      "authorPlaceholder": "اختر المؤلف",
+      "category": "الفئة",
+      "categoryPlaceholder": "اختر الفئة",
+      "shortDescription": "الوصف المختصر",
+      "shortDescriptionPlaceholder": "وصف مختصر للكتاب...",
+      "shortDescriptionAr": "الوصف المختصر (بالعربية)",
+      "shortDescriptionArPlaceholder": "وصف مختصر بالعربية...",
+      "description": "الوصف",
+      "descriptionPlaceholder": "وصف مفصل للكتاب...",
+      "descriptionAr": "الوصف (بالعربية)",
+      "descriptionArPlaceholder": "وصف مفصل بالعربية...",
+      "coverImage": "صورة غلاف الكتاب",
+      "pages": "عدد الصفحات (اختياري)",
+      "pagesPlaceholder": "350",
+      "language": "اللغة",
+      "languagePlaceholder": "العربية",
+      "publicationYear": "سنة النشر",
+      "publicationYearPlaceholder": "2024",
+      "format": "التنسيق",
+      "ageGroup": "الفئة العمرية",
+      "status": "الحالة",
+      "statusPlaceholder": "اختر الحالة",
+      "tags": "العلامات",
+      "tagsPlaceholder": "خيال، مغامرة، فانتازيا (مفصولة بفواصل)",
+      "metaTitle": "عنوان الميتا",
+      "metaTitlePlaceholder": "عنوان الميتا لتحسين محركات البحث",
+      "metaTitleAr": "عنوان الميتا (بالعربية)",
+      "metaTitleArPlaceholder": "عنوان الميتا بالعربية",
+      "metaDescription": "وصف الميتا",
+      "metaDescriptionPlaceholder": "وصف الميتا لتحسين محركات البحث",
+      "metaDescriptionAr": "وصف الميتا (بالعربية)",
+      "metaDescriptionArPlaceholder": "وصف الميتا بالعربية"
+    },
+    "validation": {
+      "missingFields": "يرجى ملء جميع الحقول المطلوبة: {{fields}}",
+      "shortDescriptionMinLength": "الوصف المختصر بالعربية يجب أن يكون 10 أحرف على الأقل.",
+      "invalidYear": "يرجى إدخال سنة نشر صحيحة بين 1000 و {{maxYear}}",
+      "invalidImageUrl": "رابط صورة الغلاف يجب أن يكون رابط صورة صحيح ينتهي بـ .jpg أو .jpeg أو .png أو .gif أو .webp"
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "create": "إضافة كتاب",
+      "update": "تحديث الكتاب",
+      "saving": "جاري الحفظ..."
+    }
+  },
+  
+  "filters": {
+    "status": {
+      "all": "جميع الحالات",
+      "published": "منشور",
+      "notPublished": "غير منشور"
+    },
+    "category": {
+      "all": "جميع الفئات"
+    },
+    "author": {
+      "all": "جميع المؤلفين"
+    },
+    "featured": {
+      "all": "جميع الكتب",
+      "featured": "مميز",
+      "notFeatured": "غير مميز"
+    }
+  },
+  
+  "formats": {
+    "paperback": "غلاف ورقي",
+    "hardcover": "غلاف مقوى"
+  },
+  
+  "ageGroups": {
+    "children": "أطفال",
+    "youngAdult": "شباب",
+    "adult": "بالغين",
+    "allAges": "جميع الأعمار"
+  },
+  
+  "table": {
+    "headers": {
+      "book": "الكتاب",
+      "author": "المؤلف",
+      "category": "الفئة",
+      "pages": "الصفحات",
+      "year": "السنة",
+      "format": "التنسيق",
+      "reviews": "المراجعات",
+      "rating": "التقييم",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "unknownAuthor": "مؤلف غير معروف",
+    "unknownCategory": "فئة غير معروفة",
+    "pagesCount": "{{count}} صفحة",
+    "reviewsCount": "{{count}} مراجعة",
+    "reviewsCount_plural": "{{count}} مراجعة"
+  },
+  
+  "status": {
+    "published": "منشور",
+    "notPublished": "غير منشور"
+  },
+  
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف",
+    "toggleStatus": "تغيير الحالة"
+  },
+  
+  "deleteModal": {
+    "title": "حذف الكتاب",
+    "description": "هل أنت متأكد من حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف الكتاب نهائياً من النظام.",
+    "confirmText": "حذف الكتاب",
+    "cancelText": "إلغاء"
+  },
+  
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "page": "الصفحة {{current}} من {{total}}"
+  },
+  
+  "loading": {
+    "books": "جاري تحميل الكتب...",
+    "creating": "جاري إنشاء الكتاب...",
+    "updating": "جاري تحديث الكتاب...",
+    "deleting": "جاري حذف الكتاب..."
+  },
+  
+  "success": {
+    "bookCreated": "تم إضافة {{title}} بنجاح.",
+    "bookUpdated": "تم تحديث {{title}} بنجاح.",
+    "bookDeleted": "تم حذف {{title}} بنجاح.",
+    "statusUpdated": "تم تحديث حالة {{title}} إلى {{status}}."
+  },
+  
+  "errors": {
+    "loadBooks": "فشل في تحميل الكتب. يرجى المحاولة مرة أخرى.",
+    "createBook": "فشل في حفظ الكتاب. يرجى المحاولة مرة أخرى.",
+    "updateBook": "فشل في تحديث الكتاب. يرجى المحاولة مرة أخرى.",
+    "deleteBook": "فشل في حذف الكتاب. يرجى المحاولة مرة أخرى.",
+    "updateStatus": "فشل في تحديث حالة الكتاب. يرجى المحاولة مرة أخرى.",
+    "loadAuthorsCategories": "فشل في تحميل المؤلفين والفئات.",
+    "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+  },
+  
+  "empty": {
+    "noBooks": "لم يتم العثور على كتب. أضف كتابك الأول للبدء.",
+    "noResults": "لا توجد كتب تطابق معايير البحث الخاصة بك."
+  }
+}

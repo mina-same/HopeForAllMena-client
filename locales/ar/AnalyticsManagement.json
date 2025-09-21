@@ -1,0 +1,66 @@
+{
+  "header": {
+    "title": "التحليلات والتقارير",
+    "description": "تتبع نمو وأداء المقاييس الرئيسية عبر الزمن"
+  },
+  "statistics": {
+    "title": "الإحصائيات الحالية",
+    "editButton": "تعديل الأرقام",
+    "editTitle": "تعديل الإحصائيات",
+    "cancel": "إلغاء",
+    "save": "حفظ التغييرات",
+    "saving": "جاري الحفظ...",
+    "members": "الأعضاء",
+    "leadersTraining": "تدريب القادة",
+    "publishedBooks": "الكتب المنشورة",
+    "givenMagazines": "المجلات الموزعة",
+    "fromLastMonth": "من الشهر الماضي"
+  },
+  "controls": {
+    "timeRange": "النطاق الزمني",
+    "chartType": "نوع الرسم البياني",
+    "sixMonths": "6 أشهر",
+    "twelveMonths": "12 شهر",
+    "twentyFourMonths": "24 شهر",
+    "lineChart": "خطي",
+    "barChart": "أعمدة"
+  },
+  "charts": {
+    "monthlyTrends": "اتجاهات النمو الشهرية",
+    "distribution": "التوزيع",
+    "lastMonths": "آخر {{count}} أشهر",
+    "currentTotals": "المجاميع الحالية",
+    "growthAnalysis": "تحليل النمو الشهري",
+    "lastSixMonths": "آخر 6 أشهر"
+  },
+  "table": {
+    "month": "الشهر",
+    "members": "الأعضاء",
+    "leadersTraining": "تدريب القادة",
+    "publishedBooks": "الكتب المنشورة",
+    "givenMagazines": "المجلات الموزعة"
+  },
+  "loading": {
+    "statistics": "جاري تحميل الإحصائيات...",
+    "charts": "جاري تحميل الرسوم البيانية..."
+  },
+  "errors": {
+    "loadStats": "فشل في تحميل الإحصائيات",
+    "updateStats": "فشل في تحديث الإحصائيات",
+    "authRequired": "المصادقة مطلوبة",
+    "unexpectedError": "حدث خطأ غير متوقع"
+  },
+  "success": {
+    "statsUpdated": "تم تحديث الإحصائيات بنجاح"
+  },
+  "icons": {
+    "members": "👥",
+    "leadersTraining": "🎓",
+    "publishedBooks": "📚",
+    "givenMagazines": "📰",
+    "analytics": "📊",
+    "trends": "📈",
+    "distribution": "🎯",
+    "edit": "✏️"
+  }
+}

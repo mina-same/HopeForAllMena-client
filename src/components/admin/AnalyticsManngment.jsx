@@ -14,9 +14,13 @@ import {
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import { Container, Row, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
 import { format, subMonths, startOfMonth } from 'date-fns';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { Link, graphql } from 'gatsby';
 import { useAuth } from '../../context/AuthContext';
 import factCounterService from '../../services/factCounterService';
 import './AnalyticsManagement.css';
+import './AnalyticsManagement-rtl.css';
 
 // Register Chart.js components
 ChartJS.register(
@@ -32,42 +36,44 @@ ChartJS.register(
 );
 
 // Import the fact counter data structure with modern color palette
-const FACT_COUNTER_DATA = [
+const getFactCounterData = (t) => [
   {
     count: 8860,
-    text: "Members",
+    text: t('statistics.members'),
     color: '#3b82f6',
     bgColor: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(29, 78, 216, 0.05) 100%)',
-    icon: '👥',
+    icon: t('icons.members'),
     category: 'members'
   },
   {
     count: 456,
-    text: "Leaders Training",
+    text: t('statistics.leadersTraining'),
     color: '#ef4444',
     bgColor: 'linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%)',
-    icon: '🎓',
+    icon: t('icons.leadersTraining'),
     category: 'leaders'
   },
   {
     count: 55,
-    text: "Published books",
+    text: t('statistics.publishedBooks'),
     color: '#f59e0b',
     bgColor: 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.05) 100%)',
-    icon: '📚',
+    icon: t('icons.publishedBooks'),
     category: 'books'
   },
   {
     count: 10000,
-    text: "given Magazines",
+    text: t('statistics.givenMagazines'),
     color: '#10b981',
     bgColor: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.05) 100%)',
-    icon: '📰',
+    icon: t('icons.givenMagazines'),
     category: 'magazines'
   }
 ];
 
 const AnalyticsManagement = () => {
+  const { t } = useTranslation('AnalyticsManagement');
+  const { language: currentLanguage } = useI18next();
   const { user, token } = useAuth();
   const [timeRange, setTimeRange] = useState('12'); // months
   const [chartType, setChartType] = useState('line');
@@ -99,7 +105,7 @@ const AnalyticsManagement = () => {
         });
         setError(null);
       } catch (err) {
-        setError('Failed to load statistics');
+        setError(t('errors.loadStats'));
         console.error('Error fetching stats:', err);
       } finally {
         setLoading(false);
@@ -167,7 +173,7 @@ const AnalyticsManagement = () => {
   const handleUpdateStats = async (e) => {
     e.preventDefault();
     if (!token) {
-      setError('Authentication required');
+      setError(t('errors.authRequired'));
       return;
     }
 
@@ -186,9 +192,9 @@ const AnalyticsManagement = () => {
       setError(null);
       
       // Show success message (you can add a toast notification here)
-      console.log('Statistics updated successfully');
+      console.log(t('success.statsUpdated'));
     } catch (err) {
-      setError(err.message || 'Failed to update statistics');
+      setError(err.message || t('errors.updateStats'));
     } finally {
       setUpdating(false);
     }
@@ -301,28 +307,28 @@ const AnalyticsManagement = () => {
     labels: monthlyData.map(item => item.month),
     datasets: [
       {
-        label: 'Members',
+        label: t('statistics.members'),
         data: monthlyData.map(item => item.members),
         borderColor: '#3b82f6',
         backgroundColor: chartType === 'bar' ? 'rgba(59, 130, 246, 0.8)' : 'rgba(59, 130, 246, 0.1)',
         tension: 0.4,
       },
       {
-        label: 'Leaders Training',
+        label: t('statistics.leadersTraining'),
         data: monthlyData.map(item => item.leadersTraining),
         borderColor: '#ef4444',
         backgroundColor: chartType === 'bar' ? 'rgba(239, 68, 68, 0.8)' : 'rgba(239, 68, 68, 0.1)',
         tension: 0.4,
       },
       {
-        label: 'Published Books',
+        label: t('statistics.publishedBooks'),
         data: monthlyData.map(item => item.publishedBooks),
         borderColor: '#f59e0b',
         backgroundColor: chartType === 'bar' ? 'rgba(245, 158, 11, 0.8)' : 'rgba(245, 158, 11, 0.1)',
         tension: 0.4,
       },
       {
-        label: 'Given Magazines',
+        label: t('statistics.givenMagazines'),
         data: monthlyData.map(item => item.givenMagazines),
         borderColor: '#10b981',
         backgroundColor: chartType === 'bar' ? 'rgba(16, 185, 129, 0.8)' : 'rgba(16, 185, 129, 0.1)',
@@ -341,6 +347,7 @@ const AnalyticsManagement = () => {
   };
 
   // Doughnut chart for current distribution with modern styling
+  const FACT_COUNTER_DATA = getFactCounterData(t);
   const doughnutData = {
     labels: FACT_COUNTER_DATA.map(item => item.text),
     datasets: [
@@ -403,40 +410,40 @@ const AnalyticsManagement = () => {
   };
 
   return (
-    <div className="analytics-management fade-in">
+    <div className={`analytics-management fade-in ${currentLanguage === 'ar' ? 'rtl' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <Container fluid>
         {/* Modern Header */}
         <div className="analytics-header slide-up bg-gray-200">
-          <h2>Analytics & Reports</h2>
-          <p>Track the growth and performance of key metrics over time</p>
+          <h2 className={currentLanguage === 'ar' ? '' : 'text-left'}>{t('header.title')}</h2>
+          <p className={currentLanguage === 'ar' ? '' : 'text-left'}>{t('header.description')}</p>
         </div>
 
         {/* Edit Statistics Form */}
         {isEditing && (
           <div className="control-section slide-up mb-4">
-            <div className="d-flex justify-content-between align-items-center mb-3">
-              <h4 className="mb-0" style={{ color: '#1e293b', fontWeight: '700' }}>✏️ Edit Statistics</h4>
-              <div className="d-flex gap-2">
+            <div className={`d-flex justify-content-between align-items-center mb-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <h4 className="mb-0" style={{ color: '#1e293b', fontWeight: '700' }}>{t('icons.edit')} {t('statistics.editTitle')}</h4>
+              <div className={`d-flex gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                 <button 
                   className="modern-btn" 
                   onClick={handleCancelEdit}
                   disabled={updating}
                 >
-                  Cancel
+                  {t('statistics.cancel')}
                 </button>
                 <button 
                   className="modern-btn active" 
                   onClick={handleUpdateStats}
                   disabled={updating}
                 >
-                  {updating ? 'Saving...' : 'Save Changes'}
+                  {updating ? t('statistics.saving') : t('statistics.save')}
                 </button>
               </div>
             </div>
             <form onSubmit={handleUpdateStats}>
               <Row>
                 <Col md={6} lg={3} className="mb-3">
-                  <label className="control-label">👥 Members</label>
+                  <label className={`control-label ${currentLanguage === 'ar' ? '' : 'text-left'}`}>{t('icons.members')} {t('statistics.members')}</label>
                   <input
                     type="number"
                     className="form-control"
@@ -454,7 +461,7 @@ const AnalyticsManagement = () => {
                   />
                 </Col>
                 <Col md={6} lg={3} className="mb-3">
-                  <label className="control-label">🎓 Leaders Training</label>
+                  <label className={`control-label ${currentLanguage === 'ar' ? '' : 'text-left'}`}>{t('icons.leadersTraining')} {t('statistics.leadersTraining')}</label>
                   <input
                     type="number"
                     className="form-control"
@@ -472,7 +479,7 @@ const AnalyticsManagement = () => {
                   />
                 </Col>
                 <Col md={6} lg={3} className="mb-3">
-                  <label className="control-label">📚 Published Books</label>
+                  <label className={`control-label ${currentLanguage === 'ar' ? '' : 'text-left'}`}>{t('icons.publishedBooks')} {t('statistics.publishedBooks')}</label>
                   <input
                     type="number"
                     className="form-control"
@@ -490,7 +497,7 @@ const AnalyticsManagement = () => {
                   />
                 </Col>
                 <Col md={6} lg={3} className="mb-3">
-                  <label className="control-label">📰 Given Magazines</label>
+                  <label className={`control-label ${currentLanguage === 'ar' ? '' : 'text-left'}`}>{t('icons.givenMagazines')} {t('statistics.givenMagazines')}</label>
                   <input
                     type="number"
                     className="form-control"
@@ -520,15 +527,15 @@ const AnalyticsManagement = () => {
         {/* Modern Summary Cards */}
         <Row className="mb-4">
           <Col xs={12} className="mb-3">
-            <div className="d-flex justify-content-between align-items-center">
-              <h3 style={{ color: '#1e293b', fontWeight: '700', margin: 0 }}>📊 Current Statistics</h3>
+            <div className={`d-flex justify-content-between align-items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <h3 className={currentLanguage === 'ar' ? '' : 'text-left'} style={{ color: '#1e293b', fontWeight: '700', margin: 0 }}>{t('icons.analytics')} {t('statistics.title')}</h3>
               {user && !isEditing && (
                 <button 
                   className="modern-btn active"
                   onClick={() => setIsEditing(true)}
                   disabled={loading}
                 >
-                  ✏️ Edit Numbers
+                  {t('icons.edit')} {t('statistics.editButton')}
                 </button>
               )}
             </div>
@@ -537,6 +544,7 @@ const AnalyticsManagement = () => {
             <Col xs={12}>
               <div className="text-center py-5">
                 <div className="loading-shimmer" style={{ height: '200px', borderRadius: '20px' }}></div>
+                <p className="mt-3">{t('loading.statistics')}</p>
               </div>
             </Col>
           ) : (
@@ -554,9 +562,9 @@ const AnalyticsManagement = () => {
                     <div className="summary-card-value" style={{ color: item.color }}>
                       {currentValue?.toLocaleString() || item.count.toLocaleString()}
                     </div>
-                    <div className={`summary-card-growth ${growthRate >= 0 ? 'positive' : 'negative'}`}>
+                    <div className={`summary-card-growth ${growthRate >= 0 ? 'positive' : 'negative'} ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
                       <span>{growthRate >= 0 ? '↗' : '↘'}</span>
-                      {Math.abs(growthRate)}% from last month
+                      {Math.abs(growthRate)}% {t('statistics.fromLastMonth')}
                     </div>
                     <div 
                       className="summary-card-icon"
@@ -576,7 +584,7 @@ const AnalyticsManagement = () => {
           <Row>
             <Col md={6}>
               <div className="mb-3">
-                <label className="form-label fw-semibold mb-2 d-block" style={{ color: '#374151', fontSize: '0.875rem' }}>Time Range</label>
+                <label className={`form-label fw-semibold mb-2 d-block ${currentLanguage === 'ar' ? '' : 'text-left'}`} style={{ color: '#374151', fontSize: '0.875rem' }}>{t('controls.timeRange')}</label>
                 <div className="d-flex gap-2">
                   <button 
                     className={`btn ${timeRange === '6' ? 'btn-primary' : 'btn-light'}`}
@@ -592,7 +600,7 @@ const AnalyticsManagement = () => {
                       color: timeRange === '6' ? '#ffffff' : '#64748b'
                     }}
                   >
-                    6 Months
+                    {t('controls.sixMonths')}
                   </button>
                   <button 
                     className={`btn ${timeRange === '12' ? 'btn-primary' : 'btn-light'}`}
@@ -608,7 +616,7 @@ const AnalyticsManagement = () => {
                       color: timeRange === '12' ? '#ffffff' : '#64748b'
                     }}
                   >
-                    12 Months
+                    {t('controls.twelveMonths')}
                   </button>
                   <button 
                     className={`btn ${timeRange === '24' ? 'btn-primary' : 'btn-light'}`}
@@ -624,14 +632,14 @@ const AnalyticsManagement = () => {
                       color: timeRange === '24' ? '#ffffff' : '#64748b'
                     }}
                   >
-                    24 Months
+                    {t('controls.twentyFourMonths')}
                   </button>
                 </div>
               </div>
             </Col>
             <Col md={6}>
               <div className="mb-3">
-                <label className="form-label fw-semibold mb-2 d-block" style={{ color: '#374151', fontSize: '0.875rem' }}>Chart Type</label>
+                <label className={`form-label fw-semibold mb-2 d-block ${currentLanguage === 'ar' ? '' : 'text-left'}`} style={{ color: '#374151', fontSize: '0.875rem' }}>{t('controls.chartType')}</label>
                 <div className="d-flex gap-2">
                   <button 
                     className={`btn ${chartType === 'line' ? 'btn-primary' : 'btn-light'}`}
@@ -647,7 +655,7 @@ const AnalyticsManagement = () => {
                       color: chartType === 'line' ? '#ffffff' : '#64748b'
                     }}
                   >
-                    📈 Line
+                    {t('icons.trends')} {t('controls.lineChart')}
                   </button>
                   <button 
                     className={`btn ${chartType === 'bar' ? 'btn-primary' : 'btn-light'}`}
@@ -663,7 +671,7 @@ const AnalyticsManagement = () => {
                       color: chartType === 'bar' ? '#ffffff' : '#64748b'
                     }}
                   >
-                    📊 Bar
+                    {t('icons.analytics')} {t('controls.barChart')}
                   </button>
                 </div>
               </div>
@@ -675,11 +683,11 @@ const AnalyticsManagement = () => {
         <Row className="mb-4">
           <Col lg={8}>
             <div className="chart-card slide-up">
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <h4 className="mb-0" style={{ color: '#1e293b', fontWeight: '700' }}>Monthly Growth Trends</h4>
-                <div className="d-flex align-items-center gap-2" style={{ color: '#64748b', fontSize: '0.875rem' }}>
-                  <span>📊</span>
-                  <span>Last {timeRange} months</span>
+              <div className={`d-flex justify-content-between align-items-center mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <h4 className={`mb-0 ${currentLanguage === 'ar' ? '' : 'text-left'}`} style={{ color: '#1e293b', fontWeight: '700' }}>{t('charts.monthlyTrends')}</h4>
+                <div className={`d-flex align-items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`} style={{ color: '#64748b', fontSize: '0.875rem' }}>
+                  <span>{t('icons.analytics')}</span>
+                  <span>{t('charts.lastMonths', { count: timeRange })}</span>
                 </div>
               </div>
               <div className="chart-container">
@@ -693,11 +701,11 @@ const AnalyticsManagement = () => {
           </Col>
           <Col lg={4}>
             <div className="chart-card slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className="d-flex justify-content-between align-items-center mb-4">
-                <h4 className="mb-0" style={{ color: '#1e293b', fontWeight: '700' }}>Distribution</h4>
-                <div className="d-flex align-items-center gap-2" style={{ color: '#64748b', fontSize: '0.875rem' }}>
-                  <span>🎯</span>
-                  <span>Current totals</span>
+              <div className={`d-flex justify-content-between align-items-center mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <h4 className={`mb-0 ${currentLanguage === 'ar' ? '' : 'text-left'}`} style={{ color: '#1e293b', fontWeight: '700' }}>{t('charts.distribution')}</h4>
+                <div className={`d-flex align-items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`} style={{ color: '#64748b', fontSize: '0.875rem' }}>
+                  <span>{t('icons.distribution')}</span>
+                  <span>{t('charts.currentTotals')}</span>
                 </div>
               </div>
               <div className="chart-container">
@@ -710,10 +718,10 @@ const AnalyticsManagement = () => {
         {/* Modern Growth Rate Table */}
         <div className="analytics-table slide-up" style={{ animationDelay: '0.4s' }}>
           <div className="card-header">
-            <div className="d-flex justify-content-between align-items-center">
-              <h5>📈 Monthly Growth Analysis</h5>
-              <div className="d-flex align-items-center gap-2" style={{ color: '#64748b', fontSize: '0.875rem' }}>
-                <span>Last 6 months</span>
+            <div className={`d-flex justify-content-between align-items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <h5 className={currentLanguage === 'ar' ? '' : 'text-left'}>{t('icons.trends')} {t('charts.growthAnalysis')}</h5>
+              <div className={`d-flex align-items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`} style={{ color: '#64748b', fontSize: '0.875rem' }}>
+                <span>{t('charts.lastSixMonths')}</span>
               </div>
             </div>
           </div>
@@ -721,19 +729,19 @@ const AnalyticsManagement = () => {
             <div className="table-responsive">
               <table className="table">
                 <thead>
-                  <tr>
-                    <th>Month</th>
-                    <th>👥 Members</th>
-                    <th>🎓 Leaders Training</th>
-                    <th>📚 Published Books</th>
-                    <th>📰 Given Magazines</th>
+                  <tr className={currentLanguage === 'ar' ? '' : 'text-left'}>
+                    <th>{t('table.month')}</th>
+                    <th>{t('icons.members')} {t('table.members')}</th>
+                    <th>{t('icons.leadersTraining')} {t('table.leadersTraining')}</th>
+                    <th>{t('icons.publishedBooks')} {t('table.publishedBooks')}</th>
+                    <th>{t('icons.givenMagazines')} {t('table.givenMagazines')}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {monthlyData.slice(-6).map((data, index) => {
                     const prevData = index > 0 ? monthlyData[monthlyData.length - 6 + index - 1] : null;
                     return (
-                      <tr key={data.month}>
+                      <tr key={data.month} className={currentLanguage === 'ar' ? '' : 'text-left'}>
                         <td><strong>{data.month}</strong></td>
                         <td>
                           <div className="d-flex flex-column">
@@ -789,3 +797,18 @@ const AnalyticsManagement = () => {
 };
 
 export default AnalyticsManagement;
+
+// GraphQL query for i18n support
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

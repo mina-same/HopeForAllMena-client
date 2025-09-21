@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { navigate } from "gatsby";
+import { navigate, Link } from "gatsby";
+import { useTranslation } from "gatsby-plugin-react-i18next";
 import blogDetailsImage from "../../assets/images/blog/blog-d-1-1.jpg";
 import blogAPI from "../../services/blogAPI";
+import "../../assets/css/blog-rtl.css";
 
-const BlogContent = ({ blog }) => {
+const BlogContent = ({ blog, currentLanguage }) => {
+  const { t } = useTranslation();
   const [adjacentBlogs, setAdjacentBlogs] = useState({ previous: null, next: null });
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +33,8 @@ const BlogContent = ({ blog }) => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
+    const locale = currentLanguage === 'ar' ? 'ar-SA' : 'en-US';
+    return date.toLocaleDateString(locale, { 
       day: 'numeric', 
       month: 'short' 
     });
@@ -42,88 +46,100 @@ const BlogContent = ({ blog }) => {
   };
 
   return (
-    <div>
+    <div className={currentLanguage === 'ar' ? 'rtl-content' : ''} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <div className="blog-card__image">
-        <img src={blog.image || blogDetailsImage} alt={blog.title} />
+        <img src={blog.image || blogDetailsImage} alt={currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title} />
         <div className="blog-card__date">
           {formatDate(blog.publishedAt || blog.createdAt)}
         </div>
       </div>
-      <div className="blog-card__meta d-flex justify-content-start mt-0 mb-0">
-        <a href="#none">
+      <div className={`blog-card__meta d-flex ${currentLanguage === 'ar' ? 'justify-content-end flex-row-reverse' : 'justify-content-start'} mt-0 mb-0`}>
+        <span className={currentLanguage === 'ar' ? 'text-right' : ''}>
           <i className="far fa-user-circle"></i> {blog.author?.name || 'Admin'}
-        </a>
-        <a href="#none">
-          <i className="far fa-eye"></i> {blog.views || 0} Views
-        </a>
+        </span>
+        <span className={currentLanguage === 'ar' ? 'text-right' : ''}>
+          <i className="far fa-eye"></i> {blog.views || 0} {currentLanguage === 'ar' ? 'مشاهدة' : 'Views'}
+        </span>
       </div>
-      <h3>{blog.title}</h3>
+      <h3 className={currentLanguage === 'ar' ? 'text-right' : ''}>
+        {currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title}
+      </h3>
       
       {/* Render blog content */}
-      <div className="blog-content">
-        {blog.content ? formatContent(blog.content) : (
-          <p>{blog.excerpt}</p>
+      <div className={`blog-content ${currentLanguage === 'ar' ? 'text-right' : ''}`}>
+        {blog.content ? formatContent(
+          currentLanguage === 'ar' && blog.contentAr ? blog.contentAr : blog.content
+        ) : (
+          <p>{currentLanguage === 'ar' && blog.excerptAr ? blog.excerptAr : blog.excerpt}</p>
         )}
       </div>
 
       <div className="blog-details__meta">
-        {blog.tags && blog.tags.length > 0 && (
-          <ul className="list-unstyled blog-details__category">
+        {((currentLanguage === 'ar' && blog.tagsAr && blog.tagsAr.length > 0) || (blog.tags && blog.tags.length > 0)) && (
+          <ul className={`list-unstyled blog-details__category ${currentLanguage === 'ar' ? 'text-right' : ''}`}>
             <li>
-              <span>Tags:</span>
+              <span>{t('blog:details.tags')}:</span>
             </li>
-            {blog.tags.map((tag, index) => (
+            {(currentLanguage === 'ar' && blog.tagsAr ? blog.tagsAr : blog.tags || []).map((tag, index) => (
               <li key={index}>
-                <a href="#none">{tag}</a>
+                <span>{tag}</span>
               </li>
             ))}
           </ul>
         )}
         
-        <ul className="list-unstyled blog-details__category">
+        <ul className={`list-unstyled blog-details__category ${currentLanguage === 'ar' ? 'text-right' : ''}`}>
           <li>
-            <span>Category:</span>
+            <span>{t('blog:details.category')}:</span>
           </li>
           <li>
-            <a href="#none">{blog.category}</a>
+            <span>{t(`blog:categories.${blog.category}`)}</span>
           </li>
         </ul>
       </div>
       
-      <div className="blog-navigations">
+      <div className={`blog-navigations ${currentLanguage === 'ar' ? 'rtl-nav' : ''}`}>
         {adjacentBlogs.previous ? (
-          <a 
-            href="#" 
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(`/blog/${adjacentBlogs.previous.slug}`);
-            }}
+          <Link 
+            to={`/news-details/${adjacentBlogs.previous.slug}`}
             className="nav-link previous"
             title={adjacentBlogs.previous.title}
           >
-            <i className="fas fa-arrow-left"></i> Previous Article
-          </a>
+            {currentLanguage === 'ar' ? (
+              <>{t('blog:navigation.previous')} <i className="fas fa-arrow-right"></i></>
+            ) : (
+              <><i className="fas fa-arrow-left"></i> {t('blog:navigation.previous')}</>
+            )}
+          </Link>
         ) : (
           <span className="nav-link disabled">
-            <i className="fas fa-arrow-left"></i> Previous Article
+            {currentLanguage === 'ar' ? (
+              <>{t('blog:navigation.previous')} <i className="fas fa-arrow-right"></i></>
+            ) : (
+              <><i className="fas fa-arrow-left"></i> {t('blog:navigation.previous')}</>
+            )}
           </span>
         )}
         
         {adjacentBlogs.next ? (
-          <a 
-            href="#" 
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(`/blog/${adjacentBlogs.next.slug}`);
-            }}
+          <Link 
+            to={`/news-details/${adjacentBlogs.next.slug}`}
             className="nav-link next"
             title={adjacentBlogs.next.title}
           >
-            Next Article <i className="fas fa-arrow-right"></i>
-          </a>
+            {currentLanguage === 'ar' ? (
+              <><i className="fas fa-arrow-left"></i> {t('blog:navigation.next')}</>
+            ) : (
+              <>{t('blog:navigation.next')} <i className="fas fa-arrow-right"></i></>
+            )}
+          </Link>
         ) : (
           <span className="nav-link disabled">
-            Next Article <i className="fas fa-arrow-right"></i>
+            {currentLanguage === 'ar' ? (
+              <><i className="fas fa-arrow-left"></i> {t('blog:navigation.next')}</>
+            ) : (
+              <>{t('blog:navigation.next')} <i className="fas fa-arrow-right"></i></>
+            )}
           </span>
         )}
       </div>

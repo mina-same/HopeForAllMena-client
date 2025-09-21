@@ -1,0 +1,185 @@
+{
+  "title": "User Management",
+  "description": "Manage user accounts and permissions ({{count}} total)",
+  "addUser": "Add User",
+  "searchPlaceholder": "Search users by name, email, or username...",
+  "loading": {
+    "users": "Loading users...",
+    "creating": "Creating...",
+    "updating": "Updating...",
+    "deleting": "Deleting..."
+  },
+  "table": {
+    "headers": {
+      "user": "User",
+      "role": "Role",
+      "permissions": "Permissions",
+      "status": "Status",
+      "lastLogin": "Last Login",
+      "actions": "Actions"
+    },
+    "usersCount": "Users ({{count}})",
+    "morePermissions": "+{{count}} more"
+  },
+  "form": {
+    "createTitle": "Create New User",
+    "editTitle": "Edit User",
+    "fields": {
+      "fullName": {
+        "label": "Full Name",
+        "placeholder": "Enter full name",
+        "required": true
+      },
+      "email": {
+        "label": "Email Address",
+        "placeholder": "Enter email address",
+        "required": true
+      },
+      "username": {
+        "label": "Username",
+        "placeholder": "Enter username",
+        "required": true
+      },
+      "password": {
+        "label": "Password",
+        "labelEdit": "Password",
+        "placeholder": "Enter password",
+        "placeholderEdit": "Leave blank to keep current",
+        "required": true
+      },
+      "role": {
+        "label": "Role",
+        "placeholder": "e.g., Editor, Manager, Administrator",
+        "required": true
+      },
+      "permissions": {
+        "label": "Permissions",
+        "required": true,
+        "description": "Select the appropriate permissions for this user's role and responsibilities."
+      },
+      "status": {
+        "label": "Active User"
+      }
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "create": "Create User",
+      "update": "Update User",
+      "creating": "Creating...",
+      "updating": "Updating..."
+    },
+    "validation": {
+      "suggestions": {
+        "nameTaken": "💡 Try using a different name or adding numbers",
+        "emailTaken": "💡 Try using a different email address",
+        "emailFormat": "💡 Example: user@example.com",
+        "usernameTaken": "💡 Try adding numbers or changing the username",
+        "usernamePattern": "💡 Use only letters, numbers, dots, underscores, and hyphens",
+        "passwordPattern": "💡 Include at least one lowercase letter, one uppercase letter, and one number"
+      }
+    }
+  },
+  "permissions": {
+    "books": {
+      "label": "Books & Publishing",
+      "description": "Manage books, authors, categories, and reviews"
+    },
+    "courses": {
+      "label": "Course Management",
+      "description": "Manage courses and enrollments"
+    },
+    "magazines": {
+      "label": "Magazine Management",
+      "description": "Manage magazine content and distribution"
+    },
+    "training": {
+      "label": "Training Management",
+      "description": "Manage training programs and requests"
+    },
+    "users": {
+      "label": "User Management",
+      "description": "Manage user accounts and permissions"
+    },
+    "analytics": {
+      "label": "Analytics & Reports",
+      "description": "View analytics and generate reports"
+    },
+    "settings": {
+      "label": "System Settings",
+      "description": "Configure system-wide settings"
+    },
+    "authors": {
+      "label": "Authors Management",
+      "description": "Manage author profiles and content"
+    },
+    "categories": {
+      "label": "Categories Management",
+      "description": "Manage content categories"
+    },
+    "reviews": {
+      "label": "Reviews Management",
+      "description": "Manage user reviews and ratings"
+    },
+    "enrollments": {
+      "label": "Enrollments Management",
+      "description": "Manage course enrollments"
+    },
+    "contact-messages": {
+      "label": "Contact Messages",
+      "description": "Handle contact form messages"
+    },
+    "training-books": {
+      "label": "Training Books",
+      "description": "Manage training book content"
+    },
+    "training-requests": {
+      "label": "Training Requests",
+      "description": "Handle training requests"
+    },
+    "training-followup-requests": {
+      "label": "Training Follow-up",
+      "description": "Manage training follow-up requests"
+    },
+    "calendar": {
+      "label": "Calendar Management",
+      "description": "Manage calendar events and scheduling"
+    },
+    "user-management": {
+      "label": "Advanced User Management",
+      "description": "Advanced user management features"
+    },
+    "generate-ids": {
+      "label": "ID Generation",
+      "description": "Generate and manage ID cards"
+    },
+    "blogs": {
+      "label": "Blog Management",
+      "description": "Manage blog posts and content"
+    }
+  },
+  "status": {
+    "active": "active",
+    "inactive": "inactive",
+    "suspended": "suspended"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "toggleStatus": "Toggle Status"
+  },
+  "deleteModal": {
+    "title": "Delete User",
+    "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone and will permanently remove the user account.",
+    "confirmText": "Delete User",
+    "cancelText": "Cancel",
+    "cannotDeleteSelf": "Cannot delete your own account"
+  },
+  "errors": {
+    "loadUsers": "Failed to load users. Please try again.",
+    "createUser": "Failed to create user. Please try again.",
+    "updateUser": "Failed to update user. Please try again.",
+    "deleteUser": "Failed to delete user. Please try again.",
+    "updateStatus": "Failed to update user status. Please try again.",
+    "general": "An error occurred. Please try again."
+  }
+}

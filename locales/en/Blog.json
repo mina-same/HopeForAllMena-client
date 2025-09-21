@@ -1,0 +1,69 @@
+{
+  "home": {
+    "title": "Latest news & articles \n directly from the blog.",
+    "tagLine": "Blog Posts",
+    "description": "Stay updated with our latest news, stories, and insights from Hope For All MENA. Discover inspiring content about our mission and impact in the region.",
+    "loading": "Loading blog posts...",
+    "empty": "No blog posts available at the moment.",
+    "readMore": "Read More",
+    "comments": "Comments"
+  },
+  "card": {
+    "readMore": "Read More",
+    "comments": "Comments",
+    "by": "By",
+    "publishedOn": "Published on"
+  },
+  "details": {
+    "loading": "Loading blog post...",
+    "notFound": "Blog post not found",
+    "notFoundMessage": "The blog post you're looking for doesn't exist or has been removed.",
+    "backToBlog": "Back to Blog",
+    "sharePost": "Share this post",
+    "relatedPosts": "Related Posts",
+    "tags": "Tags",
+    "category": "Category",
+    "author": "Author",
+    "publishedDate": "Published Date",
+    "readingTime": "Reading Time",
+    "minutes": "minutes"
+  },
+  "comments": {
+    "title": "Comments",
+    "noComments": "No comments yet. Be the first to comment!",
+    "addComment": "Add a Comment",
+    "name": "Your Name",
+    "email": "Your Email",
+    "message": "Your Comment",
+    "submit": "Post Comment",
+    "submitting": "Posting...",
+    "success": "Comment posted successfully!",
+    "error": "Failed to post comment. Please try again.",
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address"
+  },
+  "sidebar": {
+    "recentPosts": "Recent Posts",
+    "categories": "Categories",
+    "tags": "Popular Tags",
+    "search": "Search",
+    "searchPlaceholder": "Search blog posts...",
+    "newsletter": "Newsletter",
+    "newsletterTitle": "Subscribe to our Newsletter",
+    "newsletterDescription": "Get the latest updates and news delivered to your inbox.",
+    "emailPlaceholder": "Enter your email",
+    "subscribe": "Subscribe"
+  },
+  "categories": {
+    "news": "News",
+    "events": "Events", 
+    "updates": "Updates",
+    "stories": "Stories",
+    "announcements": "Announcements"
+  },
+  "navigation": {
+    "previous": "Previous Post",
+    "next": "Next Post",
+    "backToList": "Back to Blog List"
+  }
+}

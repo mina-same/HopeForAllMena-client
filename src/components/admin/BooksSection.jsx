@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Star, Calendar, Search, Book } from 'lucide-react';
+import { Plus, Edit, Trash2, Star, Calendar, Search, Book, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
@@ -12,9 +12,15 @@ import { useToast } from '../../hooks/use-toast';
 import { booksAPI, authorsAPI, categoriesAPI } from '../../services/publishingAPI';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import ImageUpload from '../ui/image-upload';
+import { Link } from 'gatsby';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
 
 export function BooksSection() {
   const { toast } = useToast();
+  const { t } = useTranslation('BooksManagement');
+  const { language: currentLanguage } = useI18next();
   const [books, setBooks] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -82,8 +88,8 @@ export function BooksSection() {
     } catch (error) {
       console.error('Failed to fetch books:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch books. Please try again.",
+        title: t('errors.loadBooks'),
+        description: t('errors.loadBooks'),
         variant: "destructive"
       });
     } finally {
@@ -154,8 +160,8 @@ export function BooksSection() {
       if (missingFields.length > 0) {
         console.log('Missing fields:', missingFields);
         toast({
-          title: "Validation Error",
-          description: `Please fill in all required fields: ${missingFields.join(', ')}`,
+          title: t('form.validation.missingFields', { fields: missingFields.join(', ') }),
+          description: t('form.validation.missingFields', { fields: missingFields.join(', ') }),
           variant: "destructive"
         });
         setIsSubmitting(false);
@@ -169,8 +175,8 @@ export function BooksSection() {
       if (bookForm.shortDescriptionAr.trim().length < 10) {
         console.log('Arabic short description too short, stopping submission');
         toast({
-          title: "Validation Error",
-          description: "Arabic short description must be at least 10 characters long.",
+          title: t('form.validation.shortDescriptionMinLength'),
+          description: t('form.validation.shortDescriptionMinLength'),
           variant: "destructive"
         });
         setIsSubmitting(false);
@@ -183,8 +189,8 @@ export function BooksSection() {
       const year = parseInt(bookForm.publicationYear);
       if (isNaN(year) || year < 1000 || year > new Date().getFullYear() + 10) {
         toast({
-          title: "Validation Error",
-          description: "Please enter a valid publication year between 1000 and " + (new Date().getFullYear() + 10),
+          title: t('form.validation.invalidYear', { maxYear: new Date().getFullYear() + 10 }),
+          description: t('form.validation.invalidYear', { maxYear: new Date().getFullYear() + 10 }),
           variant: "destructive"
         });
         setIsSubmitting(false);
@@ -196,8 +202,8 @@ export function BooksSection() {
         const imageUrlPattern = /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i;
         if (!imageUrlPattern.test(bookForm.coverImageUrl)) {
           toast({
-            title: "Validation Error",
-            description: "Cover image URL must be a valid image URL ending with .jpg, .jpeg, .png, .gif, or .webp",
+            title: t('form.validation.invalidImageUrl'),
+            description: t('form.validation.invalidImageUrl'),
             variant: "destructive"
           });
           setIsSubmitting(false);
@@ -247,14 +253,14 @@ export function BooksSection() {
       if (editingBook) {
         await booksAPI.updateBook(editingBook._id, formData);
         toast({
-          title: "Book Updated",
-          description: `${bookForm.title} has been updated successfully.`,
+          title: t('success.bookUpdated', { title: bookForm.title }),
+          description: t('success.bookUpdated', { title: bookForm.title }),
         });
       } else {
         await booksAPI.createBook(formData);
         toast({
-          title: "Book Created",
-          description: `${bookForm.title} has been added successfully.`,
+          title: t('success.bookCreated', { title: bookForm.title }),
+          description: t('success.bookCreated', { title: bookForm.title }),
         });
       }
       
@@ -267,7 +273,7 @@ export function BooksSection() {
       console.error('Full error response:', JSON.stringify(error.response?.data, null, 2));
       
       // Extract specific validation errors if available
-      let errorMessage = "Failed to save book. Please try again.";
+      let errorMessage = t('errors.createBook');
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         errorMessage = Object.keys(errors).map(field => `${field}: ${errors[field]}`).join(', ');
@@ -276,7 +282,7 @@ export function BooksSection() {
       }
       
       toast({
-        title: "Error",
+        title: t('errors.createBook'),
         description: errorMessage,
         variant: "destructive"
       });
@@ -355,15 +361,15 @@ export function BooksSection() {
     try {
       await booksAPI.deleteBook(bookToDelete._id);
       toast({
-        title: "Book Deleted",
-        description: `${bookToDelete.title} has been deleted successfully.`,
+        title: t('success.bookDeleted', { title: bookToDelete.title }),
+        description: t('success.bookDeleted', { title: bookToDelete.title }),
       });
       fetchBooks();
     } catch (error) {
       console.error('Failed to delete book:', error);
       toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to delete book. Please try again.",
+        title: t('errors.deleteBook'),
+        description: error.response?.data?.message || t('errors.deleteBook'),
         variant: "destructive"
       });
     } finally {
@@ -378,15 +384,15 @@ export function BooksSection() {
     try {
       await booksAPI.updateBookStatus(book._id, newStatus);
       toast({
-        title: "Book Updated",
-        description: `${book.title} status has been updated to ${newStatus}.`,
+        title: t('success.statusUpdated', { title: book.title, status: t(`status.${newStatus}`) }),
+        description: t('success.statusUpdated', { title: book.title, status: t(`status.${newStatus}`) }),
       });
       fetchBooks();
     } catch (error) {
       console.error('Failed to update status:', error);
       toast({
-        title: "Error",
-        description: "Failed to update book status. Please try again.",
+        title: t('errors.updateStatus'),
+        description: t('errors.updateStatus'),
         variant: "destructive"
       });
     }
@@ -400,47 +406,57 @@ export function BooksSection() {
 
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
         <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Books Management</h2>
-          <p className="text-muted-foreground text-sm md:text-base">Manage your publishing house book catalog</p>
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">{t('title')}</h2>
+          <p className="text-muted-foreground text-sm md:text-base">{t('description')}</p>
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={openAddDialog} className="text-white shadow-elegant hover:shadow-lg transition-all duration-300">
-              <Plus className="h-4 w-4 mr-2" />
-              Add New Book
+            <Button onClick={openAddDialog} className={`text-white shadow-elegant hover:shadow-lg transition-all duration-300 ${currentLanguage === 'ar' ? '' : ''}`}>
+              <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+              {t('addBook')}
             </Button>
           </DialogTrigger>
-          <DialogContent className="min-w-[800px] max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>
-                {editingBook ? 'Edit Book' : 'Add New Book'}
+          <DialogContent className={`w-full max-w-4xl mx-auto max-h-[90vh] overflow-y-auto ${currentLanguage === 'ar' ? 'rtl' : 'ltr'} [&>button]:hidden`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+            <DialogHeader className="relative pb-4">
+              <DialogTitle className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'} text-lg font-semibold`}>
+                {editingBook ? t('form.editTitle') : t('form.createTitle')}
               </DialogTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsDialogOpen(false)}
+                className={`absolute -top-2 ${currentLanguage === 'ar' ? '-left-2' : '-right-2'} h-8 w-8 p-0 hover:bg-gray-100 rounded-full transition-colors duration-200 z-10`}
+                disabled={isSubmitting}
+              >
+                <X className="h-4 w-4 text-gray-500 hover:text-gray-700" />
+              </Button>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4 min-w-[600px]">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-4 w-full">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="title">Title <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="title" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.title')} <span className="text-red-500">*</span></Label>
                   <Input
                     id="title"
                     name="title"
                     value={bookForm.title}
                     onChange={handleInputChange}
-                    placeholder="Enter book title"
+                    placeholder={t('form.fields.titlePlaceholder')}
                     required
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="titleAr">Title (Arabic) <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="titleAr" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.titleAr')} <span className="text-red-500">*</span></Label>
                   <Input
                     id="titleAr"
                     name="titleAr"
                     value={bookForm.titleAr}
                     onChange={handleInputChange}
-                    placeholder="عنوان الكتاب"
+                    placeholder={t('form.fields.titleArPlaceholder')}
                     required
                     disabled={isSubmitting}
                     dir="rtl"
@@ -448,30 +464,32 @@ export function BooksSection() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="author">Author <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="author" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.author')} <span className="text-red-500">*</span></Label>
                   <Select value={bookForm.author} onValueChange={(value) => setBookForm(prev => ({ ...prev, author: value }))} disabled={isSubmitting}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select author" />
+                    <SelectTrigger className={`bg-white border border-gray-200 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <SelectValue placeholder={t('form.fields.authorPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
                       {authors.map(author => (
-                        <SelectItem key={author._id} value={author._id}>{author.name}</SelectItem>
+                        <SelectItem key={author._id} value={author._id}>
+                          {currentLanguage === 'ar' ? (author.nameAr || author.name) : author.name}
+                        </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="category">Category <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="category" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.category')} <span className="text-red-500">*</span></Label>
                   <Select value={bookForm.category} onValueChange={(value) => setBookForm(prev => ({ ...prev, category: value }))} disabled={isSubmitting}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
+                    <SelectTrigger className={`bg-white border border-gray-200 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <SelectValue placeholder={t('form.fields.categoryPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
                       {categories.map(category => (
                         <SelectItem key={category._id} value={category._id}>
-                          {category.name_en} {category.name_ar && `(${category.name_ar})`}
+                          {currentLanguage === 'ar' ? (category.name_ar || category.name_en) : (category.name_en || category.name)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -479,62 +497,68 @@ export function BooksSection() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="shortDescription">Short Description <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="shortDescription" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.shortDescription')} <span className="text-red-500">*</span></Label>
                   <Textarea
                     id="shortDescription"
                     name="shortDescription"
                     value={bookForm.shortDescription}
                     onChange={handleInputChange}
-                    placeholder="Brief description of the book..."
+                    placeholder={t('form.fields.shortDescriptionPlaceholder')}
                     rows={2}
                     required
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                    className="w-full"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="shortDescriptionAr">Short Description (Arabic) <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="shortDescriptionAr" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.shortDescriptionAr')} <span className="text-red-500">*</span></Label>
                   <Textarea
                     id="shortDescriptionAr"
                     name="shortDescriptionAr"
                     value={bookForm.shortDescriptionAr}
                     onChange={handleInputChange}
-                    placeholder="وصف مختصر للكتاب..."
+                    placeholder={t('form.fields.shortDescriptionArPlaceholder')}
                     rows={2}
                     required
                     disabled={isSubmitting}
                     dir="rtl"
+                    className="w-full"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="description">Description <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="description" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.description')} <span className="text-red-500">*</span></Label>
                   <Textarea
                     id="description"
                     name="description"
                     value={bookForm.description}
                     onChange={handleInputChange}
-                    placeholder="Detailed description of the book..."
+                    placeholder={t('form.fields.descriptionPlaceholder')}
                     rows={4}
                     required
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                    className="w-full"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="descriptionAr">Description (Arabic) <span className="text-red-500">*</span></Label>
+                  <Label htmlFor="descriptionAr" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.descriptionAr')} <span className="text-red-500">*</span></Label>
                   <Textarea
                     id="descriptionAr"
                     name="descriptionAr"
                     value={bookForm.descriptionAr}
                     onChange={handleInputChange}
-                    placeholder="وصف مفصل للكتاب..."
+                    placeholder={t('form.fields.descriptionArPlaceholder')}
                     rows={4}
                     required
                     disabled={isSubmitting}
                     dir="rtl"
+                    className="w-full"
                   />
                 </div>
               </div>
@@ -543,169 +567,189 @@ export function BooksSection() {
                 onImageUpload={handleImageUpload}
                 currentImage={bookForm.coverImageUrl}
                 uploadType="book-cover"
-                label="Book Cover Image"
+                label={t('form.fields.coverImage')}
                 disabled={isSubmitting}
               />
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="pages">Pages (Optional)</Label>
+                  <Label htmlFor="pages" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.pages')}</Label>
                   <Input
                     id="pages"
                     name="pages"
                     type="number"
                     value={bookForm.pages}
                     onChange={handleInputChange}
-                    placeholder="350"
+                    placeholder={t('form.fields.pagesPlaceholder')}
                     min="1"
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                    className="w-full"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="language">Language</Label>
+                  <Label htmlFor="language" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.language')}</Label>
                   <Input
                     id="language"
                     name="language"
                     value={bookForm.language}
                     onChange={handleInputChange}
-                    placeholder="English"
+                    placeholder={t('form.fields.languagePlaceholder')}
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                    className="w-full"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="publicationYear">Publication Year <span className="text-red-500">*</span></Label>
+                <div className="space-y-2 sm:col-span-2 lg:col-span-1">
+                  <Label htmlFor="publicationYear" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.publicationYear')} <span className="text-red-500">*</span></Label>
                   <Input
                     id="publicationYear"
                     name="publicationYear"
                     type="number"
                     value={bookForm.publicationYear}
                     onChange={handleInputChange}
-                    placeholder="2024"
+                    placeholder={t('form.fields.publicationYearPlaceholder')}
                     min="1000"
                     max={new Date().getFullYear() + 10}
                     required
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                    className="w-full"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="format">Format</Label>
+                  <Label htmlFor="format" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.format')}</Label>
                   <Select value={bookForm.format} onValueChange={(value) => setBookForm(prev => ({ ...prev, format: value }))} disabled={isSubmitting}>
-                    <SelectTrigger>
+                    <SelectTrigger className={`bg-white border border-gray-200 w-full ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="paperback">Paperback</SelectItem>
-                      <SelectItem value="hardcover">Hardcover</SelectItem>
+                      <SelectItem value="paperback">{t('formats.paperback')}</SelectItem>
+                      <SelectItem value="hardcover">{t('formats.hardcover')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="ageGroup">Age Group</Label>
+                  <Label htmlFor="ageGroup" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.ageGroup')}</Label>
                   <Select value={bookForm.ageGroup} onValueChange={(value) => setBookForm(prev => ({ ...prev, ageGroup: value }))} disabled={isSubmitting}>
-                    <SelectTrigger>
+                    <SelectTrigger className={`bg-white border border-gray-200 w-full ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="children">Children</SelectItem>
-                      <SelectItem value="young-adult">Young Adult</SelectItem>
-                      <SelectItem value="adult">Adult</SelectItem>
-                      <SelectItem value="all-ages">All Ages</SelectItem>
+                      <SelectItem value="children">{t('ageGroups.children')}</SelectItem>
+                      <SelectItem value="young-adult">{t('ageGroups.youngAdult')}</SelectItem>
+                      <SelectItem value="adult">{t('ageGroups.adult')}</SelectItem>
+                      <SelectItem value="all-ages">{t('ageGroups.allAges')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="status">Status</Label>
+                <div className="space-y-2 sm:col-span-2 lg:col-span-1">
+                  <Label htmlFor="status" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.status')}</Label>
                   <Select
                     value={bookForm.status}
                     onValueChange={(value) => setBookForm({...bookForm, status: value})}
                     disabled={isSubmitting}
                   >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select status" />
+                    <SelectTrigger className={`bg-white border border-gray-200 w-full ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <SelectValue placeholder={t('form.fields.statusPlaceholder')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="published">Published</SelectItem>
-                      <SelectItem value="not-published">Not Published</SelectItem>
+                      <SelectItem value="published">{t('status.published')}</SelectItem>
+                      <SelectItem value="not-published">{t('status.notPublished')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="tags">Tags</Label>
+                <Label htmlFor="tags" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.tags')}</Label>
                 <Input
                   id="tags"
                   name="tags"
                   value={bookForm.tags}
                   onChange={handleInputChange}
-                  placeholder="fiction, adventure, fantasy (comma-separated)"
+                  placeholder={t('form.fields.tagsPlaceholder')}
                   disabled={isSubmitting}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className="w-full"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="metaTitle">Meta Title</Label>
+                  <Label htmlFor="metaTitle" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.metaTitle')}</Label>
                   <Input
                     id="metaTitle"
                     name="metaTitle"
                     value={bookForm.metaTitle}
                     onChange={handleInputChange}
-                    placeholder="SEO meta title"
+                    placeholder={t('form.fields.metaTitlePlaceholder')}
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                    className="w-full"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="metaTitleAr">Meta Title (Arabic)</Label>
+                  <Label htmlFor="metaTitleAr" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.metaTitleAr')}</Label>
                   <Input
                     id="metaTitleAr"
                     name="metaTitleAr"
                     value={bookForm.metaTitleAr}
                     onChange={handleInputChange}
-                    placeholder="عنوان الميتا"
+                    placeholder={t('form.fields.metaTitleArPlaceholder')}
                     disabled={isSubmitting}
                     dir="rtl"
+                    className="w-full"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="metaDescription">Meta Description</Label>
+                  <Label htmlFor="metaDescription" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.metaDescription')}</Label>
                   <Textarea
                     id="metaDescription"
                     name="metaDescription"
                     value={bookForm.metaDescription}
                     onChange={handleInputChange}
-                    placeholder="SEO meta description"
+                    placeholder={t('form.fields.metaDescriptionPlaceholder')}
                     rows={2}
                     disabled={isSubmitting}
+                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                    className="w-full"
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="metaDescriptionAr">Meta Description (Arabic)</Label>
+                  <Label htmlFor="metaDescriptionAr" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.metaDescriptionAr')}</Label>
                   <Textarea
                     id="metaDescriptionAr"
                     name="metaDescriptionAr"
                     value={bookForm.metaDescriptionAr}
                     onChange={handleInputChange}
-                    placeholder="وصف الميتا"
+                    placeholder={t('form.fields.metaDescriptionArPlaceholder')}
                     rows={2}
                     disabled={isSubmitting}
                     dir="rtl"
+                    className="w-full"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isSubmitting}>
-                  Cancel
+              <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start '}`}>
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200" disabled={isSubmitting}>
+                  {isSubmitting ? t('form.buttons.saving') : (editingBook ? t('form.buttons.update') : t('form.buttons.create'))}
                 </Button>
-                <Button type="submit" className=" text-white" disabled={isSubmitting}>
-                  {isSubmitting ? 'Saving...' : (editingBook ? 'Update Book' : 'Add Book')}
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setIsDialogOpen(false)} 
+                  disabled={isSubmitting}
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2 rounded-lg font-medium transition-colors duration-200"
+                >
+                  {t('form.buttons.cancel')}
                 </Button>
               </div>
             </form>
@@ -713,198 +757,269 @@ export function BooksSection() {
         </Dialog>
       </div>
 
-      {/* Filters */}
+      {/* Mobile-Optimized Filters */}
       <Card className="border-0 shadow-modern">
-        <CardContent className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <CardContent className="p-3 sm:p-4">
+          <div className="space-y-3 sm:space-y-0 sm:flex sm:gap-4">
+            {/* Search Bar - Full width on mobile */}
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                <Search className={`absolute top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 ${currentLanguage === 'ar' ? 'right-3' : 'left-3'}`} />
                 <Input
-                  placeholder="Search books..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-[30px]"
+                  className={`w-full h-10 ${currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}`}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="not-published">Not Published</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                {categories.map(category => (
-                  <SelectItem key={category._id} value={category._id}>
-                    {category.name_en} {category.name_ar && `(${category.name_ar})`}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={authorFilter} onValueChange={setAuthorFilter}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Author" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Authors</SelectItem>
-                {authors.map(author => (
-                  <SelectItem key={author._id} value={author._id}>{author.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Select value={featuredFilter} onValueChange={setFeaturedFilter}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Featured" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Books</SelectItem>
-                <SelectItem value="true">Featured</SelectItem>
-                <SelectItem value="false">Not Featured</SelectItem>
-              </SelectContent>
-            </Select>
+            
+            {/* Filter Selects - 2 columns on mobile, row on desktop */}
+            <div className="grid grid-cols-2 sm:flex gap-2 sm:gap-3">
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-32 lg:w-40 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  <SelectValue placeholder={t('filters.status.all')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                  <SelectItem value="not-published">{t('filters.status.notPublished')}</SelectItem>
+                  <SelectItem value="published">{t('filters.status.published')}</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-32 lg:w-40 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  <SelectValue placeholder={t('filters.category.all')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('filters.category.all')}</SelectItem>
+                  {categories.map(category => (
+                    <SelectItem key={category._id} value={category._id}>
+                      {currentLanguage === 'ar' ? (category.name_ar || category.name_en) : (category.name_en || category.name)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={authorFilter} onValueChange={setAuthorFilter}>
+                <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-32 lg:w-40 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  <SelectValue placeholder={t('filters.author.all')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('filters.author.all')}</SelectItem>
+                  {authors.map(author => (
+                    <SelectItem key={author._id} value={author._id}>
+                      {currentLanguage === 'ar' ? (author.nameAr || author.name) : author.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={featuredFilter} onValueChange={setFeaturedFilter}>
+                <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-32 lg:w-40 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  <SelectValue placeholder={t('filters.featured.all')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('filters.featured.all')}</SelectItem>
+                  <SelectItem value="true">{t('filters.featured.featured')}</SelectItem>
+                  <SelectItem value="false">{t('filters.featured.notFeatured')}</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardContent>
       </Card>
 
       <Card className="border-0 shadow-modern">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? ' text-right' : 'text-left'}`}>
             <Book className="h-5 w-5 text-theme-base" />
-            Books ({totalBooks})
+            {t('booksCount', { count: totalBooks })}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-base mx-auto"></div>
-              <p className="text-muted-foreground mt-2">Loading books...</p>
+              <p className="text-muted-foreground mt-2">{t('loading.books')}</p>
             </div>
           ) : books.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {books.map((book) => (
-                <div key={book._id} className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={book.coverImageUrl}
-                      alt={book.title}
-                      className="w-16 h-20 object-cover rounded border"
-                      onError={(e) => {
-                        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjgwIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEyIiBmaWxsPSIjOTk5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Tm8gSW1hZ2U8L3RleHQ+PC9zdmc+';
-                      }}
-                    />
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-foreground">{book.title}</h3>
-                        <Badge variant={book.status === 'published' ? 'default' : 'secondary'}>
-                          {book.status === 'published' ? 'Published' : 'Not Published'}
-                        </Badge>
+                <div key={book._id} className="group bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 p-3 sm:p-6">
+                  {/* Mobile-First Layout */}
+                  <div className="flex gap-3 sm:gap-6">
+                    {/* Enhanced Book Cover - Mobile Optimized */}
+                    <div className="flex-shrink-0">
+                      <div className="relative">
+                        <img
+                          src={book.coverImageUrl}
+                          alt={currentLanguage === 'ar' ? (book.titleAr || book.title) : book.title}
+                          className="w-16 h-24 sm:w-24 sm:h-32 object-cover rounded-lg border-2 border-gray-100 shadow-sm group-hover:shadow-md transition-all duration-300"
+                          onError={(e) => {
+                            e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iOTYiIGhlaWdodD0iMTI4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSI5NiIgaGVpZ2h0PSIxMjgiIGZpbGw9IiNmM2Y0ZjYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM5Y2EzYWYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5ObyBJbWFnZTwvdGV4dD48L3N2Zz4=';
+                          }}
+                        />
+                        <div className={`absolute -top-1 ${currentLanguage === 'ar' ? '-left-1' : '-right-1'}`}>
+                          <Badge 
+                            variant={book.status === 'published' ? 'default' : 'secondary'}
+                            className={`text-xs font-medium px-1.5 py-0.5 ${
+                              book.status === 'published' 
+                                ? '' 
+                                : ''
+                            }`}
+                          >
+                            {t(`status.${book.status === 'published' ? 'published' : 'notPublished'}`)}
+                          </Badge>
+                        </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">by {book.author?.name || 'Unknown Author'}</p>
-                      <p className="text-sm text-muted-foreground">{book.category?.name_en || 'Unknown Category'}</p>
-                      <div className="flex items-center gap-4 mt-1">
+                    </div>
+
+                    {/* Enhanced Book Info - Mobile Optimized */}
+                    <div className={`flex-1 min-w-0 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <div className="mb-2 sm:mb-3">
+                        <h3 className={`text-base sm:text-lg font-bold text-gray-900 mb-1 leading-tight ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          {currentLanguage === 'ar' ? (book.titleAr || book.title) : book.title}
+                        </h3>
+                        <p className={`text-xs sm:text-sm text-gray-600 mb-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          {t('table.unknownAuthor').replace('Unknown Author', '')} {currentLanguage === 'ar' ? (book.author?.nameAr || book.author?.name || t('table.unknownAuthor')) : (book.author?.name || t('table.unknownAuthor'))}
+                        </p>
+                        <p className={`text-xs sm:text-sm text-blue-600 font-medium ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          {currentLanguage === 'ar' ? (book.category?.name_ar || book.category?.name_en || t('table.unknownCategory')) : (book.category?.name_en || book.category?.name || t('table.unknownCategory'))}
+                        </p>
+                      </div>
+                      
+                      {/* Mobile-Friendly Metadata */}
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-500">
                         {book.pages && (
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <Book className="h-4 w-4" />
-                            {book.pages} pages
+                          <div className="flex items-center gap-1">
+                            <Book className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
+                            <span>{t('table.pagesCount', { count: book.pages })}</span>
                           </div>
                         )}
-                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                          <Calendar className="h-4 w-4" />
-                          {book.publicationYear}
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
+                          <span>{book.publicationYear}</span>
                         </div>
-                        <div className="text-sm text-muted-foreground">
-                          {book.format}
+                        <div className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-gray-100 rounded-full text-xs font-medium text-gray-700">
+                          {t(`formats.${book.format}`) || book.format}
+                        </div>
+                      </div>
+                      
+                      {/* Mobile Reviews Section */}
+                      <div className="mt-2 sm:hidden">
+                        <div className="flex items-center gap-2 text-xs text-gray-600">
+                          <span>{t('table.reviewsCount', { count: book.totalReviews })}</span>
+                          {book.averageRating > 0 && (
+                            <div className="flex items-center gap-1">
+                              <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                              <span className="font-medium">{book.averageRating.toFixed(1)}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <div className="text-sm text-muted-foreground">
-                        {book.totalReviews} review{book.totalReviews !== 1 ? 's' : ''}
-                      </div>
-                      {book.averageRating > 0 && (
-                        <div className="flex items-center gap-1 text-sm">
-                          <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                          {book.averageRating.toFixed(1)}
+                  {/* Mobile-Optimized Action Section */}
+                  <div className="mt-3 pt-3 border-t border-gray-100">
+                    {/* Desktop Reviews and Rating (hidden on mobile) */}
+                    <div className="hidden sm:flex items-center justify-between mb-3">
+                      <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        <div className="text-sm font-medium text-gray-700">
+                          {t('table.reviewsCount', { count: book.totalReviews })}
                         </div>
-                      )}
+                        {book.averageRating > 0 && (
+                          <div className={`flex items-center gap-1 text-sm mt-1 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
+                            <Star className="h-4 w-4 text-yellow-500 fill-current" />
+                            <span className="font-medium text-gray-700">{book.averageRating.toFixed(1)}</span>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Select value={book.status} onValueChange={(value) => handleStatusChange(book, value)}>
-                        <SelectTrigger className="w-32">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="not-published">Not Published</SelectItem>
-                          <SelectItem value="published">Published</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(book)}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleDelete(book)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
+
+                    {/* Mobile-First Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                      {/* Status Selector - Full width on mobile */}
+                      <div className="flex-1 sm:flex-none">
+                        <Select value={book.status} onValueChange={(value) => handleStatusChange(book, value)}>
+                          <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-36 h-10 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="not-published">{t('status.notPublished')}</SelectItem>
+                            <SelectItem value="published">{t('status.published')}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      {/* Action Buttons - Better touch targets */}
+                      <div className="flex gap-2 sm:gap-3">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleEdit(book)}
+                          className="flex-1 sm:flex-none border-blue-200 text-blue-600 hover:text-blue-700 hover:bg-blue-50 transition-colors duration-200 h-10 px-4"
+                          title={t('actions.edit')}
+                        >
+                          <Edit className="h-4 w-4 sm:mr-0 mr-2" />
+                          <span className="sm:hidden">{t('actions.edit')}</span>
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDelete(book)}
+                          className="flex-1 sm:flex-none border-red-200 text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors duration-200 h-10 px-4"
+                          title={t('actions.delete')}
+                        >
+                          <Trash2 className="h-4 w-4 sm:mr-0 mr-2" />
+                          <span className="sm:hidden">{t('actions.delete')}</span>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
               ))}
 
-              {/* Pagination */}
+              {/* Enhanced Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-6">
+                <div className={`flex justify-center items-center gap-3 mt-8 ${currentLanguage === 'ar' ? '' : ''}`}>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
+                    className="px-4 py-2 border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                   >
-                    Previous
+                    {t('pagination.previous')}
                   </Button>
-                  <span className="text-sm text-muted-foreground">
-                    Page {currentPage} of {totalPages}
+                  <span className="text-sm font-medium text-gray-700 px-3 py-2 bg-gray-50 rounded-lg">
+                    {t('pagination.page', { current: currentPage, total: totalPages })}
                   </span>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages}
+                    className="px-4 py-2 border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                   >
-                    Next
+                    {t('pagination.next')}
                   </Button>
                 </div>
               )}
             </div>
           ) : (
-            <div className="text-center py-8">
-              <Book className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">No books found. Add your first book to get started.</p>
+            <div className={`text-center py-12 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+              <div className="flex flex-col items-center">
+                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <Book className="h-10 w-10 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 mb-2">{t('empty.noBooks')}</h3>
+                <p className="text-gray-500 max-w-md">{t('empty.noResults')}</p>
+              </div>
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Delete Confirmation Modal */}
+      {/* Enhanced Delete Confirmation Modal */}
       <ConfirmationModal
         isOpen={showDeleteModal}
         onClose={() => {
@@ -912,10 +1027,12 @@ export function BooksSection() {
           setBookToDelete(null);
         }}
         onConfirm={confirmDeleteBook}
-        title="Delete Book"
-        description={`Are you sure you want to delete "${bookToDelete?.title}"? This action cannot be undone and will permanently remove the book from the system.`}
-        confirmText="Delete Book"
-        cancelText="Cancel"
+        title={t('deleteModal.title')}
+        description={t('deleteModal.description', { 
+          title: currentLanguage === 'ar' ? (bookToDelete?.titleAr || bookToDelete?.title) : bookToDelete?.title 
+        })}
+        confirmText={t('deleteModal.confirmText')}
+        cancelText={t('deleteModal.cancelText')}
         variant="danger"
         isLoading={isDeleting}
         icon={
@@ -929,3 +1046,18 @@ export function BooksSection() {
     </div>
   );
 }
+
+// GraphQL query for i18n support
+export const query = graphql`
+  query {
+    locales: allLocale {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

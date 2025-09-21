@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { navigate } from 'gatsby';
+import { navigate, graphql } from 'gatsby';
+import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
 import { 
   BarChart3, 
   Book, 
@@ -11,12 +12,18 @@ import {
   GraduationCap, 
   Home,
   LogOut, 
+  Menu,
   MessageCircle,
   MessageSquare, 
   Plus,
   Settings, 
   Star, 
-  Users 
+  Users,
+  UserCheck,
+  BookOpen,
+  ShieldCheck,
+  Edit3,
+  LibraryBig
 } from 'lucide-react';
 import { reviewsAPI } from '../services/api';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -25,7 +32,6 @@ import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../components/ui/sidebar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../components/ui/collapsible';
-import { LibraryBig, ShieldCheck, UserCheck, BookOpen } from 'lucide-react';
 import { AuthorsSection } from '../components/admin/AuthorsSection';
 import { CategoriesSection } from '../components/admin/CategoriesSection';
 import { BooksSection } from '../components/admin/BooksSection';
@@ -53,11 +59,22 @@ import { useBookstore } from '../context/BookstoreContext';
 import { CourseProvider } from '../context/CourseContext';
 import { CalendarProvider } from '../context/CalendarContext';
 import { useToast } from '../hooks/use-toast.jsx';
+import { useSidebar } from '../components/ui/sidebar';
 import Layout from '../components/layout.jsx';
 import ConfirmationModal from '../components/ui/ConfirmationModal';
+import LanguageSwitcher from '../components/ui/LanguageSwitcher';
 import contactMessageService from '../services/contactMessageService';
+import '../styles/admin-rtl.css';
 
 const AdminDashboardContent = () => {
+  const { t, i18n } = useTranslation('Admin');
+  const currentLanguage = i18n.language;
+  // Hide sidebar by default on mobile/tablet, show on desktop
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('dashboard');
+  const [editBlogId, setEditBlogId] = useState(null);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const {
     books,
     reviews,
@@ -66,12 +83,8 @@ const AdminDashboardContent = () => {
   } = useBookstore();
   const { user, logout, hasAnyPermission } = useAuth();
   const { toast } = useToast();
-  const [activeSection, setActiveSection] = useState('dashboard');
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
   const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
-  const [editBlogId, setEditBlogId] = useState(null);
 
   // Fetch unread messages and pending reviews count
   useEffect(() => {
@@ -205,17 +218,17 @@ const AdminDashboardContent = () => {
     // Check if user has permission for the current section
     if (!hasSectionPermission(activeSection)) {
       return (
-        <div className="space-y-6">
+        <div className="space-y-6" dir={i18n?.resolvedLanguage === 'ar' ? 'rtl' : 'ltr'}>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Access Denied</h2>
-            <p className="text-muted-foreground">You don't have permission to access this section.</p>
+            <h2 className={`text-2xl font-bold text-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.accessDenied')}</h2>
+            <p className={`text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>You don't have permission to access this section.</p>
           </div>
           <Card className="border-0 shadow-modern">
             <CardContent className="text-center py-12">
               <div className="text-4xl mb-4">🚫</div>
-              <h3 className="text-lg font-semibold mb-2">Insufficient Permissions</h3>
+              <h3 className="text-lg font-semibold mb-2">{t('dashboard.insufficientPermissions')}</h3>
               <p className="text-muted-foreground">
-                You need the following permissions to access this section: {sectionPermissions[activeSection]?.join(', ')}
+                {t('dashboard.needPermissions')} {sectionPermissions[activeSection]?.join(', ')}
               </p>
             </CardContent>
           </Card>
@@ -288,10 +301,10 @@ const AdminDashboardContent = () => {
   };
 
   const renderMainDashboard = () => (
-    <div className="space-y-6">
+    <div className="space-y-6" dir={i18n?.resolvedLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <div>
-        <h2 className="text-2xl font-bold text-foreground">Dashboard</h2>
-        <p className="text-muted-foreground">Welcome to your publishing house management dashboard</p>
+        <h2 className={`text-2xl font-bold text-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.title')}</h2>
+        <p className={`text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.subtitle')}</p>
       </div>
 
       {/* Quick Stats */}
@@ -301,7 +314,7 @@ const AdminDashboardContent = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Total Books</p>
+                  <p className={`text-sm font-medium text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.totalBooks')}</p>
                   <p className="text-2xl font-bold">{books.length}</p>
                 </div>
                 <Book className="h-8 w-8 text-[#2194D1]" />
@@ -315,7 +328,7 @@ const AdminDashboardContent = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Reviews</p>
+                  <p className={`text-sm font-medium text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.reviews')}</p>
                   <p className="text-2xl font-bold">{reviews.length}</p>
                 </div>
                 <Star className="h-8 w-8 text-yellow-500" />
@@ -329,7 +342,7 @@ const AdminDashboardContent = () => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-muted-foreground">Messages</p>
+                  <p className={`text-sm font-medium text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.messages')}</p>
                   <p className="text-2xl font-bold">{contacts.length}</p>
                 </div>
                 <MessageSquare className="h-8 w-8 text-green-500" />
@@ -342,7 +355,7 @@ const AdminDashboardContent = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">User</p>
+                <p className={`text-sm font-medium text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.user')}</p>
                 <p className="text-2xl font-bold">{user?.name || user?.username || 'Admin'}</p>
               </div>
               <Users className="h-8 w-8 text-purple-500" />
@@ -355,7 +368,7 @@ const AdminDashboardContent = () => {
       {hasSectionPermission('contact-messages') && contacts.length > 0 && (
         <Card className="border-0 shadow-modern">
           <CardHeader>
-            <CardTitle>Recent Messages</CardTitle>
+            <CardTitle className={i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('dashboard.recentMessages')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -449,65 +462,189 @@ const AdminDashboardContent = () => {
   );
 
   return (
-    <Layout pageTitle="Admin Dashboard || Azino || Charity React Next Template">
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full bg-gradient-to-br from-background to-muted/30">
-          <AdminSidebar 
-            activeSection={activeSection} 
-            onSectionChange={setActiveSection}
-          />
+    <SidebarProvider>
+      {i18n?.resolvedLanguage === 'ar' ? (
+        /* Arabic Layout */
+        <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/30 flex" dir="rtl">
+            {/* Custom Sidebar for Arabic - positioned on right */}
+            {sidebarOpen && (
+              <div 
+                className="h-screen bg-gray-100 dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 fixed right-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64" 
+                style={{
+                  transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)',
+                  opacity: sidebarOpen ? 1 : 0,
+                  visibility: sidebarOpen ? 'visible' : 'hidden'
+                }}
+              >
+                <AdminSidebar 
+                  activeSection={activeSection} 
+                  onSectionChange={setActiveSection}
+                />
+              </div>
+            )}
           
-          <SidebarInset>
-            {/* Header */}
-            <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40">
-              <div className="flex h-full items-center px-4 md:px-6 gap-4">
-                <SidebarTrigger className="text-sidebar-foreground" />
-                <div className="flex-1" />
-                <div className="flex items-center gap-4">
-                  <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>Welcome back, {user?.name || user?.username || 'Admin'}</span>
+          {/* Main Content Area with margin for sidebar */}
+          <div 
+            className="min-h-screen transition-all duration-300" 
+            style={{
+              marginRight: sidebarOpen ? '256px' : '0px',
+              width: sidebarOpen ? 'calc(100% - 256px)' : '100vw',
+              marginLeft: '0px'
+            }}
+          >
+                {/* Header */}
+                <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40" dir="rtl">
+                  <div className="flex h-full items-center px-4 md:px-6 gap-4">
+                    {/* Far left: Logout button */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleLogout}
+                      className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors flex items-center"
+                    >
+                      <span className="hidden sm:inline ml-2">{t('modal.logout')}</span>
+                      <LogOut className="h-4 w-4" />
+                    </Button>
+                    
+                    {/* Middle-left: Other items */}
+                    <div className="flex items-center gap-4">
+                      <LanguageSwitcher variant="admin" className="hidden sm:flex" />
+                      <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+                        <span>{t('header.welcomeBack')}, {user?.name || user?.username || 'Admin'}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1" />
+                    
+                    {/* Far right: Toggle menu */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSidebarOpen(!sidebarOpen)}
+                      className="text-sidebar-foreground"
+                    >
+                      <Menu className="h-4 w-4" />
+                    </Button>
                   </div>
+                </header>
+
+            {/* Main Content */}
+            <main className="flex-1 p-4 md:p-6 overflow-auto w-full text-right" dir="rtl">
+              {renderDashboardContent()}
+            </main>
+          </div>
+          
+          {/* Logout Confirmation Modal */}
+          <ConfirmationModal
+            isOpen={showLogoutModal}
+            onClose={() => setShowLogoutModal(false)}
+            onConfirm={confirmLogout}
+            title={t('modal.confirmLogout')}
+            description={t('modal.logoutDescription')}
+            confirmText={t('modal.logout')}
+            cancelText={t('modal.cancel')}
+            variant="warning"
+            isLoading={isLoggingOut}
+            icon={
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 border-yellow-200 border-2">
+                <svg className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </div>
+            }
+          />
+        </div>
+      ) : (
+        /* English Layout - Custom with SidebarProvider */
+        <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/30 flex" dir="ltr">
+          {/* Custom Sidebar for English - positioned on left */}
+          {sidebarOpen && (
+            <div 
+              className="h-screen bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 fixed left-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64" 
+              style={{
+                transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+                opacity: sidebarOpen ? 1 : 0,
+                visibility: sidebarOpen ? 'visible' : 'hidden'
+              }}
+            >
+              <AdminSidebar 
+                activeSection={activeSection} 
+                onSectionChange={setActiveSection}
+              />
+            </div>
+          )}
+          
+          {/* Main Content Area with margin for sidebar */}
+          <div 
+            className="min-h-screen transition-all duration-300" 
+            style={{
+              marginLeft: sidebarOpen ? '256px' : '0px',
+              width: sidebarOpen ? 'calc(100% - 256px)' : '100vw',
+              marginRight: '0px'
+            }}
+          >
+              {/* Header */}
+              <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40" dir="ltr">
+                <div className={`flex h-full items-center px-4 md:px-6 gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  {/* Left side items */}
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={handleLogout}
-                    className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors"
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    className="text-sidebar-foreground"
                   >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">Logout</span>
+                    <Menu className="h-4 w-4" />
                   </Button>
+                  
+                  <div className="flex-1" />
+                  
+                  {/* Right side items */}
+                  <div className="flex items-center gap-4">
+                    <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+                      <span>{t('header.welcomeBack')}, {user?.name || user?.username || 'Admin'}</span>
+                    </div>
+                    <LanguageSwitcher variant="admin" className="hidden sm:flex" />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleLogout}
+                      className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors flex items-center"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      <span className="hidden sm:inline">{t('modal.logout')}</span>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </header>
+              </header>
 
-            {/* Main Content */}
-            <main className="flex-1 p-4 md:p-6 overflow-auto w-full">
-              {renderDashboardContent()}
-            </main>
-          </SidebarInset>
-        </div>
-      </SidebarProvider>
-
-      {/* Logout Confirmation Modal */}
-      <ConfirmationModal
-        isOpen={showLogoutModal}
-        onClose={() => setShowLogoutModal(false)}
-        onConfirm={confirmLogout}
-        title="Confirm Logout"
-        description="Are you sure you want to logout? You will need to sign in again to access the admin panel."
-        confirmText="Logout"
-        cancelText="Cancel"
-        variant="warning"
-        isLoading={isLoggingOut}
-        icon={
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 border-yellow-200 border-2">
-            <svg className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
+              {/* Main Content */}
+              <main className="flex-1 p-4 md:p-6 overflow-auto w-full text-left" dir="ltr">
+                {renderDashboardContent()}
+              </main>
           </div>
-        }
-      />
-    </Layout>
+          
+          {/* Logout Confirmation Modal */}
+          <ConfirmationModal
+            isOpen={showLogoutModal}
+            onClose={() => setShowLogoutModal(false)}
+            onConfirm={confirmLogout}
+            title={t('modal.confirmLogout')}
+            description={t('modal.logoutDescription')}
+            confirmText={t('modal.logout')}
+            cancelText={t('modal.cancel')}
+            variant="warning"
+            isLoading={isLoggingOut}
+            icon={
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 border-yellow-200 border-2">
+                <svg className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+              </div>
+            }
+          />
+        </div>
+      )}
+    </SidebarProvider>
   );
 };
 
@@ -517,9 +654,25 @@ const AdminDashboard = () => {
       requireAuth={true} 
       requiredPermissions={['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids']}
     >
-      <AdminDashboardContent />
+      <Layout pageTitle="Admin Dashboard || Azino || Charity React Next Template">
+        <AdminDashboardContent />
+      </Layout>
     </ProtectedRoute>
   );
 };
 
 export default AdminDashboard;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

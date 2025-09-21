@@ -1,0 +1,137 @@
+{
+  "title": "إدارة الفئات",
+  "description": "إدارة فئات كتب دار النشر الخاصة بك",
+  "addCategory": "إضافة فئة جديدة",
+  "searchPlaceholder": "البحث في الفئات...",
+  "categoriesCount": "الفئات ({{count}})",
+  
+  "form": {
+    "createTitle": "إضافة فئة جديدة",
+    "editTitle": "تعديل الفئة",
+    "fields": {
+      "nameEn": "الاسم (بالإنجليزية)",
+      "nameEnPlaceholder": "اسم الفئة بالإنجليزية",
+      "nameAr": "الاسم (بالعربية)",
+      "nameArPlaceholder": "اسم الفئة بالعربية",
+      "descriptionEn": "الوصف (بالإنجليزية)",
+      "descriptionEnPlaceholder": "أدخل وصفاً مفصلاً للفئة بالإنجليزية (10 أحرف على الأقل)...",
+      "descriptionAr": "الوصف (بالعربية)",
+      "descriptionArPlaceholder": "أدخل وصفاً مفصلاً للفئة بالعربية (10 أحرف على الأقل)...",
+      "sortOrder": "ترتيب الفرز",
+      "sortOrderPlaceholder": "0",
+      "icon": "الأيقونة",
+      "colorTheme": "نمط الألوان",
+      "parentCategory": "الفئة الأساسية",
+      "parentCategoryPlaceholder": "اختر الفئة الأساسية (اختياري)",
+      "noParentCategory": "لا توجد فئة أساسية"
+    },
+    "validation": {
+      "nameEnRequired": "اسم الفئة (بالإنجليزية) مطلوب.",
+      "nameArRequired": "اسم الفئة (بالعربية) مطلوب.",
+      "descriptionEnMinLength": "وصف الفئة (بالإنجليزية) يجب أن يكون 10 أحرف على الأقل.",
+      "descriptionArMinLength": "وصف الفئة (بالعربية) يجب أن يكون 10 أحرف على الأقل.",
+      "descriptionMinLength": "الوصف يجب أن يكون 10 أحرف على الأقل"
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "create": "إضافة فئة",
+      "update": "تحديث الفئة",
+      "saving": "جاري الحفظ..."
+    }
+  },
+  
+  "table": {
+    "headers": {
+      "category": "الفئة",
+      "books": "الكتب",
+      "sortOrder": "الترتيب",
+      "created": "تاريخ الإنشاء",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "booksCount": "{{count}} كتاب",
+    "booksCount_plural": "{{count}} كتاب",
+    "sortOrder": "الترتيب: {{order}}",
+    "subcategory": "فئة فرعية"
+  },
+  
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "all": "جميع الحالات"
+  },
+  
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف",
+    "toggleStatus": "تغيير الحالة"
+  },
+  
+  "deleteModal": {
+    "title": "حذف الفئة",
+    "description": "هل أنت متأكد من حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف الفئة نهائياً من النظام.",
+    "confirmText": "حذف الفئة",
+    "cancelText": "إلغاء"
+  },
+  
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "page": "الصفحة {{current}} من {{total}}"
+  },
+  
+  "loading": {
+    "categories": "جاري تحميل الفئات...",
+    "creating": "جاري إنشاء الفئة...",
+    "updating": "جاري تحديث الفئة...",
+    "deleting": "جاري حذف الفئة..."
+  },
+  
+  "success": {
+    "categoryAdded": "تم إضافة {{name}} بنجاح.",
+    "categoryUpdated": "تم تحديث {{name}} بنجاح.",
+    "categoryDeleted": "تم حذف {{name}} بنجاح.",
+    "statusUpdated": "تم تحديث حالة {{name}} إلى {{status}}."
+  },
+  
+  "errors": {
+    "loadCategories": "فشل في تحميل الفئات. يرجى المحاولة مرة أخرى.",
+    "createCategory": "فشل في حفظ الفئة. يرجى المحاولة مرة أخرى.",
+    "updateCategory": "فشل في تحديث الفئة. يرجى المحاولة مرة أخرى.",
+    "deleteCategory": "فشل في حذف الفئة. يرجى المحاولة مرة أخرى.",
+    "updateStatus": "فشل في تحديث حالة الفئة. يرجى المحاولة مرة أخرى.",
+    "authError": "يرجى تسجيل الدخول مرة أخرى للوصول إلى الفئات.",
+    "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+  },
+  
+  "empty": {
+    "noCategories": "لم يتم العثور على فئات. أضف فئتك الأولى للبدء.",
+    "noResults": "لا توجد فئات تطابق معايير البحث الخاصة بك."
+  },
+  
+  "colors": {
+    "blue": "أزرق",
+    "green": "أخضر",
+    "purple": "بنفسجي",
+    "orange": "برتقالي",
+    "red": "أحمر",
+    "yellow": "أصفر",
+    "indigo": "نيلي",
+    "pink": "وردي"
+  },
+  
+  "icons": {
+    "FolderOpen": "مجلد مفتوح",
+    "Book": "كتاب",
+    "Tag": "علامة",
+    "Code": "كود",
+    "Database": "قاعدة بيانات",
+    "Shield": "درع",
+    "Cloud": "سحابة",
+    "Brain": "دماغ",
+    "Heart": "قلب",
+    "Star": "نجمة",
+    "Rocket": "صاروخ",
+    "Search": "بحث"
+  }
+}

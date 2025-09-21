@@ -1,0 +1,31 @@
+{
+  "pageTitle": "Training Selection - Hope For All Mena Ministry",
+  "seoDescription": "Choose your training path - new training or follow-up training for your church",
+  "header": {
+    "badge": "Training Selection",
+    "title": "Choose Your Training Path",
+    "description": "Select the option that best describes your church's training experience with Hope For All MENA"
+  },
+  "newTraining": {
+    "title": "First Time Training",
+    "description": "This is our first time requesting training from Hope For All MENA. We want to start a new training program for our church.",
+    "features": {
+      "assessment": "Complete needs assessment",
+      "customPlan": "Customized training plan",
+      "consultation": "Initial consultation included",
+      "support": "Ongoing support & materials"
+    },
+    "button": "Start New Training"
+  },
+  "followUpTraining": {
+    "title": "Follow-up Training",
+    "description": "We have previously received training from Hope For All MENA. We need additional materials or follow-up training sessions.",
+    "features": {
+      "materials": "Access to advanced materials",
+      "verification": "Trainer assignment verification",
+      "resources": "T-shirts & additional resources",
+      "processing": "Expedited processing"
+    },
+    "button": "Request Follow-up"
+  }
+}

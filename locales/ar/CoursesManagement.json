@@ -1,0 +1,142 @@
+{
+  "title": "إدارة الدورات",
+  "description": "إدارة الدورات التعليمية والبرامج التدريبية",
+  "addCourse": "إضافة دورة",
+  "searchPlaceholder": "البحث في الدورات أو المدربين أو المؤسسات...",
+  "coursesCount": "الدورات ({{count}})",
+  
+  "stats": {
+    "totalCourses": "إجمالي الدورات",
+    "categories": "الفئات",
+    "totalEnrollments": "إجمالي التسجيلات",
+    "avgRating": "متوسط التقييم"
+  },
+  
+  "form": {
+    "createTitle": "إضافة دورة جديدة",
+    "editTitle": "تعديل الدورة",
+    "basicInformation": "المعلومات الأساسية",
+    "courseDetails": "تفاصيل الدورة",
+    "datesEnrollment": "التواريخ والتسجيل",
+    "institutionInstructor": "المؤسسة والمدرب",
+    
+    "fields": {
+      "title": "عنوان الدورة",
+      "titlePlaceholder": "أدخل عنوان الدورة",
+      "description": "الوصف",
+      "descriptionPlaceholder": "أدخل وصف الدورة",
+      "category": "الفئة",
+      "categoryPlaceholder": "مثل: التكنولوجيا، الأعمال، التصميم",
+      "subcategory": "الفئة الفرعية",
+      "subcategoryPlaceholder": "مثل: تطوير الويب، تحليل البيانات",
+      "level": "المستوى",
+      "format": "التنسيق",
+      "duration": "المدة",
+      "durationPlaceholder": "مثل: 8 أسابيع، 3 أشهر",
+      "price": "السعر",
+      "startDate": "تاريخ البداية",
+      "endDate": "تاريخ النهاية",
+      "maxStudents": "الحد الأقصى للطلاب",
+      "availableSeats": "المقاعد المتاحة",
+      "institutionName": "المؤسسة",
+      "instructorName": "اسم المدرب",
+      "instructorPlaceholder": "أدخل اسم المدرب"
+    },
+    
+    "levels": {
+      "beginner": "مبتدئ",
+      "intermediate": "متوسط",
+      "advanced": "متقدم"
+    },
+    
+    "formats": {
+      "online": "عبر الإنترنت",
+      "offline": "حضوري",
+      "hybrid": "مختلط"
+    },
+    
+    "buttons": {
+      "cancel": "إلغاء",
+      "create": "إضافة دورة",
+      "update": "تحديث الدورة",
+      "creating": "جاري الإنشاء...",
+      "updating": "جاري التحديث..."
+    },
+    
+    "placeholders": {
+      "selectInstitution": "اختر المؤسسة"
+    }
+  },
+  
+  "filters": {
+    "allCategories": "جميع الفئات",
+    "filterByCategory": "تصفية حسب الفئة"
+  },
+  
+  "table": {
+    "headers": {
+      "course": "الدورة",
+      "instructor": "المدرب",
+      "institution": "المؤسسة",
+      "category": "الفئة",
+      "level": "المستوى",
+      "format": "التنسيق",
+      "price": "السعر",
+      "enrollment": "التسجيل",
+      "rating": "التقييم",
+      "actions": "الإجراءات"
+    },
+    "free": "مجاني",
+    "seatsLeft": "مقعد متبقي"
+  },
+  
+  "status": {
+    "draft": "مسودة",
+    "published": "منشور",
+    "archived": "مؤرشف",
+    "cancelled": "ملغي"
+  },
+  
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف",
+    "view": "عرض"
+  },
+  
+  "deleteModal": {
+    "title": "حذف الدورة",
+    "description": "هل أنت متأكد من حذف \"{{courseName}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
+    "confirmText": "نعم، احذف الدورة",
+    "cancelText": "إلغاء"
+  },
+  
+  "loading": {
+    "courses": "جاري تحميل الدورات...",
+    "creating": "جاري إنشاء الدورة...",
+    "updating": "جاري تحديث الدورة...",
+    "deleting": "جاري حذف الدورة..."
+  },
+  
+  "success": {
+    "courseAdded": "تم إضافة الدورة بنجاح",
+    "courseUpdated": "تم تحديث الدورة بنجاح",
+    "courseDeleted": "تم حذف الدورة بنجاح"
+  },
+  
+  "errors": {
+    "loadCourses": "فشل في تحميل الدورات",
+    "createCourse": "فشل في إنشاء الدورة",
+    "updateCourse": "فشل في تحديث الدورة",
+    "deleteCourse": "فشل في حذف الدورة",
+    "required": "هذا الحقل مطلوب",
+    "invalidPrice": "يرجى إدخال سعر صحيح",
+    "invalidDate": "يرجى إدخال تاريخ صحيح",
+    "endDateAfterStart": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية"
+  },
+  
+  "empty": {
+    "title": "لم يتم العثور على دورات",
+    "description": "لا توجد دورات تطابق المرشحات المحددة.",
+    "noCoursesYet": "لم يتم إضافة أي دورات بعد."
+  }
+}

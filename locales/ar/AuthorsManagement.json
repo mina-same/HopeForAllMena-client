@@ -1,0 +1,116 @@
+{
+  "title": "إدارة المؤلفين",
+  "description": "إدارة مؤلفي دار النشر الخاصة بك",
+  "addAuthor": "إضافة مؤلف جديد",
+  "searchPlaceholder": "البحث عن المؤلفين...",
+  "loading": {
+    "authors": "جاري تحميل المؤلفين...",
+    "saving": "جاري الحفظ...",
+    "deleting": "جاري الحذف..."
+  },
+  "filters": {
+    "status": {
+      "placeholder": "الحالة",
+      "all": "جميع الحالات",
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "featured": {
+      "placeholder": "مميز",
+      "all": "جميع المؤلفين",
+      "featured": "مميز",
+      "notFeatured": "غير مميز"
+    }
+  },
+  "table": {
+    "authorsCount": "المؤلفون ({{count}})",
+    "booksCount": "{{count}} كتاب",
+    "booksCount_plural": "{{count}} كتب",
+    "addedOn": "تمت الإضافة {{date}}",
+    "featured": "⭐ مميز"
+  },
+  "form": {
+    "createTitle": "إضافة مؤلف جديد",
+    "editTitle": "تعديل المؤلف",
+    "fields": {
+      "avatar": {
+        "label": "صورة المؤلف"
+      },
+      "name": {
+        "label": "الاسم (بالإنجليزية)",
+        "placeholder": "اسم المؤلف بالإنجليزية",
+        "required": true
+      },
+      "nameAr": {
+        "label": "الاسم (بالعربية)",
+        "placeholder": "اسم المؤلف بالعربية",
+        "required": true
+      },
+      "biography": {
+        "label": "السيرة الذاتية (بالإنجليزية)",
+        "placeholder": "أدخل سيرة ذاتية مفصلة للمؤلف بالإنجليزية (10 أحرف على الأقل)...",
+        "minLength": "10 أحرف على الأقل",
+        "required": true
+      },
+      "biographyAr": {
+        "label": "السيرة الذاتية (بالعربية)",
+        "placeholder": "أدخل سيرة ذاتية مفصلة للمؤلف باللغة العربية (10 أحرف على الأقل)...",
+        "minLength": "10 أحرف على الأقل",
+        "required": true
+      }
+    },
+    "buttons": {
+      "cancel": "إلغاء",
+      "create": "إضافة مؤلف",
+      "update": "تحديث المؤلف",
+      "saving": "جاري الحفظ..."
+    },
+    "validation": {
+      "biographyMinLength": "يجب أن تكون السيرة الذاتية 10 أحرف على الأقل",
+      "biographyArMinLength": "يجب أن تكون السيرة الذاتية العربية 10 أحرف على الأقل",
+      "required": "هذا الحقل مطلوب"
+    }
+  },
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف",
+    "feature": "تمييز",
+    "unfeature": "إلغاء التمييز",
+    "toggleStatus": "تبديل الحالة"
+  },
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+  "deleteModal": {
+    "title": "حذف المؤلف",
+    "description": "هل أنت متأكد من أنك تريد حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء وسيؤدي إلى إزالة المؤلف نهائياً من النظام.",
+    "confirmText": "حذف المؤلف",
+    "cancelText": "إلغاء"
+  },
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "pageInfo": "الصفحة {{current}} من {{total}}"
+  },
+  "empty": {
+    "title": "لم يتم العثور على مؤلفين",
+    "description": "أضف أول مؤلف للبدء."
+  },
+  "toast": {
+    "authorAdded": "تمت إضافة {{name}} بنجاح.",
+    "authorUpdated": "تم تحديث {{name}} بنجاح.",
+    "authorDeleted": "تم حذف {{name}} بنجاح.",
+    "authorFeatured": "تم تمييز {{name}}.",
+    "authorUnfeatured": "تم إلغاء تمييز {{name}}.",
+    "statusUpdated": "تم تحديث حالة {{name}} إلى {{status}}.",
+    "errors": {
+      "fetchAuthors": "فشل في تحميل المؤلفين. يرجى المحاولة مرة أخرى.",
+      "saveAuthor": "فشل في حفظ المؤلف. يرجى المحاولة مرة أخرى.",
+      "deleteAuthor": "فشل في حذف المؤلف. يرجى المحاولة مرة أخرى.",
+      "toggleFeatured": "فشل في تحديث حالة التمييز. يرجى المحاولة مرة أخرى.",
+      "updateStatus": "فشل في تحديث حالة المؤلف. يرجى المحاولة مرة أخرى.",
+      "validationError": "خطأ في التحقق"
+    }
+  }
+}

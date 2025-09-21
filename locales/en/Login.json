@@ -1,0 +1,24 @@
+{
+  "pageTitle": "Sign In",
+  "welcome": {
+    "title": "Welcome back!",
+    "description": "Whether you're launching a stunning online store optimizing your our object-oriented"
+  },
+  "form": {
+    "title": "Admin Sign In",
+    "subtitle": "Welcome Back! Log in to your admin account",
+    "emailLabel": "Email or Username",
+    "emailPlaceholder": "admin@azino.com or admin",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Password",
+    "rememberMe": "Remember Me",
+    "forgotPassword": "Forgot password?",
+    "signInButton": "Sign In",
+    "signingIn": "Signing In..."
+  },
+  "errors": {
+    "accessDenied": "Access denied. Admin privileges required.",
+    "loginFailed": "Login failed. Please check your credentials.",
+    "unexpectedError": "An unexpected error occurred. Please try again."
+  }
+}

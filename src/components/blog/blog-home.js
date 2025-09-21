@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useTranslation } from "gatsby-plugin-react-i18next";
+import { useI18next } from "gatsby-plugin-react-i18next";
+import { graphql } from "gatsby";
 
 import BlockTitle from "../block-title";
 import BlogCard from "./blog-card";
 import blogAPI from "../../services/blogAPI";
 
 import blogImage1 from "../../assets/images/blog/blog-1-1.jpg";
+import "../../assets/css/blog-rtl.css";
 
 const BlogHome = () => {
+  const { t } = useTranslation();
+  const { language: currentLanguage } = useI18next();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,7 +23,7 @@ const BlogHome = () => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const response = await blogAPI.getPublishedBlogs({ limit: 6 });
+        const response = await blogAPI.getPublishedBlogs({ limit: 6, language: currentLanguage });
         console.log('Blog API response:', response);
         setBlogs(response.blogs || []);
       } catch (err) {
@@ -41,11 +47,12 @@ const BlogHome = () => {
     };
 
     fetchBlogs();
-  }, []);
+  }, [currentLanguage]);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
+    const locale = currentLanguage === 'ar' ? 'ar-SA' : 'en-US';
+    return date.toLocaleDateString(locale, { 
       day: 'numeric', 
       month: 'short' 
     });
@@ -86,11 +93,11 @@ const BlogHome = () => {
 
   if (loading) {
     return (
-      <section className="news-page news-home pt-120 pb-120">
+      <section className={`news-page news-home pt-120 pb-120 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <Container>
           <div className="text-center">
             <div className="spinner-border" role="status">
-              <span className="sr-only">Loading...</span>
+              <span className="sr-only">{t('blog:home.loading')}</span>
             </div>
           </div>
         </Container>
@@ -99,21 +106,19 @@ const BlogHome = () => {
   }
 
   return (
-    <section className="news-page news-home pt-120 pb-120">
+    <section className={`news-page news-home pt-120 pb-120 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <Container>
         <Row className="align-items-start align-items-md-center flex-column flex-md-row mb-60">
           <Col lg={7}>
             <BlockTitle
-              title={`Latest news & articles \n directly from the blog.`}
-              tagLine="Blog Posts"
+              title={t('blog:home.title')}
+              tagLine={t('blog:home.tagLine')}
             />
           </Col>
           <Col lg={5} className="d-flex">
             <div className="my-auto">
-              <p className="block-text pr-10 mb-0">
-                Stay updated with our latest news, stories, and insights from 
-                Hope For All MENA. Discover inspiring content about our mission 
-                and impact in the region.
+              <p className={`block-text ${currentLanguage === 'ar' ? 'pl-10 text-right' : 'pr-10'} mb-0`}>
+                {t('blog:home.description')}
               </p>
             </div>
           </Col>
@@ -124,19 +129,20 @@ const BlogHome = () => {
               <SwiperSlide key={blog._id}>
                 <BlogCard
                   image={blog.image || blogImage1}
-                  title={blog.title}
+                  title={currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title}
                   date={formatDate(blog.publishedAt)}
-                  text={blog.excerpt}
+                  text={currentLanguage === 'ar' && blog.excerptAr ? blog.excerptAr : blog.excerpt}
                   link={`/news-details/${blog.slug}`}
-                  commentCount="Comments"
+                  commentCount={t('blog:home.comments')}
                   author={blog.author?.name || "Admin"}
+                  currentLanguage={currentLanguage}
                 />
               </SwiperSlide>
             ))}
           </Swiper>
         ) : (
           <div className="text-center">
-            <p>No blog posts available at the moment.</p>
+            <p>{t('blog:home.empty')}</p>
           </div>
         )}
       </Container>
@@ -145,3 +151,17 @@ const BlogHome = () => {
 };
 
 export default BlogHome;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

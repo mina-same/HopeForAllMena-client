@@ -1,0 +1,99 @@
+{
+  "header": {
+    "title": "رسائل التواصل",
+    "description": "إدارة استفسارات العملاء وطلبات الكتب"
+  },
+  "filters": {
+    "searchPlaceholder": "البحث في الرسائل...",
+    "type": {
+      "label": "النوع",
+      "all": "جميع الأنواع",
+      "bookOrder": "طلب كتاب",
+      "general": "استفسار عام",
+      "support": "دعم فني"
+    },
+    "status": {
+      "label": "الحالة",
+      "all": "جميع الحالات",
+      "new": "جديد",
+      "read": "مقروء",
+      "resolved": "محلول",
+      "closed": "مغلق"
+    },
+    "priority": {
+      "label": "الأولوية",
+      "all": "جميع الأولويات",
+      "high": "عالية",
+      "medium": "متوسطة",
+      "low": "منخفضة"
+    }
+  },
+  "messages": {
+    "title": "الرسائل ({{count}})",
+    "from": "من:",
+    "phone": "الهاتف:",
+    "bookOrderDetails": "تفاصيل طلب الكتاب:",
+    "book": "الكتاب:",
+    "author": "المؤلف:",
+    "quantity": "الكمية:",
+    "response": "الرد:",
+    "respondedOn": "تم الرد في:"
+  },
+  "actions": {
+    "markAsRead": "تحديد كمقروء",
+    "markAsResolved": "تحديد كمحلول",
+    "respond": "رد"
+  },
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "page": "الصفحة {{current}} من {{total}}"
+  },
+  "loading": {
+    "messages": "جاري تحميل الرسائل..."
+  },
+  "empty": {
+    "noMessages": "لم يتم العثور على رسائل."
+  },
+  "modal": {
+    "respondTitle": "الرد على الرسالة",
+    "from": "من:",
+    "subject": "الموضوع:",
+    "yourResponse": "ردك",
+    "responsePlaceholder": "اكتب ردك هنا...",
+    "sendResponse": "إرسال الرد",
+    "cancel": "إلغاء"
+  },
+  "toast": {
+    "responseSent": {
+      "title": "تم إرسال الرد",
+      "description": "تم إرسال الرد بنجاح."
+    },
+    "messageUpdated": {
+      "title": "تم تحديث الرسالة",
+      "description": "تم تحديد الرسالة كـ {{status}}."
+    },
+    "error": {
+      "title": "خطأ",
+      "fetchFailed": "فشل في تحميل الرسائل. يرجى المحاولة مرة أخرى.",
+      "responseFailed": "فشل في إرسال الرد. يرجى المحاولة مرة أخرى.",
+      "updateFailed": "فشل في تحديث الرسالة. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "types": {
+    "bookOrder": "طلب كتاب",
+    "general": "استفسار عام",
+    "support": "دعم فني"
+  },
+  "statuses": {
+    "new": "جديد",
+    "read": "مقروء",
+    "resolved": "محلول",
+    "closed": "مغلق"
+  },
+  "priorities": {
+    "high": "عالية",
+    "medium": "متوسطة",
+    "low": "منخفضة"
+  }
+}

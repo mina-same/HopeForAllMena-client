@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { navigate } from 'gatsby';
+import { graphql } from 'gatsby';
+import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { GraduationCap, Users, BookOpen } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
@@ -76,6 +77,10 @@ const TrainingHeroSlider = () => {
 
 
 const TrainingPage = () => {
+  const { t } = useTranslation('Training');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const [trainingBooks, setTrainingBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -97,7 +102,8 @@ const TrainingPage = () => {
         const formattedBooks = books.map((book) => ({
           ...book,
           image: book.coverImageUrl,
-          title: book.name,
+          // Keep original field names from backend
+          title: book.name, // Fallback for compatibility
           description: book.description || book.descriptionAr || 'Training manual for ministry development'
         }));
         
@@ -114,10 +120,10 @@ const TrainingPage = () => {
   }, []);
 
   return (
-    <Layout pageTitle="Training Page">
+    <Layout pageTitle={t('pageTitle')}>
       <HeaderTwo />
       <StickyHeader />
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
 
         {/* Hero Section */}
         <section className="relative h-[80vh] py-20 lg:py-32 overflow-hidden">
@@ -127,36 +133,35 @@ const TrainingPage = () => {
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 mb-8">
                 <GraduationCap className="w-4 h-4 text-white" />
-                <span className="text-sm font-medium text-white">Ministry Training Program</span>
+                <span className="text-sm font-medium text-white">{t('hero.badge')}</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-8 tracking-tight leading-tight text-white">
-                A New Generation that{' '}
+                {t('hero.title')}{' '}
                 <span className="bg-gradient-to-r from-white via-white/90 to-accent bg-clip-text text-transparent">
-                  Changes & Transforms
+                  {t('hero.titleHighlight')}
                 </span>
               </h1>
 
               <p className="text-xl md:text-2xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
-                Our goal is to train local churches through evangelistic and discipleship curricula
-                for the new generation. Equip your ministry with proven strategies and resources.
+                {t('hero.description')}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <div className="flex items-center gap-4 text-white/80">
                   <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-white" />
-                    <span className="font-medium">Local Churches</span>
+                    <span className="font-medium">{t('hero.features.localChurches')}</span>
                   </div>
                   <div className="w-px h-6 bg-white/30"></div>
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-accent" />
-                    <span className="font-medium">Proven Curricula</span>
+                    <span className="font-medium">{t('hero.features.provenCurricula')}</span>
                   </div>
                   <div className="w-px h-6 bg-white/30"></div>
                   <div className="flex items-center gap-2">
                     <GraduationCap className="w-5 h-5 text-white" />
-                    <span className="font-medium">Expert Training</span>
+                    <span className="font-medium">{t('hero.features.expertTraining')}</span>
                   </div>
                 </div>
               </div>
@@ -169,10 +174,10 @@ const TrainingPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-5xl font-bold mb-6 text-foreground">
-                Training Materials
+                {t('materials.title')}
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Comprehensive resources designed to transform your ministry approach and impact your community
+                {t('materials.description')}
               </p>
             </div>
 
@@ -180,7 +185,7 @@ const TrainingPage = () => {
             {loading && (
               <div className="text-center py-12">
                 <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                <p className="mt-4 text-muted-foreground">Loading training materials...</p>
+                <p className="mt-4 text-muted-foreground">{t('materials.loading')}</p>
               </div>
             )}
 
@@ -188,7 +193,7 @@ const TrainingPage = () => {
             {error && (
               <div className="text-center py-12">
                 <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
-                  <p className="text-red-600 font-medium">Failed to load training materials</p>
+                  <p className="text-red-600 font-medium">{t('materials.error')}</p>
                   <p className="text-red-500 text-sm mt-2">{error}</p>
                 </div>
               </div>
@@ -220,21 +225,21 @@ const TrainingPage = () => {
                                 <BookOpen className="w-3 h-3" />
                               </div>
                               <span className="text-xs font-medium opacity-90">
-                                {book.parts?.length || 0} Parts
+                                {book.parts?.length || 0} {t('materials.parts')}
                               </span>
                             </div>
 
                             <h3 className="text-lg text-white font-bold mb-2 leading-tight line-clamp-2">
-                              {book.title}
+                              {currentLanguage === 'ar' ? (book.nameAr || book.name || book.title) : (book.name || book.title)}
                             </h3>
 
                             <p className="text-xs opacity-90 leading-relaxed line-clamp-2 mb-3">
-                              {book.description}
+                              {currentLanguage === 'ar' ? (book.descriptionAr || book.description) : book.description}
                             </p>
 
                             <div className="flex items-center gap-2">
                               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                              <span className="text-xs font-medium">Available</span>
+                              <span className="text-xs font-medium">{t('materials.available')}</span>
                             </div>
                           </div>
                         </div>
@@ -249,7 +254,7 @@ const TrainingPage = () => {
             {!loading && !error && trainingBooks.length === 0 && (
               <div className="text-center py-12">
                 <BookOpen className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
-                <p className="text-muted-foreground">No training materials available at the moment.</p>
+                <p className="text-muted-foreground">{t('materials.emptyState')}</p>
               </div>
             )}
           </div>
@@ -261,40 +266,41 @@ const TrainingPage = () => {
             <div className="max-w-3xl mx-auto">
               <div className="inline-flex items-center gap-2 bg-primary/10 backdrop-blur-sm border border-primary/20 rounded-full px-4 py-2 mb-8">
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                <span className="text-sm font-medium text-primary">Ready to Transform?</span>
+                <span className="text-sm font-medium text-[#2194D1]">{t('cta.badge')}</span>
               </div>
 
               <h2 className="text-3xl md:text-5xl font-bold mb-6 text-foreground">
-                Ready to Impact Your{' '}
-                <span className="text-primary">Community?</span>
+                {t('cta.title')}{' '}
+                <span className="text-[#2194D1]">{t('cta.titleHighlight')}</span>
               </h2>
 
               <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
-                Join hundreds of churches already transforming their communities through our proven training programs.
+                {t('cta.description')}
               </p>
 
-              <Button
-                size="lg"
-                onClick={() => navigate('/TrainingSelectionPage')}
-                className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold px-12 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
-              >
-                Start Your Training Now
-              </Button>
+              <Link to="/TrainingSelectionPage">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold px-12 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                >
+                  {t('cta.button')}
+                </Button>
+              </Link>
 
               <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-6 text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span>Free Initial Consultation</span>
+                  <span>{t('cta.features.consultation')}</span>
                 </div>
                 <div className="w-px h-4 bg-border hidden sm:block"></div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span>Customized Training Plans</span>
+                  <span>{t('cta.features.customPlans')}</span>
                 </div>
                 <div className="w-px h-4 bg-border hidden sm:block"></div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                  <span>Ongoing Support</span>
+                  <span>{t('cta.features.ongoingSupport')}</span>
                 </div>
               </div>
             </div>
@@ -311,10 +317,28 @@ const TrainingPage = () => {
 
 export default TrainingPage;
 
+// GraphQL query for i18n
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
+
 // Gatsby head export for SEO
-export const Head = () => (
-  <>
-    <title>Training - Azino Publishing</title>
-    <meta name="description" content="Ministry training programs and resources for local churches" />
-  </>
-);
+export const Head = ({ data }) => {
+  const { t } = useTranslation('Training');
+  return (
+    <>
+      <title>{t('pageTitle')}</title>
+      <meta name="description" content={t('seoDescription')} />
+    </>
+  );
+};

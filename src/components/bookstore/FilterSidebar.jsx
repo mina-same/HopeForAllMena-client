@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { X } from 'lucide-react';
 import { Checkbox } from '../ui/checkbox';
 import { Slider } from '../ui/slider';
@@ -6,6 +7,9 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../ui/sheet';
 
 
 export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange, categories = [] }) => {
+  const { t } = useTranslation('Bookstore');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
   const handleCategoryChange = (category, checked) => {
     const newCategories = checked 
       ? [...filters.categories, category]
@@ -59,46 +63,64 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange, categ
   };
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="left" className="w-80">
-        <SheetHeader>
-          <SheetTitle className="flex items-center justify-between">
-            Filters
-            <div variant="ghost" size="sm" onClick={clearAllFilters}>
-              Clear All
-            </div>
-          </SheetTitle>
-        </SheetHeader>
+    <>
+      {/* RTL-specific styles for Arabic */}
+      {currentLanguage === 'ar' && (
+        <style jsx>{`
+          .filter-sidebar {
+            direction: rtl;
+          }
+          .filter-sidebar .space-x-2 {
+            --tw-space-x-reverse: 1;
+          }
+        `}</style>
+      )}
+      <Sheet open={isOpen} onOpenChange={onClose}>
+        <SheetContent side={currentLanguage === 'ar' ? 'right' : 'left'} className="w-80 filter-sidebar" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+          <SheetHeader>
+            <SheetTitle className="flex items-center justify-between">
+              {t('filters.title')}
+              <div variant="ghost" size="sm" onClick={clearAllFilters}>
+                {t('filters.clearAll')}
+              </div>
+            </SheetTitle>
+          </SheetHeader>
         
         <div className="space-y-6 mt-6">
           {/* Categories */}
           <div>
-            <h3 className="font-semibold text-black mb-4">Categories</h3>
+            <h3 className="font-semibold text-black mb-4">{t('filters.categories.title')}</h3>
             <div className="space-y-3">
-              {categories.map((category) => (
-                <div key={category._id || category.name_en} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={category._id || category.name_en}
-                    checked={filters.categories.includes(category.name_en || category)}
-                    onCheckedChange={(checked) => 
-                      handleCategoryChange(category.name_en || category, checked)
-                    }
-                  />
-                  <label
-                    htmlFor={category._id || category.name_en}
-                    className="text-sm text-black cursor-pointer"
-                  >
-                    {category.name_en || category}
-                  </label>
-                </div>
-              ))}
+              {categories.map((category) => {
+                const categoryName = currentLanguage === 'ar' ? 
+                  (category.name_ar || category.name_en || category) : 
+                  (category.name_en || category);
+                
+                return (
+                  <div key={category._id || category.name_en} className="flex items-center space-x-2">
+                    <Checkbox
+                      id={category._id || category.name_en}
+                      checked={filters.categories.includes(category.name_en || category)}
+                      onCheckedChange={(checked) => 
+                        handleCategoryChange(category.name_en || category, checked)
+                      }
+                    />
+                    <label
+                      htmlFor={category._id || category.name_en}
+                      className="text-sm text-black cursor-pointer"
+                    >
+                      {categoryName}
+                    </label>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
 
           {/* Rating */}
           <div>
-            <h3 className="font-semibold text-black mb-4">Rating</h3>
+            <h3 className="font-semibold text-black mb-4">{t('filters.rating.title')}</h3>
             <div className="space-y-2">
               {[5, 4, 3, 2, 1].map((rating) => (
                 <div 
@@ -142,7 +164,7 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange, categ
 
           {/* Publication Year */}
           <div>
-            <h3 className="font-semibold text-black mb-4">Publication Year</h3>
+            <h3 className="font-semibold text-black mb-4">{t('filters.publicationYear.title')}</h3>
             <div className="space-y-3">
               {['2025', '2024'].map((year) => (
                 <div key={year} className="flex items-center space-x-2">
@@ -164,7 +186,8 @@ export const FilterSidebar = ({ isOpen, onClose, filters, onFiltersChange, categ
             </div>
           </div>
         </div>
-      </SheetContent>
-    </Sheet>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };

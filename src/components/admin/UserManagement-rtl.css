@@ -1,0 +1,341 @@
+/* RTL Support for User Management Component */
+
+/* Main container RTL styling */
+.rtl {
+  direction: rtl;
+}
+
+.rtl * {
+  direction: rtl;
+}
+
+/* Header RTL styling */
+.rtl h2,
+.rtl p {
+  text-align: right;
+}
+
+/* Form controls RTL styling */
+.rtl input {
+  text-align: right;
+  direction: rtl;
+}
+
+.rtl input::placeholder {
+  text-align: right;
+  direction: rtl;
+}
+
+.rtl label {
+  text-align: right;
+  display: block;
+}
+
+/* Button groups RTL styling */
+.rtl .space-x-3 {
+  --tw-space-x-reverse: 1;
+}
+
+.rtl .space-x-reverse {
+  --tw-space-x-reverse: 1;
+}
+
+.rtl .flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+/* Table RTL styling */
+.rtl .table {
+  direction: rtl;
+}
+
+.rtl .table th,
+.rtl .table td {
+  text-align: right;
+}
+
+.rtl .table thead th {
+  text-align: right;
+}
+
+/* Dialog RTL styling */
+.rtl .dialog-content {
+  direction: rtl;
+}
+
+.rtl .dialog-title {
+  text-align: right;
+}
+
+/* Search input RTL styling */
+.rtl .search-input {
+  padding-right: 2.5rem;
+  padding-left: 0.75rem;
+  text-align: right;
+}
+
+.rtl .search-icon {
+  right: 0.75rem;
+  left: auto;
+}
+
+/* Avatar and user info RTL */
+.rtl .user-info {
+  text-align: right;
+}
+
+.rtl .user-avatar {
+  margin-left: 0.75rem;
+  margin-right: 0;
+}
+
+/* Badge RTL styling */
+.rtl .badge {
+  direction: rtl;
+}
+
+/* Switch RTL styling */
+.rtl .switch-container {
+  flex-direction: row-reverse;
+}
+
+/* Action buttons RTL */
+.rtl .action-buttons {
+  justify-content: flex-start;
+}
+
+.rtl .action-buttons button {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+/* Form grid RTL */
+.rtl .form-grid {
+  direction: rtl;
+}
+
+.rtl .form-field {
+  direction: rtl;
+}
+
+/* Permissions grid RTL */
+.rtl .permissions-grid {
+  direction: rtl;
+}
+
+.rtl .permission-item {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .permission-checkbox {
+  margin-left: 0.75rem;
+  margin-right: 0;
+}
+
+/* Error messages RTL */
+.rtl .error-message {
+  text-align: right;
+}
+
+.rtl .validation-suggestion {
+  text-align: right;
+}
+
+/* Loading states RTL */
+.rtl .loading-container {
+  text-align: center; /* Keep loading centered */
+}
+
+/* Modal RTL styling */
+.rtl .modal-content {
+  direction: rtl;
+}
+
+.rtl .modal-header {
+  text-align: right;
+}
+
+.rtl .modal-description {
+  text-align: right;
+}
+
+/* Card RTL styling */
+.rtl .card {
+  direction: rtl;
+}
+
+.rtl .card-header {
+  text-align: right;
+}
+
+.rtl .card-title {
+  text-align: right;
+}
+
+.rtl .card-content {
+  direction: rtl;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 768px) {
+  .rtl .md\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .rtl .flex {
+    flex-direction: column;
+  }
+  
+  .rtl .space-x-3 {
+    --tw-space-x-reverse: 0;
+  }
+  
+  .rtl .action-buttons {
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .rtl .action-buttons button {
+    margin: 0;
+    width: 100%;
+  }
+}
+
+/* Password field RTL */
+.rtl .password-field {
+  direction: rtl;
+}
+
+.rtl .password-toggle {
+  left: 0.5rem;
+  right: auto;
+}
+
+/* Status indicators RTL */
+.rtl .status-indicator {
+  direction: rtl;
+}
+
+/* Pagination RTL (if used) */
+.rtl .pagination {
+  direction: rtl;
+}
+
+.rtl .pagination button {
+  direction: rtl;
+}
+
+/* Dropdown RTL */
+.rtl .dropdown {
+  direction: rtl;
+}
+
+.rtl .dropdown-content {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Checkbox RTL */
+.rtl .checkbox-container {
+  flex-direction: row-reverse;
+}
+
+.rtl .checkbox-label {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* Icon positioning RTL */
+.rtl .icon-left {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+.rtl .icon-right {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* Flex utilities RTL */
+.rtl .justify-end {
+  justify-content: flex-start;
+}
+
+.rtl .justify-start {
+  justify-content: flex-end;
+}
+
+/* Text alignment utilities */
+.rtl .text-left {
+  text-align: right !important;
+}
+
+.rtl .text-right {
+  text-align: left !important;
+}
+
+/* Margin utilities RTL */
+.rtl .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.rtl .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* Padding utilities RTL */
+.rtl .pl-10 {
+  padding-left: 0.75rem;
+  padding-right: 2.5rem;
+}
+
+.rtl .pr-10 {
+  padding-right: 0.75rem;
+  padding-left: 2.5rem;
+}
+
+.rtl .pl-3 {
+  padding-left: 0;
+  padding-right: 0.75rem;
+}
+
+.rtl .pr-3 {
+  padding-right: 0;
+  padding-left: 0.75rem;
+}
+
+/* Border utilities RTL */
+.rtl .border-l {
+  border-left: none;
+  border-right: 1px solid;
+}
+
+.rtl .border-r {
+  border-right: none;
+  border-left: 1px solid;
+}
+
+/* Position utilities RTL */
+.rtl .left-0 {
+  left: auto;
+  right: 0;
+}
+
+.rtl .right-0 {
+  right: auto;
+  left: 0;
+}
+
+.rtl .left-2 {
+  left: auto;
+  right: 0.5rem;
+}
+
+.rtl .right-2 {
+  right: auto;
+  left: 0.5rem;
+}

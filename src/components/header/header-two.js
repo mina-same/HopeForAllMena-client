@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "gatsby";
+import { Link } from "gatsby-plugin-react-i18next";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import { Container } from "react-bootstrap";
 import NavLinks from "./nav-links";
 
@@ -7,11 +8,15 @@ import logoDark from "../../assets/images/logos/hope4AllMena.png";
 
 
 const HeaderTwo = () => {
+  const { t } = useTranslation();
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+
   return (
     <div className="main-header__two">
       <div className="main-header__top">
         <Container>
-          <p>Welcome to Hope For All Mena</p>
+          <p>{t('header.welcome')}</p>
           <div className="main-header__social">
             <a href="https://www.facebook.com/profile.php?id=61556019641884" aria-label="facebook">
               <i className="fab fa-facebook-square"></i>
@@ -31,28 +36,38 @@ const HeaderTwo = () => {
             <span className="fa fa-bars mobile-nav__toggler"></span>
           </div>
 
-          <div className="header-info" style={{padding: '0 10px'}}>
-            <div className="header-info__box" style={{padding: '0 8px'}}>
+          <div className="header-info" style={{ padding: '0 10px' }}>
+            <div className="header-info__box" style={{ padding: '0 8px' }}>
               <i className="azino-icon-email1"></i>
               <div className="header-info__box-content">
-                <h3 style={{fontSize: '14px', marginBottom: '4px'}}>Email</h3>
-                <p style={{fontSize: '13px'}}>
+                <h3 style={{ fontSize: '14px', marginBottom: '4px' }}>{t('header.email')}</h3>
+                <p style={{ fontSize: '13px' }}>
                   <a href="mailto:hope4allmena@gmail.com">hope4allmena@gmail.com</a>
                 </p>
               </div>
             </div>
-            <div className="header-info__box" style={{padding: '0 8px'}}>
+            <div className="header-info__box" style={{ padding: '0 8px' }}>
               <i className="azino-icon-calling"></i>
               <div className="header-info__box-content">
-                <h3 style={{fontSize: '14px', marginBottom: '4px'}}>Phone</h3>
-                <p style={{fontSize: '13px'}}>
-                  <a href="tel:+201281416629" style={{marginBottom: '5px', display: 'block'}}>
+                <h3 style={{ fontSize: '14px', marginBottom: '4px' }}>{t('header.phone')}</h3>
+                <p style={{ fontSize: '13px' }}>
+                  <a href="tel:+201281416629" style={{ marginBottom: '5px', display: 'block' }}>
                     <span>+20 128 141 6629</span>
-                    <span style={{fontSize: '11px', color: '#666', marginLeft: '6px'}}>(Alexandria)</span>
+                    <span style={{ 
+                      fontSize: '11px', 
+                      color: '#666', 
+                      marginLeft: currentLanguage === 'ar' ? '0' : '6px',
+                      marginRight: currentLanguage === 'ar' ? '6px' : '0'
+                    }}>({t('header.locations.alexandria')})</span>
                   </a>
                   <a href="tel:+201555103774">
                     <span>+20 155 510 3774</span>
-                    <span style={{fontSize: '11px', color: 'var(--thm-color)', marginLeft: '6px'}}>(Cairo)</span>
+                    <span style={{ 
+                      fontSize: '11px', 
+                      color: 'var(--thm-color)', 
+                      marginLeft: currentLanguage === 'ar' ? '0' : '6px',
+                      marginRight: currentLanguage === 'ar' ? '6px' : '0'
+                    }}>({t('header.locations.cairo')})</span>
                   </a>
                 </p>
               </div>
@@ -60,26 +75,31 @@ const HeaderTwo = () => {
             <div className="header-info__box" style={{ padding: '0 8px', borderTopLeftRadius: '9999px !important', borderBottomLeftRadius: '9999px !important' }}>
               <i className="azino-icon-address"></i>
               <div className="header-info__box-content">
-                <h3 style={{fontSize: '14px', marginBottom: '4px'}}>Visit</h3>
-                <p style={{fontSize: '13px'}}>
-                  <a 
-                    href="https://maps.app.goo.gl/5DTrRt5VD2jBtyfE9" 
-                    target="_blank" 
-                    rel="noopener noreferrer" 
+                <h3 style={{ fontSize: '14px', marginBottom: '4px' }}>{t('header.visit')}</h3>
+                <p style={{ fontSize: '13px' }}>
+                  <a
+                    href="https://maps.app.goo.gl/5DTrRt5VD2jBtyfE9"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     style={{
-                      textDecoration: 'none', 
+                      textDecoration: 'none',
                       color: 'inherit',
                       transition: 'color 0.3s ease'
                     }}
                     onMouseEnter={(e) => e.currentTarget.style.color = 'var(--thm-primary)'}
                     onMouseLeave={(e) => e.currentTarget.style.color = 'inherit'}
                   >
-                    <span style={{display: 'block', marginBottom: '5px'}}>
-                      37 Sidi El-Metwally Street
-                      <span style={{fontSize: '11px', color: 'var(--thm-color)', marginLeft: '6px'}}>(Alexandria)</span>
+                    <span style={{ display: 'block', marginBottom: '5px' }}>
+                      {t('header.addresses.alexandria')}
+                      <span style={{ 
+                        fontSize: '11px', 
+                        color: 'var(--thm-color)', 
+                        marginLeft: currentLanguage === 'ar' ? '0' : '6px',
+                        marginRight: currentLanguage === 'ar' ? '6px' : '0'
+                      }}>({t('header.locations.alexandria')})</span>
                     </span>
                   </a>
-                  <span 
+                  <span
                     role="button"
                     tabIndex="0"
                     style={{
@@ -94,8 +114,13 @@ const HeaderTwo = () => {
                       }
                     }}
                   >
-                    11 El-Masoud Street, off Abbasiya Street
-                    <span style={{fontSize: '11px', color: '#666', marginLeft: '6px'}}>(Cairo)</span>
+                    {t('header.addresses.cairo')}
+                    <span style={{ 
+                      fontSize: '11px', 
+                      color: '#666', 
+                      marginLeft: currentLanguage === 'ar' ? '0' : '6px',
+                      marginRight: currentLanguage === 'ar' ? '6px' : '0'
+                    }}>({t('header.locations.cairo')})</span>
                   </span>
                 </p>
               </div>
@@ -116,7 +141,7 @@ const HeaderTwo = () => {
               marginLeft: 0
             }}
           >
-            Donate Now
+            {t('header.donateNow')}
           </Link>
         </Container>
       </nav>

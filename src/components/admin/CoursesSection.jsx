@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit, Trash2, BookOpen, Users, Star, Clock, Search, Filter } from 'lucide-react';
+import { Plus, Edit, Trash2, BookOpen, Users, Star, Clock, Search, Filter, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -11,11 +11,16 @@ import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useCourses } from '../../context/CourseContext';
 import { useToast } from '../../hooks/use-toast';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { Link, graphql } from 'gatsby';
 // Course type removed - using JavaScript
 
 export const CoursesSection = () => {
   const { courses, institutions, companies, addCourse, updateCourse, deleteCourse } = useCourses();
   const { toast } = useToast();
+  const { t } = useTranslation('CoursesManagement');
+  const { language: currentLanguage } = useI18next();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -93,14 +98,14 @@ export const CoursesSection = () => {
     if (editingCourse) {
       updateCourse(editingCourse.id, courseData);
       toast({
-        title: "Course Updated",
-        description: "The course has been successfully updated.",
+        title: t('success.courseUpdated'),
+        description: t('success.courseUpdated'),
       });
     } else {
       addCourse(courseData);
       toast({
-        title: "Course Added",
-        description: "New course has been successfully added.",
+        title: t('success.courseAdded'),
+        description: t('success.courseAdded'),
       });
     }
     
@@ -132,123 +137,157 @@ export const CoursesSection = () => {
     setIsAddDialogOpen(true);
   };
 
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [courseToDelete, setCourseToDelete] = useState(null);
+
   const handleDelete = (course) => {
-    if (window.confirm(`Are you sure you want to delete "${course.title}"?`)) {
-      deleteCourse(course.id);
+    setCourseToDelete(course);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (courseToDelete) {
+      deleteCourse(courseToDelete.id);
       toast({
-        title: "Course Deleted",
-        description: "The course has been successfully deleted.",
+        title: t('success.courseDeleted'),
+        description: t('success.courseDeleted'),
       });
+      setDeleteModalOpen(false);
+      setCourseToDelete(null);
     }
   };
 
   const CourseDialog = () => (
     <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className={`max-w-4xl max-h-[90vh] overflow-y-auto ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <DialogHeader>
-          <DialogTitle>
-            {editingCourse ? 'Edit Course' : 'Add New Course'}
-          </DialogTitle>
+          <div className="flex items-center justify-between">
+            <DialogTitle className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+              {editingCourse ? t('form.editTitle') : t('form.createTitle')}
+            </DialogTitle>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => { resetForm(); setIsAddDialogOpen(false); }}
+              className={`${currentLanguage === 'ar' ? 'order-first' : 'order-last'}`}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Basic Information */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-lg">Basic Information</h3>
+              <h3 className={`font-semibold text-lg ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.basicInformation')}</h3>
               
               <div>
-                <Label htmlFor="title">Course Title *</Label>
+                <Label htmlFor="title" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.title')} *</Label>
                 <Input
                   id="title"
                   value={courseForm.title}
                   onChange={(e) => setCourseForm(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder={t('form.fields.titlePlaceholder')}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
                   required
                 />
               </div>
               
               <div>
-                <Label htmlFor="description">Description *</Label>
+                <Label htmlFor="description" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.description')} *</Label>
                 <Textarea
                   id="description"
                   value={courseForm.description}
                   onChange={(e) => setCourseForm(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder={t('form.fields.descriptionPlaceholder')}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
                   rows={4}
                   required
                 />
               </div>
               
               <div>
-                <Label htmlFor="category">Category *</Label>
+                <Label htmlFor="category" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.category')} *</Label>
                 <Input
                   id="category"
                   value={courseForm.category}
                   onChange={(e) => setCourseForm(prev => ({ ...prev, category: e.target.value }))}
-                  placeholder="e.g., Technology, Business, Design"
+                  placeholder={t('form.fields.categoryPlaceholder')}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
                   required
                 />
               </div>
               
               <div>
-                <Label htmlFor="subcategory">Subcategory</Label>
+                <Label htmlFor="subcategory" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.subcategory')}</Label>
                 <Input
                   id="subcategory"
                   value={courseForm.subcategory}
                   onChange={(e) => setCourseForm(prev => ({ ...prev, subcategory: e.target.value }))}
-                  placeholder="e.g., Web Development, Data Analysis"
+                  placeholder={t('form.fields.subcategoryPlaceholder')}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
                 />
               </div>
             </div>
 
             {/* Course Details */}
             <div className="space-y-4">
-              <h3 className="font-semibold text-lg">Course Details</h3>
+              <h3 className={`font-semibold text-lg ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.courseDetails')}</h3>
               
               <div>
-                <Label htmlFor="level">Level *</Label>
+                <Label htmlFor="level" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.level')} *</Label>
                 <Select value={courseForm.level} onValueChange={(value) => setCourseForm(prev => ({ ...prev, level: value }))}>
-                  <SelectTrigger>
+                  <SelectTrigger dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="beginner">Beginner</SelectItem>
-                    <SelectItem value="intermediate">Intermediate</SelectItem>
-                    <SelectItem value="advanced">Advanced</SelectItem>
+                    <SelectItem value="beginner">{t('form.levels.beginner')}</SelectItem>
+                    <SelectItem value="intermediate">{t('form.levels.intermediate')}</SelectItem>
+                    <SelectItem value="advanced">{t('form.levels.advanced')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               
               <div>
-                <Label htmlFor="format">Format *</Label>
+                <Label htmlFor="format" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.format')} *</Label>
                 <Select value={courseForm.format} onValueChange={(value) => setCourseForm(prev => ({ ...prev, format: value }))}>
-                  <SelectTrigger>
+                  <SelectTrigger dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="online">Online</SelectItem>
-                    <SelectItem value="offline">Offline</SelectItem>
-                    <SelectItem value="hybrid">Hybrid</SelectItem>
+                    <SelectItem value="online">{t('form.formats.online')}</SelectItem>
+                    <SelectItem value="offline">{t('form.formats.offline')}</SelectItem>
+                    <SelectItem value="hybrid">{t('form.formats.hybrid')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               
               <div>
-                <Label htmlFor="duration">Duration</Label>
+                <Label htmlFor="duration" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.duration')}</Label>
                 <Input
                   id="duration"
                   value={courseForm.duration}
                   onChange={(e) => setCourseForm(prev => ({ ...prev, duration: e.target.value }))}
-                  placeholder="e.g., 8 weeks, 3 months"
+                  placeholder={t('form.fields.durationPlaceholder')}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
                 />
               </div>
               
               <div>
-                <Label htmlFor="price">Price *</Label>
+                <Label htmlFor="price" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.price')} *</Label>
                 <Input
                   id="price"
                   type="number"
                   value={courseForm.price}
                   onChange={(e) => setCourseForm(prev => ({ ...prev, price: Number(e.target.value) }))}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
                   required
                 />
               </div>

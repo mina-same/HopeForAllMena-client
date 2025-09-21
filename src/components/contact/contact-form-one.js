@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import BlockTitle from "../block-title";
 import contactMessageService from "../../services/contactMessageService";
 
 const ContactFormOne = () => {
+  const { t } = useTranslation('Contact');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -64,19 +69,34 @@ const ContactFormOne = () => {
   };
 
   return (
-    <section className="contact-page pt-120 pb-80">
-      <Container>
+    <>
+      {/* RTL-specific styles for Arabic */}
+      {currentLanguage === 'ar' && (
+        <style jsx>{`
+          .form-one input[type="text"], 
+          .form-one input[type="email"], 
+          .form-one input[type="tel"], 
+          .form-one textarea {
+            padding-left: 0 !important;
+            padding-right: 30px !important;
+            text-align: right;
+          }
+          .form-one .thm-btn {
+            direction: rtl;
+          }
+        `}</style>
+      )}
+      <section className="contact-page pt-120 pb-80" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+        <Container>
         <Row>
           <Col lg={5}>
             <div className="contact-page__content mb-40">
               <BlockTitle
-                title={`Feel free to write us \n a message.`}
-                tagLine="Contact With Us"
+                title={t('form.title')}
+                tagLine={t('form.tagLine')}
               />
               <p className="block-text mb-30 pr-10">
-                We'd love to hear from you! Send us a message and we'll respond
-                as soon as possible. Whether you have questions about our ministry,
-                need prayer, or want to get involved, we're here to help.
+                {t('form.description')}
               </p>
               <div className="footer-social black-hover">
                 <a href="https://www.facebook.com/profile.php?id=61556019641884" aria-label="facebook">
@@ -99,7 +119,7 @@ const ContactFormOne = () => {
                     type="text"
                     name="name"
                     id="name"
-                    placeholder="Your Name"
+                    placeholder={t('form.namePlaceholder')}
                     value={formData.name}
                     onChange={handleInputChange}
                     required
@@ -113,7 +133,7 @@ const ContactFormOne = () => {
                     type="email"
                     name="email"
                     id="email"
-                    placeholder="Email Address"
+                    placeholder={t('form.emailPlaceholder')}
                     value={formData.email}
                     onChange={handleInputChange}
                     required
@@ -127,7 +147,7 @@ const ContactFormOne = () => {
                     type="tel"
                     name="phone"
                     id="phone"
-                    placeholder="Phone Number"
+                    placeholder={t('form.phonePlaceholder')}
                     value={formData.phone}
                     onChange={handleInputChange}
                   />
@@ -140,7 +160,7 @@ const ContactFormOne = () => {
                     type="text"
                     name="subject"
                     id="subject"
-                    placeholder="Subject (minimum 5 characters)"
+                    placeholder={t('form.subjectPlaceholder')}
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
@@ -153,7 +173,7 @@ const ContactFormOne = () => {
                   </label>
                   <textarea
                     name="message"
-                    placeholder="Write a Message (minimum 10 characters)"
+                    placeholder={t('form.messagePlaceholder')}
                     id="message"
                     value={formData.message}
                     onChange={handleInputChange}
@@ -167,7 +187,7 @@ const ContactFormOne = () => {
                     className="thm-btn"
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Sending...' : 'Submit Message'}
+                    {isSubmitting ? t('form.submitting') : t('form.submitButton')}
                   </button>
                 </div>
               </div>
@@ -175,27 +195,27 @@ const ContactFormOne = () => {
             <div className="result">
               {submitStatus === 'success' && (
                 <div className="alert alert-success">
-                  <p>Thank you for your message! We'll get back to you soon.</p>
+                  <p>{t('form.successMessage')}</p>
                 </div>
               )}
               {submitStatus === 'error' && (
                 <div className="alert alert-danger">
                   {errorMessage ? (
                     <div>
-                      <p><strong>Please fix the following errors:</strong></p>
+                      <p><strong>{t('form.errorTitle')}</strong></p>
                       <div style={{ marginTop: '10px', whiteSpace: 'pre-line' }}>
                         {errorMessage}
                       </div>
                     </div>
                   ) : (
                     <div>
-                      <p>Please check the following requirements:</p>
-                      <ul style={{ marginTop: '10px', paddingLeft: '20px' }}>
-                        <li>Name must be at least 2 characters</li>
-                        <li>Email must be valid</li>
-                        <li>Subject must be at least 5 characters</li>
-                        <li>Message must be at least 10 characters</li>
-                        <li>Phone number is optional</li>
+                      <p>{t('form.requirementsTitle')}</p>
+                      <ul style={{ marginTop: '10px', paddingLeft: currentLanguage === 'ar' ? '0' : '20px', paddingRight: currentLanguage === 'ar' ? '20px' : '0' }}>
+                        <li>{t('form.requirements.name')}</li>
+                        <li>{t('form.requirements.email')}</li>
+                        <li>{t('form.requirements.subject')}</li>
+                        <li>{t('form.requirements.message')}</li>
+                        <li>{t('form.requirements.phone')}</li>
                       </ul>
                     </div>
                   )}
@@ -206,6 +226,7 @@ const ContactFormOne = () => {
         </Row>
       </Container>
     </section>
+    </>
   );
 };
 

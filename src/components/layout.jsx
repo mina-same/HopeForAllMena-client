@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Helmet from "react-helmet";
+import { useI18next } from "gatsby-plugin-react-i18next";
 import MobileNav from "./mobile-nav";
 import SearchPopup from "./search-popup";
 
@@ -23,8 +24,7 @@ import "swiper/css/navigation";
 
 const Layout = ({ pageTitle, children }) => {
   const [hasMounted, setHasMounted] = useState(false);
-  // Temporarily disable i18n
-  // const { i18n } = useI18next();
+  const { i18n } = useI18next();
   const handleRadius = () => {
     const dynamicRadius = document.querySelectorAll(".dynamic-radius");
     dynamicRadius.forEach(function (btn) {
@@ -39,16 +39,21 @@ const Layout = ({ pageTitle, children }) => {
       handleRadius();
       setHasMounted(true);
       
-      // Set default language to English
+      // Set HTML direction based on language
       const htmlElement = document.documentElement;
-      htmlElement.setAttribute('dir', 'ltr');
-      htmlElement.setAttribute('lang', 'en');
+      if (i18n?.resolvedLanguage === 'ar') {
+        htmlElement.setAttribute('dir', 'rtl');
+        htmlElement.setAttribute('lang', 'ar');
+      } else {
+        htmlElement.setAttribute('dir', 'ltr');
+        htmlElement.setAttribute('lang', 'en');
+      }
       
       return () => {
         handleRadius();
       };
     }
-  }, [hasMounted]);
+  }, [hasMounted, i18n?.resolvedLanguage]);
 
   if (!hasMounted) {
     return null;

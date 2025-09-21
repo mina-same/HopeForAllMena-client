@@ -1,0 +1,24 @@
+{
+  "pageTitle": "تسجيل الدخول",
+  "welcome": {
+    "title": "مرحباً بعودتك!",
+    "description": "سواء كنت تطلق متجراً إلكترونياً مذهلاً أو تحسن من كائناتك الموجهة"
+  },
+  "form": {
+    "title": "تسجيل دخول المدير",
+    "subtitle": "مرحباً بعودتك! سجل دخولك إلى حساب المدير",
+    "emailLabel": "البريد الإلكتروني أو اسم المستخدم",
+    "emailPlaceholder": "admin@azino.com أو admin",
+    "passwordLabel": "كلمة المرور",
+    "passwordPlaceholder": "كلمة المرور",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "signInButton": "تسجيل الدخول",
+    "signingIn": "جاري تسجيل الدخول..."
+  },
+  "errors": {
+    "accessDenied": "تم رفض الوصول. مطلوب صلاحيات المدير.",
+    "loginFailed": "فشل تسجيل الدخول. يرجى التحقق من بيانات الاعتماد.",
+    "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
+  }
+}

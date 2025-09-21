@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "gatsby";
+import { Link } from "gatsby-plugin-react-i18next";
 import { Link as ScrollLink } from "react-scroll";
 import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation } from "gatsby-plugin-react-i18next";
 import logoLight from "../assets/images/logos/Hope4allMENADark.png";
 import blogPost1 from "../assets/images/resources/footer-img-1-1.jpg";
 import blogPost2 from "../assets/images/resources/footer-img-1-2.jpg";
@@ -9,8 +10,7 @@ import blogAPI from "../services/blogAPI";
 
 
 const Footer = () => {
-  // Temporarily disable i18n
-  // const { t } = useTranslation();
+  const { t } = useTranslation();
   const [latestBlogs, setLatestBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -67,10 +67,10 @@ const Footer = () => {
                   marginBottom: "0rem",
                   textShadow: "2px 2px 4px rgba(0,0,0,0.2)"
                 }}>
-                  Hope For All Mena
+                  {t('footer.organizationName')}
                 </h1>
                 <p>
-                  Connecting, Equipment and Multiplying
+                  {t('footer.tagline')}
                 </p>
                 <ul className="list-unstyled footer-widget__contact">
                   <li>
@@ -93,41 +93,41 @@ const Footer = () => {
             </Col>
             <Col lg={3} md={6} sm={12}>
               <div className="footer-widget footer-widget__link mb-40">
-                <h3 className="footer-widget__title">Explore</h3>
+                <h3 className="footer-widget__title">{t('footer.explore')}</h3>
                 <ul className="list-unstyled footer-widget__link-list">
                   <li>
-                    <Link to="/causes">Our Causes</Link>
+                    <Link to="/causes">{t('footer.ourCauses')}</Link>
                   </li>
                   <li>
-                    <Link to="/about">About us</Link>
+                    <Link to="/about">{t('footer.aboutUs')}</Link>
                   </li>
                   <li>
-                    <Link to="/news">New Campaign</Link>
+                    <Link to="/news">{t('footer.newCampaign')}</Link>
                   </li>
                   <li>
-                    <Link to="/events">Upcoming Events</Link>
+                    <Link to="/events">{t('footer.upcomingEvents')}</Link>
                   </li>
                   <li>
-                    <Link to="/about">Site Map</Link>
+                    <Link to="/about">{t('footer.siteMap')}</Link>
                   </li>
                   <li>
-                    <Link to="/contact">Help</Link>
+                    <Link to="/contact">{t('footer.help')}</Link>
                   </li>
                   <li>
-                    <Link to="/causes">Donate</Link>
+                    <Link to="/causes">{t('footer.donate')}</Link>
                   </li>
                   <li>
-                    <Link to="/contact">Contact us</Link>
+                    <Link to="/contact">{t('footer.contactUs')}</Link>
                   </li>
                   <li>
-                    <Link to="/Admin">Admin</Link>
+                    <Link to="/Admin">{t('navigation.admin')}</Link>
                   </li>
                 </ul>
               </div>
             </Col>
             <Col lg={3} md={6} sm={12}>
               <div className="footer-widget mb-40 footer-widget__blog">
-                <h3 className="footer-widget__title">Latest Blog Posts</h3>
+                <h3 className="footer-widget__title">{t('footer.latestBlogPosts')}</h3>
                 <ul className="list-unstyled footer-widget__blog">
                   {loading ? (
                     <>

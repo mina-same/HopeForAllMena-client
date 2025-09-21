@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 
 const GoogleMap = ({ extraClass }) => {
+  const { t } = useTranslation('Contact');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
   const [activeLocation, setActiveLocation] = useState('alexandria');
 
   const locations = {
@@ -15,7 +19,7 @@ const GoogleMap = ({ extraClass }) => {
   };
 
   return (
-    <div className={`google-map__${extraClass}`}>
+    <div className={`google-map__${extraClass}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <div className="location-buttons" style={{ 
         position: 'relative'
       }}>
@@ -50,7 +54,7 @@ const GoogleMap = ({ extraClass }) => {
               }
             }}
           >
-            {location.name}
+            {t(`map.locations.${key}`)}
           </button>
         ))}
       </div>

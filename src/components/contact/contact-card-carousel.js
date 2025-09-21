@@ -1,8 +1,13 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import cardBg from "../../assets/images/shapes/contact-card-bg-1-1.png";
 
 const ContactCardCarousel = () => {
+  const { t } = useTranslation('Contact');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const swiperOptions = {
     spaceBetween: 30,
     slidesPerView: 3,
@@ -26,7 +31,7 @@ const ContactCardCarousel = () => {
     }
   };
   return (
-    <div className="contact-card-carousel ">
+    <div className="contact-card-carousel" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <div className="container">
         <Swiper {...swiperOptions}>
           <SwiperSlide>
@@ -35,9 +40,9 @@ const ContactCardCarousel = () => {
               style={{ backgroundImage: `url(${cardBg})` }}
             >
               <i aria-label="contact icon" className="azino-icon-email1"></i>
-              <h3>Email</h3>
+              <h3>{t('contactCards.email.title')}</h3>
               <p>
-                <a href="mailto:hope4allmena@gmail.com">hope4allmena@gmail.com</a>
+                <a href="mailto:hope4allmena@gmail.com">{t('contactCards.email.address')}</a>
               </p>
             </div>
           </SwiperSlide>
@@ -47,10 +52,10 @@ const ContactCardCarousel = () => {
               style={{ backgroundImage: `url(${cardBg})` }}
             >
               <i aria-label="contact icon" className="azino-icon-address"></i>
-              <h3>Address</h3>
+              <h3>{t('contactCards.address.title')}</h3>
               <p>
-                37 Sidi El-Metwally Street <br /> Alexandria, Egypt <br />
-                11 El-Masoud Street, Cairo
+                {t('contactCards.address.alexandria')} <br /> {t('contactCards.address.alexandriaCity')} <br />
+                {t('contactCards.address.cairo')}
               </p>
             </div>
           </SwiperSlide>
@@ -60,7 +65,7 @@ const ContactCardCarousel = () => {
               style={{ backgroundImage: `url(${cardBg})` }}
             >
               <i aria-label="contact icon" className="azino-icon-calling"></i>
-              <h3>Phone</h3>
+              <h3>{t('contactCards.phone.title')}</h3>
               <p>
                 <a href="tel:+201281416629">+20 128 141 6629</a> <br />
                 <a href="tel:+201555103774">+20 155 510 3774</a>

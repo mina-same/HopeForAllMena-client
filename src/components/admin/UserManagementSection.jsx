@@ -15,6 +15,10 @@ import { useAuth } from '../../context/AuthContext';
 import Layout from '../layout';
 import { formatValidationError, getFieldError, getFieldSuggestion, hasFieldError, VALIDATION_MESSAGES } from '../../lib/validation';
 import ConfirmationModal from '../ui/ConfirmationModal';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
+import './UserManagement-rtl.css';
 
 const availablePermissions = [
   { id: 'books', label: 'Books & Publishing', description: 'Manage books, authors, categories, and reviews' },
@@ -45,6 +49,8 @@ const FormDialog = React.memo(({
   isSubmitting,
   error 
 }) => {
+  const { t } = useTranslation('UserManagement');
+  const { language: currentLanguage } = useI18next();
   const [formData, setFormData] = useState(initialData);
   const [showPassword, setShowPassword] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
@@ -213,10 +219,14 @@ const FormDialog = React.memo(({
   };
 
   return (
-    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white" onOpenAutoFocus={(e) => e.preventDefault()}>
+    <DialogContent 
+      className={`max-w-2xl max-h-[90vh] overflow-y-auto bg-white ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`}
+      dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+      onOpenAutoFocus={(e) => e.preventDefault()}
+    >
       <DialogHeader>
-        <DialogTitle className="text-xl font-semibold text-sidebar-text">
-          {isEdit ? 'Edit User' : 'Create New User'}
+        <DialogTitle className={`text-xl font-semibold text-sidebar-text ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+          {isEdit ? t('form.editTitle') : t('form.createTitle')}
         </DialogTitle>
       </DialogHeader>
       
@@ -231,48 +241,64 @@ const FormDialog = React.memo(({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Full Name *</Label>
+            <Label htmlFor="name" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+              {t('form.fields.fullName.label')} *
+            </Label>
             <Input
               id="name"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
-              placeholder="Enter full name"
+              placeholder={t('form.fields.fullName.placeholder')}
               className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
                 fieldErrors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-              }`}
+              } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
+              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
               autoComplete="off"
             />
             {fieldErrors.name && (
               <div className="mt-1">
-                <p className="text-sm text-red-600">{fieldErrors.name}</p>
+                <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {fieldErrors.name}
+                </p>
                 {fieldErrors.name.includes('taken') && (
-                  <p className="text-xs text-gray-600 mt-1">💡 Try using a different name or adding numbers</p>
+                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                    {t('form.validation.suggestions.nameTaken')}
+                  </p>
                 )}
               </div>
             )}
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="email">Email Address *</Label>
+            <Label htmlFor="email" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+              {t('form.fields.email.label')} *
+            </Label>
             <Input
               id="email"
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
-              placeholder="Enter email address"
+              placeholder={t('form.fields.email.placeholder')}
               className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
                 fieldErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-              }`}
+              } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
+              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
               autoComplete="off"
             />
             {fieldErrors.email && (
               <div className="mt-1">
-                <p className="text-sm text-red-600">{fieldErrors.email}</p>
+                <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {fieldErrors.email}
+                </p>
                 {fieldErrors.email.includes('taken') && (
-                  <p className="text-xs text-gray-600 mt-1">💡 Try using a different email address</p>
+                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                    {t('form.validation.suggestions.emailTaken')}
+                  </p>
                 )}
                 {fieldErrors.email.includes('valid') && (
-                  <p className="text-xs text-gray-600 mt-1">💡 Example: user@example.com</p>
+                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                    {t('form.validation.suggestions.emailFormat')}
+                  </p>
                 )}
               </div>
             )}
@@ -281,49 +307,61 @@ const FormDialog = React.memo(({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Username *</Label>
+            <Label htmlFor="username" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+              {t('form.fields.username.label')} *
+            </Label>
             <Input
               id="username"
               value={formData.username}
               onChange={(e) => handleInputChange('username', e.target.value)}
-              placeholder="Enter username"
+              placeholder={t('form.fields.username.placeholder')}
               className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
                 fieldErrors.username ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-              }`}
+              } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
+              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
               autoComplete="off"
             />
             {fieldErrors.username && (
               <div className="mt-1">
-                <p className="text-sm text-red-600">{fieldErrors.username}</p>
+                <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {fieldErrors.username}
+                </p>
                 {fieldErrors.username.includes('taken') && (
-                  <p className="text-xs text-gray-600 mt-1">💡 Try adding numbers or changing the username</p>
+                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                    {t('form.validation.suggestions.usernameTaken')}
+                  </p>
                 )}
                 {fieldErrors.username.includes('pattern') && (
-                  <p className="text-xs text-gray-600 mt-1">💡 Use only letters, numbers, dots, underscores, and hyphens</p>
+                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                    {t('form.validation.suggestions.usernamePattern')}
+                  </p>
                 )}
               </div>
             )}
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="password">{isEdit ? 'Password' : 'Password *'}</Label>
+            <Label htmlFor="password" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+              {isEdit ? t('form.fields.password.labelEdit') : `${t('form.fields.password.label')} *`}
+            </Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={(e) => handleInputChange('password', e.target.value)}
-                placeholder={isEdit ? "Leave blank to keep current" : "Enter password"}
-                className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base pr-10 ${
-                  fieldErrors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-                }`}
+                placeholder={isEdit ? t('form.fields.password.placeholderEdit') : t('form.fields.password.placeholder')}
+                className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
+                  currentLanguage === 'ar' ? 'pl-10 pr-3 ' : 'pr-10 pl-3 text-left'
+                } ${fieldErrors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 autoComplete="new-password"
               />
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 p-0"
+                className={`absolute ${currentLanguage === 'ar' ? 'left-2' : 'right-2'} top-1/2 -translate-y-1/2 h-6 w-6 p-0`}
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -331,9 +369,13 @@ const FormDialog = React.memo(({
             </div>
             {fieldErrors.password && (
               <div className="mt-1">
-                <p className="text-sm text-red-600">{fieldErrors.password}</p>
+                <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {fieldErrors.password}
+                </p>
                 {fieldErrors.password.includes('pattern') && (
-                  <p className="text-xs text-gray-600 mt-1">💡 Include at least one lowercase letter, one uppercase letter, and one number</p>
+                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                    {t('form.validation.suggestions.passwordPattern')}
+                  </p>
                 )}
               </div>
             )}
@@ -341,26 +383,33 @@ const FormDialog = React.memo(({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="role">Role *</Label>
+          <Label htmlFor="role" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+            {t('form.fields.role.label')} *
+          </Label>
           <Input
             id="role"
             value={formData.role}
             onChange={(e) => handleInputChange('role', e.target.value)}
-            placeholder="e.g., Editor, Manager, Administrator"
+            placeholder={t('form.fields.role.placeholder')}
             className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
               fieldErrors.role ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-            }`}
+            } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
+            dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
             autoComplete="off"
           />
           {fieldErrors.role && (
-            <p className="text-sm text-red-600 mt-1">{fieldErrors.role}</p>
+            <p className={`text-sm text-red-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+              {fieldErrors.role}
+            </p>
           )}
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
             <ShieldCheck className="h-4 w-4 text-theme-base" />
-            <Label className="text-black font-semibold">Permissions *</Label>
+            <Label className={`text-black font-semibold ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+              {t('form.fields.permissions.label')} *
+            </Label>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto">
             {availablePermissions.map((permission) => (
@@ -373,7 +422,7 @@ const FormDialog = React.memo(({
                 }`}
                 onClick={() => handlePermissionChange(permission.id, !formData.permissions.includes(permission.id))}
               >
-                <div className="flex items-start gap-3">
+                <div className={`flex items-start gap-3 ${currentLanguage === 'ar' ? '' : ''}`}>
                   <Checkbox
                     id={permission.id}
                     checked={formData.permissions.includes(permission.id)}
@@ -383,17 +432,17 @@ const FormDialog = React.memo(({
                   <div className="flex-1 min-w-0">
                     <Label
                       htmlFor={permission.id}
-                      className="text-sm font-semibold cursor-pointer block mb-1"
+                      className={`text-sm font-semibold cursor-pointer block mb-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}
                     >
-                      {permission.label}
+                      {t(`permissions.${permission.id}.label`)}
                     </Label>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {permission.description}
+                    <p className={`text-xs text-muted-foreground leading-relaxed ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                      {t(`permissions.${permission.id}.description`)}
                     </p>
                   </div>
                 </div>
                 {formData.permissions.includes(permission.id) && (
-                  <div className="absolute top-2 right-2">
+                  <div className={`absolute top-2 ${currentLanguage === 'ar' ? 'left-2' : 'right-2'}`}>
                     <div className="w-2 h-2 bg-theme-base rounded-full animate-pulse"></div>
                   </div>
                 )}
@@ -401,29 +450,33 @@ const FormDialog = React.memo(({
             ))}
           </div>
           {fieldErrors.permissions && (
-            <p className="text-sm text-red-600 mt-1">{fieldErrors.permissions}</p>
+            <p className={`text-sm text-red-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+              {fieldErrors.permissions}
+            </p>
           )}
-          <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg">
-            <ShieldCheck className="h-3 w-3 inline mr-1" />
-            Select the appropriate permissions for this user's role and responsibilities.
+          <div className={`text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+            <ShieldCheck className={`h-3 w-3 inline ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
+            {t('form.fields.permissions.description')}
           </div>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className={`flex items-center ${currentLanguage === 'ar' ? 'space-x-reverse space-x-3 ' : 'space-x-3'}`}>
           <Switch
             id="status"
             checked={formData.status === 'active'}
             onCheckedChange={(checked) => handleInputChange('status', checked ? 'active' : 'inactive')}
           />
-          <Label htmlFor="status">Active User</Label>
+          <Label htmlFor="status" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+            {t('form.fields.status.label')}
+          </Label>
         </div>
 
-        <div className="flex justify-end space-x-3 pt-4 border-t">
+        <div className={`flex ${currentLanguage === 'ar' ? 'justify-start space-x-reverse space-x-3 ' : 'justify-end space-x-3'} pt-4 border-t`}>
           <Button
             variant="outline"
             onClick={onCancel}
           >
-            Cancel
+            {t('form.buttons.cancel')}
           </Button>
           <Button
             onClick={handleSubmit}
@@ -431,12 +484,12 @@ const FormDialog = React.memo(({
             className="bg-gradient-button text-white hover:opacity-90"
           >
             {isSubmitting ? (
-              <>
-                <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-                {isEdit ? 'Updating...' : 'Creating...'}
-              </>
+              <div className={`flex items-center ${currentLanguage === 'ar' ? '' : ''}`}>
+                <RefreshCw className={`h-4 w-4 animate-spin ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                {isEdit ? t('form.buttons.updating') : t('form.buttons.creating')}
+              </div>
             ) : (
-              isEdit ? 'Update User' : 'Create User'
+              isEdit ? t('form.buttons.update') : t('form.buttons.create')
             )}
           </Button>
         </div>
@@ -449,6 +502,8 @@ FormDialog.displayName = 'FormDialog';
 
 export function UserManagementSection() {
   const { user: currentUser } = useAuth();
+  const { t } = useTranslation('UserManagement');
+  const { language: currentLanguage } = useI18next();
   
   // State for users data
   const [users, setUsers] = useState([]);
@@ -648,7 +703,7 @@ export function UserManagementSection() {
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
           <RefreshCw className="h-8 w-8 animate-spin mx-auto mb-4 text-theme-primary" />
-          <p className="text-muted-foreground">Loading users...</p>
+          <p className="text-muted-foreground">{t('loading.users')}</p>
         </div>
       </div>
     );
@@ -656,28 +711,30 @@ export function UserManagementSection() {
 
   return (
     <Layout>
-    <div className="space-y-6">
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       {error && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
           <AlertCircle className="h-5 w-5 text-red-600" />
-          <p className="text-red-800">{error}</p>
+          <p className={`text-red-800 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>{error}</p>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={() => setError('')}
-            className="ml-auto text-red-600 hover:text-red-800"
+            className={`${currentLanguage === 'ar' ? 'mr-auto' : 'ml-auto'} text-red-600 hover:text-red-800`}
           >
             ×
           </Button>
         </div>
       )}
       
-      <div className="flex items-center justify-between">
-        <div>
+      <div className={`flex items-center ${currentLanguage === 'ar' ? 'justify-between ' : 'justify-between'}`}>
+        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
           <h2 className="text-2xl font-bold text-[#2194D1]">
-            User Management
+            {t('title')}
           </h2>
-          <p className="text-muted-foreground mt-1">Manage user accounts and permissions ({pagination.totalUsers} total)</p>
+          <p className="text-muted-foreground mt-1">
+            {t('description', { count: pagination.totalUsers })}
+          </p>
         </div>
         
         <Dialog open={showCreateDialog} onOpenChange={(open) => {
@@ -688,8 +745,10 @@ export function UserManagementSection() {
         }}>
           <DialogTrigger asChild>
             <Button variant="default" className="text-white hover:opacity-90 shadow-lg">
-              <Plus className="h-4 w-4 mr-2" />
-              Add User
+              <div className={`flex items-center ${currentLanguage === 'ar' ? '' : ''}`}>
+                <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                {t('addUser')}
+              </div>
             </Button>
           </DialogTrigger>
           <FormDialog 
@@ -707,17 +766,18 @@ export function UserManagementSection() {
       <Card className="border-0 shadow-modern">
         <CardContent className="p-4">
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div className={`absolute inset-y-0 ${currentLanguage === 'ar' ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
               <Search className="h-4 w-4 text-muted-foreground" />
             </div>
             <Input
-              placeholder="Search users by name, email, or username..."
+              placeholder={t('searchPlaceholder')}
               value={searchTerm}
               onChange={handleSearchChange}
-              className="pl-[30px] border-sidebar-border focus:border-theme-primary"
+              className={`${currentLanguage === 'ar' ? 'pr-[30px] ' : 'pl-[30px] text-left'} border-sidebar-border focus:border-theme-primary`}
+              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
             />
             {loading && (
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+              <div className={`absolute inset-y-0 ${currentLanguage === 'ar' ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
                 <RefreshCw className="h-4 w-4 animate-spin text-muted-foreground" />
               </div>
             )}
@@ -728,9 +788,9 @@ export function UserManagementSection() {
       {/* Users Table */}
       <Card className="border-0 rounded-xl">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? ' ' : 'text-left'}`}>
             <Shield className="h-5 w-5 text-theme-primary" />
-            Users ({filteredUsers.length})
+            {t('table.usersCount', { count: filteredUsers.length })}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -738,51 +798,63 @@ export function UserManagementSection() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Permissions</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Last Login</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
+                    {t('table.headers.user')}
+                  </TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
+                    {t('table.headers.role')}
+                  </TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
+                    {t('table.headers.permissions')}
+                  </TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
+                    {t('table.headers.status')}
+                  </TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
+                    {t('table.headers.lastLogin')}
+                  </TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-left' : ''}>
+                    {t('table.headers.actions')}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredUsers.map((user) => (
                   <TableRow key={user.id} className="hover:bg-gray-200">
                     <TableCell>
-                      <div className="flex items-center gap-3">
+                      <div className={`flex items-center gap-3 ${currentLanguage === 'ar' ? '' : ''}`}>
                         <Avatar className="h-8 w-8">
                           <AvatarFallback className="text-sm">
                             {user.name.split(' ').map(n => n[0]).join('')}
                           </AvatarFallback>
                         </Avatar>
-                        <div>
+                        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                           <p className="font-medium">{user.name}</p>
                           <p className="text-sm text-muted-foreground">{user.email}</p>
                         </div>
                       </div>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                       <Badge variant="secondary" className="bg-theme-light text-theme-primary">
                         {user.role}
                       </Badge>
                     </TableCell>
-                    <TableCell>
-                      <div className="flex flex-wrap gap-1 max-w-xs">
+                    <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                      <div className={`flex flex-wrap gap-1 max-w-xs ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
                         {user.permissions.slice(0, 2).map((permission) => (
                           <Badge key={permission} variant="outline" className="text-xs">
-                            {getPermissionLabel(permission)}
+                            {t(`permissions.${permission}.label`)}
                           </Badge>
                         ))}
                         {user.permissions.length > 2 && (
                           <Badge variant="outline" className="text-xs">
-                            +{user.permissions.length - 2} more
+                            {t('table.morePermissions', { count: user.permissions.length - 2 })}
                           </Badge>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
+                    <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? ' justify-end' : 'justify-start'}`}>
                         <Switch
                           checked={user.status === 'active'}
                           onCheckedChange={() => toggleUserStatus(user._id, user.status)}
@@ -794,15 +866,15 @@ export function UserManagementSection() {
                             : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
                           }
                         >
-                          {user.status}
+                          {t(`status.${user.status}`)}
                         </Badge>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm text-muted-foreground">
+                    <TableCell className={`text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                       {user.lastLogin}
                     </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex items-center justify-end gap-2">
+                    <TableCell className={currentLanguage === 'ar' ? 'text-left' : 'text-right'}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'justify-start' : 'justify-end'}`}>
                         <Dialog open={editingUser?.id === user.id} onOpenChange={(open) => {
                           if (!open) {
                             setEditingUser(null);
@@ -834,7 +906,7 @@ export function UserManagementSection() {
                           onClick={() => handleDeleteUser(user._id)}
                           disabled={user._id === currentUser?._id}
                           className="h-8 w-8 p-0 text-red-600 hover:text-red-800 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          title={user._id === currentUser?._id ? "Cannot delete your own account" : "Delete user"}
+                          title={user._id === currentUser?._id ? t('deleteModal.cannotDeleteSelf') : t('actions.delete')}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -857,10 +929,10 @@ export function UserManagementSection() {
         setUserToDelete(null);
       }}
       onConfirm={confirmDeleteUser}
-      title="Delete User"
-      description={`Are you sure you want to delete "${userToDelete?.name || userToDelete?.username || 'this user'}"? This action cannot be undone and will permanently remove the user account.`}
-      confirmText="Delete User"
-      cancelText="Cancel"
+      title={t('deleteModal.title')}
+      description={t('deleteModal.description', { name: userToDelete?.name || userToDelete?.username || 'this user' })}
+      confirmText={t('deleteModal.confirmText')}
+      cancelText={t('deleteModal.cancelText')}
       variant="danger"
       isLoading={isDeleting}
       icon={
@@ -874,3 +946,20 @@ export function UserManagementSection() {
     </Layout>
   );
 }
+
+export default UserManagementSection;
+
+// GraphQL query for i18n support
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

@@ -1,13 +1,31 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import about1 from "../../assets/images/shapes/about-bag-1-1.png";
 import about2 from "../../assets/images/resources/about-1-1.jpg";
 import about3 from "../../assets/images/resources/about-1-1.jpg";
 import heart from "../../assets/images/shapes/heart-2-1.png";
 
 const AboutOne = () => {
+  const { t } = useTranslation('About');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+
   return (
-    <section className="about-one pt-120 pb-40">
+    <>
+      {/* RTL-specific styles for Arabic */}
+      {currentLanguage === 'ar' && (
+        <style jsx>{`
+          .about-one .block-title h3 {
+            text-align: right;
+          }
+          .about-one .team-about__top-text {
+            text-align: right;
+            line-height: 1.6;
+          }
+        `}</style>
+      )}
+      <section className="about-one pt-120 pb-40" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <Container>
         <Row>
           <div className="about-one__award">
@@ -28,29 +46,26 @@ const AboutOne = () => {
               <div className="block-title">
                 <p>
                   <img src={heart} width="15" alt="" />
-                  About us
+                  {t('aboutOne.tagLine')}
                 </p>
-                <h3>Hope for all Middle East and North Africa</h3>
+                <h3>{t('aboutOne.title')}</h3>
               </div>
             </Col>
             <Col md={12} lg={4}>
               <p className="team-about__top-text">
-                Tincidunt elit magnis nulla facilisis sagittis is maecenas.
-                Sapien nunced amet ultrices, dolores sit ipsum velit purus
-                aliquet, massa fringilla leo orci ipsum dolor sit.
+                {t('aboutOne.description1')}
               </p>
             </Col>
             <Col md={12} lg={4}>
               <p className="team-about__top-text">
-                Sapien nunced amet ultrices, dolores sit ipsum velit purus
-                aliquet, massa fringilla leo orci. Lorem ipsum dolor sit amet.
-                consectetur adipisi cing elit dolo.
+                {t('aboutOne.description2')}
               </p>
             </Col>
           </Row>
         </div>
       </Container>
     </section>
+    </>
   );
 };
 

@@ -1,0 +1,66 @@
+{
+  "header": {
+    "title": "Analytics & Reports",
+    "description": "Track the growth and performance of key metrics over time"
+  },
+  "statistics": {
+    "title": "Current Statistics",
+    "editButton": "Edit Numbers",
+    "editTitle": "Edit Statistics",
+    "cancel": "Cancel",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "members": "Members",
+    "leadersTraining": "Leaders Training",
+    "publishedBooks": "Published Books",
+    "givenMagazines": "Given Magazines",
+    "fromLastMonth": "from last month"
+  },
+  "controls": {
+    "timeRange": "Time Range",
+    "chartType": "Chart Type",
+    "sixMonths": "6 Months",
+    "twelveMonths": "12 Months",
+    "twentyFourMonths": "24 Months",
+    "lineChart": "Line",
+    "barChart": "Bar"
+  },
+  "charts": {
+    "monthlyTrends": "Monthly Growth Trends",
+    "distribution": "Distribution",
+    "lastMonths": "Last {{count}} months",
+    "currentTotals": "Current totals",
+    "growthAnalysis": "Monthly Growth Analysis",
+    "lastSixMonths": "Last 6 months"
+  },
+  "table": {
+    "month": "Month",
+    "members": "Members",
+    "leadersTraining": "Leaders Training",
+    "publishedBooks": "Published Books",
+    "givenMagazines": "Given Magazines"
+  },
+  "loading": {
+    "statistics": "Loading statistics...",
+    "charts": "Loading charts..."
+  },
+  "errors": {
+    "loadStats": "Failed to load statistics",
+    "updateStats": "Failed to update statistics",
+    "authRequired": "Authentication required",
+    "unexpectedError": "An unexpected error occurred"
+  },
+  "success": {
+    "statsUpdated": "Statistics updated successfully"
+  },
+  "icons": {
+    "members": "👥",
+    "leadersTraining": "🎓",
+    "publishedBooks": "📚",
+    "givenMagazines": "📰",
+    "analytics": "📊",
+    "trends": "📈",
+    "distribution": "🎯",
+    "edit": "✏️"
+  }
+}

@@ -2,28 +2,33 @@ import React, { useState, useEffect } from "react";
 import CountUp from "react-countup";
 import VisibilitySensor from "react-visibility-sensor";
 import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import factCounterService from "../services/factCounterService";
 
 // Default fallback data
 const DEFAULT_FACT_COUNTER_DATA = [
   {
     count: 8860,
-    text: "Members"
+    textKey: "factCounter.members"
   },
   {
     count: 456,
-    text: "Leaders Training"
+    textKey: "factCounter.leadersTraining"
   },
   {
     count: 55,
-    text: "Published books"
+    textKey: "factCounter.publishedBooks"
   },
   {
     count: 10000,
-    text: "given Magazines"
+    textKey: "factCounter.givenMagazines"
   }
 ];
 const FactCounter = () => {
+  const { t } = useTranslation('About');
+  const { i18n } = useI18next();
+  const currentLanguage = i18n?.resolvedLanguage || 'en';
+  
   const [counter, setCounter] = useState({
     startCounter: false
   });
@@ -41,19 +46,19 @@ const FactCounter = () => {
         const transformedData = [
           {
             count: stats.members,
-            text: "Members"
+            textKey: "factCounter.members"
           },
           {
             count: stats.leadersTraining,
-            text: "Leaders Training"
+            textKey: "factCounter.leadersTraining"
           },
           {
             count: stats.publishedBooks,
-            text: "Published books"
+            textKey: "factCounter.publishedBooks"
           },
           {
             count: stats.givenMagazines,
-            text: "given Magazines"
+            textKey: "factCounter.givenMagazines"
           }
         ];
         
@@ -75,36 +80,47 @@ const FactCounter = () => {
     }
   };
   return (
-    <section className="fact-counter">
-      <Container>
-        <Row>
-          {factCounterData.map(({ count, text }, index) => (
-            <Col
-              md={6}
-              lg={3}
-              className="text-center"
-              key={`fact-counter-key-${index}`}
-            >
-              <h3>
-                <VisibilitySensor
-                  onChange={onVisibilityChange}
-                  offset={{ top: 10 }}
-                  delayedCall
-                >
-                  <CountUp 
-                    end={counter.startCounter ? count : 0} 
-                    duration={2.5}
-                    separator=","
-                  />
-                </VisibilitySensor>
-              </h3>
-              <p>{text}</p>
-              <a href="#none">+</a>
-            </Col>
-          ))}
-        </Row>
-      </Container>
-    </section>
+    <>
+      {/* RTL-specific styles for Arabic */}
+      {currentLanguage === 'ar' && (
+        <style jsx>{`
+          .fact-counter h3,
+          .fact-counter p {
+            text-align: center;
+          }
+        `}</style>
+      )}
+      <section className="fact-counter" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+        <Container>
+          <Row>
+            {factCounterData.map(({ count, textKey }, index) => (
+              <Col
+                md={6}
+                lg={3}
+                className="text-center"
+                key={`fact-counter-key-${index}`}
+              >
+                <h3>
+                  <VisibilitySensor
+                    onChange={onVisibilityChange}
+                    offset={{ top: 10 }}
+                    delayedCall
+                  >
+                    <CountUp 
+                      end={counter.startCounter ? count : 0} 
+                      duration={2.5}
+                      separator=","
+                    />
+                  </VisibilitySensor>
+                </h3>
+                <p>{t(textKey)}</p>
+                <a href="#none">+</a>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </section>
+    </>
   );
 };
 

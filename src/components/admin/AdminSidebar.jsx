@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation } from '@reach/router';
+import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
 import {
   Book,
   Users,
@@ -7,6 +8,7 @@ import {
   LibraryBig,
   ChevronDown,
   ChevronRight,
+  ChevronLeft,
   Home,
   Settings,
   MessageSquare,
@@ -35,22 +37,23 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarHeader,
-  useSidebar,
 } from '../ui/sidebar';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { cn } from '../../lib/utils';
 import { useAuth } from '../../context/AuthContext';
 
 export function AdminSidebar({ activeSection, onSectionChange }) {
-  const { state } = useSidebar();
   const [publishingHouseOpen, setPublishingHouseOpen] = useState(true);
   const [coursesOpen, setCoursesOpen] = useState(true);
   const [magazinesOpen, setMagazinesOpen] = useState(true);
   const [trainingOpen, setTrainingOpen] = useState(true);
   const [blogOpen, setBlogOpen] = useState(true);
   const { user, hasPermission, hasAnyPermission } = useAuth();
+  const { t } = useTranslation('Admin');
+  const { i18n } = useI18next();
 
-  const isCollapsed = state === 'collapsed';
+  const isRTL = i18n?.resolvedLanguage === 'ar';
+  const ChevronIcon = isRTL ? ChevronLeft : ChevronRight;
 
   // Define permission mappings for each section - using actual permission names from seed data
   const sectionPermissions = {
@@ -86,32 +89,32 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   // Filter main items based on permissions
   const mainItems = [
     {
-      title: 'Dashboard',
+      title: t('navigation.dashboard'),
       icon: Home,
       id: 'dashboard'
     },
     {
-      title: 'Analytics',
+      title: t('navigation.analytics'),
       icon: BarChart3,
       id: 'analytics'
     },
     {
-      title: 'Messages',
+      title: t('navigation.messages'),
       icon: MessageSquare,
       id: 'messages'
     },
     {
-      title: 'Calendar',
+      title: t('navigation.calendar'),
       icon: Calendar,
       id: 'calendar'
     },
     {
-      title: 'User Management',
+      title: t('navigation.userManagement'),
       icon: ShieldCheck,
       id: 'user-management'
     },
     {
-      title: 'Settings',
+      title: t('navigation.settings'),
       icon: Settings,
       id: 'settings'
     }
@@ -119,28 +122,28 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
   const publishingHouseItems = [
     {
-      title: 'Authors',
+      title: t('items.authors'),
       icon: Users,
       id: 'authors'
     },
     {
-      title: 'Categories',
+      title: t('items.categories'),
       icon: FolderOpen,
       id: 'categories'
     },
     {
-      title: 'Books',
+      title: t('items.books'),
       icon: Book,
       id: 'books'
     },
     {
-      title: 'Reviews',
+      title: t('items.reviews'),
       icon: Star,
       id: 'reviews',
       unseenCount: 12
     },
     {
-      title: 'Contact Messages',
+      title: t('items.contactMessages'),
       icon: MessageSquare,
       id: 'contact-messages',
       unseenCount: 5
@@ -149,12 +152,12 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
   const coursesItems = [
     {
-      title: 'Courses',
+      title: t('items.courses'),
       icon: GraduationCap,
       id: 'courses'
     },
     {
-      title: 'Enrollments',
+      title: t('items.enrollments'),
       icon: UserCheck,
       id: 'enrollments'
     }
@@ -162,7 +165,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
   const magazineItems = [
     {
-      title: 'Magazines',
+      title: t('items.magazines'),
       icon: BookOpen,
       id: 'magazines'
     }
@@ -170,22 +173,22 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
   const trainingItems = [
     {
-      title: 'Training Books',
+      title: t('items.trainingBooks'),
       icon: Book,
       id: 'training-books'
     },
     {
-      title: 'Training Requests',
+      title: t('items.trainingRequests'),
       icon: Users,
       id: 'training-requests'
     },
     {
-      title: 'Training Follow-up',
+      title: t('items.trainingFollowUp'),
       icon: GraduationCap,
       id: 'training-followup-requests'
     },
     {
-      title: 'Generate IDs',
+      title: t('items.generateIds'),
       icon: CreditCard,
       id: 'generate-ids'
     }
@@ -193,17 +196,17 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
   const blogItems = [
     {
-      title: 'New Blog',
+      title: t('items.newBlog'),
       icon: Edit3,
       id: 'new-blog'
     },
     {
-      title: 'All Blogs',
+      title: t('items.allBlogs'),
       icon: FileText,
       id: 'all-blogs'
     },
     {
-      title: 'Comments',
+      title: t('items.comments'),
       icon: MessageCircle,
       id: 'blog-comments'
     }
@@ -216,28 +219,23 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   // If user has no permissions, show a message
   if (!user || (!hasAnyPermission(['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids']) && mainItems.length === 0)) {
     return (
-      <Sidebar className="border-r border-sidebar-border bg-sidebar">
+      <Sidebar className={cn("border-sidebar-border bg-sidebar", isRTL ? "border-l" : "border-r")} dir={isRTL ? "rtl" : "ltr"}>
           <SidebarHeader className="border-b border-sidebar-border p-4">
-            <div className="flex items-center gap-3">
+            <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#2194D1] to-[#2194D1]/80 shadow-lg">
                 <LibraryBig className="h-6 w-6 text-white" />
               </div>
-              {!isCollapsed && (
-                <div>
-                  <h2 className="text-lg font-semibold text-theme-base">Admin Panel</h2>
-                  <p className="text-sm text-[#2194D1]/80">Publishing House</p>
-                </div>
-              )}
             </div>
           </SidebarHeader>
+
           <SidebarContent className="p-4">
-            <div className="text-center text-muted-foreground">
+            <div className={cn("text-center text-muted-foreground", isRTL && "text-right")}>
               <ShieldCheck className="h-8 w-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">No permissions assigned</p>
-              <p className="text-xs opacity-75">Contact your administrator</p>
+              <p className="text-sm">{t('sidebar.noPermissions')}</p>
+              <p className="text-xs opacity-75">{t('sidebar.contactAdmin')}</p>
               {user && user.permissions && (
                 <div className="mt-3">
-                  <p className="text-xs text-muted-foreground mb-2">Your permissions:</p>
+                  <p className="text-xs text-muted-foreground mb-2">{t('sidebar.yourPermissions')}</p>
                   <div className="flex flex-wrap gap-1 justify-center">
                     {user.permissions.map((permission, index) => (
                       <span 
@@ -257,23 +255,20 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   }
 
   return (
-    <Sidebar className="border-r border-sidebar-border bg-sidebar">
+    <Sidebar 
+      className={cn(
+        "border-sidebar-border bg-sidebar h-full w-full", 
+        isRTL ? "border-l" : "border-r"
+      )} 
+      dir={isRTL ? "rtl" : "ltr"}>
         <SidebarHeader className="border-b border-sidebar-border p-4">
-          <div className="flex items-center gap-3">
+          <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#2194D1] to-[#2194D1]/80 shadow-lg">
               <LibraryBig className="h-6 w-6 text-white" />
             </div>
-            {!isCollapsed && (
-              <div>
-                <h2 className="text-lg font-semibold text-theme-base">Admin Panel</h2>
-                <p className="text-sm text-[#2194D1]/80">Publishing House</p>
-                {user && (
-                  <p className="text-xs text-muted-foreground mt-1">
-                    {user.name || user.username || user.email}
-                  </p>
-                )}
-              </div>
-            )}
+            <div>
+              <h2 className={cn("text-lg font-semibold text-theme-base", isRTL && "text-right")}>{t('sidebar.title')}</h2>
+            </div>
           </div>
         </SidebarHeader>
 
@@ -293,7 +288,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                         )}
                       >
                         <item.icon className="h-4 w-4 flex-shrink-0" />
-                        {!isCollapsed && <span className="font-medium whitespace-nowrap">{item.title}</span>}
+                        <span className="font-medium whitespace-nowrap">{item.title}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
                   ))}
@@ -304,8 +299,8 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
           {/* Management Sections */}
           <SidebarGroup className="space-y-0">
-            <SidebarGroupLabel className="text-xs font-medium text-sidebar-foreground/60 uppercase tracking-wide px-2 py-2">
-              Management Links
+            <SidebarGroupLabel className={cn("text-xs font-medium text-sidebar-foreground/60 uppercase tracking-wide px-2 py-2", isRTL && "text-right")}>
+              {t('sidebar.managementLinks')}
             </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
@@ -316,17 +311,14 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton
                           className={cn(
-                            "w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
-                            "hover:bg-[#2194D1]"
+                            "w-full bg-sidebar gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
+                            "hover:bg-[#2194D1]",
+                            isRTL ? "justify-end" : "justify-start"
                           )}
                         >
                           <LibraryBig className="h-4 w-4 flex-shrink-0" />
-                          {!isCollapsed && (
-                            <>
-                              <span className="font-medium whitespace-nowrap">Books & Publishing</span>
-                              <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                            </>
-                          )}
+                          <span className={cn("font-medium whitespace-nowrap", isRTL && "text-right")}>{t('sections.booksPublishing')}</span>
+                          <ChevronIcon className={cn("h-4 w-4 flex-shrink-0 transition-transform duration-200", isRTL ? "mr-auto" : "ml-auto")} />
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
 
@@ -342,16 +334,14 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                                 )}
                               >
                                 <item.icon className="h-4 w-4 flex-shrink-0" />
-                                {!isCollapsed && (
-                                  <div className="flex items-center justify-between w-full min-w-0">
-                                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">{item.title}</span>
-                                    {'unseenCount' in item && item.unseenCount > 0 && (
-                                      <div className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5 font-medium shadow-sm ml-2 flex-shrink-0">
-                                        {item.unseenCount}
-                                      </div>
-                                    )}
-                                  </div>
-                                )}
+                                <div className="flex items-center justify-between w-full min-w-0">
+                                  <span className="whitespace-nowrap overflow-hidden text-ellipsis">{item.title}</span>
+                                  {'unseenCount' in item && item.unseenCount > 0 && (
+                                    <div className="bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full min-w-[20px] h-5 flex items-center justify-center px-1.5 font-medium shadow-sm ml-2 flex-shrink-0">
+                                      {item.unseenCount}
+                                    </div>
+                                  )}
+                                </div>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}
@@ -368,17 +358,14 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton
                           className={cn(
-                            "w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
-                            "hover:bg-[#2194D1]"
+                            "w-full bg-sidebar gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
+                            "hover:bg-[#2194D1]",
+                            isRTL ? "justify-end" : "justify-start"
                           )}
                         >
                           <GraduationCap className="h-4 w-4 flex-shrink-0" />
-                          {!isCollapsed && (
-                            <>
-                              <span className="font-medium whitespace-nowrap">Course Management</span>
-                              <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                            </>
-                          )}
+                          <span className={cn("font-medium whitespace-nowrap", isRTL && "text-right")}>{t('sections.courseManagement')}</span>
+                          <ChevronIcon className={cn("h-4 w-4 flex-shrink-0 transition-transform duration-200", isRTL ? "mr-auto" : "ml-auto")} />
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
 
@@ -394,7 +381,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                                 )}
                               >
                                 <item.icon className="h-4 w-4 flex-shrink-0" />
-                                {!isCollapsed && <span className="whitespace-nowrap">{item.title}</span>}
+                                <span className="whitespace-nowrap">{item.title}</span>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}
@@ -411,17 +398,14 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton
                           className={cn(
-                            "w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
-                            "hover:bg-[#2194D1]"
+                            "w-full bg-sidebar gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
+                            "hover:bg-[#2194D1]",
+                            isRTL ? "justify-end" : "justify-start"
                           )}
                         >
                           <BookOpen className="h-4 w-4 flex-shrink-0" />
-                          {!isCollapsed && (
-                            <>
-                              <span className="font-medium whitespace-nowrap">Magazine Management</span>
-                              <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                            </>
-                          )}
+                          <span className={cn("font-medium whitespace-nowrap", isRTL && "text-right")}>{t('sections.magazineManagement')}</span>
+                          <ChevronIcon className={cn("h-4 w-4 flex-shrink-0 transition-transform duration-200", isRTL ? "mr-auto" : "ml-auto")} />
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
 
@@ -437,7 +421,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                                 )}
                               >
                                 <item.icon className="h-4 w-4 flex-shrink-0" />
-                                {!isCollapsed && <span className="whitespace-nowrap">{item.title}</span>}
+                                <span className="whitespace-nowrap">{item.title}</span>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}
@@ -454,17 +438,14 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton
                           className={cn(
-                            "w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
-                            "hover:bg-[#2194D1]"
+                            "w-full bg-sidebar gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
+                            "hover:bg-[#2194D1]",
+                            isRTL ? "justify-end" : "justify-start"
                           )}
                         >
                           <GraduationCap className="h-4 w-4 flex-shrink-0" />
-                          {!isCollapsed && (
-                            <>
-                              <span className="font-medium whitespace-nowrap">Training Management</span>
-                              <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                            </>
-                          )}
+                          <span className={cn("font-medium whitespace-nowrap", isRTL && "text-right")}>{t('sections.trainingManagement')}</span>
+                          <ChevronIcon className={cn("h-4 w-4 flex-shrink-0 transition-transform duration-200", isRTL ? "mr-auto" : "ml-auto")} />
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
 
@@ -480,7 +461,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                                 )}
                               >
                                 <item.icon className="h-4 w-4 flex-shrink-0 text-sidebar-foreground/80" />
-                                {!isCollapsed && <span className="whitespace-nowrap">{item.title}</span>}
+                                <span className="whitespace-nowrap">{item.title}</span>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}
@@ -497,17 +478,14 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                       <CollapsibleTrigger asChild>
                         <SidebarMenuButton
                           className={cn(
-                            "w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
-                            "hover:bg-[#2194D1]"
+                            "w-full bg-sidebar gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
+                            "hover:bg-[#2194D1]",
+                            isRTL ? "justify-end" : "justify-start"
                           )}
                         >
                           <FileText className="h-4 w-4 flex-shrink-0" />
-                          {!isCollapsed && (
-                            <>
-                              <span className="font-medium whitespace-nowrap">Blog Management</span>
-                              <ChevronRight className="ml-auto h-4 w-4 flex-shrink-0 transition-transform duration-200" />
-                            </>
-                          )}
+                          <span className={cn("font-medium whitespace-nowrap", isRTL && "text-right")}>{t('sections.blogManagement')}</span>
+                          <ChevronIcon className={cn("h-4 w-4 flex-shrink-0 transition-transform duration-200", isRTL ? "mr-auto" : "ml-auto")} />
                         </SidebarMenuButton>
                       </CollapsibleTrigger>
 
@@ -523,7 +501,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                                 )}
                               >
                                 <item.icon className="h-4 w-4 flex-shrink-0" />
-                                {!isCollapsed && <span className="whitespace-nowrap">{item.title}</span>}
+                                <span className="whitespace-nowrap">{item.title}</span>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}

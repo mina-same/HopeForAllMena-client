@@ -1,4 +1,5 @@
 import React from "react";
+import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
 import MainSlider from "../components/slider/main-slider";
@@ -56,4 +57,16 @@ const HomeOne = () => {
 
 export default HomeOne;
 
-// export const query = i18nPageQuery;
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

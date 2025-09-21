@@ -1,0 +1,303 @@
+/* RTL Support for ID Management Component */
+
+/* Arabic font and text styling */
+.arabic-text {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  direction: rtl;
+  text-align: right;
+}
+
+/* RTL container styling */
+.rtl {
+  direction: rtl;
+}
+
+.rtl * {
+  direction: rtl;
+}
+
+/* Header RTL styling */
+.rtl .text-center {
+  text-align: right !important;
+}
+
+.rtl h1, .rtl p {
+  text-align: right;
+}
+
+/* Card RTL styling */
+.rtl .shadow-soft {
+  direction: rtl;
+}
+
+/* Form controls RTL styling */
+.rtl input[type="file"] {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl input {
+  text-align: right;
+  direction: rtl;
+}
+
+.rtl label {
+  text-align: right;
+  display: block;
+}
+
+/* Button RTL styling */
+.rtl .flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+/* Grid RTL adjustments */
+.rtl .md\:grid-flow-col-dense {
+  grid-auto-flow: column dense;
+}
+
+/* Preview section RTL */
+.rtl .mr-auto {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+/* File upload area RTL */
+.rtl .cursor-pointer {
+  direction: rtl;
+}
+
+/* Secondary background RTL */
+.rtl .bg-secondary {
+  direction: rtl;
+}
+
+/* Text alignment utilities for RTL */
+.rtl .text-right {
+  text-align: right !important;
+}
+
+.rtl .text-left {
+  text-align: left !important;
+}
+
+/* Flex utilities for RTL */
+.rtl .flex-row-reverse {
+  flex-direction: row-reverse !important;
+}
+
+/* Spacing adjustments for Arabic */
+.rtl .space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.rtl .space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.rtl .space-y-8 > * + * {
+  margin-top: 2rem;
+}
+
+/* Gap adjustments for RTL */
+.rtl .gap-2 {
+  gap: 0.5rem;
+}
+
+.rtl .gap-8 {
+  gap: 2rem;
+}
+
+/* Card content RTL */
+.rtl .CardContent {
+  direction: rtl;
+}
+
+.rtl .CardHeader {
+  direction: rtl;
+}
+
+.rtl .CardTitle {
+  text-align: right;
+}
+
+.rtl .CardDescription {
+  text-align: right;
+}
+
+/* Button content RTL */
+.rtl button {
+  direction: rtl;
+}
+
+.rtl .px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* Loading spinner RTL */
+.rtl .animate-spin {
+  direction: ltr; /* Keep spinner direction consistent */
+}
+
+/* Preview overlay RTL */
+.rtl .absolute {
+  direction: rtl;
+}
+
+.rtl .right-8 {
+  right: 2rem;
+  left: auto;
+}
+
+.rtl .left-8 {
+  left: 2rem;
+  right: auto;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 768px) {
+  .rtl .md\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .rtl .text-center {
+    text-align: right !important;
+  }
+  
+  .rtl .max-w-4xl {
+    text-align: right;
+  }
+}
+
+/* Input placeholder RTL */
+.rtl input::placeholder {
+  text-align: right;
+  direction: rtl;
+}
+
+/* File input RTL */
+.rtl input[type="file"]::-webkit-file-upload-button {
+  direction: rtl;
+}
+
+/* Toast notifications RTL */
+.rtl .sonner-toast {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Overflow handling for RTL */
+.rtl .overflow-y-auto {
+  direction: rtl;
+}
+
+.rtl .max-h-32 {
+  direction: rtl;
+}
+
+/* Icon positioning RTL */
+.rtl .h-5.w-5 {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+.rtl .h-4.w-4 {
+  margin-left: 0.25rem;
+  margin-right: 0;
+}
+
+/* Shadow and border RTL */
+.rtl .shadow-soft,
+.rtl .shadow-strong {
+  direction: rtl;
+}
+
+.rtl .rounded-lg {
+  direction: rtl;
+}
+
+/* Background RTL */
+.rtl .bg-background {
+  direction: rtl;
+}
+
+.rtl .bg-white {
+  direction: rtl;
+}
+
+.rtl .bg-secondary {
+  direction: rtl;
+}
+
+/* Text color RTL */
+.rtl .text-muted-foreground {
+  direction: rtl;
+}
+
+.rtl .text-secondary-foreground {
+  direction: rtl;
+}
+
+/* Backdrop blur RTL */
+.rtl .backdrop-blur-sm {
+  direction: rtl;
+}
+
+/* PDF generation button RTL */
+.rtl .variant-premium {
+  direction: rtl;
+}
+
+.rtl .size-lg {
+  direction: rtl;
+}
+
+/* Grid system RTL */
+.rtl .grid {
+  direction: rtl;
+}
+
+.rtl .md\:grid-cols-2 {
+  direction: rtl;
+}
+
+/* Container RTL */
+.rtl .max-w-4xl {
+  direction: rtl;
+}
+
+.rtl .mx-auto {
+  direction: rtl;
+}
+
+/* Positioning RTL */
+.rtl .relative {
+  direction: rtl;
+}
+
+.rtl .inline-block {
+  direction: rtl;
+}
+
+/* Image RTL */
+.rtl img {
+  direction: ltr; /* Keep images in normal orientation */
+}
+
+/* Text size RTL */
+.rtl .text-4xl {
+  direction: rtl;
+}
+
+.rtl .text-lg {
+  direction: rtl;
+}
+
+.rtl .text-sm {
+  direction: rtl;
+}
+
+.rtl .text-xs {
+  direction: rtl;
+}

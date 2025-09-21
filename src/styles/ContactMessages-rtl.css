@@ -1,0 +1,79 @@
+/* ContactMessages RTL Support */
+.contact-messages-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.contact-messages-rtl .search-input {
+  padding-left: 12px;
+  padding-right: 40px;
+}
+
+.contact-messages-rtl .search-icon {
+  left: auto;
+  right: 12px;
+}
+
+.contact-messages-rtl .message-card {
+  text-align: right;
+}
+
+.contact-messages-rtl .message-header {
+  flex-direction: row-reverse;
+}
+
+.contact-messages-rtl .message-badges {
+  flex-direction: row-reverse;
+}
+
+.contact-messages-rtl .message-actions {
+  flex-direction: row-reverse;
+}
+
+.contact-messages-rtl .pagination {
+  flex-direction: row-reverse;
+}
+
+.contact-messages-rtl .filters {
+  flex-direction: row-reverse;
+}
+
+.contact-messages-rtl .book-details-grid {
+  text-align: right;
+}
+
+.contact-messages-rtl .response-section {
+  text-align: right;
+}
+
+/* Badge RTL adjustments */
+.contact-messages-rtl .badge-with-icon {
+  flex-direction: row-reverse;
+}
+
+.contact-messages-rtl .badge-with-icon svg {
+  margin-left: 4px;
+  margin-right: 0;
+}
+
+/* Modal RTL support */
+.contact-messages-rtl .modal-content {
+  text-align: right;
+}
+
+.contact-messages-rtl .modal-textarea {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 640px) {
+  .contact-messages-rtl .mobile-filters {
+    flex-direction: column;
+  }
+  
+  .contact-messages-rtl .mobile-message-actions {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+  }
+}

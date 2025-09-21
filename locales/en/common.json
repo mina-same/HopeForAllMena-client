@@ -29,12 +29,27 @@
     "newsletterDescription": "Signup now to get daily latest news & updates from us",
     "emailPlaceholder": "Email address",
     "subscribeNow": "Subscribe Now",
-    "copyright": "© Copyright 2025 by MinaSamy",
+    "copyright": "  Copyright 2025 by MinaSamy",
     "loading": "Loading...",
     "loadingLatestPosts": "Loading latest posts...",
     "pleaseWait": "Please wait...",
     "defaultPostTitle1": "You can help the poor in need",
     "defaultPostTitle2": "Rise fund for Healthy Food"
+  },
+  "header": {
+    "welcome": "Welcome to Hope For All Middle East and North Africa Ministry",
+    "email": "Email",
+    "phone": "Phone",
+    "visit": "Visit",
+    "donateNow": "Donate Now",
+    "locations": {
+      "alexandria": "Alexandria",
+      "cairo": "Cairo"
+    },
+    "addresses": {
+      "alexandria": "37 Sidi El-Metwally Street",
+      "cairo": "11 El-Masoud Street, off Abbasiya Street"
+    }
   },
   "buttons": {
     "discoverMore": "Discover More",
