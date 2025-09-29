@@ -13,7 +13,7 @@ import blogImage1 from "../../assets/images/blog/blog-1-1.jpg";
 import "../../assets/css/blog-rtl.css";
 
 const BlogHome = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('Blog');
   const { language: currentLanguage } = useI18next();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +38,7 @@ const BlogHome = () => {
             publishedAt: new Date().toISOString(),
             excerpt: "Lorem ipsum is simply free text used by copytyping refreshing.",
             slug: "our-donation-hope",
-            author: { name: "Admin" }
+            author: { name: t('card.admin') }
           }
         ]);
       } finally {
@@ -51,11 +51,23 @@ const BlogHome = () => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const locale = currentLanguage === 'ar' ? 'ar-SA' : 'en-US';
-    return date.toLocaleDateString(locale, { 
-      day: 'numeric', 
-      month: 'short' 
-    });
+    
+    if (currentLanguage === 'ar') {
+      // Arabic month names (Gregorian calendar)
+      const arabicMonths = [
+        'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+        'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+      ];
+      
+      const day = date.getDate();
+      const month = arabicMonths[date.getMonth()];
+      return `${day} ${month}`;
+    } else {
+      return date.toLocaleDateString('en-US', { 
+        day: 'numeric', 
+        month: 'short' 
+      });
+    }
   };
 
   const blogCarouselOptions = {
@@ -97,7 +109,7 @@ const BlogHome = () => {
         <Container>
           <div className="text-center">
             <div className="spinner-border" role="status">
-              <span className="sr-only">{t('blog:home.loading')}</span>
+              <span className="sr-only">{t('home.loading')}</span>
             </div>
           </div>
         </Container>
@@ -111,14 +123,14 @@ const BlogHome = () => {
         <Row className="align-items-start align-items-md-center flex-column flex-md-row mb-60">
           <Col lg={7}>
             <BlockTitle
-              title={t('blog:home.title')}
-              tagLine={t('blog:home.tagLine')}
+              title={t('home.title')}
+              tagLine={t('home.tagLine')}
             />
           </Col>
           <Col lg={5} className="d-flex">
             <div className="my-auto">
               <p className={`block-text ${currentLanguage === 'ar' ? 'pl-10 text-right' : 'pr-10'} mb-0`}>
-                {t('blog:home.description')}
+                {t('home.description')}
               </p>
             </div>
           </Col>
@@ -133,8 +145,8 @@ const BlogHome = () => {
                   date={formatDate(blog.publishedAt)}
                   text={currentLanguage === 'ar' && blog.excerptAr ? blog.excerptAr : blog.excerpt}
                   link={`/news-details/${blog.slug}`}
-                  commentCount={t('blog:home.comments')}
-                  author={blog.author?.name || "Admin"}
+                  commentCount={t('home.comments')}
+                  author={blog.author?.name || t('card.admin')}
                   currentLanguage={currentLanguage}
                 />
               </SwiperSlide>
@@ -142,7 +154,7 @@ const BlogHome = () => {
           </Swiper>
         ) : (
           <div className="text-center">
-            <p>{t('blog:home.empty')}</p>
+            <p>{t('home.empty')}</p>
           </div>
         )}
       </Container>

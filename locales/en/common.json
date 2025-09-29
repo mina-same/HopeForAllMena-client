@@ -29,12 +29,17 @@
     "newsletterDescription": "Signup now to get daily latest news & updates from us",
     "emailPlaceholder": "Email address",
     "subscribeNow": "Subscribe Now",
-    "copyright": "  Copyright 2025 by MinaSamy",
+    "copyright": {
+      "text": "Copyright 2025 by",
+      "developerName": "MinaSamy",
+      "developerUrl": "https://mina-portfolio-developer.netlify.app/"
+    },
     "loading": "Loading...",
-    "loadingLatestPosts": "Loading latest posts...",
+    "loadingPosts": "Loading latest posts...",
     "pleaseWait": "Please wait...",
-    "defaultPostTitle1": "You can help the poor in need",
-    "defaultPostTitle2": "Rise fund for Healthy Food"
+    "defaultPost": "Default post",
+    "defaultTitle1": "You can help the poor in need",
+    "defaultTitle2": "Rise fund for Healthy Food"
   },
   "header": {
     "welcome": "Welcome to Hope For All Middle East and North Africa Ministry",

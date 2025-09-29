@@ -1,6 +1,9 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useTranslation } from "gatsby-plugin-react-i18next";
+import { useI18next } from "gatsby-plugin-react-i18next";
+import { graphql } from "gatsby";
 import BlockTitle from "../block-title";
 import BlogCard from "./blog-card";
 import blogImage1 from "../../assets/images/blog/blog-1-1.jpg";
@@ -38,6 +41,9 @@ const BLOG_DATA = [
   }
 ];
 const BlogHomeTwo = () => {
+  const { t } = useTranslation('Blog');
+  const { language: currentLanguage } = useI18next();
+
   const blogCarouselOptions = {
     slidesPerView: 3,
     spaceBetween: 30,
@@ -75,30 +81,29 @@ const BlogHomeTwo = () => {
   return (
     <>
       <section
-        className="news__top news-home  pt-120"
+        className={`news__top news-home pt-120 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`}
         style={{ backgroundImage: `url(${bgImage})` }}
+        dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
       >
         <Container>
           <Row className="align-items-start align-items-md-center flex-column flex-md-row">
             <Col lg={7}>
               <BlockTitle
-                title={`Latest news & articles \n directly from the blog.`}
-                tagLine="Blog Posts"
+                title={t('home.title')}
+                tagLine={t('home.tagLine')}
               />
             </Col>
             <Col lg={5} className="d-flex">
               <div className="my-auto">
-                <p className="block-text pr-10 mb-0">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Have you done google research which
-                  works all the time.{" "}
+                <p className={`block-text ${currentLanguage === 'ar' ? 'pl-10 text-right' : 'pr-10'} mb-0`}>
+                  {t('home.description')}
                 </p>
               </div>
             </Col>
           </Row>
         </Container>
       </section>
-      <section className="news-page pb-120">
+      <section className={`news-page pb-120 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <Container>
           <Swiper {...blogCarouselOptions}>
             {BLOG_DATA.map(
@@ -114,7 +119,8 @@ const BlogHomeTwo = () => {
                     text={text}
                     link={link}
                     commentCount={commentCount}
-                    author={author}
+                    author={author === "Admin" ? t('card.admin') : author}
+                    currentLanguage={currentLanguage}
                   />
                 </SwiperSlide>
               )
@@ -127,3 +133,17 @@ const BlogHomeTwo = () => {
 };
 
 export default BlogHomeTwo;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

@@ -6,7 +6,7 @@ import blogAPI from "../../services/blogAPI";
 import "../../assets/css/blog-rtl.css";
 
 const BlogContent = ({ blog, currentLanguage }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('Blog');
   const [adjacentBlogs, setAdjacentBlogs] = useState({ previous: null, next: null });
   const [loading, setLoading] = useState(false);
 
@@ -33,11 +33,23 @@ const BlogContent = ({ blog, currentLanguage }) => {
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    const locale = currentLanguage === 'ar' ? 'ar-SA' : 'en-US';
-    return date.toLocaleDateString(locale, {
-      day: 'numeric',
-      month: 'short'
-    });
+    
+    if (currentLanguage === 'ar') {
+      // Arabic month names (Gregorian calendar)
+      const arabicMonths = [
+        'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+        'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+      ];
+      
+      const day = date.getDate();
+      const month = arabicMonths[date.getMonth()];
+      return `${day} ${month}`;
+    } else {
+      return date.toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'short'
+      });
+    }
   };
 
   const formatContent = (content) => {
@@ -55,7 +67,7 @@ const BlogContent = ({ blog, currentLanguage }) => {
       </div>
       <div className={`blog-card__meta d-flex ${currentLanguage === 'ar' ? 'justify-content-end flex-row-reverse' : 'justify-content-start'} mt-0 mb-0`}>
         <span className={currentLanguage === 'ar' ? 'text-right' : ''}>
-          <i className="far fa-user-circle"></i> {blog.author?.name || 'Admin'}
+          <i className="far fa-user-circle"></i> {blog.author?.name || t('card.admin')}
         </span>
         <span className={currentLanguage === 'ar' ? 'text-right' : ''}>
           <i className="far fa-eye"></i> {blog.views || 0} {currentLanguage === 'ar' ? 'مشاهدة' : 'Views'}
@@ -78,7 +90,7 @@ const BlogContent = ({ blog, currentLanguage }) => {
         {((currentLanguage === 'ar' && blog.tagsAr && blog.tagsAr.length > 0) || (blog.tags && blog.tags.length > 0)) && (
           <ul className={`list-unstyled blog-details__category ${currentLanguage === 'ar' ? 'text-right' : ''}`}>
             <li>
-              <span>{t('blog:details.tags')}:</span>
+              <span>{t('details.tags')}:</span>
             </li>
             {(currentLanguage === 'ar' && blog.tagsAr ? blog.tagsAr : blog.tags || []).map((tag, index) => (
               <li key={index}>
@@ -90,10 +102,10 @@ const BlogContent = ({ blog, currentLanguage }) => {
 
         <ul className={`list-unstyled blog-details__category ${currentLanguage === 'ar' ? 'text-right' : ''}`}>
           <li>
-            <span>{t('blog:details.category')}:</span>
+            <span>{t('details.category')}:</span>
           </li>
           <li>
-            <span>{t(`blog:categories.${blog.category}`)}</span>
+            <span>{t(`categories.${blog.category}`)}</span>
           </li>
         </ul>
       </div>
@@ -106,17 +118,17 @@ const BlogContent = ({ blog, currentLanguage }) => {
             title={adjacentBlogs.previous.title}
           >
             {currentLanguage === 'ar' ? (
-              <>{t('blog:navigation.previous')} <i className="fas fa-arrow-right"></i></>
+              <>{t('navigation.previous')} <i className="fas fa-arrow-right"></i></>
             ) : (
-              <><i className="fas fa-arrow-left"></i> {t('blog:navigation.previous')}</>
+              <><i className="fas fa-arrow-left"></i> {t('navigation.previous')}</>
             )}
           </Link>
         ) : (
           <span className="nav-link disabled">
             {currentLanguage === 'ar' ? (
-              <>{t('blog:navigation.previous')} <i className="fas fa-arrow-right"></i></>
+              <>{t('navigation.previous')} <i className="fas fa-arrow-right"></i></>
             ) : (
-              <><i className="fas fa-arrow-left"></i> {t('blog:navigation.previous')}</>
+              <><i className="fas fa-arrow-left"></i> {t('navigation.previous')}</>
             )}
           </span>
         )}
@@ -128,17 +140,17 @@ const BlogContent = ({ blog, currentLanguage }) => {
             title={adjacentBlogs.next.title}
           >
             {currentLanguage === 'ar' ? (
-              <><i className="fas fa-arrow-left"></i> {t('blog:navigation.next')}</>
+              <><i className="fas fa-arrow-left"></i> {t('navigation.next')}</>
             ) : (
-              <>{t('blog:navigation.next')} <i className="fas fa-arrow-right"></i></>
+              <>{t('navigation.next')} <i className="fas fa-arrow-right"></i></>
             )}
           </Link>
         ) : (
           <span className="nav-link disabled">
             {currentLanguage === 'ar' ? (
-              <><i className="fas fa-arrow-left"></i> {t('blog:navigation.next')}</>
+              <><i className="fas fa-arrow-left"></i> {t('navigation.next')}</>
             ) : (
-              <>{t('blog:navigation.next')} <i className="fas fa-arrow-right"></i></>
+              <>{t('navigation.next')} <i className="fas fa-arrow-right"></i></>
             )}
           </span>
         )}

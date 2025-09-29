@@ -12,7 +12,8 @@
     "readMore": "اقرأ المزيد",
     "comments": "التعليقات",
     "by": "بواسطة",
-    "publishedOn": "نُشر في"
+    "publishedOn": "نُشر في",
+    "admin": "المدير"
   },
   "details": {
     "loading": "جاري تحميل المقال...",

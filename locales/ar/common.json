@@ -29,12 +29,17 @@
     "newsletterDescription": "اشترك الآن للحصول على آخر الأخبار والتحديثات اليومية منا",
     "emailPlaceholder": "عنوان البريد الإلكتروني",
     "subscribeNow": "اشترك الآن",
-    "copyright": " حقوق الطبع والنشر 2025 بواسطة مينا سامي",
+    "copyright": {
+      "text": "حقوق الطبع والنشر 2025 بواسطة",
+      "developerName": "مينا سامي",
+      "developerUrl": "https://mina-portfolio-developer.netlify.app/"
+    },
     "loading": "جاري التحميل...",
-    "loadingLatestPosts": "جاري تحميل أحدث المقالات...",
+    "loadingPosts": "جاري تحميل أحدث المقالات...",
     "pleaseWait": "يرجى الانتظار...",
-    "defaultPostTitle1": "يمكنك مساعدة الفقراء المحتاجين",
-    "defaultPostTitle2": "جمع تبرعات للطعام الصحي"
+    "defaultPost": "مقال افتراضي",
+    "defaultTitle1": "يمكنك مساعدة الفقراء المحتاجين",
+    "defaultTitle2": "جمع تبرعات للطعام الصحي"
   },
   "header": {
     "welcome": "مرحباً بكم في خدمة رجاء لجميع الشرق الأوسط وشمال أفريقيا",

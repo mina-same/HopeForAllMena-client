@@ -12,7 +12,8 @@
     "readMore": "Read More",
     "comments": "Comments",
     "by": "By",
-    "publishedOn": "Published on"
+    "publishedOn": "Published on",
+    "admin": "Admin"
   },
   "details": {
     "loading": "Loading blog post...",

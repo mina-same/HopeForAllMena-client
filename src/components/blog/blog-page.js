@@ -1,5 +1,8 @@
 import React from "react";
 import { Container } from "react-bootstrap";
+import { useTranslation } from "gatsby-plugin-react-i18next";
+import { useI18next } from "gatsby-plugin-react-i18next";
+import { graphql } from "gatsby";
 
 import PostPaginations from "../post-paginations";
 import BlogCard from "./blog-card";
@@ -69,8 +72,11 @@ const BLOG_DATA = [
 ];
 
 const BlogPage = () => {
+  const { t } = useTranslation('Blog');
+  const { language: currentLanguage } = useI18next();
+
   return (
-    <section className="news-page pt-120 pb-120">
+    <section className={`news-page pt-120 pb-120 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <Container>
         <div className="news-3-col">
           {BLOG_DATA.map(
@@ -86,7 +92,8 @@ const BlogPage = () => {
                 text={text}
                 link={link}
                 commentCount={commentCount}
-                author={author}
+                author={author === "Admin" ? t('card.admin') : author}
+                currentLanguage={currentLanguage}
               />
             )
           )}
@@ -98,3 +105,17 @@ const BlogPage = () => {
 };
 
 export default BlogPage;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
