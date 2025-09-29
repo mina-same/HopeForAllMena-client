@@ -1,0 +1,58 @@
+{
+  "pageTitle": "Development Department || Hope For All Mena Ministry",
+  "title": "Development Department",
+  "breadcrumb": "Services",
+  "hero": {
+    "title": "Development Department",
+    "description1": "Our Development Department is committed to creating sustainable change and improving life opportunities for individuals and communities. We focus on holistic development that addresses economic, social, and spiritual needs.",
+    "description2": "Through strategic partnerships, innovative programs, and community-driven initiatives, we work to break cycles of poverty and create pathways to prosperity. Our approach emphasizes capacity building, skill development, and creating opportunities for sustainable income generation.",
+    "description3": "We believe that true development happens when communities are empowered to identify their own needs and solutions, with our role being to provide support, resources, and expertise to help them achieve their goals.",
+    "imageAlt": "Development Department"
+  },
+  "features": {
+    "economicEmpowerment": {
+      "title": "Economic Empowerment",
+      "description": "Programs designed to create sustainable income opportunities through micro-enterprise development, vocational training, and financial literacy education."
+    },
+    "communityInfrastructure": {
+      "title": "Community Infrastructure",
+      "description": "Development of essential community facilities and services including clean water, sanitation, education centers, and healthcare access."
+    },
+    "capacityBuilding": {
+      "title": "Capacity Building",
+      "description": "Training and mentoring programs that build local leadership, organizational skills, and community management capabilities."
+    }
+  },
+  "impact": {
+    "title": "Our Impact",
+    "subtitle": "Building better futures through sustainable development",
+    "achievements": {
+      "title": "What We've Achieved",
+      "list": [
+        "Established micro-enterprise programs in multiple communities",
+        "Built and renovated community centers and schools",
+        "Provided clean water access to thousands of families",
+        "Trained hundreds in vocational and business skills",
+        "Created sustainable employment opportunities"
+      ]
+    },
+    "stats": {
+      "familiesHelped": {
+        "number": "1000+",
+        "label": "Families Helped"
+      },
+      "projectsCompleted": {
+        "number": "25+",
+        "label": "Projects Completed"
+      },
+      "jobsCreated": {
+        "number": "500+",
+        "label": "Jobs Created"
+      },
+      "communitiesServed": {
+        "number": "15+",
+        "label": "Communities Served"
+      }
+    }
+  }
+}

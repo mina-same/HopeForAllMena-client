@@ -1,0 +1,111 @@
+/* RTL Support for Development Department Page */
+
+/* Main content RTL */
+html[dir="rtl"] .service-details__content {
+  text-align: right;
+}
+
+html[dir="rtl"] .service-details__content h3 {
+  text-align: right;
+}
+
+html[dir="rtl"] .service-details__content p {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Service features RTL */
+html[dir="rtl"] .service-features__single {
+  text-align: right;
+}
+
+html[dir="rtl"] .service-features__single h4 {
+  text-align: right;
+}
+
+html[dir="rtl"] .service-features__single p {
+  text-align: right;
+  direction: rtl;
+}
+
+html[dir="rtl"] .service-features__icon {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* Block title RTL */
+html[dir="rtl"] .block-title {
+  text-align: right;
+}
+
+html[dir="rtl"] .block-title h3 {
+  text-align: right;
+}
+
+html[dir="rtl"] .block-title p {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Impact section RTL */
+html[dir="rtl"] .service-impact__content {
+  text-align: right;
+}
+
+html[dir="rtl"] .service-impact__content h4 {
+  text-align: right;
+}
+
+html[dir="rtl"] .service-impact__list {
+  text-align: right;
+  direction: rtl;
+}
+
+html[dir="rtl"] .service-impact__list li {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Stats RTL */
+html[dir="rtl"] .impact-stat {
+  text-align: right;
+}
+
+html[dir="rtl"] .impact-stat h3 {
+  text-align: right;
+}
+
+html[dir="rtl"] .impact-stat p {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Container RTL adjustments */
+html[dir="rtl"] .development-department-rtl {
+  direction: rtl;
+}
+
+html[dir="rtl"] .development-department-rtl * {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 991px) {
+  html[dir="rtl"] .service-details__content {
+    margin-bottom: 30px;
+  }
+  
+  html[dir="rtl"] .service-features__single {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  html[dir="rtl"] .service-impact__content {
+    margin-bottom: 30px;
+  }
+  
+  html[dir="rtl"] .impact-stat {
+    margin-bottom: 20px;
+  }
+}

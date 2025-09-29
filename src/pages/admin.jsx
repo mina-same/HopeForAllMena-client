@@ -31,6 +31,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
 import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../components/ui/sidebar';
+import { Sheet, SheetContent } from '../components/ui/sheet';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../components/ui/collapsible';
 import { AuthorsSection } from '../components/admin/AuthorsSection';
 import { CategoriesSection } from '../components/admin/CategoriesSection';
@@ -66,11 +67,20 @@ import LanguageSwitcher from '../components/ui/LanguageSwitcher';
 import contactMessageService from '../services/contactMessageService';
 import '../styles/admin-rtl.css';
 
-const AdminDashboardContent = () => {
+const AdminDashboardInner = () => {
   const { t, i18n } = useTranslation('Admin');
   const currentLanguage = i18n.language;
+  // Use the sidebar context for proper mobile handling
+  const { toggleSidebar, openMobile, setOpenMobile, isMobile } = useSidebar();
   // Hide sidebar by default on mobile/tablet, show on desktop
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  
+  // Initialize mobile sidebar state
+  React.useEffect(() => {
+    if (isMobile && openMobile === undefined) {
+      setOpenMobile(false);
+    }
+  }, [isMobile, openMobile, setOpenMobile]);
   const [activeSection, setActiveSection] = useState('dashboard');
   const [editBlogId, setEditBlogId] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -462,12 +472,27 @@ const AdminDashboardContent = () => {
   );
 
   return (
-    <SidebarProvider>
+      <>
       {i18n?.resolvedLanguage === 'ar' ? (
         /* Arabic Layout */
         <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/30 flex" dir="rtl">
-            {/* Custom Sidebar for Arabic - positioned on right */}
-            {sidebarOpen && (
+            {/* Sidebar for Arabic - using proper Sidebar component */}
+            {isMobile ? (
+              <Sheet open={openMobile || false} onOpenChange={setOpenMobile}>
+                <SheetContent
+                  side="right"
+                  className="w-64 p-0 bg-gray-100 dark:bg-gray-900 overflow-y-auto"
+                >
+                  <AdminSidebar 
+                    activeSection={activeSection} 
+                    onSectionChange={(section) => {
+                      setActiveSection(section);
+                      setOpenMobile(false); // Close mobile sidebar after selection
+                    }}
+                  />
+                </SheetContent>
+              </Sheet>
+            ) : (
               <div 
                 className="h-screen bg-gray-100 dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 fixed right-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64" 
                 style={{
@@ -487,8 +512,8 @@ const AdminDashboardContent = () => {
           <div 
             className="min-h-screen transition-all duration-300" 
             style={{
-              marginRight: sidebarOpen ? '256px' : '0px',
-              width: sidebarOpen ? 'calc(100% - 256px)' : '100vw',
+              marginRight: !isMobile && sidebarOpen ? '256px' : '0px',
+              width: !isMobile && sidebarOpen ? 'calc(100% - 256px)' : '100vw',
               marginLeft: '0px'
             }}
           >
@@ -520,7 +545,7 @@ const AdminDashboardContent = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => setSidebarOpen(!sidebarOpen)}
+                      onClick={() => isMobile ? setOpenMobile(!openMobile) : setSidebarOpen(!sidebarOpen)}
                       className="text-sidebar-foreground"
                     >
                       <Menu className="h-4 w-4" />
@@ -557,8 +582,23 @@ const AdminDashboardContent = () => {
       ) : (
         /* English Layout - Custom with SidebarProvider */
         <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/30 flex" dir="ltr">
-          {/* Custom Sidebar for English - positioned on left */}
-          {sidebarOpen && (
+          {/* Sidebar for English - using proper Sidebar component */}
+          {isMobile ? (
+            <Sheet open={openMobile || false} onOpenChange={setOpenMobile}>
+              <SheetContent
+                side="left"
+                className="w-64 p-0 bg-gray-100 dark:bg-gray-900 overflow-y-auto"
+              >
+                <AdminSidebar 
+                  activeSection={activeSection} 
+                  onSectionChange={(section) => {
+                    setActiveSection(section);
+                    setOpenMobile(false); // Close mobile sidebar after selection
+                  }}
+                />
+              </SheetContent>
+            </Sheet>
+          ) : (
             <div 
               className="h-screen bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 fixed left-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64" 
               style={{
@@ -578,8 +618,8 @@ const AdminDashboardContent = () => {
           <div 
             className="min-h-screen transition-all duration-300" 
             style={{
-              marginLeft: sidebarOpen ? '256px' : '0px',
-              width: sidebarOpen ? 'calc(100% - 256px)' : '100vw',
+              marginLeft: !isMobile && sidebarOpen ? '256px' : '0px',
+              width: !isMobile && sidebarOpen ? 'calc(100% - 256px)' : '100vw',
               marginRight: '0px'
             }}
           >
@@ -590,7 +630,7 @@ const AdminDashboardContent = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    onClick={() => isMobile ? setOpenMobile(!openMobile) : setSidebarOpen(!sidebarOpen)}
                     className="text-sidebar-foreground"
                   >
                     <Menu className="h-4 w-4" />
@@ -644,6 +684,14 @@ const AdminDashboardContent = () => {
           />
         </div>
       )}
+    </>
+  );
+};
+
+const AdminDashboardContent = () => {
+  return (
+    <SidebarProvider>
+      <AdminDashboardInner />
     </SidebarProvider>
   );
 };

@@ -1,5 +1,8 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { useI18next } from "gatsby-plugin-react-i18next";
+import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";
@@ -10,41 +13,38 @@ import BrandCarousel from "../components/brand-carousel";
 
 import serviceBg from "../assets/images/backgrounds/service-hand-bg-1-1.png";
 import aboutImage from "../assets/images/resources/about-1-1.jpg";
+import "../assets/css/development-department-rtl.css";
 
 const DevelopmentDepartment = () => {
+  const { t } = useTranslation('DevelopmentDepartment');
+  const { language: currentLanguage } = useI18next();
+
   return (
-    <Layout pageTitle="Development Department || Hope For All Mena Ministry">
+    <Layout pageTitle={t('pageTitle')}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title="Development Department" crumbTitle="Services" />
-      <>
+      <PageHeader title={t('title')} crumbTitle={t('breadcrumb')} />
+      <div className={`${currentLanguage === 'ar' ? 'development-department-rtl' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <section className="service-details pt-120 pb-90" style={{ backgroundImage: `url(${serviceBg})` }}>
           <Container>
             <Row>
               <Col md={12} lg={6}>
                 <div className="service-details__content">
-                  <h3>Development Department</h3>
+                  <h3>{t('hero.title')}</h3>
                   <p>
-                    Our Development Department is committed to creating sustainable change and improving 
-                    life opportunities for individuals and communities. We focus on holistic development 
-                    that addresses economic, social, and spiritual needs.
+                    {t('hero.description1')}
                   </p>
                   <p>
-                    Through strategic partnerships, innovative programs, and community-driven initiatives, 
-                    we work to break cycles of poverty and create pathways to prosperity. Our approach 
-                    emphasizes capacity building, skill development, and creating opportunities for 
-                    sustainable income generation.
+                    {t('hero.description2')}
                   </p>
                   <p>
-                    We believe that true development happens when communities are empowered to identify 
-                    their own needs and solutions, with our role being to provide support, resources, 
-                    and expertise to help them achieve their goals.
+                    {t('hero.description3')}
                   </p>
                 </div>
               </Col>
               <Col md={12} lg={6}>
                 <div className="service-details__image">
-                  <img src={aboutImage} alt="Development Department" className="img-fluid" />
+                  <img src={aboutImage} alt={t('hero.imageAlt')} className="img-fluid" />
                 </div>
               </Col>
             </Row>
@@ -59,10 +59,9 @@ const DevelopmentDepartment = () => {
                   <div className="service-features__icon">
                     <i className="azino-icon-charity"></i>
                   </div>
-                  <h4>Economic Empowerment</h4>
+                  <h4>{t('features.economicEmpowerment.title')}</h4>
                   <p>
-                    Programs designed to create sustainable income opportunities through 
-                    micro-enterprise development, vocational training, and financial literacy education.
+                    {t('features.economicEmpowerment.description')}
                   </p>
                 </div>
               </Col>
@@ -71,10 +70,9 @@ const DevelopmentDepartment = () => {
                   <div className="service-features__icon">
                     <i className="azino-icon-heart"></i>
                   </div>
-                  <h4>Community Infrastructure</h4>
+                  <h4>{t('features.communityInfrastructure.title')}</h4>
                   <p>
-                    Development of essential community facilities and services including 
-                    clean water, sanitation, education centers, and healthcare access.
+                    {t('features.communityInfrastructure.description')}
                   </p>
                 </div>
               </Col>
@@ -83,10 +81,9 @@ const DevelopmentDepartment = () => {
                   <div className="service-features__icon">
                     <i className="azino-icon-dove"></i>
                   </div>
-                  <h4>Capacity Building</h4>
+                  <h4>{t('features.capacityBuilding.title')}</h4>
                   <p>
-                    Training and mentoring programs that build local leadership, 
-                    organizational skills, and community management capabilities.
+                    {t('features.capacityBuilding.description')}
                   </p>
                 </div>
               </Col>
@@ -99,21 +96,19 @@ const DevelopmentDepartment = () => {
             <Row>
               <Col md={12}>
                 <div className="block-title text-center">
-                  <h3>Our Impact</h3>
-                  <p>Building better futures through sustainable development</p>
+                  <h3>{t('impact.title')}</h3>
+                  <p>{t('impact.subtitle')}</p>
                 </div>
               </Col>
             </Row>
             <Row>
               <Col md={12} lg={6}>
                 <div className="service-impact__content">
-                  <h4>What We've Achieved</h4>
+                  <h4>{t('impact.achievements.title')}</h4>
                   <ul className="service-impact__list">
-                    <li>Established micro-enterprise programs in multiple communities</li>
-                    <li>Built and renovated community centers and schools</li>
-                    <li>Provided clean water access to thousands of families</li>
-                    <li>Trained hundreds in vocational and business skills</li>
-                    <li>Created sustainable employment opportunities</li>
+                    {t('impact.achievements.list', { returnObjects: true }).map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
                   </ul>
                 </div>
               </Col>
@@ -122,26 +117,26 @@ const DevelopmentDepartment = () => {
                   <div className="row">
                     <div className="col-6">
                       <div className="impact-stat">
-                        <h3>1000+</h3>
-                        <p>Families Helped</p>
+                        <h3>{t('impact.stats.familiesHelped.number')}</h3>
+                        <p>{t('impact.stats.familiesHelped.label')}</p>
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="impact-stat">
-                        <h3>25+</h3>
-                        <p>Projects Completed</p>
+                        <h3>{t('impact.stats.projectsCompleted.number')}</h3>
+                        <p>{t('impact.stats.projectsCompleted.label')}</p>
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="impact-stat">
-                        <h3>500+</h3>
-                        <p>Jobs Created</p>
+                        <h3>{t('impact.stats.jobsCreated.number')}</h3>
+                        <p>{t('impact.stats.jobsCreated.label')}</p>
                       </div>
                     </div>
                     <div className="col-6">
                       <div className="impact-stat">
-                        <h3>15+</h3>
-                        <p>Communities Served</p>
+                        <h3>{t('impact.stats.communitiesServed.number')}</h3>
+                        <p>{t('impact.stats.communitiesServed.label')}</p>
                       </div>
                     </div>
                   </div>
@@ -153,10 +148,24 @@ const DevelopmentDepartment = () => {
 
         <CallToAction />
         <BrandCarousel extraClass="client-carousel__has-border-top" />
-      </>
+      </div>
       <Footer />
     </Layout>
   );
 };
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
 
 export default DevelopmentDepartment;
