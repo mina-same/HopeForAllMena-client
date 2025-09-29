@@ -14,13 +14,24 @@ const NavLinks = ({ extraClassName }) => {
 
   const handleLanguageChange = (e) => {
     const newLanguage = e.target.value;
-    const currentPath = originalPath || '/';
-
-    // Navigate to the same page in the new language
+    
     if (typeof window !== 'undefined') {
-      const newPath = newLanguage === 'en'
-        ? currentPath === '/' ? '/' : currentPath
-        : `/${newLanguage}${currentPath === '/' ? '' : currentPath}`;
+      const currentPath = window.location.pathname;
+      let newPath;
+      
+      if (newLanguage === 'en') {
+        // Remove language prefix for English
+        newPath = currentPath.startsWith('/ar/') ? currentPath.replace('/ar/', '/') : currentPath;
+      } else {
+        // Add language prefix for other languages
+        if (currentPath.startsWith('/ar/')) {
+          // Already has Arabic prefix
+          newPath = currentPath;
+        } else {
+          // Add Arabic prefix
+          newPath = currentPath === '/' ? `/${newLanguage}` : `/${newLanguage}${currentPath}`;
+        }
+      }
 
       window.location.href = newPath;
     }

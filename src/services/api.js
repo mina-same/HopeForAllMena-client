@@ -204,8 +204,8 @@ export const booksAPI = {
     return response.data;
   },
 
-  getBookById: async (id) => {
-    const response = await api.get(`/books/${id}`);
+  getBookById: async (id, params = {}) => {
+    const response = await api.get(`/books/${id}`, { params });
     return response.data;
   },
 

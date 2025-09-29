@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Star, ChevronRight } from 'lucide-react';
-import { Link, graphql } from 'gatsby';
-import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
+import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import Bookstore from '../components/bookstore';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';

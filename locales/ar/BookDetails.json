@@ -1,0 +1,92 @@
+{
+  "loading": {
+    "book": "جاري تحميل تفاصيل الكتاب...",
+    "relatedBooks": "جاري تحميل الكتب ذات الصلة...",
+    "reviews": "جاري تحميل المراجعات..."
+  },
+  "error": {
+    "bookNotFound": "الكتاب غير موجود",
+    "bookNotFoundMessage": "لم يتم العثور على الكتاب المطلوب.",
+    "loadFailed": "فشل في تحميل تفاصيل الكتاب",
+    "backToBooks": "← العودة إلى الكتب"
+  },
+  "bookDetails": {
+    "author": "المؤلف:",
+    "unknownAuthor": "مؤلف غير معروف",
+    "ratedOutOf": "تم تقييمه {{rating}} من أصل 5",
+    "reviews": "المراجعات",
+    "category": "الفئة:",
+    "unknownCategory": "فئة غير معروفة",
+    "tags": "العلامات:",
+    "share": "مشاركة:",
+    "orderNow": "اطلب الآن",
+    "addToWishlist": "أضف إلى قائمة الأمنيات",
+    "noDescription": "لا يوجد وصف متاح."
+  },
+  "tabs": {
+    "description": "الوصف",
+    "reviews": "المراجعات ({{count}})"
+  },
+  "description": {
+    "title": "الوصف"
+  },
+  "reviews": {
+    "title": "المراجعات",
+    "noReviews": "لا توجد مراجعات معتمدة بعد",
+    "noReviewsSubtitle": "كن أول من يشارك أفكاره حول هذا الكتاب",
+    "moderationNote": "المراجعات تخضع للمراجعة وستظهر بعد الموافقة",
+    "addReview": "إضافة مراجعة",
+    "anonymous": "مجهول",
+    "submissionSuccess": {
+      "title": "تم إرسال المراجعة بنجاح!",
+      "message": "شكراً لك على مراجعتك. تم إرسالها وهي في انتظار موافقة المشرفين.",
+      "submitAnother": "إرسال مراجعة أخرى"
+    },
+    "form": {
+      "rating": "تقييمك",
+      "ratingRequired": "*",
+      "title": "عنوان المراجعة",
+      "titleRequired": "*",
+      "titlePlaceholder": "أعط مراجعتك عنواناً",
+      "content": "مراجعتك",
+      "contentRequired": "*",
+      "contentPlaceholder": "أخبرنا برأيك في هذا الكتاب...",
+      "characterCount": "{{count}}/1000 حرف",
+      "name": "الاسم",
+      "nameRequired": "*",
+      "namePlaceholder": "اسمك",
+      "email": "البريد الإلكتروني",
+      "emailRequired": "*",
+      "emailPlaceholder": "بريدك الإلكتروني",
+      "saveInfo": "احفظ اسمي وبريدي الإلكتروني وموقعي في هذا المتصفح للمرة القادمة التي أعلق فيها.",
+      "submitButton": "إرسال المراجعة",
+      "submitting": "جاري الإرسال..."
+    },
+    "errors": {
+      "bookNotAvailable": "معلومات الكتاب غير متوفرة",
+      "ratingRequired": "يرجى اختيار تقييم",
+      "titleRequired": "يرجى إدخال عنوان المراجعة",
+      "contentRequired": "يرجى إدخال مراجعتك",
+      "nameRequired": "يرجى إدخال اسمك",
+      "emailRequired": "يرجى إدخال بريدك الإلكتروني",
+      "loginRequired": "تحتاج إلى تسجيل الدخول لإرسال مراجعة",
+      "invalidData": "بيانات المراجعة غير صحيحة. يرجى التحقق من المدخلات.",
+      "submitFailed": "فشل في إرسال المراجعة. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "relatedBooks": {
+    "title": "المزيد من الكتب في {{category}}",
+    "defaultTitle": "منتجات ذات صلة",
+    "noRelatedBooks": "لم يتم العثور على كتب ذات صلة في هذه الفئة.",
+    "by": "بواسطة"
+  },
+  "social": {
+    "facebook": "فيسبوك",
+    "twitter": "تويتر",
+    "linkedin": "لينكد إن",
+    "pinterest": "بنترست"
+  },
+  "navigation": {
+    "backToBooks": "العودة إلى الكتب"
+  }
+}

@@ -1,0 +1,246 @@
+/* RTL styles for Book Details page */
+.book-details-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.book-details-rtl * {
+  text-align: right;
+}
+
+/* Product Gallery RTL */
+.book-details-rtl .product-gallery {
+  direction: rtl;
+}
+
+/* Product Info RTL */
+.book-details-rtl .product-info {
+  text-align: right;
+}
+
+.book-details-rtl .product-info h1 {
+  text-align: right;
+}
+
+.book-details-rtl .product-info .author-link {
+  text-align: right;
+}
+
+/* Rating Section RTL */
+.book-details-rtl .rating-section {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.book-details-rtl .rating-stars {
+  flex-direction: row-reverse;
+}
+
+/* Product Meta RTL */
+.book-details-rtl .product-meta {
+  text-align: right;
+}
+
+.book-details-rtl .product-meta .category-link,
+.book-details-rtl .product-meta .tag-link {
+  text-align: right;
+}
+
+/* Tabs RTL */
+.book-details-rtl .tabs-container {
+  direction: rtl;
+}
+
+.book-details-rtl .tab-buttons {
+  flex-direction: row-reverse;
+}
+
+/* Reviews Section RTL */
+.book-details-rtl .reviews-section {
+  direction: rtl;
+  text-align: right;
+}
+
+.book-details-rtl .review-item {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.book-details-rtl .review-avatar {
+  margin-left: 1rem;
+  margin-right: 0;
+}
+
+.book-details-rtl .review-content {
+  text-align: right;
+}
+
+.book-details-rtl .review-meta {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.book-details-rtl .review-stars {
+  flex-direction: row-reverse;
+}
+
+/* Review Form RTL */
+.book-details-rtl .review-form {
+  direction: rtl;
+  text-align: right;
+}
+
+.book-details-rtl .review-form label {
+  text-align: right;
+}
+
+.book-details-rtl .review-form input,
+.book-details-rtl .review-form textarea {
+  text-align: right;
+  direction: rtl;
+}
+
+.book-details-rtl .review-form .character-count {
+  text-align: left;
+}
+
+.book-details-rtl .review-form .form-grid {
+  direction: rtl;
+}
+
+.book-details-rtl .review-form .checkbox-container {
+  text-align: right;
+}
+
+.book-details-rtl .review-form .checkbox-container input[type="checkbox"] {
+  margin-left: 0.75rem;
+  margin-right: 0;
+}
+
+/* Related Books RTL */
+.book-details-rtl .related-books {
+  direction: rtl;
+}
+
+.book-details-rtl .related-books .section-header {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.book-details-rtl .related-books .navigation-buttons {
+  flex-direction: row-reverse;
+}
+
+.book-details-rtl .related-books .book-card {
+  text-align: right;
+}
+
+.book-details-rtl .related-books .book-card h3 {
+  text-align: right;
+}
+
+.book-details-rtl .related-books .book-card .book-author {
+  text-align: right;
+}
+
+.book-details-rtl .related-books .book-card .book-rating {
+  flex-direction: row-reverse;
+}
+
+.book-details-rtl .related-books .book-card .book-price {
+  text-align: right;
+}
+
+/* Swiper RTL adjustments */
+.book-details-rtl .swiper {
+  direction: rtl;
+}
+
+.book-details-rtl .swiper-slide {
+  text-align: right;
+}
+
+/* Button RTL */
+.book-details-rtl .btn-with-icon {
+  flex-direction: row-reverse;
+}
+
+.book-details-rtl .btn-with-icon svg {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+/* Action Buttons RTL */
+.book-details-rtl .action-buttons {
+  flex-direction: row-reverse;
+}
+
+/* Error and Loading States RTL */
+.book-details-rtl .error-container,
+.book-details-rtl .loading-container {
+  text-align: right;
+}
+
+/* Success Message RTL */
+.book-details-rtl .success-message {
+  text-align: right;
+}
+
+.book-details-rtl .success-message svg {
+  margin-left: 1rem;
+  margin-right: 0;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 768px) {
+  .book-details-rtl .product-section {
+    direction: rtl;
+  }
+  
+  .book-details-rtl .product-info {
+    text-align: right;
+  }
+  
+  .book-details-rtl .action-buttons {
+    flex-direction: column;
+  }
+  
+  .book-details-rtl .review-form .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Arabic font support */
+.book-details-rtl {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+.book-details-rtl h1,
+.book-details-rtl h2,
+.book-details-rtl h3,
+.book-details-rtl h4,
+.book-details-rtl h5,
+.book-details-rtl h6 {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  font-weight: 600;
+}
+
+/* Text alignment for Arabic */
+.book-details-rtl p,
+.book-details-rtl div,
+.book-details-rtl span {
+  text-align: right;
+}
+
+/* Input placeholders RTL */
+.book-details-rtl input::placeholder,
+.book-details-rtl textarea::placeholder {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Toast notifications RTL */
+.book-details-rtl .toast {
+  direction: rtl;
+  text-align: right;
+}

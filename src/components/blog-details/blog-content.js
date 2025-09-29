@@ -13,7 +13,7 @@ const BlogContent = ({ blog, currentLanguage }) => {
   useEffect(() => {
     const fetchAdjacentBlogs = async () => {
       if (!blog || !blog.slug) return;
-      
+
       try {
         setLoading(true);
         const adjacent = await blogAPI.getAdjacentBlogs(blog.slug);
@@ -34,9 +34,9 @@ const BlogContent = ({ blog, currentLanguage }) => {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const locale = currentLanguage === 'ar' ? 'ar-SA' : 'en-US';
-    return date.toLocaleDateString(locale, { 
-      day: 'numeric', 
-      month: 'short' 
+    return date.toLocaleDateString(locale, {
+      day: 'numeric',
+      month: 'short'
     });
   };
 
@@ -64,7 +64,7 @@ const BlogContent = ({ blog, currentLanguage }) => {
       <h3 className={currentLanguage === 'ar' ? 'text-right' : ''}>
         {currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title}
       </h3>
-      
+
       {/* Render blog content */}
       <div className={`blog-content ${currentLanguage === 'ar' ? 'text-right' : ''}`}>
         {blog.content ? formatContent(
@@ -87,7 +87,7 @@ const BlogContent = ({ blog, currentLanguage }) => {
             ))}
           </ul>
         )}
-        
+
         <ul className={`list-unstyled blog-details__category ${currentLanguage === 'ar' ? 'text-right' : ''}`}>
           <li>
             <span>{t('blog:details.category')}:</span>
@@ -97,10 +97,10 @@ const BlogContent = ({ blog, currentLanguage }) => {
           </li>
         </ul>
       </div>
-      
+
       <div className={`blog-navigations ${currentLanguage === 'ar' ? 'rtl-nav' : ''}`}>
         {adjacentBlogs.previous ? (
-          <Link 
+          <Link
             to={`/news-details/${adjacentBlogs.previous.slug}`}
             className="nav-link previous"
             title={adjacentBlogs.previous.title}
@@ -120,9 +120,9 @@ const BlogContent = ({ blog, currentLanguage }) => {
             )}
           </span>
         )}
-        
+
         {adjacentBlogs.next ? (
-          <Link 
+          <Link
             to={`/news-details/${adjacentBlogs.next.slug}`}
             className="nav-link next"
             title={adjacentBlogs.next.title}

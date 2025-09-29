@@ -1,0 +1,148 @@
+/* RTL styles for VideoCardTwo component */
+.video-card-two.rtl {
+  direction: rtl;
+}
+
+.video-card-two.rtl .container {
+  direction: rtl;
+}
+
+.video-card-two.rtl .row {
+  direction: rtl;
+}
+
+/* Text alignment for Arabic */
+.video-card-two.rtl h3 {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  text-align: right;
+  line-height: 1.5;
+  padding-left: 0;
+  padding-right: 22px;
+  right: 30px;
+  left: auto;
+}
+
+.video-card-two.rtl p {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  text-align: right;
+  line-height: 1.7;
+  padding-left: 0;
+  padding-right: 70px;
+}
+
+/* Button styling for Arabic */
+.video-card-two.rtl .btn {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  text-align: center;
+}
+
+/* Video box positioning for RTL */
+.video-card-two.rtl .video-card-two__box {
+  margin-left: auto;
+  margin-right: 0;
+}
+
+/* Play button remains centered */
+.video-card-two.rtl .video-card-two__box-btn {
+  position: absolute;
+  top: 50%;
+  left: 43%;
+  transform: translate(-400%, -50%);
+}
+
+/* Column spacing adjustments for Arabic */
+.video-card-two.rtl .col-lg-3,
+.video-card-two.rtl .col-lg-4,
+.video-card-two.rtl .col-lg-5 {
+  text-align: right;
+}
+
+/* Button group RTL spacing */
+.video-card-two.rtl .button-group {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.video-card-two.rtl .button-group .btn {
+  margin-left: 0;
+  margin-right: 15px;
+}
+
+.video-card-two.rtl .button-group .btn:last-child {
+  margin-right: 0;
+}
+
+/* Responsive adjustments for Arabic */
+@media (max-width: 992px) {
+  .video-card-two.rtl .col-lg-3,
+  .video-card-two.rtl .col-lg-4,
+  .video-card-two.rtl .col-lg-5 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .video-card-two.rtl .button-group {
+    justify-content: center;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 768px) {
+  .video-card-two.rtl h3 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .video-card-two.rtl p {
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  
+  .video-card-two.rtl .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .video-card-two.rtl .button-group .btn {
+    margin-right: 0;
+    margin-bottom: 10px;
+    width: 200px;
+  }
+}
+
+/* Inner container RTL adjustments */
+.video-card-two.rtl .inner-container {
+  padding: 40px 30px;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-bottom-right-radius: 145.5px;
+  border-top-right-radius: 145.5px;
+}
+
+/* Title and subtitle styling */
+.video-card-two.rtl .title-section {
+  margin-bottom: 0;
+}
+
+.video-card-two.rtl .title-section h3 {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.video-card-two.rtl .title-section .subtitle {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+  padding-right: 50px;
+  padding-left: 0;
+}
+
+/* English subtitle styling (default) */
+.video-card-two.ltr .title-section .subtitle,
+.video-card-two .title-section .subtitle {
+  padding-left: 50px;
+  padding-right: 0;
+}

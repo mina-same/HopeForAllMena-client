@@ -2,13 +2,35 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
+import { Link, graphql, useStaticQuery } from "gatsby";
+import { useTranslation } from "react-i18next";
+import { useI18next } from "gatsby-plugin-react-i18next";
 
 import banner1 from "../../assets/images/main-slider/slider-1-1.jpg";
 import banner2 from "../../assets/images/main-slider/slider-1-2.jpg";
 import banner3 from "../../assets/images/main-slider/slider-2-1.jpg";
+import banner4 from "../../assets/images/main-slider/slider-2-1.jpg";
+import "./main-slider-rtl.css";
 // Swiper v11 uses modules via props
 
 const MainSlider = () => {
+  const { t } = useTranslation('MainSlider');
+  const { language: currentLanguage } = useI18next();
+  
+  const data = useStaticQuery(graphql`
+    query {
+      locales: allLocale {
+        edges {
+          node {
+            ns
+            data
+            language
+          }
+        }
+      }
+    }
+  `);
+
   const mainSlideOptions = {
     slidesPerView: 1,
     loop: true,
@@ -22,8 +44,16 @@ const MainSlider = () => {
       delay: 5000
     }
   };
+
+  // Service department links
+  const serviceLinks = {
+    evangelism: "/services/evangelism",
+    development: "/services/development", 
+    education: "/services/education",
+    publishing: "/services/publishing"
+  };
   return (
-    <section className="main-slider">
+    <section className={`main-slider ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <Swiper modules={[Autoplay, Pagination, EffectFade]} {...mainSlideOptions}>
         <SwiperSlide>
           <div
@@ -32,19 +62,18 @@ const MainSlider = () => {
           ></div>
 
           <Container>
-            <Row className="row justify-content-end">
-              <Col xl={7} lg={12} className="text-right">
-                <p>Help the poor in need</p>
+            <Row className={`row ${currentLanguage === 'ar' ? 'justify-content-start' : 'justify-content-end'}`}>
+              <Col xl={7} lg={12} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-right'}`}>
+                <p>{t('slides.evangelism.title')}</p>
                 <h2>
-                  Lend the <br /> helping hand <br /> get involved.
+                  {t('slides.evangelism.description')}
                 </h2>
-                <a
-                  href="#none"
-                  data-target=".donate-options"
-                  className="scroll-to-target thm-btn"
+                <Link
+                  to={serviceLinks.evangelism}
+                  className="thm-btn"
                 >
-                  Start Donating
-                </a>
+                  {t('slides.evangelism.button')}
+                </Link>
               </Col>
             </Row>
           </Container>
@@ -56,20 +85,18 @@ const MainSlider = () => {
           ></div>
 
           <Container>
-            <Row className="row justify-content-end">
-              <Col xl={8} lg={12} className="text-right">
-                <p>Help the poor in need</p>
+            <Row className={`row ${currentLanguage === 'ar' ? 'justify-content-start' : 'justify-content-end'}`}>
+              <Col xl={8} lg={12} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-right'}`}>
+                <p>{t('slides.development.title')}</p>
                 <h2>
-                  Donat<span className="iconic-text">i</span>on <br /> Can
-                  Change <br /> Life
+                  {t('slides.development.description')}
                 </h2>
-                <a
-                  href="#none"
-                  data-target=".donate-options"
-                  className="scroll-to-target thm-btn "
+                <Link
+                  to={serviceLinks.development}
+                  className="thm-btn"
                 >
-                  Start Donating
-                </a>
+                  {t('slides.development.button')}
+                </Link>
               </Col>
             </Row>
           </Container>
@@ -81,19 +108,41 @@ const MainSlider = () => {
           ></div>
 
           <Container>
-            <Row className="justify-content-end">
-              <Col lg={7} className=" text-right">
-                <p>Help the poor in need</p>
+            <Row className={`${currentLanguage === 'ar' ? 'justify-content-start' : 'justify-content-end'}`}>
+              <Col lg={7} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-right'}`}>
+                <p>{t('slides.education.title')}</p>
                 <h2>
-                  Lend the <br /> helping hand <br /> get involved.
+                  {t('slides.education.description')}
                 </h2>
-                <a
-                  href="#none"
-                  data-target=".donate-options"
-                  className="scroll-to-target thm-btn "
+                <Link
+                  to={serviceLinks.education}
+                  className="thm-btn"
                 >
-                  Start Donating
-                </a>
+                  {t('slides.education.button')}
+                </Link>
+              </Col>
+            </Row>
+          </Container>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div
+            className="image-layer"
+            style={{ backgroundImage: `url(${banner4})` }}
+          ></div>
+
+          <Container>
+            <Row className={`${currentLanguage === 'ar' ? 'justify-content-start' : 'justify-content-end'}`}>
+              <Col lg={7} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-right'}`}>
+                <p>{t('slides.publishing.title')}</p>
+                <h2>
+                  {t('slides.publishing.description')}
+                </h2>
+                <Link
+                  to={serviceLinks.publishing}
+                  className="thm-btn"
+                >
+                  {t('slides.publishing.button')}
+                </Link>
               </Col>
             </Row>
           </Container>

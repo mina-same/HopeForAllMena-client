@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Link, navigate } from 'gatsby';
-import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
+import { Link, navigate, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { Heart, Eye, ShoppingCart } from 'lucide-react';
 
 export const BookCard = ({ book, viewMode }) => {

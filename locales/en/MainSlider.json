@@ -1,0 +1,24 @@
+{
+  "slides": {
+    "evangelism": {
+      "title": "Evangelism & Discipleship",
+      "description": "Generation that changes lives.",
+      "button": "Learn More"
+    },
+    "development": {
+      "title": "Development Department",
+      "description": "Better opportunities for the future.",
+      "button": "Learn More"
+    },
+    "education": {
+      "title": "Studies & Education",
+      "description": "Building pioneer mindsets.",
+      "button": "Learn More"
+    },
+    "publishing": {
+      "title": "Publishing & Distribution",
+      "description": "Supporting impactful writers.",
+      "button": "Learn More"
+    }
+  }
+}

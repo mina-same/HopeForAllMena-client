@@ -1,10 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'gatsby';
+import { graphql } from 'gatsby';
+import { Link } from 'gatsby-plugin-react-i18next';
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
 import { booksAPI } from '../../services/api';
 import StarRating from './StarRating';
 
 const TrendingProducts = () => {
+  const { t } = useTranslation('Books');
+  const { language: currentLanguage } = useI18next();
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -51,7 +56,7 @@ const TrendingProducts = () => {
     }
   }, [books.length]);
 
-  // Fetch latest 8 books from database
+  // Fetch latest 8 books from database with language support
   useEffect(() => {
     const fetchLatestBooks = async () => {
       try {
@@ -61,7 +66,8 @@ const TrendingProducts = () => {
           limit: 8,
           sortBy: 'createdAt',
           sortOrder: 'desc',
-          status: 'published'
+          status: 'published',
+          language: currentLanguage
         });
         
         if (response.status === 'success') {
@@ -75,7 +81,7 @@ const TrendingProducts = () => {
     };
 
     fetchLatestBooks();
-  }, []);
+  }, [currentLanguage]);
 
   // Update current slide on scroll
   useEffect(() => {
@@ -205,18 +211,18 @@ const TrendingProducts = () => {
   }, []);
 
   return (
-    <section className="mx-auto py-4 md:py-8 px-4">
+    <section className={`mx-auto py-4 md:py-8 px-4 ${currentLanguage === 'ar' ? 'rtl' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
 
       <div className="container mx-auto px-4 py-10 sm:px-8 md:px-16 lg:px-40 relative flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 md:mb-8 gap-4">
         <div className="flex items-center w-full sm:w-auto">
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mr-4">What's In Trend</h2>
+          <h2 className={`text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 ${currentLanguage === 'ar' ? 'ml-4' : 'mr-4'}`}>{t('trending.title')}</h2>
           <div className="h-px bg-gray-300 flex-1 sm:w-16 md:w-32"></div>
         </div>
-        <div className="flex items-center gap-2 bg-[#2194D1] text-white px-4 md:px-6 py-2 rounded-full hover:bg-[#2194D1]/90 transition-colors cursor-pointer text-sm md:text-base">
-          <span className="hidden sm:inline">View All</span>
-          <span className="sm:hidden">View All</span>
+        <Link to="/books#collection" className={`flex items-center gap-2 bg-[#2194D1] text-white px-4 md:px-6 py-2 rounded-full hover:bg-[#2194D1]/90 transition-colors cursor-pointer text-sm md:text-base ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <span className="hidden sm:inline">{t('trending.viewAll')}</span>
+          <span className="sm:hidden">{t('trending.viewAll')}</span>
           <ChevronRight className="w-4 h-4" />
-        </div>
+        </Link>
       </div>
 
       <div className="w-full px-2 sm:px-4">
@@ -240,38 +246,43 @@ const TrendingProducts = () => {
           {loading ? (
             <div className="flex items-center justify-center w-full h-64">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2194D1]"></div>
+              <span className="ml-3 text-gray-600">{t('trending.loading')}</span>
             </div>
           ) : (
             books.map((book, index) => (
               <div key={book._id} className="flex-shrink-0 flex-center w-[280px] sm:w-[380px] md:w-[450px] lg:w-[520px] transition-transform duration-200 hover:scale-[1.02]">
-                <div className={`rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden p-3 sm:p-4 md:p-6 h-[380px] sm:h-[340px] md:h-[360px] ${cardColors[index % cardColors.length]}`}>
-                  <div className="flex flex-col sm:flex-row h-full">
+                <div className={`rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden p-3 sm:p-4 md:p-6 ${currentLanguage === 'ar' ? 'h-[420px] xs:h-[440px] sm:h-[340px] md:h-[360px] lg:h-[380px]' : 'h-[400px] xs:h-[420px] sm:h-[340px] md:h-[360px] lg:h-[380px]'} ${cardColors[index % cardColors.length]}`}>
+                  <div className={`flex ${currentLanguage === 'ar' ? 'flex-col sm:flex-row-reverse' : 'flex-col sm:flex-row'} h-full`}>
                     <div className="w-full sm:w-44 md:w-52 lg:w-60 flex-shrink-0 mb-4 sm:mb-0">
                       <Link to={`/book/${book._id}`}>
                         <img
                           src={book.coverImageUrl || '/default-book-cover.jpg'}
-                          alt={book.title}
+                          alt={currentLanguage === 'ar' ? (book.titleAr || book.title) : book.title}
                           className="w-[240px] h-[250px] sm:h-full object-cover transition-transform duration-300 hover:scale-105 rounded-xl md:rounded-2xl"
                           style={{ aspectRatio: '3/4' }}
                           draggable={false}
                         />
                       </Link>
                     </div>
-                    <div className="flex-1 sm:p-4 md:p-7 flex flex-col justify-between h-full sm:h-auto py-2 sm:py-0">
+                    <div className={`flex-1 sm:p-4 md:p-7 flex flex-col justify-between h-full sm:h-auto py-2 sm:py-0 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                       <div className="flex-1 flex flex-col">
                         <div className="min-h-[3rem] sm:min-h-[4rem] md:min-h-[5rem] flex items-start mb-2 md:mb-3">
-                          <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 leading-tight">
+                          <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 leading-tight line-clamp-2">
                             <Link to={`/book/${book._id}`} className="text-[#2194D1] hover:text-[#204b62] transition-colors">
-                              {book.title}
+                              {currentLanguage === 'ar' ? (book.titleAr || book.title) : book.title}
                             </Link>
                           </h3>
                         </div>
                         <StarRating rating={book.averageRating || 0} reviews={book.totalReviews || 0} />
                         <p className="text-xs sm:text-sm text-gray-600 mb-2 md:mb-3 font-medium line-clamp-1">
-                          by <a href={`/author/${book.author?.slug}`} className="text-[#2194D1] hover:text-[#204b62] hover:underline transition-colors">{book.author?.name || 'Unknown Author'}</a>
+                          {t('trending.byAuthor')} <Link to={`/author/${book.author?.slug}`} className="text-[#2194D1] hover:text-[#204b62] hover:underline transition-colors">
+                            {currentLanguage === 'ar' ? (book.author?.nameAr || book.author?.name || t('trending.unknownAuthor')) : (book.author?.name || t('trending.unknownAuthor'))}
+                          </Link>
                         </p>
-                        <div className="flex-1">
-                          <p className="text-xs sm:text-sm text-gray-700 line-clamp-2 sm:line-clamp-3 leading-relaxed">{book.description || book.shortDescription}</p>
+                        <div className="flex-1 min-h-0">
+                          <p className="text-xs sm:text-sm text-gray-700 line-clamp-2 xs:line-clamp-3 sm:line-clamp-3 md:line-clamp-4 leading-relaxed">
+                            {currentLanguage === 'ar' ? (book.descriptionAr || book.shortDescriptionAr || book.description || book.shortDescription) : (book.description || book.shortDescription)}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -281,12 +292,12 @@ const TrendingProducts = () => {
             ))
           )}
         </div>
-        <div className="flex justify-center mt-4 md:mt-6 space-x-2 md:space-x-3">
+        <div className={`flex justify-center mt-4 md:mt-6 ${currentLanguage === 'ar' ? 'flex-row-reverse gap-1.5 xs:gap-2 md:gap-3' : 'space-x-1.5 xs:space-x-2 md:space-x-3'}`}>
           {books.map((_, index) => (
             <div
               key={index}
               onClick={() => goToSlide(index)}
-              className={`transition-all duration-300 cursor-pointer ${
+              className={`transition-all duration-300 cursor-pointer touch-manipulation ${
                 currentSlide === index
                   ? 'w-6 md:w-8 h-1.5 md:h-2 bg-[#2194D1] rounded-full'
                   : 'w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-300 rounded-full hover:bg-gray-400'
@@ -323,3 +334,17 @@ const TrendingProducts = () => {
 };
 
 export default TrendingProducts;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

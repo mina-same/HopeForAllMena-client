@@ -1,0 +1,74 @@
+/* RTL styles for MainSlider component */
+.main-slider.rtl {
+  direction: rtl;
+}
+
+.main-slider.rtl .text-right {
+  text-align: right !important;
+}
+
+.main-slider.rtl h2 {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  line-height: 1.4;
+  text-align: right;
+}
+
+.main-slider.rtl p {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  text-align: right;
+}
+
+.main-slider.rtl .thm-btn {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  text-align: center;
+}
+
+/* Swiper pagination RTL adjustments */
+.main-slider.rtl .swiper-pagination {
+  direction: ltr; /* Keep pagination dots in normal order */
+}
+
+.main-slider.rtl .swiper-pagination-bullet {
+  margin: 0 4px;
+}
+
+/* Container adjustments for Arabic */
+.main-slider.rtl .container {
+  direction: rtl;
+}
+
+.main-slider.rtl .row {
+  direction: rtl;
+}
+
+/* Button styling for Arabic */
+.main-slider.rtl .thm-btn {
+  display: inline-block;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments for Arabic */
+@media (max-width: 768px) {
+  .main-slider.rtl h2 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
+  
+  .main-slider.rtl p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-slider.rtl h2 {
+    font-size: 1.5rem;
+  }
+  
+  .main-slider.rtl .thm-btn {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+}

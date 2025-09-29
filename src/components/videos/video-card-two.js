@@ -1,13 +1,32 @@
 import React, { useState } from "react";
 import ModalVideo from "react-modal-video";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link, useStaticQuery, graphql } from "gatsby";
+import { useTranslation } from "react-i18next";
+import { useI18next } from "gatsby-plugin-react-i18next";
 import videoBg from "../../assets/images/shapes/video-bg-1-1.png";
 import videoImage from "../../assets/images/resources/video-1-1.png";
+import "./video-card-two-rtl.css";
 
 const VideoCardTwo = () => {
   const [isOpen, setOpen] = useState(false);
+  const { t } = useTranslation('VideoCardTwo');
+  const { language: currentLanguage } = useI18next();
+  const data = useStaticQuery(graphql`
+    query {
+      locales: allLocale {
+        edges {
+          node {
+            ns
+            data
+            language
+          }
+        }
+      }
+    }
+  `);
   return (
-    <section className="video-card-two" style={{marginBottom: "100px"}}>
+    <section className={`video-card-two ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} style={{marginBottom: "100px"}} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <ModalVideo
         channel="youtube"
         autoplay
@@ -21,26 +40,35 @@ const VideoCardTwo = () => {
           style={{ backgroundImage: `url(${videoBg})` }}
         >
           <Row className="align-items-center">
-            <Col lg={3}>
+            <Col lg={3} className={`${currentLanguage === 'ar' ? 'text-center' : 'text-center'}`}>
               <div className="video-card-two__box">
-                <img src={videoImage} alt="" style={{width: "250px", height: "250px", objectFit: "cover"}} />
+                <img 
+                  src={videoImage} 
+                  alt={t('videoAlt')} 
+                  style={{width: "250px", height: "250px", objectFit: "cover"}} 
+                />
                 <span
                   className="video-card-two__box-btn video-popup"
                   onClick={() => setOpen(true)}
                   onKeyDown={() => setOpen(true)}
                   role="button"
                   tabIndex={0}
+                  title={t('playButton')}
+                  aria-label={t('playButton')}
                 >
                   <i className="fa fa-play"></i>
                 </span>
               </div>
             </Col>
-            <Col lg={4}>
-              <h3>" And in His name the Gentiles will hope " <br/>(Matthew 12:21)</h3>
+            <Col lg={4} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+              <div className="title-section">
+                <h3>{t('title')}</h3>
+                <div className="subtitle">{t('subtitle')}</div>
+              </div>
             </Col>
-            <Col lg={5}>
+            <Col lg={5} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
               <p>
-                Hope for All Ministry, affiliated with the Educational Council of the Evangelical Synod of the Nile, was founded in 2008 by Rev. Dr. Radi Atallah to equip and train leaders and servants in the local church across the Middle East and North Africa, enabling them to train others effectively.
+                {t('description')}
               </p>
             </Col>
           </Row>

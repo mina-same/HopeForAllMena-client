@@ -1,0 +1,24 @@
+{
+  "slides": {
+    "evangelism": {
+      "title": "الكرازة والتلمذة",
+      "description": "جيل جديد يغير ويتغير.",
+      "button": "اعرف المزيد"
+    },
+    "development": {
+      "title": "قسم التنمية",
+      "description": "فرص أفضل لمستقبل افضل.",
+      "button": "اعرف المزيد"
+    },
+    "education": {
+      "title": "الدراسات والتعليم",
+      "description": "بناء عقلية رواد المجتمع.",
+      "button": "اعرف المزيد"
+    },
+    "publishing": {
+      "title": "دار النشر والتوزيع",
+      "description": "دعم الكتاب المؤثرين.",
+      "button": "اعرف المزيد"
+    }
+  }
+}

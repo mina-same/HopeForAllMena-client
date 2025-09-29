@@ -1,0 +1,103 @@
+/* RTL styles for CallToActionTwo component */
+.call-to-action-two.rtl {
+  direction: rtl;
+}
+
+.call-to-action-two.rtl .container {
+  direction: rtl;
+}
+
+.call-to-action-two.rtl .row {
+  direction: rtl;
+}
+
+/* Text alignment for Arabic */
+.call-to-action-two.rtl .block-title p {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  text-align: right;
+  line-height: 1.6;
+}
+
+.call-to-action-two.rtl .block-title h3 {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  text-align: right;
+  line-height: 1.4;
+  font-weight: 700;
+}
+
+/* Button styling for Arabic */
+.call-to-action-two.rtl .thm-btn {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+  text-align: center;
+  direction: ltr; /* Keep button text LTR for better readability */
+}
+
+/* Column alignment for RTL */
+.call-to-action-two.rtl .col-lg-7 {
+  text-align: right;
+  padding-right: 180px;
+}
+
+.call-to-action-two.rtl .col-lg-5 {
+  display: flex;
+  justify-content: flex-end !important;
+}
+
+/* Button wrapper RTL adjustments */
+.call-to-action-two.rtl .btn-wrap {
+  text-align: right;
+}
+
+/* Icon positioning for RTL */
+.call-to-action-two.rtl .call-to-action-two__icon {
+  right: 50px;
+  left: auto;
+}
+
+/* Heart image positioning for Arabic */
+.call-to-action-two.rtl .block-title p img {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+/* Responsive adjustments for Arabic */
+@media (max-width: 992px) {
+  .call-to-action-two.rtl .col-lg-5 {
+    justify-content: center !important;
+    margin-top: 30px;
+  }
+  
+  .call-to-action-two.rtl .block-title {
+    text-align: center;
+  }
+  
+  .call-to-action-two.rtl .block-title h3 {
+    text-align: center;
+  }
+  
+  .call-to-action-two.rtl .btn-wrap {
+    text-align: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .call-to-action-two.rtl .block-title h3 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
+  
+  .call-to-action-two.rtl .block-title p {
+    font-size: 0.95rem;
+  }
+}
+
+/* Background and container RTL adjustments */
+.call-to-action-two.rtl .call-to-action-two__bg {
+  background-position: center right;
+}
+
+/* Additional spacing for Arabic text */
+.call-to-action-two.rtl .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}

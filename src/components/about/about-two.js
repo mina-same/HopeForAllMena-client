@@ -16,6 +16,9 @@ const AboutTwo = () => {
       {/* RTL-specific styles for Arabic */}
       {currentLanguage === 'ar' && (
         <style jsx>{`
+          .about-two .about-two__content {
+            padding-right: 60px;
+          }
           .about-two .block-title h3,
           .about-two .about-two__box h3 {
             text-align: right;

@@ -1,0 +1,92 @@
+{
+  "loading": {
+    "book": "Loading book details...",
+    "relatedBooks": "Loading related books...",
+    "reviews": "Loading reviews..."
+  },
+  "error": {
+    "bookNotFound": "Book Not Found",
+    "bookNotFoundMessage": "The requested book could not be found.",
+    "loadFailed": "Failed to load book details",
+    "backToBooks": "← Back to Books"
+  },
+  "bookDetails": {
+    "author": "Author:",
+    "unknownAuthor": "Unknown Author",
+    "ratedOutOf": "Rated {{rating}} out of 5",
+    "reviews": "Reviews",
+    "category": "Category:",
+    "unknownCategory": "Unknown Category",
+    "tags": "Tags:",
+    "share": "Share:",
+    "orderNow": "Order Now",
+    "addToWishlist": "Add to wishlist",
+    "noDescription": "No description available."
+  },
+  "tabs": {
+    "description": "Description",
+    "reviews": "Reviews ({{count}})"
+  },
+  "description": {
+    "title": "Description"
+  },
+  "reviews": {
+    "title": "Reviews",
+    "noReviews": "No approved reviews yet",
+    "noReviewsSubtitle": "Be the first to share your thoughts about this book",
+    "moderationNote": "Reviews are moderated and will appear after approval",
+    "addReview": "Add a review",
+    "anonymous": "Anonymous",
+    "submissionSuccess": {
+      "title": "Review Submitted Successfully!",
+      "message": "Thank you for your review. It has been submitted and is pending approval by our moderators.",
+      "submitAnother": "Submit Another Review"
+    },
+    "form": {
+      "rating": "Your rating",
+      "ratingRequired": "*",
+      "title": "Review title",
+      "titleRequired": "*",
+      "titlePlaceholder": "Give your review a title",
+      "content": "Your review",
+      "contentRequired": "*",
+      "contentPlaceholder": "Tell us what you think about this book...",
+      "characterCount": "{{count}}/1000 characters",
+      "name": "Name",
+      "nameRequired": "*",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailRequired": "*",
+      "emailPlaceholder": "Your email",
+      "saveInfo": "Save my name, email, and website in this browser for the next time I comment.",
+      "submitButton": "Submit Review",
+      "submitting": "Submitting..."
+    },
+    "errors": {
+      "bookNotAvailable": "Book information not available",
+      "ratingRequired": "Please select a rating",
+      "titleRequired": "Please enter a review title",
+      "contentRequired": "Please enter your review",
+      "nameRequired": "Please enter your name",
+      "emailRequired": "Please enter your email",
+      "loginRequired": "You need to be logged in to submit a review",
+      "invalidData": "Invalid review data. Please check your input.",
+      "submitFailed": "Failed to submit review. Please try again."
+    }
+  },
+  "relatedBooks": {
+    "title": "More books in {{category}}",
+    "defaultTitle": "Related products",
+    "noRelatedBooks": "No related books found in this category.",
+    "by": "by"
+  },
+  "social": {
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "linkedin": "LinkedIn",
+    "pinterest": "Pinterest"
+  },
+  "navigation": {
+    "backToBooks": "Back to Books"
+  }
+}
