@@ -274,7 +274,7 @@ export function AuthorsSection() {
 
   return (
     <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-      <div className={`flex flex-col sm:flex-row items-start sm:items-center ${currentLanguage === 'ar' ? 'justify-between flex-row-reverse' : 'justify-between'} gap-4`}>
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center ${currentLanguage === 'ar' ? 'justify-between ' : 'justify-between'} gap-4`}>
         <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
           <h2 className="text-xl md:text-2xl font-bold text-foreground">{t('title')}</h2>
           <p className="text-muted-foreground text-sm md:text-base">{t('description')}</p>
@@ -282,7 +282,7 @@ export function AuthorsSection() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={openAddDialog} className=" text-white shadow-elegant hover:shadow-lg transition-all duration-300">
-              <div className={`flex items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-center ${currentLanguage === 'ar' ? '' : ''}`}>
                 <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
                 {t('addAuthor')}
               </div>
@@ -391,7 +391,7 @@ export function AuthorsSection() {
               </div>
 
 
-              <div className={`flex gap-2 ${currentLanguage === 'ar' ? 'justify-start flex-row-reverse' : 'justify-end'}`}>
+              <div className={`flex gap-2 ${currentLanguage === 'ar' ? 'justify-start ' : 'justify-end'}`}>
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} disabled={isSubmitting}>
                   {t('form.buttons.cancel')}
                 </Button>
@@ -446,7 +446,7 @@ export function AuthorsSection() {
 
       <div className="bg-white rounded-lg border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
-          <div className={`flex items-center ${currentLanguage === 'ar' ? 'justify-between flex-row-reverse' : 'justify-between'}`}>
+          <div className={`flex items-center ${currentLanguage === 'ar' ? 'justify-between ' : 'justify-between'}`}>
             <h3 className={`text-lg font-semibold text-gray-900 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
               {t('table.authorsCount', { count: totalAuthors })}
             </h3>
@@ -465,7 +465,7 @@ export function AuthorsSection() {
                 const displayName = currentLanguage === 'ar' ? author.nameAr || author.name : author.name;
                 return (
                 <div key={author._id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md hover:border-gray-300 transition-all duration-200">
-                  <div className={`flex gap-6 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex gap-6 ${currentLanguage === 'ar' ? '' : ''}`}>
                     {/* Author Image */}
                     <div className="flex-shrink-0">
                       <Avatar className="h-20 w-20 border-2 border-gray-100 shadow-sm">
@@ -478,9 +478,9 @@ export function AuthorsSection() {
                     
                     {/* Author Details */}
                     <div className="flex-1 min-w-0">
-                      <div className={`flex items-start ${currentLanguage === 'ar' ? 'justify-between flex-row-reverse' : 'justify-between'}`}>
+                      <div className={`flex items-start ${currentLanguage === 'ar' ? 'justify-between ' : 'justify-between'}`}>
                         <div className={`flex-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                          <div className={`flex items-center gap-3 mb-3 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                          <div className={`flex items-center gap-3 mb-3 ${currentLanguage === 'ar' ? ' justify-end' : ''}`}>
                             <h4 className="font-semibold text-gray-900 text-xl">{displayName}</h4>
                             {author.featured && (
                               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
@@ -496,7 +496,7 @@ export function AuthorsSection() {
                             </span>
                           </div>
                           
-                          <div className={`flex items-center gap-4 text-sm text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                          <div className={`flex items-center gap-4 text-sm text-gray-500 ${currentLanguage === 'ar' ? ' justify-end' : ''}`}>
                             <span className="font-medium">
                               {t('table.booksCount', { count: author.booksCount })}
                             </span>
@@ -562,7 +562,7 @@ export function AuthorsSection() {
           
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className={`flex justify-center items-center gap-3 mt-8 pt-6 border-t border-gray-200 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex justify-center items-center gap-3 mt-8 pt-6 border-t border-gray-200 ${currentLanguage === 'ar' ? '' : ''}`}>
               <Button
                 variant="outline"
                 size="sm"

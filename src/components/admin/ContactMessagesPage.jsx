@@ -8,9 +8,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Textarea } from '../ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import contactMessageService from '../../services/contactMessageService';
+import { useTranslation } from 'gatsby-plugin-react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
+import { Link } from 'gatsby';
 
 
 const ContactMessagesPage = () => {
+  const { t } = useTranslation('ContactMessages');
+  const { language: currentLanguage } = useI18next();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -144,13 +150,13 @@ const ContactMessagesPage = () => {
   };
 
   return (
-    <div className="p-4 md:p-6 space-y-6">
+    <div className={`p-4 md:p-6 space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground">Contact Messages</h1>
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
+        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground">{t('title')}</h1>
           <p className="text-muted-foreground mt-2 text-sm md:text-base">
-            Manage customer inquiries and support requests
+            {t('description')}
           </p>
         </div>
         <div className="flex items-center gap-4">
@@ -158,7 +164,7 @@ const ContactMessagesPage = () => {
             <div className="flex items-center gap-3 text-sm">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-blue-600" />
-                <span className="font-medium">{unreadCount} Unread</span>
+                <span className="font-medium">{t('stats.unread', { count: unreadCount })}</span>
               </div>
               {newCount > 0 && (
                 <>
@@ -167,7 +173,7 @@ const ContactMessagesPage = () => {
                     <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse flex items-center justify-center">
                       <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
                     </div>
-                    <span className="font-medium text-red-600">{newCount} New</span>
+                    <span className="font-medium text-red-600">{t('stats.new', { count: newCount })}</span>
                   </div>
                 </>
               )}
@@ -179,40 +185,41 @@ const ContactMessagesPage = () => {
       {/* Filters */}
       <Card>
         <CardContent className="p-4">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className={`flex flex-col md:flex-row gap-4 ${currentLanguage === 'ar' ? 'md:flex-row-reverse' : ''}`}>
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className={`absolute ${currentLanguage === 'ar' ? 'right-3' : 'left-3'} top-3 h-4 w-4 text-muted-foreground`} />
               <Input
-                placeholder="Search messages, names, or emails..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-[30px]"
+                className={currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}
+                dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('filters.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Messages</SelectItem>
-                <SelectItem value="new">New</SelectItem>
-                <SelectItem value="unread">Unread</SelectItem>
-                <SelectItem value="read">Read</SelectItem>
-                <SelectItem value="in-progress">In Progress</SelectItem>
-                <SelectItem value="resolved">Resolved</SelectItem>
-                <SelectItem value="closed">Closed</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="new">{t('filters.status.new')}</SelectItem>
+                <SelectItem value="unread">{t('filters.status.unread')}</SelectItem>
+                <SelectItem value="read">{t('filters.status.read')}</SelectItem>
+                <SelectItem value="in-progress">{t('filters.status.inProgress')}</SelectItem>
+                <SelectItem value="resolved">{t('filters.status.resolved')}</SelectItem>
+                <SelectItem value="closed">{t('filters.status.closed')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={typeFilter} onValueChange={setTypeFilter}>
               <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filter by type" />
+                <SelectValue placeholder={t('filters.filterByType')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
-                <SelectItem value="book-order">Book Orders</SelectItem>
-                <SelectItem value="book-inquiry">Book Inquiries</SelectItem>
-                <SelectItem value="general">General</SelectItem>
-                <SelectItem value="support">Support</SelectItem>
+                <SelectItem value="all">{t('filters.type.all')}</SelectItem>
+                <SelectItem value="book-order">{t('filters.type.bookOrder')}</SelectItem>
+                <SelectItem value="book-inquiry">{t('filters.type.bookInquiry')}</SelectItem>
+                <SelectItem value="general">{t('filters.type.general')}</SelectItem>
+                <SelectItem value="support">{t('filters.type.support')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -227,8 +234,8 @@ const ContactMessagesPage = () => {
               <div className="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center animate-pulse">
                 <Mail className="h-8 w-8 text-muted-foreground" />
               </div>
-              <h3 className="text-lg font-semibold">Loading messages...</h3>
-              <p className="text-muted-foreground">Please wait while we fetch your contact messages.</p>
+              <h3 className="text-lg font-semibold">{t('loading.title')}</h3>
+              <p className="text-muted-foreground">{t('loading.description')}</p>
             </div>
           </CardContent>
         </Card>
@@ -242,10 +249,10 @@ const ContactMessagesPage = () => {
               <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center">
                 <AlertCircle className="h-8 w-8 text-red-600" />
               </div>
-              <h3 className="text-lg font-semibold text-red-600">Error Loading Messages</h3>
+              <h3 className="text-lg font-semibold text-red-600">{t('error.title')}</h3>
               <p className="text-muted-foreground max-w-md mx-auto">{error}</p>
               <Button onClick={() => window.location.reload()} variant="outline">
-                Try Again
+                {t('error.tryAgain')}
               </Button>
             </div>
           </CardContent>
@@ -258,21 +265,21 @@ const ContactMessagesPage = () => {
           {filteredMessages.map((message) => {
             const TypeIcon = getTypeIcon(message.type);
             return (
-            <Card key={message.id} className={`hover:shadow-md transition-shadow ${message.status === 'unread' ? 'border-l-4 border-l-primary' : ''}`}>
+            <Card key={message.id} className={`hover:shadow-md transition-shadow ${message.status === 'unread' ? `${currentLanguage === 'ar' ? 'border-r-4 border-r-primary' : 'border-l-4 border-l-primary'}` : ''}`}>
               <CardContent className="p-4 md:p-6">
-                <div className="flex flex-col md:flex-row items-start justify-between gap-4">
+                <div className={`flex flex-col md:flex-row items-start justify-between gap-4 ${currentLanguage === 'ar' ? 'md:flex-row-reverse' : ''}`}>
                   <div className="flex-1 space-y-3 w-full">
-                    <div className="flex flex-wrap items-center gap-2 md:gap-3">
+                    <div className={`flex flex-wrap items-center gap-2 md:gap-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                       <h3 className="font-semibold text-base md:text-lg line-clamp-1">{message.subject}</h3>
                       {message.isNew && (
-                        <Badge className="bg-red-500 text-white animate-pulse text-xs">New</Badge>
+                        <Badge className="bg-red-500 text-white animate-pulse text-xs">{t('messageCard.new')}</Badge>
                       )}
                       <Badge className={getStatusColor(message.status) + " text-xs"}>
-                        {message.status.charAt(0).toUpperCase() + message.status.slice(1)}
+                        {t(`statuses.${message.status}`)}
                       </Badge>
                       <Badge className={getTypeColor(message.type) + " text-xs"}>
-                        <TypeIcon className="h-3 w-3 mr-1" />
-                        {message.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        <TypeIcon className={`h-3 w-3 ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
+                        {t(`types.${message.type.replace('-', '')}`) || message.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                       </Badge>
                       {message.bookTitle && (
                         <Badge variant="outline" className="text-xs">
@@ -282,22 +289,22 @@ const ContactMessagesPage = () => {
                       )}
                     </div>
                     
-                    <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-muted-foreground">
-                      <div className="flex items-center gap-2">
+                    <div className={`flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                         <User className="h-3 md:h-4 w-3 md:w-4" />
                         <span className="font-medium">{message.name}</span>
                       </div>
                       <span className="hidden sm:inline">{message.email}</span>
-                      <div className="flex items-center gap-1">
+                      <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                         <Calendar className="h-3 md:h-4 w-3 md:w-4" />
-                        <span>{new Date(message.date).toLocaleDateString()}</span>
+                        <span>{new Date(message.date).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')}</span>
                       </div>
                     </div>
                     
-                    <p className="text-foreground leading-relaxed line-clamp-2 md:line-clamp-3 text-sm md:text-base">{message.message}</p>
+                    <p className={`text-foreground leading-relaxed line-clamp-2 md:line-clamp-3 text-sm md:text-base ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>{message.message}</p>
                   </div>
                   
-                  <div className="flex flex-row md:flex-col items-center gap-2 w-full md:w-auto">
+                  <div className={`flex flex-row md:flex-col items-center gap-2 w-full md:w-auto ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button 
@@ -312,7 +319,7 @@ const ContactMessagesPage = () => {
                           className="flex-1 md:flex-none"
                         >
                           <Eye className="h-4 w-4 md:mr-0" />
-                          <span className="md:hidden ml-2">View</span>
+                          <span className={`md:hidden ${currentLanguage === 'ar' ? 'mr-2' : 'ml-2'}`}>{t('messageCard.view')}</span>
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -320,21 +327,21 @@ const ContactMessagesPage = () => {
                           <div className="flex items-start justify-between">
                             <div className="space-y-1">
                               <DialogTitle className="text-xl font-semibold">{selectedMessage?.subject}</DialogTitle>
-                              <div className="flex items-center gap-2">
+                              <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                                 <Badge className={getStatusColor(selectedMessage?.status) + " text-xs"}>
-                                  {selectedMessage?.status?.charAt(0).toUpperCase() + selectedMessage?.status?.slice(1)}
+                                  {selectedMessage?.status && t(`statuses.${selectedMessage.status}`)}
                                 </Badge>
                                 <Badge className={getTypeColor(selectedMessage?.type) + " text-xs"}>
-                                  {selectedMessage?.type?.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                  {selectedMessage?.type && (t(`types.${selectedMessage.type.replace('-', '')}`) || selectedMessage.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()))}
                                 </Badge>
                                 {selectedMessage?.isNew && (
-                                  <Badge className="bg-red-500 text-white animate-pulse text-xs">New</Badge>
+                                  <Badge className="bg-red-500 text-white animate-pulse text-xs">{t('messageCard.new')}</Badge>
                                 )}
                               </div>
                             </div>
-                            <div className="text-right text-sm text-muted-foreground">
-                              <p>{new Date(selectedMessage?.createdAt || selectedMessage?.date).toLocaleDateString()}</p>
-                              <p>{new Date(selectedMessage?.createdAt || selectedMessage?.date).toLocaleTimeString()}</p>
+                            <div className={`${currentLanguage === 'ar' ? 'text-left' : 'text-right'} text-sm text-muted-foreground`}>
+                              <p>{new Date(selectedMessage?.createdAt || selectedMessage?.date).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')}</p>
+                              <p>{new Date(selectedMessage?.createdAt || selectedMessage?.date).toLocaleTimeString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')}</p>
                             </div>
                           </div>
                         </DialogHeader>
@@ -345,9 +352,9 @@ const ContactMessagesPage = () => {
                               <CardContent className="p-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   <div className="space-y-2">
-                                    <div className="flex items-center gap-2">
+                                    <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                                       <User className="h-4 w-4 text-blue-600" />
-                                      <span className="font-medium text-sm text-muted-foreground">Contact</span>
+                                      <span className="font-medium text-sm text-muted-foreground">{t('viewDialog.contact')}</span>
                                     </div>
                                     <div>
                                       <p className="font-semibold text-lg">{selectedMessage.name}</p>
@@ -359,9 +366,9 @@ const ContactMessagesPage = () => {
                                   </div>
                                   {selectedMessage.bookTitle && (
                                     <div className="space-y-2">
-                                      <div className="flex items-center gap-2">
+                                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                                         <Book className="h-4 w-4 text-purple-600" />
-                                        <span className="font-medium text-sm text-muted-foreground">Related Book</span>
+                                        <span className="font-medium text-sm text-muted-foreground">{t('viewDialog.relatedBook')}</span>
                                       </div>
                                       <p className="font-medium">{selectedMessage.bookTitle}</p>
                                     </div>
@@ -373,14 +380,14 @@ const ContactMessagesPage = () => {
                             {/* Message Content */}
                             <Card>
                               <CardHeader className="pb-3">
-                                <div className="flex items-center gap-2">
+                                <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                                   <Mail className="h-4 w-4 text-green-600" />
-                                  <CardTitle className="text-base">Message</CardTitle>
+                                  <CardTitle className="text-base">{t('viewDialog.message')}</CardTitle>
                                 </div>
                               </CardHeader>
                               <CardContent>
-                                <div className="bg-gradient-to-r from-muted/30 to-muted/10 rounded-lg p-4 border-l-4 border-l-green-500">
-                                  <p className="leading-relaxed text-foreground whitespace-pre-wrap">{selectedMessage.message}</p>
+                                <div className={`bg-gradient-to-r from-muted/30 to-muted/10 rounded-lg p-4 ${currentLanguage === 'ar' ? 'border-r-4 border-r-green-500' : 'border-l-4 border-l-green-500'}`}>
+                                  <p className={`leading-relaxed text-foreground whitespace-pre-wrap ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>{selectedMessage.message}</p>
                                 </div>
                               </CardContent>
                             </Card>
@@ -389,19 +396,20 @@ const ContactMessagesPage = () => {
                             {selectedMessage.status !== 'replied' && (
                               <Card className="border-dashed">
                                 <CardHeader className="pb-3">
-                                  <div className="flex items-center gap-2">
+                                  <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                                     <MessageSquare className="h-4 w-4 text-blue-600" />
-                                    <CardTitle className="text-base">Send Reply</CardTitle>
+                                    <CardTitle className="text-base">{t('viewDialog.sendReply')}</CardTitle>
                                   </div>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                   <Textarea 
                                     value={replyText}
                                     onChange={(e) => setReplyText(e.target.value)}
-                                    placeholder="Type your reply here..."
-                                    className="min-h-[120px] resize-none"
+                                    placeholder={t('viewDialog.typeReply')}
+                                    className={`min-h-[120px] resize-none ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
+                                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                                   />
-                                  <div className="flex justify-end gap-3">
+                                  <div className={`flex ${currentLanguage === 'ar' ? 'justify-start flex-row-reverse' : 'justify-end'} gap-3`}>
                                     <Button 
                                       variant="outline"
                                       onClick={() => {
@@ -410,15 +418,15 @@ const ContactMessagesPage = () => {
                                       }}
                                       className="px-6"
                                     >
-                                      Cancel
+                                      {t('viewDialog.cancel')}
                                     </Button>
                                     <Button 
                                       onClick={() => handleReply(selectedMessage.id)}
                                       disabled={!replyText.trim()}
-                                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-6"
+                                      className={`bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-6 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
                                     >
-                                      <Send className="h-4 w-4 mr-2" />
-                                      Send Reply
+                                      <Send className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                                      {t('viewDialog.send')}
                                     </Button>
                                   </div>
                                 </CardContent>
@@ -433,9 +441,9 @@ const ContactMessagesPage = () => {
                                     <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                                       <CheckCircle className="h-5 w-5 text-green-600" />
                                     </div>
-                                    <div>
-                                      <p className="font-semibold text-green-800">Reply Sent</p>
-                                      <p className="text-sm text-green-700">This message has been replied to successfully.</p>
+                                    <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                                      <p className="font-semibold text-green-800">{t('viewDialog.replySent')}</p>
+                                      <p className="text-sm text-green-700">{t('viewDialog.replySuccess')}</p>
                                     </div>
                                   </div>
                                 </CardContent>
@@ -452,9 +460,9 @@ const ContactMessagesPage = () => {
                         onClick={() => handleStatusChange(message.id, 'read')}
                         className="bg-blue-600 hover:bg-blue-700 flex-1 md:flex-none"
                       >
-                        <CheckCircle className="h-4 w-4 mr-1" />
-                        <span className="md:hidden">Read</span>
-                        <span className="hidden md:inline">Mark Read</span>
+                        <CheckCircle className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
+                        <span className="md:hidden">{t('messageCard.read')}</span>
+                        <span className="hidden md:inline">{t('messageCard.markRead')}</span>
                       </Button>
                     )}
                     
@@ -465,7 +473,7 @@ const ContactMessagesPage = () => {
                       className="text-red-600 hover:bg-red-50 w-full md:w-auto"
                     >
                       <Trash2 className="h-4 w-4 md:mr-0" />
-                      <span className="md:hidden ml-2">Delete</span>
+                      <span className={`md:hidden ${currentLanguage === 'ar' ? 'mr-2' : 'ml-2'}`}>{t('messageCard.delete')}</span>
                     </Button>
                   </div>
                 </div>
@@ -481,11 +489,11 @@ const ContactMessagesPage = () => {
                 <div className="w-16 h-16 mx-auto bg-muted rounded-full flex items-center justify-center">
                   <Mail className="h-8 w-8 text-muted-foreground" />
                 </div>
-                <h3 className="text-lg font-semibold">No messages found</h3>
+                <h3 className="text-lg font-semibold">{t('empty.title')}</h3>
                 <p className="text-muted-foreground max-w-md mx-auto">
                   {searchTerm || statusFilter !== 'all' || typeFilter !== 'all'
-                    ? 'Try adjusting your search or filter criteria.'
-                    : 'No messages have been received yet.'}
+                    ? t('empty.withFilters')
+                    : t('empty.noMessages')}
                 </p>
               </div>
             </CardContent>
@@ -498,3 +506,17 @@ const ContactMessagesPage = () => {
 };
 
 export default ContactMessagesPage;
+
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

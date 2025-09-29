@@ -221,7 +221,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
     return (
       <Sidebar className={cn("border-sidebar-border bg-sidebar", isRTL ? "border-l" : "border-r")} dir={isRTL ? "rtl" : "ltr"}>
           <SidebarHeader className="border-b border-sidebar-border p-4">
-            <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
+            <div className={cn("flex items-center gap-3")}>
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#2194D1] to-[#2194D1]/80 shadow-lg">
                 <LibraryBig className="h-6 w-6 text-white" />
               </div>
@@ -262,7 +262,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
       )} 
       dir={isRTL ? "rtl" : "ltr"}>
         <SidebarHeader className="border-b border-sidebar-border p-4">
-          <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
+          <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#2194D1] to-[#2194D1]/80 shadow-lg">
               <LibraryBig className="h-6 w-6 text-white" />
             </div>

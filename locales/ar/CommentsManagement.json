@@ -1,0 +1,96 @@
+{
+  "title": "إدارة التعليقات",
+  "description": "إدارة ومراجعة تعليقات المدونة بسهولة",
+  
+  "stats": {
+    "totalComments": "إجمالي التعليقات",
+    "pendingReview": "قيد المراجعة",
+    "approved": "موافق عليها",
+    "rejected": "مرفوضة"
+  },
+  
+  "filters": {
+    "searchPlaceholder": "البحث في التعليقات بالمؤلف، المحتوى، البريد الإلكتروني...",
+    "filterByStatus": "تصفية حسب الحالة",
+    "status": {
+      "all": "جميع الحالات",
+      "approved": "موافق عليها",
+      "pending": "قيد الانتظار",
+      "rejected": "مرفوضة"
+    }
+  },
+  
+  "bulkActions": {
+    "selected": "{{count}} محدد",
+    "label": "إجراءات جماعية:",
+    "approveAll": "الموافقة على الكل",
+    "rejectAll": "رفض الكل",
+    "deleteAll": "حذف الكل",
+    "selectComments": "يرجى تحديد التعليقات للتحديث",
+    "selectCommentsToDelete": "يرجى تحديد التعليقات للحذف"
+  },
+  
+  "table": {
+    "title": "التعليقات",
+    "count": "({{count}})",
+    "headers": {
+      "selectAll": "تحديد الكل",
+      "author": "المؤلف",
+      "content": "المحتوى",
+      "blogPost": "منشور المدونة",
+      "status": "الحالة",
+      "date": "التاريخ",
+      "actions": "الإجراءات"
+    },
+    "blogNotFound": "المنشور غير موجود",
+    "noComments": "لا توجد تعليقات.",
+    "noMatchingComments": "لا توجد تعليقات مطابقة للفلاتر."
+  },
+  
+  "actions": {
+    "approve": "موافقة",
+    "reject": "رفض",
+    "pending": "تعيين كقيد الانتظار",
+    "delete": "حذف",
+    "viewBlog": "عرض منشور المدونة"
+  },
+  
+  "status": {
+    "approved": "موافق عليه",
+    "pending": "قيد الانتظار",
+    "rejected": "مرفوض"
+  },
+  
+  "deleteModal": {
+    "title": "حذف التعليق",
+    "description": "هل أنت متأكد من رغبتك في حذف هذا التعليق؟",
+    "warning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف التعليق نهائياً من منشور المدونة.",
+    "preview": "معاينة التعليق:",
+    "cancel": "إلغاء",
+    "confirmDelete": "حذف التعليق"
+  },
+  
+  "pagination": {
+    "showing": "عرض {{from}} إلى {{to}} من {{total}} تعليق",
+    "page": "الصفحة {{current}} من {{total}}",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  
+  "messages": {
+    "noCommentsFound": "لا توجد تعليقات",
+    "fetchError": "فشل في جلب التعليقات: {{error}}",
+    "statusUpdated": "تم تحديث حالة التعليق بنجاح",
+    "statusUpdateError": "فشل في تحديث حالة التعليق",
+    "bulkUpdated": "تم تحديث {{count}} تعليق بنجاح",
+    "bulkUpdateError": "فشل في تحديث التعليقات",
+    "deleted": "تم حذف التعليق بنجاح",
+    "deleteError": "فشل في حذف التعليق",
+    "bulkDeleted": "تم حذف {{count}} تعليق بنجاح",
+    "bulkDeleteError": "فشل في حذف التعليقات"
+  },
+  
+  "loading": {
+    "comments": "جاري تحميل التعليقات..."
+  }
+}

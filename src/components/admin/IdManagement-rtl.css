@@ -16,11 +16,6 @@
   direction: rtl;
 }
 
-/* Header RTL styling */
-.rtl .text-center {
-  text-align: right !important;
-}
-
 .rtl h1, .rtl p {
   text-align: right;
 }
@@ -159,10 +154,6 @@
 @media (max-width: 768px) {
   .rtl .md\:grid-cols-2 {
     grid-template-columns: 1fr;
-  }
-  
-  .rtl .text-center {
-    text-align: right !important;
   }
   
   .rtl .max-w-4xl {

@@ -1,99 +1,83 @@
 {
-  "header": {
-    "title": "رسائل التواصل",
-    "description": "إدارة استفسارات العملاء وطلبات الكتب"
+  "title": "رسائل التواصل",
+  "description": "إدارة استفسارات العملاء وطلبات الدعم",
+  "stats": {
+    "unread": "{{count}} غير مقروءة",
+    "new": "{{count}} جديدة"
   },
   "filters": {
-    "searchPlaceholder": "البحث في الرسائل...",
-    "type": {
-      "label": "النوع",
-      "all": "جميع الأنواع",
-      "bookOrder": "طلب كتاب",
-      "general": "استفسار عام",
-      "support": "دعم فني"
-    },
+    "searchPlaceholder": "البحث في الرسائل، الأسماء، أو البريد الإلكتروني...",
+    "filterByStatus": "تصفية حسب الحالة",
+    "filterByType": "تصفية حسب النوع",
     "status": {
-      "label": "الحالة",
-      "all": "جميع الحالات",
+      "all": "جميع الرسائل",
       "new": "جديد",
+      "unread": "غير مقروء",
       "read": "مقروء",
+      "inProgress": "قيد المعالجة",
       "resolved": "محلول",
-      "closed": "مغلق"
+      "closed": "مغلق",
+      "replied": "تم الرد"
     },
-    "priority": {
-      "label": "الأولوية",
-      "all": "جميع الأولويات",
-      "high": "عالية",
-      "medium": "متوسطة",
-      "low": "منخفضة"
+    "type": {
+      "all": "جميع الأنواع",
+      "bookOrder": "طلبات الكتب",
+      "bookInquiry": "استفسارات الكتب",
+      "general": "عام",
+      "support": "الدعم",
+      "partnership": "شراكة",
+      "feedback": "ملاحظات",
+      "complaint": "شكوى"
     }
   },
-  "messages": {
-    "title": "الرسائل ({{count}})",
-    "from": "من:",
-    "phone": "الهاتف:",
-    "bookOrderDetails": "تفاصيل طلب الكتاب:",
-    "book": "الكتاب:",
-    "author": "المؤلف:",
-    "quantity": "الكمية:",
-    "response": "الرد:",
-    "respondedOn": "تم الرد في:"
+  "messageCard": {
+    "new": "جديد",
+    "view": "عرض",
+    "markRead": "تحديد كمقروء",
+    "read": "مقروء",
+    "delete": "حذف",
+    "addedOn": "أضيف في"
   },
-  "actions": {
-    "markAsRead": "تحديد كمقروء",
-    "markAsResolved": "تحديد كمحلول",
-    "respond": "رد"
-  },
-  "pagination": {
-    "previous": "السابق",
-    "next": "التالي",
-    "page": "الصفحة {{current}} من {{total}}"
+  "viewDialog": {
+    "contact": "جهة الاتصال",
+    "relatedBook": "الكتاب المرتبط",
+    "message": "الرسالة",
+    "sendReply": "إرسال رد",
+    "typeReply": "اكتب ردك هنا...",
+    "cancel": "إلغاء",
+    "send": "إرسال الرد",
+    "replySent": "تم إرسال الرد",
+    "replySuccess": "تم الرد على هذه الرسالة بنجاح."
   },
   "loading": {
-    "messages": "جاري تحميل الرسائل..."
+    "title": "جاري تحميل الرسائل...",
+    "description": "يرجى الانتظار بينما نجلب رسائل الاتصال الخاصة بك."
+  },
+  "error": {
+    "title": "خطأ في تحميل الرسائل",
+    "tryAgain": "حاول مرة أخرى"
   },
   "empty": {
-    "noMessages": "لم يتم العثور على رسائل."
-  },
-  "modal": {
-    "respondTitle": "الرد على الرسالة",
-    "from": "من:",
-    "subject": "الموضوع:",
-    "yourResponse": "ردك",
-    "responsePlaceholder": "اكتب ردك هنا...",
-    "sendResponse": "إرسال الرد",
-    "cancel": "إلغاء"
-  },
-  "toast": {
-    "responseSent": {
-      "title": "تم إرسال الرد",
-      "description": "تم إرسال الرد بنجاح."
-    },
-    "messageUpdated": {
-      "title": "تم تحديث الرسالة",
-      "description": "تم تحديد الرسالة كـ {{status}}."
-    },
-    "error": {
-      "title": "خطأ",
-      "fetchFailed": "فشل في تحميل الرسائل. يرجى المحاولة مرة أخرى.",
-      "responseFailed": "فشل في إرسال الرد. يرجى المحاولة مرة أخرى.",
-      "updateFailed": "فشل في تحديث الرسالة. يرجى المحاولة مرة أخرى."
-    }
+    "title": "لم يتم العثور على رسائل",
+    "withFilters": "حاول تعديل معايير البحث أو التصفية.",
+    "noMessages": "لم يتم استلام أي رسائل بعد."
   },
   "types": {
     "bookOrder": "طلب كتاب",
-    "general": "استفسار عام",
-    "support": "دعم فني"
+    "bookInquiry": "استفسار عن كتاب",
+    "general": "عام",
+    "support": "الدعم",
+    "partnership": "شراكة",
+    "feedback": "ملاحظات",
+    "complaint": "شكوى"
   },
   "statuses": {
     "new": "جديد",
+    "unread": "غير مقروء",
     "read": "مقروء",
+    "inProgress": "قيد المعالجة",
     "resolved": "محلول",
-    "closed": "مغلق"
-  },
-  "priorities": {
-    "high": "عالية",
-    "medium": "متوسطة",
-    "low": "منخفضة"
+    "closed": "مغلق",
+    "replied": "تم الرد"
   }
 }

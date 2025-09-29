@@ -295,85 +295,102 @@ export const CoursesSection = () => {
           </div>
 
           {/* Dates and Enrollment */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="startDate">Start Date</Label>
-              <Input
-                id="startDate"
-                type="date"
-                value={courseForm.startDate}
-                onChange={(e) => setCourseForm(prev => ({ ...prev, startDate: e.target.value }))}
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="endDate">End Date</Label>
-              <Input
-                id="endDate"
-                type="date"
-                value={courseForm.endDate}
-                onChange={(e) => setCourseForm(prev => ({ ...prev, endDate: e.target.value }))}
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="maxStudents">Max Students</Label>
-              <Input
-                id="maxStudents"
-                type="number"
-                value={courseForm.maxStudents}
-                onChange={(e) => setCourseForm(prev => ({ ...prev, maxStudents: Number(e.target.value) }))}
-                min="1"
-              />
-            </div>
-            
-            <div>
-              <Label htmlFor="availableSeats">Available Seats</Label>
-              <Input
-                id="availableSeats"
-                type="number"
-                value={courseForm.availableSeats}
-                onChange={(e) => setCourseForm(prev => ({ ...prev, availableSeats: Number(e.target.value) }))}
-                min="0"
-              />
+          <div className="space-y-4">
+            <h3 className={`font-semibold text-lg ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.datesEnrollment')}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="startDate" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.startDate')}</Label>
+                <Input
+                  id="startDate"
+                  type="date"
+                  value={courseForm.startDate}
+                  onChange={(e) => setCourseForm(prev => ({ ...prev, startDate: e.target.value }))}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="endDate" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.endDate')}</Label>
+                <Input
+                  id="endDate"
+                  type="date"
+                  value={courseForm.endDate}
+                  onChange={(e) => setCourseForm(prev => ({ ...prev, endDate: e.target.value }))}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="maxStudents" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.maxStudents')}</Label>
+                <Input
+                  id="maxStudents"
+                  type="number"
+                  value={courseForm.maxStudents}
+                  onChange={(e) => setCourseForm(prev => ({ ...prev, maxStudents: Number(e.target.value) }))}
+                  min="1"
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="availableSeats" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.availableSeats')}</Label>
+                <Input
+                  id="availableSeats"
+                  type="number"
+                  value={courseForm.availableSeats}
+                  onChange={(e) => setCourseForm(prev => ({ ...prev, availableSeats: Number(e.target.value) }))}
+                  min="0"
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
+                />
+              </div>
             </div>
           </div>
 
           {/* Institution and Instructor */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="institutionName">Institution *</Label>
-              <Select value={courseForm.institutionName} onValueChange={(value) => setCourseForm(prev => ({ ...prev, institutionName: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select institution" />
-                </SelectTrigger>
-                <SelectContent>
-                  {institutions.map((institution) => (
-                    <SelectItem key={institution.id} value={institution.name}>
-                      {institution.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div>
-              <Label htmlFor="instructorName">Instructor Name *</Label>
-              <Input
-                id="instructorName"
-                value={courseForm.instructorName}
-                onChange={(e) => setCourseForm(prev => ({ ...prev, instructorName: e.target.value }))}
-                required
-              />
+          <div className="space-y-4">
+            <h3 className={`font-semibold text-lg ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.institutionInstructor')}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="institutionName" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.institutionName')} *</Label>
+                <Select value={courseForm.institutionName} onValueChange={(value) => setCourseForm(prev => ({ ...prev, institutionName: value }))}>
+                  <SelectTrigger dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <SelectValue placeholder={t('form.placeholders.selectInstitution')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {institutions.map((institution) => (
+                      <SelectItem key={institution.id} value={institution.name}>
+                        {institution.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label htmlFor="instructorName" className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.instructorName')} *</Label>
+                <Input
+                  id="instructorName"
+                  value={courseForm.instructorName}
+                  onChange={(e) => setCourseForm(prev => ({ ...prev, instructorName: e.target.value }))}
+                  placeholder={t('form.fields.instructorPlaceholder')}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
+                  required
+                />
+              </div>
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className={`flex ${currentLanguage === 'ar' ? 'justify-start flex-row-reverse' : 'justify-end'} gap-3 pt-4`}>
             <Button type="button" variant="outline" onClick={() => { resetForm(); setIsAddDialogOpen(false); }}>
-              Cancel
+              {t('form.buttons.cancel')}
             </Button>
             <Button type="submit">
-              {editingCourse ? 'Update Course' : 'Add Course'}
+              {editingCourse ? t('form.buttons.update') : t('form.buttons.create')}
             </Button>
           </div>
         </form>
@@ -382,19 +399,23 @@ export const CoursesSection = () => {
   );
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Course Management</h2>
-          <p className="text-sm md:text-base text-muted-foreground">Manage your educational courses and programs</p>
+          <h2 className={`text-xl md:text-2xl font-bold text-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            {t('title')}
+          </h2>
+          <p className={`text-sm md:text-base text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            {t('description')}
+          </p>
         </div>
         
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
-            <Button onClick={resetForm} className="bg-primary hover:bg-primary/90">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Course
+            <Button onClick={resetForm} className={`bg-primary hover:bg-primary/90 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+              {t('addCourse')}
             </Button>
           </DialogTrigger>
           <CourseDialog />
@@ -407,7 +428,9 @@ export const CoursesSection = () => {
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Total Courses</p>
+                <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('stats.totalCourses')}
+                </p>
                 <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{courses.length}</p>
               </div>
               <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
@@ -419,7 +442,9 @@ export const CoursesSection = () => {
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Categories</p>
+                <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('stats.categories')}
+                </p>
                 <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{categories.length}</p>
               </div>
               <Filter className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
@@ -431,7 +456,9 @@ export const CoursesSection = () => {
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Total Enrollments</p>
+                <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('stats.totalEnrollments')}
+                </p>
                 <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{courses.reduce((sum, course) => sum + course.totalEnrollments, 0)}</p>
               </div>
               <Users className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
@@ -443,7 +470,9 @@ export const CoursesSection = () => {
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Avg Rating</p>
+                <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('stats.avgRating')}
+                </p>
                 <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">
                   {courses.length > 0 
                     ? (courses.reduce((sum, course) => sum + course.averageRating, 0) / courses.length).toFixed(1)
@@ -460,25 +489,26 @@ export const CoursesSection = () => {
       {/* Filters */}
       <Card className="border-0 shadow-modern">
         <CardContent className="p-4 md:p-6">
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+          <div className={`flex flex-col ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : 'sm:flex-row'} gap-3 md:gap-4`}>
             <div className="flex-1">
               <div className="relative">
-                <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
+                <Search className={`h-4 w-4 absolute ${currentLanguage === 'ar' ? 'right-3' : 'left-3'} top-3 text-muted-foreground`} />
                 <Input
-                  placeholder="Search courses, instructors, or institutions..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-[30px]"
+                  className={currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
             
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger className="w-full sm:w-44 md:w-48">
-                <SelectValue placeholder="Filter by category" />
+                <SelectValue placeholder={t('filters.filterByCategory')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">{t('filters.allCategories')}</SelectItem>
                 {categories.map((category) => (
                   <SelectItem key={category} value={category}>
                     {category}
@@ -493,30 +523,32 @@ export const CoursesSection = () => {
       {/* Courses Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Courses ({filteredCourses.length})</CardTitle>
+          <CardTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+            {t('coursesCount', { count: filteredCourses.length })}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Course</TableHead>
-                  <TableHead>Instructor</TableHead>
-                  <TableHead>Institution</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Level</TableHead>
-                  <TableHead>Format</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Enrollment</TableHead>
-                  <TableHead>Rating</TableHead>
-                  <TableHead>Actions</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.course')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.instructor')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.institution')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.category')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.level')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.format')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.price')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.enrollment')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.rating')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredCourses.map((course) => (
                   <TableRow key={course.id}>
                     <TableCell>
-                      <div>
+                      <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                         <p className="font-medium">{course.title}</p>
                         <p className="text-sm text-muted-foreground">
                           {course.duration}
@@ -533,20 +565,20 @@ export const CoursesSection = () => {
                         course.level === 'beginner' ? 'default' :
                         course.level === 'intermediate' ? 'secondary' : 'destructive'
                       }>
-                        {course.level}
+                        {t(`form.levels.${course.level}`)}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{course.format}</Badge>
+                      <Badge variant="outline">{t(`form.formats.${course.format}`)}</Badge>
                     </TableCell>
                     <TableCell>
-                      {course.price === 0 ? 'Free' : `${course.currency}${course.price}`}
+                      {course.price === 0 ? t('table.free') : `${course.currency}${course.price}`}
                     </TableCell>
                     <TableCell>
                       <div className="text-sm">
                         <p>{course.totalEnrollments}/20</p>
                         <p className="text-muted-foreground">
-                          {course.availableSeats} seats left
+                          {course.availableSeats} {t('table.seatsLeft')}
                         </p>
                       </div>
                     </TableCell>
@@ -557,7 +589,7 @@ export const CoursesSection = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-2">
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
                         <Button
                           size="sm"
                           variant="outline"
@@ -583,14 +615,58 @@ export const CoursesSection = () => {
             {filteredCourses.length === 0 && (
               <div className="text-center py-12">
                 <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <p className="text-muted-foreground">
-                  {searchTerm || selectedCategory !== 'all' ? 'No courses match your filters.' : 'No courses added yet.'}
+                <p className="text-muted-foreground text-center">
+                  {searchTerm || selectedCategory !== 'all' ? t('empty.description') : t('empty.noCoursesYet')}
                 </p>
               </div>
             )}
           </div>
         </CardContent>
       </Card>
+
+      {/* Delete Confirmation Modal */}
+      <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+              {t('deleteModal.title')}
+            </DialogTitle>
+          </DialogHeader>
+          <div className={`py-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            <p className="text-muted-foreground">
+              {t('deleteModal.description', { courseName: courseToDelete?.title })}
+            </p>
+          </div>
+          <div className={`flex ${currentLanguage === 'ar' ? 'justify-start flex-row-reverse' : 'justify-end'} gap-3`}>
+            <Button
+              variant="outline"
+              onClick={() => setDeleteModalOpen(false)}
+            >
+              {t('deleteModal.cancelText')}
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+            >
+              {t('deleteModal.confirmText')}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
+
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

@@ -1,0 +1,96 @@
+{
+  "title": "Comments Management",
+  "description": "Moderate and manage blog comments with ease",
+  
+  "stats": {
+    "totalComments": "Total Comments",
+    "pendingReview": "Pending Review",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  
+  "filters": {
+    "searchPlaceholder": "Search comments by author, content, email...",
+    "filterByStatus": "Filter by status",
+    "status": {
+      "all": "All Status",
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    }
+  },
+  
+  "bulkActions": {
+    "selected": "{{count}} selected",
+    "label": "Bulk actions:",
+    "approveAll": "Approve All",
+    "rejectAll": "Reject All",
+    "deleteAll": "Delete All",
+    "selectComments": "Please select comments to update",
+    "selectCommentsToDelete": "Please select comments to delete"
+  },
+  
+  "table": {
+    "title": "Comments",
+    "count": "({{count}})",
+    "headers": {
+      "selectAll": "Select all",
+      "author": "Author",
+      "content": "Content",
+      "blogPost": "Blog Post",
+      "status": "Status",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "blogNotFound": "Blog not found",
+    "noComments": "No comments found.",
+    "noMatchingComments": "No comments match your filters."
+  },
+  
+  "actions": {
+    "approve": "Approve",
+    "reject": "Reject",
+    "pending": "Set to pending",
+    "delete": "Delete",
+    "viewBlog": "View blog post"
+  },
+  
+  "status": {
+    "approved": "approved",
+    "pending": "pending",
+    "rejected": "rejected"
+  },
+  
+  "deleteModal": {
+    "title": "Delete Comment",
+    "description": "Are you sure you want to delete this comment?",
+    "warning": "This action cannot be undone. The comment will be permanently removed from the blog post.",
+    "preview": "Comment preview:",
+    "cancel": "Cancel",
+    "confirmDelete": "Delete Comment"
+  },
+  
+  "pagination": {
+    "showing": "Showing {{from}} to {{to}} of {{total}} comments",
+    "page": "Page {{current}} of {{total}}",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  
+  "messages": {
+    "noCommentsFound": "No comments found",
+    "fetchError": "Failed to fetch comments: {{error}}",
+    "statusUpdated": "Comment status updated successfully",
+    "statusUpdateError": "Failed to update comment status",
+    "bulkUpdated": "{{count}} comments updated successfully",
+    "bulkUpdateError": "Failed to update comments",
+    "deleted": "Comment deleted successfully",
+    "deleteError": "Failed to delete comment",
+    "bulkDeleted": "{{count}} comments deleted successfully",
+    "bulkDeleteError": "Failed to delete comments"
+  },
+  
+  "loading": {
+    "comments": "Loading comments..."
+  }
+}

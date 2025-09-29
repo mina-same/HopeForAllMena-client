@@ -1,99 +1,83 @@
 {
-  "header": {
-    "title": "Contact Messages",
-    "description": "Manage customer inquiries and book orders"
+  "title": "Contact Messages",
+  "description": "Manage customer inquiries and support requests",
+  "stats": {
+    "unread": "{{count}} Unread",
+    "new": "{{count}} New"
   },
   "filters": {
-    "searchPlaceholder": "Search messages...",
-    "type": {
-      "label": "Type",
-      "all": "All Types",
-      "bookOrder": "Book Order",
-      "general": "General Inquiry",
-      "support": "Support"
-    },
+    "searchPlaceholder": "Search messages, names, or emails...",
+    "filterByStatus": "Filter by status",
+    "filterByType": "Filter by type",
     "status": {
-      "label": "Status",
-      "all": "All Status",
+      "all": "All Messages",
       "new": "New",
+      "unread": "Unread",
       "read": "Read",
+      "inProgress": "In Progress",
       "resolved": "Resolved",
-      "closed": "Closed"
+      "closed": "Closed",
+      "replied": "Replied"
     },
-    "priority": {
-      "label": "Priority",
-      "all": "All Priority",
-      "high": "High",
-      "medium": "Medium",
-      "low": "Low"
+    "type": {
+      "all": "All Types",
+      "bookOrder": "Book Orders",
+      "bookInquiry": "Book Inquiries",
+      "general": "General",
+      "support": "Support",
+      "partnership": "Partnership",
+      "feedback": "Feedback",
+      "complaint": "Complaint"
     }
   },
-  "messages": {
-    "title": "Messages ({{count}})",
-    "from": "From:",
-    "phone": "Phone:",
-    "bookOrderDetails": "Book Order Details:",
-    "book": "Book:",
-    "author": "Author:",
-    "quantity": "Quantity:",
-    "response": "Response:",
-    "respondedOn": "Responded on:"
+  "messageCard": {
+    "new": "New",
+    "view": "View",
+    "markRead": "Mark Read",
+    "read": "Read",
+    "delete": "Delete",
+    "addedOn": "Added on"
   },
-  "actions": {
-    "markAsRead": "Mark as Read",
-    "markAsResolved": "Mark as Resolved",
-    "respond": "Respond"
-  },
-  "pagination": {
-    "previous": "Previous",
-    "next": "Next",
-    "page": "Page {{current}} of {{total}}"
+  "viewDialog": {
+    "contact": "Contact",
+    "relatedBook": "Related Book",
+    "message": "Message",
+    "sendReply": "Send Reply",
+    "typeReply": "Type your reply here...",
+    "cancel": "Cancel",
+    "send": "Send Reply",
+    "replySent": "Reply Sent",
+    "replySuccess": "This message has been replied to successfully."
   },
   "loading": {
-    "messages": "Loading messages..."
+    "title": "Loading messages...",
+    "description": "Please wait while we fetch your contact messages."
+  },
+  "error": {
+    "title": "Error Loading Messages",
+    "tryAgain": "Try Again"
   },
   "empty": {
-    "noMessages": "No messages found."
-  },
-  "modal": {
-    "respondTitle": "Respond to Message",
-    "from": "From:",
-    "subject": "Subject:",
-    "yourResponse": "Your Response",
-    "responsePlaceholder": "Type your response here...",
-    "sendResponse": "Send Response",
-    "cancel": "Cancel"
-  },
-  "toast": {
-    "responseSent": {
-      "title": "Response Sent",
-      "description": "Response has been sent successfully."
-    },
-    "messageUpdated": {
-      "title": "Message Updated",
-      "description": "Message marked as {{status}}."
-    },
-    "error": {
-      "title": "Error",
-      "fetchFailed": "Failed to fetch messages. Please try again.",
-      "responseFailed": "Failed to send response. Please try again.",
-      "updateFailed": "Failed to update message. Please try again."
-    }
+    "title": "No messages found",
+    "withFilters": "Try adjusting your search or filter criteria.",
+    "noMessages": "No messages have been received yet."
   },
   "types": {
     "bookOrder": "Book Order",
-    "general": "General Inquiry",
-    "support": "Support"
+    "bookInquiry": "Book Inquiry",
+    "general": "General",
+    "support": "Support",
+    "partnership": "Partnership",
+    "feedback": "Feedback",
+    "complaint": "Complaint"
   },
   "statuses": {
     "new": "New",
+    "unread": "Unread",
     "read": "Read",
+    "inProgress": "In Progress",
     "resolved": "Resolved",
-    "closed": "Closed"
-  },
-  "priorities": {
-    "high": "High",
-    "medium": "Medium",
-    "low": "Low"
+    "closed": "Closed",
+    "replied": "Replied"
   }
 }

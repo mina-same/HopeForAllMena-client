@@ -10,9 +10,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Alert, AlertDescription } from '../ui/alert';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { Link, graphql } from 'gatsby';
 
 const CommentsManagement = () => {
   const { user, token } = useAuth();
+  const { t } = useTranslation('CommentsManagement');
+  const { language: currentLanguage } = useI18next();
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
@@ -33,7 +38,7 @@ const CommentsManagement = () => {
 
   useEffect(() => {
     fetchComments();
-  }, [filters, pagination.currentPage]);
+  }, [filters, pagination.currentPage, currentLanguage]);
 
   const fetchComments = async () => {
     try {
@@ -64,7 +69,7 @@ const CommentsManagement = () => {
       });
       
       if (response.comments && response.comments.length === 0) {
-        setMessage({ type: 'info', text: 'No comments found' });
+        setMessage({ type: 'info', text: t('messages.noCommentsFound') });
       } else {
         setMessage({ type: '', text: '' });
       }
@@ -73,7 +78,7 @@ const CommentsManagement = () => {
       console.error('Error details:', error.message);
       setMessage({ 
         type: 'danger', 
-        text: `Failed to fetch comments: ${error.message}` 
+        text: t('messages.fetchError', { error: error.message }) 
       });
       setComments([]);
     } finally {
@@ -93,26 +98,26 @@ const CommentsManagement = () => {
   const handleStatusChange = async (commentId, newStatus) => {
     try {
       await blogAPI.updateCommentStatus(commentId, newStatus, token);
-      setMessage({ type: 'success', text: 'Comment status updated successfully' });
+      setMessage({ type: 'success', text: t('messages.statusUpdated') });
       fetchComments();
     } catch (error) {
-      setMessage({ type: 'danger', text: 'Failed to update comment status' });
+      setMessage({ type: 'danger', text: t('messages.statusUpdateError') });
     }
   };
 
   const handleBulkStatusChange = async (status) => {
     if (selectedComments.length === 0) {
-      setMessage({ type: 'warning', text: 'Please select comments to update' });
+      setMessage({ type: 'warning', text: t('bulkActions.selectComments') });
       return;
     }
 
     try {
       await blogAPI.bulkUpdateComments(selectedComments, status, token);
-      setMessage({ type: 'success', text: `${selectedComments.length} comments updated successfully` });
+      setMessage({ type: 'success', text: t('messages.bulkUpdated', { count: selectedComments.length }) });
       setSelectedComments([]);
       fetchComments();
     } catch (error) {
-      setMessage({ type: 'danger', text: 'Failed to update comments' });
+      setMessage({ type: 'danger', text: t('messages.bulkUpdateError') });
     }
   };
 
@@ -124,12 +129,12 @@ const CommentsManagement = () => {
   const handleDeleteConfirm = async () => {
     try {
       await blogAPI.deleteComment(commentToDelete._id, token);
-      setMessage({ type: 'success', text: 'Comment deleted successfully' });
+      setMessage({ type: 'success', text: t('messages.deleted') });
       setShowDeleteModal(false);
       setCommentToDelete(null);
       fetchComments();
     } catch (error) {
-      setMessage({ type: 'danger', text: 'Failed to delete comment' });
+      setMessage({ type: 'danger', text: t('messages.deleteError') });
     }
   };
 
@@ -151,7 +156,7 @@ const CommentsManagement = () => {
 
   const handleBulkDelete = async () => {
     if (selectedComments.length === 0) {
-      setMessage({ type: 'warning', text: 'Please select comments to delete' });
+      setMessage({ type: 'warning', text: t('bulkActions.selectCommentsToDelete') });
       return;
     }
 
@@ -159,16 +164,16 @@ const CommentsManagement = () => {
       await Promise.all(selectedComments.map(commentId => 
         blogAPI.deleteComment(commentId, token)
       ));
-      setMessage({ type: 'success', text: `${selectedComments.length} comments deleted successfully` });
+      setMessage({ type: 'success', text: t('messages.bulkDeleted', { count: selectedComments.length }) });
       setSelectedComments([]);
       fetchComments();
     } catch (error) {
-      setMessage({ type: 'danger', text: 'Failed to delete comments' });
+      setMessage({ type: 'danger', text: t('messages.bulkDeleteError') });
     }
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -183,7 +188,7 @@ const CommentsManagement = () => {
       pending: 'warning',
       rejected: 'danger'
     };
-    return <Badge bg={variants[status] || 'secondary'}>{status}</Badge>;
+    return <Badge bg={variants[status] || 'secondary'}>{t(`status.${status}`)}</Badge>;
   };
 
   const truncateText = (text, maxLength = 100) => {
@@ -191,12 +196,16 @@ const CommentsManagement = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Comments Management</h2>
-          <p className="text-sm md:text-base text-muted-foreground">Moderate and manage blog comments with ease</p>
+          <h2 className={`text-xl md:text-2xl font-bold text-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            {t('title')}
+          </h2>
+          <p className={`text-sm md:text-base text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            {t('description')}
+          </p>
         </div>
       </div>
 
@@ -206,7 +215,9 @@ const CommentsManagement = () => {
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Total Comments</p>
+                <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('stats.totalComments')}
+                </p>
                 <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{pagination.total}</p>
               </div>
               <MessageCircle className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
@@ -218,7 +229,9 @@ const CommentsManagement = () => {
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Pending Review</p>
+                <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('stats.pendingReview')}
+                </p>
                 <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{comments.filter(c => c.status === 'pending').length}</p>
               </div>
               <Clock className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
@@ -230,7 +243,9 @@ const CommentsManagement = () => {
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Approved</p>
+                <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('stats.approved')}
+                </p>
                 <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{comments.filter(c => c.status === 'approved').length}</p>
               </div>
               <CheckCircle className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
@@ -242,7 +257,9 @@ const CommentsManagement = () => {
           <CardContent className="p-4 md:p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Rejected</p>
+                <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('stats.rejected')}
+                </p>
                 <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{comments.filter(c => c.status === 'rejected').length}</p>
               </div>
               <X className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
@@ -254,28 +271,29 @@ const CommentsManagement = () => {
       {/* Filters */}
       <Card className="border-0 shadow-modern">
         <CardContent className="p-4 md:p-6">
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+          <div className={`flex flex-col ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : 'sm:flex-row'} gap-3 md:gap-4`}>
             <div className="flex-1">
               <div className="relative">
-                <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
+                <Search className={`h-4 w-4 absolute ${currentLanguage === 'ar' ? 'right-3' : 'left-3'} top-3 text-muted-foreground`} />
                 <Input
-                  placeholder="Search comments by author, content, email..."
+                  placeholder={t('filters.searchPlaceholder')}
                   value={filters.search}
                   onChange={(e) => handleFilterChange({ target: { name: 'search', value: e.target.value } })}
-                  className="pl-[30px]"
+                  className={currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
             
             <Select value={filters.status || 'all'} onValueChange={(value) => handleFilterChange({ target: { name: 'status', value: value === 'all' ? '' : value } })}>
               <SelectTrigger className="w-full sm:w-44 md:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('filters.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="approved">{t('filters.status.approved')}</SelectItem>
+                <SelectItem value="pending">{t('filters.status.pending')}</SelectItem>
+                <SelectItem value="rejected">{t('filters.status.rejected')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -300,19 +318,19 @@ const CommentsManagement = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <Badge className="bg-primary text-white">
-                  {selectedComments.length} selected
+                  {t('bulkActions.selected', { count: selectedComments.length })}
                 </Badge>
-                <span className="text-sm text-muted-foreground">Bulk actions:</span>
+                <span className="text-sm text-muted-foreground">{t('bulkActions.label')}</span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className={`flex items-center ${currentLanguage === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => handleBulkStatusChange('approved')}
                   className="border-green-200 text-green-700 hover:bg-green-50"
                 >
-                  <Check className="h-4 w-4 mr-1" />
-                  Approve All
+                  <Check className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
+                  {t('bulkActions.approveAll')}
                 </Button>
                 <Button
                   variant="outline"
@@ -320,8 +338,8 @@ const CommentsManagement = () => {
                   onClick={() => handleBulkStatusChange('rejected')}
                   className="border-yellow-200 text-yellow-700 hover:bg-yellow-50"
                 >
-                  <X className="h-4 w-4 mr-1" />
-                  Reject All
+                  <X className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
+                  {t('bulkActions.rejectAll')}
                 </Button>
                 <Button
                   variant="outline"
@@ -329,8 +347,8 @@ const CommentsManagement = () => {
                   onClick={handleBulkDelete}
                   className="border-red-200 text-red-700 hover:bg-red-50"
                 >
-                  <Trash2 className="h-4 w-4 mr-1" />
-                  Delete All
+                  <Trash2 className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
+                  {t('bulkActions.deleteAll')}
                 </Button>
               </div>
             </div>
@@ -341,20 +359,22 @@ const CommentsManagement = () => {
       {/* Comments Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Comments ({comments.length})</CardTitle>
+          <CardTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+            {t('table.title')} {t('table.count', { count: comments.length })}
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             {loading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">Loading comments...</p>
+                <p className="text-muted-foreground">{t('loading.comments')}</p>
               </div>
             ) : comments.length === 0 ? (
               <div className="text-center py-12">
                 <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <p className="text-muted-foreground">
-                  {filters.search || filters.status ? 'No comments match your filters.' : 'No comments found.'}
+                <p className="text-muted-foreground text-center">
+                  {filters.search || filters.status ? t('table.noMatchingComments') : t('table.noComments')}
                 </p>
               </div>
             ) : (
@@ -369,12 +389,12 @@ const CommentsManagement = () => {
                         className="rounded border-gray-300"
                       />
                     </TableHead>
-                    <TableHead>Author</TableHead>
-                    <TableHead>Content</TableHead>
-                    <TableHead>Blog Post</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.author')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.content')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.blogPost')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.status')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.date')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -389,29 +409,34 @@ const CommentsManagement = () => {
                         />
                       </TableCell>
                       <TableCell>
-                        <div>
+                        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                           <p className="font-medium">{comment.author.name}</p>
                           <p className="text-sm text-muted-foreground">{comment.author.email}</p>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="max-w-xs">
-                          <p className="text-sm truncate">{truncateText(comment.content)}</p>
+                        <div className={`max-w-xs ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          <p className="text-sm truncate" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                            {truncateText(comment.content)}
+                          </p>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="max-w-xs">
+                        <div className={`max-w-xs ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                           {comment.blog?.title ? (
-                            <a 
-                              href={`/news-details/${comment.blog.slug}`} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
+                            <Link 
+                              to={`/news-details/${comment.blog.slug}`} 
                               className="text-primary hover:underline text-sm"
                             >
-                              {truncateText(comment.blog.title, 50)}
-                            </a>
+                              {truncateText(
+                                currentLanguage === 'ar' && comment.blog.titleAr ? 
+                                  comment.blog.titleAr : 
+                                  comment.blog.title, 
+                                50
+                              )}
+                            </Link>
                           ) : (
-                            <span className="text-muted-foreground text-sm">Blog not found</span>
+                            <span className="text-muted-foreground text-sm">{t('table.blogNotFound')}</span>
                           )}
                         </div>
                       </TableCell>
@@ -425,7 +450,7 @@ const CommentsManagement = () => {
                       </TableCell>
                       <TableCell>{formatDate(comment.createdAt)}</TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-1">
+                        <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
                           {comment.status === 'pending' && (
                             <>
                               <Button
@@ -489,9 +514,13 @@ const CommentsManagement = () => {
       {pagination.totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">
-            Showing {((pagination.currentPage - 1) * 10) + 1} to {Math.min(pagination.currentPage * 10, pagination.total)} of {pagination.total} comments
+            {t('pagination.showing', {
+              from: ((pagination.currentPage - 1) * 10) + 1,
+              to: Math.min(pagination.currentPage * 10, pagination.total),
+              total: pagination.total
+            })}
           </p>
-          <div className="flex items-center space-x-2">
+          <div className={`flex items-center ${currentLanguage === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
             <Button
               variant="outline"
               size="sm"
@@ -499,10 +528,10 @@ const CommentsManagement = () => {
               onClick={() => setPagination(prev => ({ ...prev, currentPage: prev.currentPage - 1 }))}
               className="border-muted hover:bg-muted/50"
             >
-              Previous
+              {t('pagination.previous')}
             </Button>
             <span className="text-sm text-muted-foreground">
-              Page {pagination.currentPage} of {pagination.totalPages}
+              {t('pagination.page', { current: pagination.currentPage, total: pagination.totalPages })}
             </span>
             <Button
               variant="outline"
@@ -511,7 +540,7 @@ const CommentsManagement = () => {
               onClick={() => setPagination(prev => ({ ...prev, currentPage: prev.currentPage + 1 }))}
               className="border-muted hover:bg-muted/50"
             >
-              Next
+              {t('pagination.next')}
             </Button>
           </div>
         </div>
@@ -521,22 +550,26 @@ const CommentsManagement = () => {
       <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Comment</DialogTitle>
+            <DialogTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+              {t('deleteModal.title')}
+            </DialogTitle>
           </DialogHeader>
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
               <Trash2 className="h-5 w-5 text-red-600" />
             </div>
             <div className="flex-1">
-              <p className="text-foreground mb-2">
-                Are you sure you want to delete this comment?
+              <p className={`text-foreground mb-2 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                {t('deleteModal.description')}
               </p>
-              <p className="text-sm text-muted-foreground">
-                This action cannot be undone. The comment will be permanently removed from the blog post.
+              <p className={`text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                {t('deleteModal.warning')}
               </p>
               {commentToDelete && (
                 <div className="mt-3 p-3 bg-muted/50 rounded-lg">
-                  <p className="text-sm text-muted-foreground mb-1">Comment preview:</p>
+                  <p className={`text-sm text-muted-foreground mb-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    {t('deleteModal.preview')}
+                  </p>
                   <p className="text-sm font-medium">
                     "{commentToDelete.content?.substring(0, 100)}{commentToDelete.content?.length > 100 ? '...' : ''}"
                   </p>
@@ -544,19 +577,20 @@ const CommentsManagement = () => {
               )}
             </div>
           </div>
-          <div className="flex justify-end gap-3 pt-4">
+          <div className={`flex ${currentLanguage === 'ar' ? 'justify-start flex-row-reverse' : 'justify-end'} gap-3 pt-4`}>
             <Button 
               variant="outline" 
               onClick={() => setShowDeleteModal(false)}
             >
-              Cancel
+              {t('deleteModal.cancel')}
             </Button>
             <Button 
               variant="destructive"
               onClick={handleDeleteConfirm}
+              className={currentLanguage === 'ar' ? 'flex-row-reverse' : ''}
             >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete Comment
+              <Trash2 className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+              {t('deleteModal.confirmDelete')}
             </Button>
           </div>
         </DialogContent>
@@ -566,3 +600,17 @@ const CommentsManagement = () => {
 };
 
 export default CommentsManagement;
+
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

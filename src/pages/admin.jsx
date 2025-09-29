@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { navigate, graphql } from 'gatsby';
 import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
-import { 
-  BarChart3, 
-  Book, 
-  Calendar, 
-  ChevronRight, 
-  CreditCard, 
+import {
+  BarChart3,
+  Book,
+  Calendar,
+  ChevronRight,
+  CreditCard,
   FileText,
-  FolderOpen, 
-  GraduationCap, 
+  FolderOpen,
+  GraduationCap,
   Home,
-  LogOut, 
+  LogOut,
   Menu,
   MessageCircle,
-  MessageSquare, 
+  MessageSquare,
   Plus,
-  Settings, 
-  Star, 
+  Settings,
+  Star,
   Users,
   UserCheck,
   BookOpen,
@@ -74,7 +74,7 @@ const AdminDashboardInner = () => {
   const { toggleSidebar, openMobile, setOpenMobile, isMobile } = useSidebar();
   // Hide sidebar by default on mobile/tablet, show on desktop
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  
+
   // Initialize mobile sidebar state
   React.useEffect(() => {
     if (isMobile && openMobile === undefined) {
@@ -101,7 +101,7 @@ const AdminDashboardInner = () => {
     const fetchCounts = async () => {
       try {
         const promises = [];
-        
+
         // Fetch unread messages if user has permission
         if (hasSectionPermission('contact-messages')) {
           promises.push(
@@ -114,7 +114,7 @@ const AdminDashboardInner = () => {
             })
           );
         }
-        
+
         // Fetch pending reviews if user has permission
         if (hasSectionPermission('reviews')) {
           promises.push(
@@ -125,7 +125,7 @@ const AdminDashboardInner = () => {
             })
           );
         }
-        
+
         await Promise.all(promises);
       } catch (error) {
         console.error('Failed to fetch notification counts:', error);
@@ -206,7 +206,7 @@ const AdminDashboardInner = () => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
       const editMatch = path.match(/\/admin\/blog\/edit\/([a-f\d]{24})/);
-      
+
       if (editMatch) {
         const blogId = editMatch[1];
         setEditBlogId(blogId);
@@ -472,93 +472,94 @@ const AdminDashboardInner = () => {
   );
 
   return (
-      <>
+    <>
       {i18n?.resolvedLanguage === 'ar' ? (
         /* Arabic Layout */
         <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/30 flex" dir="rtl">
-            {/* Sidebar for Arabic - using proper Sidebar component */}
-            {isMobile ? (
-              <Sheet open={openMobile || false} onOpenChange={setOpenMobile}>
-                <SheetContent
-                  side="right"
-                  className="w-64 p-0 bg-gray-100 dark:bg-gray-900 overflow-y-auto"
-                >
-                  <AdminSidebar 
-                    activeSection={activeSection} 
-                    onSectionChange={(section) => {
-                      setActiveSection(section);
-                      setOpenMobile(false); // Close mobile sidebar after selection
-                    }}
-                  />
-                </SheetContent>
-              </Sheet>
-            ) : (
-              <div 
-                className="h-screen bg-gray-100 dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 fixed right-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64" 
-                style={{
-                  transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)',
-                  opacity: sidebarOpen ? 1 : 0,
-                  visibility: sidebarOpen ? 'visible' : 'hidden'
-                }}
+          {/* Sidebar for Arabic - using proper Sidebar component */}
+          {isMobile ? (
+            <Sheet open={openMobile || false} onOpenChange={setOpenMobile}>
+              <SheetContent
+                side="right"
+                className="w-64 p-0 bg-gray-100 dark:bg-gray-900 overflow-y-auto"
+                dir="rtl"
               >
-                <AdminSidebar 
-                  activeSection={activeSection} 
-                  onSectionChange={setActiveSection}
+                <AdminSidebar
+                  activeSection={activeSection}
+                  onSectionChange={(section) => {
+                    setActiveSection(section);
+                    setOpenMobile(false); // Close mobile sidebar after selection
+                  }}
                 />
-              </div>
-            )}
-          
+              </SheetContent>
+            </Sheet>
+          ) : (
+            <div
+              className="h-screen bg-gray-100 dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 fixed right-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64"
+              style={{
+                transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)',
+                opacity: sidebarOpen ? 1 : 0,
+                visibility: sidebarOpen ? 'visible' : 'hidden'
+              }}
+            >
+              <AdminSidebar
+                activeSection={activeSection}
+                onSectionChange={setActiveSection}
+              />
+            </div>
+          )}
+
           {/* Main Content Area with margin for sidebar */}
-          <div 
-            className="min-h-screen transition-all duration-300" 
+          <div
+            className="min-h-screen transition-all duration-300"
             style={{
               marginRight: !isMobile && sidebarOpen ? '256px' : '0px',
               width: !isMobile && sidebarOpen ? 'calc(100% - 256px)' : '100vw',
               marginLeft: '0px'
             }}
           >
-                {/* Header */}
-                <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40" dir="rtl">
-                  <div className="flex h-full items-center px-4 md:px-6 gap-4">
-                    {/* Far left: Logout button */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleLogout}
-                      className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors flex items-center"
-                    >
-                      <span className="hidden sm:inline ml-2">{t('modal.logout')}</span>
-                      <LogOut className="h-4 w-4" />
-                    </Button>
-                    
-                    {/* Middle-left: Other items */}
-                    <div className="flex items-center gap-4">
-                      <LanguageSwitcher variant="admin" className="hidden sm:flex" />
-                      <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
-                        <span>{t('header.welcomeBack')}, {user?.name || user?.username || 'Admin'}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex-1" />
-                    
-                    {/* Far right: Toggle menu */}
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => isMobile ? setOpenMobile(!openMobile) : setSidebarOpen(!sidebarOpen)}
-                      className="text-sidebar-foreground"
-                    >
-                      <Menu className="h-4 w-4" />
-                    </Button>
+            {/* Header */}
+            <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40" dir="rtl">
+              <div className={`flex h-full items-center px-4 md:px-6 gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                {/* Far left: Logout button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleLogout}
+                  className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors flex items-center"
+                >
+                  <span className="hidden sm:inline ml-2">{t('modal.logout')}</span>
+                  <LogOut className="h-4 w-4" />
+                </Button>
+
+                {/* Middle-left: Other items */}
+                <div className="flex items-center gap-4">
+                  <LanguageSwitcher variant="admin" className="hidden sm:flex" />
+                  <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>{t('header.welcomeBack')}, {user?.name || user?.username || 'Admin'}</span>
                   </div>
-                </header>
+                </div>
+
+                <div className="flex-1" />
+
+                {/* Far right: Toggle menu */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => isMobile ? setOpenMobile(!openMobile) : setSidebarOpen(!sidebarOpen)}
+                  className="text-sidebar-foreground"
+                >
+                  <Menu className="h-4 w-4" />
+                </Button>
+              </div>
+            </header>
 
             {/* Main Content */}
             <main className="flex-1 p-4 md:p-6 overflow-auto w-full text-right" dir="rtl">
               {renderDashboardContent()}
             </main>
           </div>
-          
+
           {/* Logout Confirmation Modal */}
           <ConfirmationModal
             isOpen={showLogoutModal}
@@ -589,8 +590,8 @@ const AdminDashboardInner = () => {
                 side="left"
                 className="w-64 p-0 bg-gray-100 dark:bg-gray-900 overflow-y-auto"
               >
-                <AdminSidebar 
-                  activeSection={activeSection} 
+                <AdminSidebar
+                  activeSection={activeSection}
                   onSectionChange={(section) => {
                     setActiveSection(section);
                     setOpenMobile(false); // Close mobile sidebar after selection
@@ -599,70 +600,70 @@ const AdminDashboardInner = () => {
               </SheetContent>
             </Sheet>
           ) : (
-            <div 
-              className="h-screen bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 fixed left-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64" 
+            <div
+              className="h-screen bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 fixed left-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64"
               style={{
                 transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
                 opacity: sidebarOpen ? 1 : 0,
                 visibility: sidebarOpen ? 'visible' : 'hidden'
               }}
             >
-              <AdminSidebar 
-                activeSection={activeSection} 
+              <AdminSidebar
+                activeSection={activeSection}
                 onSectionChange={setActiveSection}
               />
             </div>
           )}
-          
+
           {/* Main Content Area with margin for sidebar */}
-          <div 
-            className="min-h-screen transition-all duration-300" 
+          <div
+            className="min-h-screen transition-all duration-300"
             style={{
               marginLeft: !isMobile && sidebarOpen ? '256px' : '0px',
               width: !isMobile && sidebarOpen ? 'calc(100% - 256px)' : '100vw',
               marginRight: '0px'
             }}
           >
-              {/* Header */}
-              <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40" dir="ltr">
-                <div className={`flex h-full items-center px-4 md:px-6 gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                  {/* Left side items */}
+            {/* Header */}
+            <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40" dir="ltr">
+              <div className={`flex h-full items-center px-4 md:px-6 gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                {/* Left side items */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => isMobile ? setOpenMobile(!openMobile) : setSidebarOpen(!sidebarOpen)}
+                  className="text-sidebar-foreground"
+                >
+                  <Menu className="h-4 w-4" />
+                </Button>
+
+                <div className="flex-1" />
+
+                {/* Right side items */}
+                <div className="flex items-center gap-4">
+                  <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+                    <span>{t('header.welcomeBack')}, {user?.name || user?.username || 'Admin'}</span>
+                  </div>
+                  <LanguageSwitcher variant="admin" className="hidden sm:flex" />
                   <Button
                     variant="ghost"
                     size="sm"
-                    onClick={() => isMobile ? setOpenMobile(!openMobile) : setSidebarOpen(!sidebarOpen)}
-                    className="text-sidebar-foreground"
+                    onClick={handleLogout}
+                    className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors flex items-center"
                   >
-                    <Menu className="h-4 w-4" />
+                    <LogOut className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">{t('modal.logout')}</span>
                   </Button>
-                  
-                  <div className="flex-1" />
-                  
-                  {/* Right side items */}
-                  <div className="flex items-center gap-4">
-                    <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
-                      <span>{t('header.welcomeBack')}, {user?.name || user?.username || 'Admin'}</span>
-                    </div>
-                    <LanguageSwitcher variant="admin" className="hidden sm:flex" />
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleLogout}
-                      className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors flex items-center"
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      <span className="hidden sm:inline">{t('modal.logout')}</span>
-                    </Button>
-                  </div>
                 </div>
-              </header>
+              </div>
+            </header>
 
-              {/* Main Content */}
-              <main className="flex-1 p-4 md:p-6 overflow-auto w-full text-left" dir="ltr">
-                {renderDashboardContent()}
-              </main>
+            {/* Main Content */}
+            <main className="flex-1 p-4 md:p-6 overflow-auto w-full text-left" dir="ltr">
+              {renderDashboardContent()}
+            </main>
           </div>
-          
+
           {/* Logout Confirmation Modal */}
           <ConfirmationModal
             isOpen={showLogoutModal}
@@ -698,8 +699,8 @@ const AdminDashboardContent = () => {
 
 const AdminDashboard = () => {
   return (
-    <ProtectedRoute 
-      requireAuth={true} 
+    <ProtectedRoute
+      requireAuth={true}
       requiredPermissions={['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids']}
     >
       <Layout pageTitle="Admin Dashboard || Azino || Charity React Next Template">
