@@ -1,0 +1,81 @@
+{
+  "title": "إدارة المدونة",
+  "description": "إدارة وتنظيم محتوى مدونتك بسهولة",
+  "addBlog": "إنشاء منشور جديد",
+  "stats": {
+    "totalPosts": "إجمالي المنشورات",
+    "published": "منشورة",
+    "draftPosts": "مسودات",
+    "totalViews": "إجمالي المشاهدات"
+  },
+  "filters": {
+    "searchPlaceholder": "البحث في المدونات بالعنوان أو المحتوى أو الكاتب...",
+    "filterByStatus": "تصفية حسب الحالة",
+    "filterByCategory": "تصفية حسب الفئة",
+    "status": {
+      "all": "جميع الحالات",
+      "published": "منشورة",
+      "draft": "مسودة"
+    },
+    "category": {
+      "all": "جميع الفئات",
+      "news": "أخبار",
+      "updates": "تحديثات",
+      "events": "فعاليات",
+      "stories": "قصص",
+      "announcements": "إعلانات"
+    }
+  },
+  "table": {
+    "title": "منشورات المدونة ({{count}})",
+    "headers": {
+      "title": "العنوان",
+      "author": "الكاتب",
+      "category": "الفئة",
+      "status": "الحالة",
+      "views": "المشاهدات",
+      "date": "التاريخ",
+      "actions": "الإجراءات"
+    },
+    "unknownAuthor": "غير معروف",
+    "uncategorized": "غير مصنف",
+    "noExcerpt": "لا يوجد مقتطف متاح"
+  },
+  "status": {
+    "published": "منشورة",
+    "draft": "مسودة",
+    "archived": "مؤرشفة"
+  },
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف",
+    "view": "عرض"
+  },
+  "pagination": {
+    "showing": "عرض {{start}} إلى {{end}} من {{total}} نتيجة",
+    "previous": "السابق",
+    "next": "التالي"
+  },
+  "deleteModal": {
+    "title": "حذف منشور المدونة",
+    "description": "هل أنت متأكد من أنك تريد حذف <strong>\"{{title}}\"</strong>؟",
+    "warning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع التعليقات والبيانات المرتبطة نهائياً.",
+    "confirmText": "حذف منشور المدونة",
+    "cancelText": "إلغاء"
+  },
+  "loading": {
+    "blogs": "جاري تحميل منشورات المدونة...",
+    "deleting": "جاري الحذف..."
+  },
+  "empty": {
+    "noBlogs": "لم يتم إضافة أي منشورات مدونة بعد.",
+    "noResults": "لا توجد مدونات تطابق المرشحات الخاصة بك."
+  },
+  "messages": {
+    "fetchError": "فشل في جلب المدونات. يرجى المحاولة مرة أخرى.",
+    "deleteSuccess": "تم حذف المدونة بنجاح!",
+    "deleteError": "فشل في حذف المدونة. يرجى المحاولة مرة أخرى.",
+    "statusUpdateSuccess": "تم تحديث حالة المدونة بنجاح!",
+    "statusUpdateError": "فشل في تحديث حالة المدونة. يرجى المحاولة مرة أخرى."
+  }
+}

@@ -213,12 +213,12 @@ const CommentsManagement = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-row">
               <div>
                 <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                   {t('stats.totalComments')}
                 </p>
-                <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{pagination.total}</p>
+                <p className="text-xl md:text-2xl font-bold bg-clip-text ">{pagination.total}</p>
               </div>
               <MessageCircle className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -227,12 +227,12 @@ const CommentsManagement = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-row">
               <div>
                 <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                   {t('stats.pendingReview')}
                 </p>
-                <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{comments.filter(c => c.status === 'pending').length}</p>
+                <p className="text-xl md:text-2xl font-bold bg-clip-text ">{comments.filter(c => c.status === 'pending').length}</p>
               </div>
               <Clock className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -241,12 +241,12 @@ const CommentsManagement = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-row">
               <div>
                 <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                   {t('stats.approved')}
                 </p>
-                <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{comments.filter(c => c.status === 'approved').length}</p>
+                <p className="text-xl md:text-2xl font-bold bg-clip-text ">{comments.filter(c => c.status === 'approved').length}</p>
               </div>
               <CheckCircle className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -255,12 +255,12 @@ const CommentsManagement = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-row">
               <div>
                 <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                   {t('stats.rejected')}
                 </p>
-                <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{comments.filter(c => c.status === 'rejected').length}</p>
+                <p className="text-xl md:text-2xl font-bold bg-clip-text ">{comments.filter(c => c.status === 'rejected').length}</p>
               </div>
               <X className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -363,96 +363,127 @@ const CommentsManagement = () => {
             {t('table.title')} {t('table.count', { count: comments.length })}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            {loading ? (
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">{t('loading.comments')}</p>
-              </div>
-            ) : comments.length === 0 ? (
-              <div className="text-center py-12">
-                <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <p className="text-muted-foreground text-center">
-                  {filters.search || filters.status ? t('table.noMatchingComments') : t('table.noComments')}
-                </p>
-              </div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-12">
-                      <input
-                        type="checkbox"
-                        checked={selectedComments.length === comments.length && comments.length > 0}
-                        onChange={handleSelectAll}
-                        className="rounded border-gray-300"
-                      />
-                    </TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.author')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.content')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.blogPost')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.status')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.date')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {comments.map(comment => (
-                    <TableRow key={comment._id}>
-                      <TableCell>
+        <CardContent className="p-3 xs:p-4 sm:p-6">
+          {loading ? (
+            <div className="text-center py-8 xs:py-12">
+              <div className="animate-spin rounded-full h-6 w-6 xs:h-8 xs:w-8 border-b-2 border-primary mx-auto mb-3 xs:mb-4"></div>
+              <p className="text-muted-foreground text-sm xs:text-base">{t('loading.comments')}</p>
+            </div>
+          ) : comments.length === 0 ? (
+            <div className="text-center py-8 xs:py-12">
+              <MessageCircle className="h-8 w-8 xs:h-12 xs:w-12 mx-auto mb-3 xs:mb-4 text-muted-foreground opacity-50" />
+              <p className="text-muted-foreground text-center text-sm xs:text-base">
+                {filters.search || filters.status ? t('table.noMatchingComments') : t('table.noComments')}
+              </p>
+            </div>
+          ) : (
+            <>
+              {/* Desktop Table - Hidden on mobile */}
+              <div className="hidden lg:block overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-12">
                         <input
                           type="checkbox"
-                          checked={selectedComments.includes(comment._id)}
-                          onChange={() => handleSelectComment(comment._id)}
+                          checked={selectedComments.length === comments.length && comments.length > 0}
+                          onChange={handleSelectAll}
                           className="rounded border-gray-300"
                         />
-                      </TableCell>
-                      <TableCell>
-                        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                          <p className="font-medium">{comment.author.name}</p>
-                          <p className="text-sm text-muted-foreground">{comment.author.email}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className={`max-w-xs ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                          <p className="text-sm truncate" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-                            {truncateText(comment.content)}
-                          </p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className={`max-w-xs ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                          {comment.blog?.title ? (
-                            <Link 
-                              to={`/news-details/${comment.blog.slug}`} 
-                              className="text-primary hover:underline text-sm"
-                            >
-                              {truncateText(
-                                currentLanguage === 'ar' && comment.blog.titleAr ? 
-                                  comment.blog.titleAr : 
-                                  comment.blog.title, 
-                                50
-                              )}
-                            </Link>
-                          ) : (
-                            <span className="text-muted-foreground text-sm">{t('table.blogNotFound')}</span>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={
-                          comment.status === 'approved' ? 'default' :
-                          comment.status === 'pending' ? 'secondary' : 'destructive'
-                        }>
-                          {comment.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{formatDate(comment.createdAt)}</TableCell>
-                      <TableCell>
-                        <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
-                          {comment.status === 'pending' && (
-                            <>
+                      </TableHead>
+                      <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.author')}</TableHead>
+                      <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.content')}</TableHead>
+                      <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.blogPost')}</TableHead>
+                      <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.status')}</TableHead>
+                      <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.date')}</TableHead>
+                      <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {comments.map(comment => (
+                      <TableRow key={comment._id}>
+                        <TableCell>
+                          <input
+                            type="checkbox"
+                            checked={selectedComments.includes(comment._id)}
+                            onChange={() => handleSelectComment(comment._id)}
+                            className="rounded border-gray-300"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                            <p className="font-medium">{comment.author.name}</p>
+                            <p className="text-sm text-muted-foreground">{comment.author.email}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className={`max-w-xs ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                            <p className="text-sm truncate" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                              {truncateText(comment.content)}
+                            </p>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <div className={`max-w-xs ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                            {comment.blog?.title ? (
+                              <Link 
+                                to={`/news-details/${comment.blog.slug}`} 
+                                className="text-primary hover:underline text-sm"
+                              >
+                                {truncateText(
+                                  currentLanguage === 'ar' && comment.blog.titleAr ? 
+                                    comment.blog.titleAr : 
+                                    comment.blog.title, 
+                                  50
+                                )}
+                              </Link>
+                            ) : (
+                              <span className="text-muted-foreground text-sm">{t('table.blogNotFound')}</span>
+                            )}
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={
+                            comment.status === 'approved' ? 'default' :
+                            comment.status === 'pending' ? 'secondary' : 'destructive'
+                          }>
+                            {t(`status.${comment.status}`)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{formatDate(comment.createdAt)}</TableCell>
+                        <TableCell>
+                          <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
+                            {comment.status === 'pending' && (
+                              <>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleStatusChange(comment._id, 'approved')}
+                                  className="text-green-600 hover:bg-green-50"
+                                >
+                                  <Check className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleStatusChange(comment._id, 'rejected')}
+                                  className="text-red-600 hover:bg-red-50"
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </>
+                            )}
+                            {comment.status === 'approved' && (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleStatusChange(comment._id, 'pending')}
+                                className="text-yellow-600 hover:bg-yellow-50"
+                              >
+                                <Clock className="h-4 w-4" />
+                              </Button>
+                            )}
+                            {comment.status === 'rejected' && (
                               <Button
                                 variant="outline"
                                 size="sm"
@@ -461,52 +492,145 @@ const CommentsManagement = () => {
                               >
                                 <Check className="h-4 w-4" />
                               </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleStatusChange(comment._id, 'rejected')}
-                                className="text-red-600 hover:bg-red-50"
-                              >
-                                <X className="h-4 w-4" />
-                              </Button>
-                            </>
-                          )}
-                          {comment.status === 'approved' && (
+                            )}
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleStatusChange(comment._id, 'pending')}
-                              className="text-yellow-600 hover:bg-yellow-50"
+                              onClick={() => handleDeleteClick(comment)}
+                              className="text-destructive hover:text-destructive"
                             >
-                              <Clock className="h-4 w-4" />
+                              <Trash2 className="h-4 w-4" />
                             </Button>
-                          )}
-                          {comment.status === 'rejected' && (
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Mobile Card Layout - Visible on mobile/tablet */}
+              <div className="lg:hidden space-y-3 xs:space-y-4">
+                {comments.map(comment => (
+                  <Card key={comment._id} className="border border-border hover:shadow-md transition-shadow">
+                    <CardContent className="p-3 xs:p-4">
+                      {/* Comment Header */}
+                      <div className={`flex flex-col xs:flex-row xs:items-start xs:justify-between gap-2 xs:gap-3 ${currentLanguage === 'ar' ? 'xs:flex-row-reverse' : ''}`}>
+                        <div className={`flex items-center gap-2 xs:gap-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                          <input
+                            type="checkbox"
+                            checked={selectedComments.includes(comment._id)}
+                            onChange={() => handleSelectComment(comment._id)}
+                            className="rounded border-gray-300 flex-shrink-0"
+                          />
+                          <div className={`flex-1 min-w-0 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                            <h3 className="font-semibold text-foreground text-sm xs:text-base truncate">
+                              {comment.author.name}
+                            </h3>
+                            <p className="text-xs xs:text-sm text-muted-foreground truncate">
+                              {comment.author.email}
+                            </p>
+                          </div>
+                        </div>
+                        <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'self-end xs:self-start flex-row-reverse' : 'self-start'}`}>
+                          <Badge variant={
+                            comment.status === 'approved' ? 'default' :
+                            comment.status === 'pending' ? 'secondary' : 'destructive'
+                          } className="text-xs">
+                            {t(`status.${comment.status}`)}
+                          </Badge>
+                          <span className="text-xs text-muted-foreground">
+                            {formatDate(comment.createdAt)}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Comment Content */}
+                      <div className={`mt-3 p-2 xs:p-3 bg-muted/30 rounded-lg ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        <p className="text-sm xs:text-base" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                          {comment.content}
+                        </p>
+                      </div>
+
+                      {/* Blog Post Link */}
+                      <div className={`mt-3 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        <span className="text-xs xs:text-sm text-muted-foreground">{t('table.headers.blogPost')}: </span>
+                        {comment.blog?.title ? (
+                          <Link 
+                            to={`/news-details/${comment.blog.slug}`} 
+                            className="text-primary hover:underline text-xs xs:text-sm font-medium"
+                          >
+                            {currentLanguage === 'ar' && comment.blog.titleAr ? 
+                              comment.blog.titleAr : 
+                              comment.blog.title}
+                          </Link>
+                        ) : (
+                          <span className="text-muted-foreground text-xs xs:text-sm">{t('table.blogNotFound')}</span>
+                        )}
+                      </div>
+
+                      {/* Actions */}
+                      <div className={`flex flex-wrap items-center gap-1 xs:gap-2 mt-3 pt-3 border-t border-border ${currentLanguage === 'ar' ? 'justify-end flex-row-reverse' : 'justify-start'}`}>
+                        {comment.status === 'pending' && (
+                          <>
                             <Button
                               variant="outline"
                               size="sm"
                               onClick={() => handleStatusChange(comment._id, 'approved')}
-                              className="text-green-600 hover:bg-green-50"
+                              className="text-green-600 hover:bg-green-50 text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
                             >
-                              <Check className="h-4 w-4" />
+                              <Check className="h-3 w-3 xs:h-4 xs:w-4 mr-1" />
+                              {t('actions.approve')}
                             </Button>
-                          )}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleStatusChange(comment._id, 'rejected')}
+                              className="text-red-600 hover:bg-red-50 text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
+                            >
+                              <X className="h-3 w-3 xs:h-4 xs:w-4 mr-1" />
+                              {t('actions.reject')}
+                            </Button>
+                          </>
+                        )}
+                        {comment.status === 'approved' && (
                           <Button
                             variant="outline"
                             size="sm"
-                            onClick={() => handleDeleteClick(comment)}
-                            className="text-destructive hover:text-destructive"
+                            onClick={() => handleStatusChange(comment._id, 'pending')}
+                            className="text-yellow-600 hover:bg-yellow-50 text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Clock className="h-3 w-3 xs:h-4 xs:w-4 mr-1" />
+                            {t('actions.pending')}
                           </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </div>
+                        )}
+                        {comment.status === 'rejected' && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleStatusChange(comment._id, 'approved')}
+                            className="text-green-600 hover:bg-green-50 text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
+                          >
+                            <Check className="h-3 w-3 xs:h-4 xs:w-4 mr-1" />
+                            {t('actions.approve')}
+                          </Button>
+                        )}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleDeleteClick(comment)}
+                          className="text-destructive hover:text-destructive text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
+                        >
+                          <Trash2 className="h-3 w-3 xs:h-4 xs:w-4 mr-1" />
+                          {t('actions.delete')}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </>
+          )}
         </CardContent>
       </Card>
 

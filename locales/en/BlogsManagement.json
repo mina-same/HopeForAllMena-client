@@ -1,0 +1,81 @@
+{
+  "title": "Blog Management",
+  "description": "Manage and organize your blog content with ease",
+  "addBlog": "Create New Post",
+  "stats": {
+    "totalPosts": "Total Posts",
+    "published": "Published",
+    "draftPosts": "Draft Posts",
+    "totalViews": "Total Views"
+  },
+  "filters": {
+    "searchPlaceholder": "Search blogs by title, content, author...",
+    "filterByStatus": "Filter by status",
+    "filterByCategory": "Filter by category",
+    "status": {
+      "all": "All Status",
+      "published": "Published",
+      "draft": "Draft"
+    },
+    "category": {
+      "all": "All Categories",
+      "news": "News",
+      "updates": "Updates",
+      "events": "Events",
+      "stories": "Stories",
+      "announcements": "Announcements"
+    }
+  },
+  "table": {
+    "title": "Blog Posts ({{count}})",
+    "headers": {
+      "title": "Title",
+      "author": "Author",
+      "category": "Category",
+      "status": "Status",
+      "views": "Views",
+      "date": "Date",
+      "actions": "Actions"
+    },
+    "unknownAuthor": "Unknown",
+    "uncategorized": "Uncategorized",
+    "noExcerpt": "No excerpt available"
+  },
+  "status": {
+    "published": "Published",
+    "draft": "Draft",
+    "archived": "Archived"
+  },
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View"
+  },
+  "pagination": {
+    "showing": "Showing {{start}} to {{end}} of {{total}} results",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "deleteModal": {
+    "title": "Delete Blog Post",
+    "description": "Are you sure you want to delete <strong>\"{{title}}\"</strong>?",
+    "warning": "This action cannot be undone. All comments and associated data will also be permanently deleted.",
+    "confirmText": "Delete Blog Post",
+    "cancelText": "Cancel"
+  },
+  "loading": {
+    "blogs": "Loading blog posts...",
+    "deleting": "Deleting..."
+  },
+  "empty": {
+    "noBlogs": "No blog posts added yet.",
+    "noResults": "No blogs match your filters."
+  },
+  "messages": {
+    "fetchError": "Failed to fetch blogs. Please try again.",
+    "deleteSuccess": "Blog deleted successfully!",
+    "deleteError": "Failed to delete blog. Please try again.",
+    "statusUpdateSuccess": "Blog status updated successfully!",
+    "statusUpdateError": "Failed to update blog status. Please try again."
+  }
+}

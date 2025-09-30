@@ -8,11 +8,17 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Alert, AlertDescription } from '../ui/alert';
+import { Link } from 'gatsby';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
 
 const AllBlogs = () => {
   const { token } = useAuth();
+  const { t } = useTranslation('BlogsManagement');
+  const { language: currentLanguage } = useI18next();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -32,7 +38,7 @@ const AllBlogs = () => {
 
   useEffect(() => {
     fetchBlogs();
-  }, [filters, pagination.page]);
+  }, [filters, pagination.page, currentLanguage]);
 
   const fetchBlogs = async () => {
     try {
@@ -40,6 +46,7 @@ const AllBlogs = () => {
       const queryParams = {
         page: pagination.page,
         limit: pagination.limit,
+        language: currentLanguage,
         ...filters
       };
 
@@ -52,7 +59,7 @@ const AllBlogs = () => {
       }));
     } catch (error) {
       console.error('Error fetching blogs:', error);
-      setMessage({ type: 'danger', text: 'Failed to fetch blogs. Please try again.' });
+      setMessage({ type: 'danger', text: t('messages.fetchError') });
     } finally {
       setLoading(false);
     }
@@ -68,7 +75,7 @@ const AllBlogs = () => {
   };
 
   const handleEdit = (blog) => {
-    // Navigate to edit blog page or open edit modal
+    // Navigate to edit blog page using Gatsby Link
     window.location.href = `/admin/blog/edit/${blog._id}`;
   };
 
@@ -82,46 +89,46 @@ const AllBlogs = () => {
 
     try {
       await blogAPI.deleteBlog(blogToDelete._id, token);
-      setMessage({ type: 'success', text: 'Blog deleted successfully!' });
+      setMessage({ type: 'success', text: t('messages.deleteSuccess') });
       setShowDeleteModal(false);
       setBlogToDelete(null);
       fetchBlogs();
     } catch (error) {
       console.error('Error deleting blog:', error);
-      setMessage({ type: 'danger', text: 'Failed to delete blog. Please try again.' });
+      setMessage({ type: 'danger', text: t('messages.deleteError') });
     }
   };
 
   const handleStatusUpdate = async (blogId, newStatus) => {
     try {
       await blogAPI.updateBlog(blogId, { status: newStatus }, token);
-      setMessage({ type: 'success', text: 'Blog status updated successfully!' });
+      setMessage({ type: 'success', text: t('messages.statusUpdateSuccess') });
       fetchBlogs();
     } catch (error) {
       console.error('Error updating blog status:', error);
-      setMessage({ type: 'danger', text: 'Failed to update blog status. Please try again.' });
+      setMessage({ type: 'danger', text: t('messages.statusUpdateError') });
     }
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString();
+    return new Date(dateString).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US');
   };
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Blog Management</h2>
-          <p className="text-sm md:text-base text-muted-foreground">Manage and organize your blog content with ease</p>
+      <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row' : ''}`}>
+        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">{t('title')}</h2>
+          <p className="text-sm md:text-base text-muted-foreground">{t('description')}</p>
         </div>
         
         <Button 
           onClick={() => window.location.href = '/admin/new-blog'}
-          className="bg-primary hover:bg-primary/90"
+          className={`bg-primary hover:bg-primary/90 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}
         >
-          <Plus className="h-4 w-4 mr-2" />
-          Create New Post
+          <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+          {t('addBlog')}
         </Button>
       </div>
 
@@ -129,10 +136,10 @@ const AllBlogs = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Total Posts</p>
-                <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{blogs.length}</p>
+            <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <p className="text-xs md:text-sm font-medium text-muted-foreground">{t('stats.totalPosts')}</p>
+                <p className="text-xl md:text-2xl font-bold bg-clip-text ">{blogs.length}</p>
               </div>
               <FileText className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -141,10 +148,10 @@ const AllBlogs = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Published</p>
-                <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{blogs.filter(b => b.status === 'published').length}</p>
+            <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <p className="text-xs md:text-sm font-medium text-muted-foreground">{t('stats.published')}</p>
+                <p className="text-xl md:text-2xl font-bold bg-clip-text ">{blogs.filter(b => b.status === 'published').length}</p>
               </div>
               <Eye className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -153,10 +160,10 @@ const AllBlogs = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Draft Posts</p>
-                <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{blogs.filter(b => b.status === 'draft').length}</p>
+            <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <p className="text-xs md:text-sm font-medium text-muted-foreground">{t('stats.draftPosts')}</p>
+                <p className="text-xl md:text-2xl font-bold bg-clip-text ">{blogs.filter(b => b.status === 'draft').length}</p>
               </div>
               <Edit3 className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -165,10 +172,10 @@ const AllBlogs = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xs md:text-sm font-medium text-muted-foreground">Total Views</p>
-                <p className="text-xl md:text-2xl font-bold bg-clip-text text-transparent">{blogs.reduce((sum, blog) => sum + (blog.views || 0), 0)}</p>
+            <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <p className="text-xs md:text-sm font-medium text-muted-foreground">{t('stats.totalViews')}</p>
+                <p className="text-xl md:text-2xl font-bold bg-clip-text ">{blogs.reduce((sum, blog) => sum + (blog.views || 0), 0)}</p>
               </div>
               <TrendingUp className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -179,41 +186,42 @@ const AllBlogs = () => {
       {/* Filters */}
       <Card className="border-0 shadow-modern">
         <CardContent className="p-4 md:p-6">
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+          <div className={`flex flex-col sm:flex-row gap-3 md:gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row' : ''}`}>
             <div className="flex-1">
               <div className="relative">
-                <Search className="h-4 w-4 absolute left-3 top-3 text-muted-foreground" />
+                <Search className={`h-4 w-4 absolute top-3 text-muted-foreground ${currentLanguage === 'ar' ? 'right-3' : 'left-3'}`} />
                 <Input
-                  placeholder="Search blogs by title, content, author..."
+                  placeholder={t('filters.searchPlaceholder')}
                   value={filters.search}
                   onChange={(e) => handleFilterChange({ target: { name: 'search', value: e.target.value } })}
-                  className="pl-[30px]"
+                  className={currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
             
             <Select value={filters.status || 'all'} onValueChange={(value) => handleFilterChange({ target: { name: 'status', value: value === 'all' ? '' : value } })}>
               <SelectTrigger className="w-full sm:w-44 md:w-48">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder={t('filters.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="published">Published</SelectItem>
-                <SelectItem value="draft">Draft</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="published">{t('filters.status.published')}</SelectItem>
+                <SelectItem value="draft">{t('filters.status.draft')}</SelectItem>
               </SelectContent>
             </Select>
             
             <Select value={filters.category || 'all'} onValueChange={(value) => handleFilterChange({ target: { name: 'category', value: value === 'all' ? '' : value } })}>
               <SelectTrigger className="w-full sm:w-44 md:w-48">
-                <SelectValue placeholder="Filter by category" />
+                <SelectValue placeholder={t('filters.filterByCategory')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                <SelectItem value="news">News</SelectItem>
-                <SelectItem value="updates">Updates</SelectItem>
-                <SelectItem value="events">Events</SelectItem>
-                <SelectItem value="stories">Stories</SelectItem>
-                <SelectItem value="announcements">Announcements</SelectItem>
+                <SelectItem value="all">{t('filters.category.all')}</SelectItem>
+                <SelectItem value="news">{t('filters.category.news')}</SelectItem>
+                <SelectItem value="updates">{t('filters.category.updates')}</SelectItem>
+                <SelectItem value="events">{t('filters.category.events')}</SelectItem>
+                <SelectItem value="stories">{t('filters.category.stories')}</SelectItem>
+                <SelectItem value="announcements">{t('filters.category.announcements')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -234,75 +242,68 @@ const AllBlogs = () => {
       {/* Blogs Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Blog Posts ({blogs.length})</CardTitle>
+          <CardTitle>{t('table.title', { count: blogs.length })}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             {loading ? (
               <div className="text-center py-12">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">Loading blog posts...</p>
+                <p className="text-muted-foreground">{t('loading.blogs')}</p>
               </div>
             ) : blogs.length === 0 ? (
               <div className="text-center py-12">
                 <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
                 <p className="text-muted-foreground">
-                  {filters.search || filters.status || filters.category ? 'No blogs match your filters.' : 'No blog posts added yet.'}
+                  {filters.search || filters.status || filters.category ? t('empty.noResults') : t('empty.noBlogs')}
                 </p>
               </div>
             ) : (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Author</TableHead>
-                    <TableHead>Category</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Views</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.title')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.author')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.category')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.status')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.views')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.date')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {blogs.map((blog) => (
                     <TableRow key={blog._id}>
-                      <TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                         <div>
-                          <p className="font-medium">{blog.title}</p>
-                          {blog.titleAr && (
-                            <p className="font-medium text-sm text-blue-600 mt-1" dir="rtl">
-                              {blog.titleAr}
-                            </p>
-                          )}
-                          <p className="text-sm text-muted-foreground truncate max-w-xs">
-                            {blog.excerpt || 'No excerpt available'}
+                          <p className="font-medium">
+                            {currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title}
                           </p>
-                          {blog.excerptAr && (
-                            <p className="text-sm text-muted-foreground truncate max-w-xs mt-1" dir="rtl">
-                              {blog.excerptAr}
-                            </p>
-                          )}
+                          <p className="text-sm text-muted-foreground truncate max-w-xs" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                            {currentLanguage === 'ar' && blog.excerptAr ? blog.excerptAr : (blog.excerpt || t('table.noExcerpt'))}
+                          </p>
                         </div>
                       </TableCell>
-                      <TableCell>{blog.author?.name || 'Unknown'}</TableCell>
-                      <TableCell>
-                        <Badge variant="secondary">{blog.category || 'Uncategorized'}</Badge>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{blog.author?.name || t('table.unknownAuthor')}</TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <Badge variant="secondary">{t(`filters.category.${blog.category}`) || t('table.uncategorized')}</Badge>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                         <Badge variant={
                           blog.status === 'published' ? 'default' : 'secondary'
                         }>
-                          {blog.status}
+                          {t(`status.${blog.status}`)}
                         </Badge>
                       </TableCell>
-                      <TableCell>{blog.views || 0}</TableCell>
-                      <TableCell>{formatDate(blog.createdAt)}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{blog.views || 0}</TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{formatDate(blog.createdAt)}</TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                           <Button
                             size="sm"
                             variant="outline"
                             onClick={() => handleEdit(blog)}
+                            title={t('actions.edit')}
                           >
                             <Edit3 className="h-4 w-4" />
                           </Button>
@@ -311,6 +312,7 @@ const AllBlogs = () => {
                             variant="outline"
                             onClick={() => handleDeleteClick(blog)}
                             className="text-destructive hover:text-destructive"
+                            title={t('actions.delete')}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -327,11 +329,15 @@ const AllBlogs = () => {
 
       {/* Pagination */}
       {pagination.totalPages > 1 && (
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">
-            Showing {((pagination.page - 1) * pagination.limit) + 1} to {Math.min(pagination.page * pagination.limit, pagination.total)} of {pagination.total} results
+        <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <p className={`text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            {t('pagination.showing', {
+              start: ((pagination.page - 1) * pagination.limit) + 1,
+              end: Math.min(pagination.page * pagination.limit, pagination.total),
+              total: pagination.total
+            })}
           </p>
-          <div className="flex space-x-2">
+          <div className={`flex ${currentLanguage === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2'}`}>
             <Button
               variant="outline"
               size="sm"
@@ -339,7 +345,7 @@ const AllBlogs = () => {
               onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
               className="border-muted hover:bg-muted/50"
             >
-              Previous
+              {t('pagination.previous')}
             </Button>
             <Button
               variant="outline"
@@ -348,7 +354,7 @@ const AllBlogs = () => {
               onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
               className="border-muted hover:bg-muted/50"
             >
-              Next
+              {t('pagination.next')}
             </Button>
           </div>
         </div>
