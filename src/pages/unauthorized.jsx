@@ -48,7 +48,7 @@ const UnauthorizedPage = () => {
   };
 
   return (
-    <Layout pageTitle="Access Denied || Azino || Charity React Next Template">
+    <Layout pageTitle="Access Denied || Hope for All Mena || Charity React Next Template">
       <HeaderTwo />
       <StickyHeader />
       
@@ -293,7 +293,7 @@ export default UnauthorizedPage;
 
 export const Head = () => (
   <>
-    <title>Access Denied || Azino</title>
+    <title>Access Denied || Hope for All Mena</title>
     <meta name="description" content="You don't have permission to access this area. Please contact support if you believe this is an error." />
     <meta name="robots" content="noindex, nofollow" />
   </>

@@ -1,0 +1,123 @@
+{
+  "title": "طلبات متابعة التدريب",
+  "description": "إدارة طلبات متابعة مواد التدريب",
+  "stats": {
+    "totalRequests": "إجمالي الطلبات",
+    "pending": "قيد الانتظار",
+    "processing": "قيد المعالجة",
+    "fulfilled": "مكتملة"
+  },
+  "table": {
+    "title": "طلبات متابعة التدريب",
+    "count": "طلبات متابعة التدريب ({{count}})",
+    "headers": {
+      "trainer": "المدرب",
+      "requester": "مقدم الطلب",
+      "church": "الكنيسة",
+      "address": "العنوان",
+      "books": "الكتب",
+      "tshirts": "القمصان",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "booksCount": "{{count}} كتاب",
+    "notAvailable": "غير متوفر"
+  },
+  "filters": {
+    "searchPlaceholder": "البحث بالاسم، البريد الإلكتروني، الهاتف، نوع التدريب، أو الشركة...",
+    "filterByStatus": "تصفية حسب الحالة",
+    "status": {
+      "all": "جميع الحالات",
+      "pending": "قيد الانتظار",
+      "processing": "قيد المعالجة",
+      "fulfilled": "مكتملة",
+      "cancelled": "ملغية"
+    }
+  },
+  "status": {
+    "pending": "قيد الانتظار",
+    "processing": "قيد المعالجة",
+    "fulfilled": "مكتملة",
+    "cancelled": "ملغية"
+  },
+  "actions": {
+    "view": "عرض التفاصيل",
+    "markProcessing": "تحديد كقيد المعالجة",
+    "markFulfilled": "تحديد كمكتملة",
+    "markCancelled": "تحديد كملغية",
+    "delete": "حذف الطلب"
+  },
+  "detailsModal": {
+    "title": "تفاصيل طلب المتابعة",
+    "contactInformation": "معلومات الاتصال",
+    "tshirtSizes": "مقاسات القمصان",
+    "booksRequested": "الكتب المطلوبة",
+    "attendeeNamesFile": "ملف أسماء الحضور",
+    "requestDetails": "تفاصيل الطلب",
+    "fields": {
+      "trainer": "المدرب",
+      "requester": "مقدم الطلب",
+      "church": "الكنيسة",
+      "phone": "الهاتف",
+      "address": "العنوان",
+      "peopleServed": "عدد المخدومين",
+      "submitted": "تاريخ التقديم",
+      "status": "الحالة",
+      "notes": "الملاحظات",
+      "totalTshirts": "إجمالي القمصان",
+      "copiesNeeded": "النسخ المطلوبة",
+      "unknownBook": "كتاب غير معروف"
+    },
+    "buttons": {
+      "downloadFile": "تحميل ملف الأسماء"
+    }
+  },
+  "deleteModal": {
+    "title": "تأكيد الحذف",
+    "description": "هل أنت متأكد من أنك تريد حذف طلب المتابعة هذا؟",
+    "warning": "لا يمكن التراجع عن هذا الإجراء. سيتم حذف جميع بيانات الطلب نهائياً.",
+    "requestDetails": "تفاصيل الطلب:",
+    "submitted": "تاريخ التقديم: {{date}}",
+    "confirmText": "حذف الطلب",
+    "cancelText": "إلغاء"
+  },
+  "statusMessages": {
+    "processing": "طلب المتابعة قيد المعالجة",
+    "fulfilled": "تم إنجاز طلب المتابعة",
+    "cancelled": "تم إلغاء طلب المتابعة",
+    "pending": "تم تحديث حالة طلب المتابعة",
+    "deleted": "تم حذف طلب المتابعة بنجاح"
+  },
+  "loading": {
+    "requests": "جاري تحميل طلبات المتابعة..."
+  },
+  "empty": {
+    "noRequests": "لا توجد طلبات متابعة",
+    "noMatching": "لم يتم العثور على طلبات مطابقة",
+    "description": "ستظهر طلبات المتابعة هنا عند تقديمها.",
+    "tryAdjusting": "حاول تعديل معايير البحث أو التصفية.",
+    "debugInfo": "معلومات التشخيص: تحقق من وحدة تحكم المتصفح للحصول على تفاصيل المصادقة.",
+    "expectedRequests": "متوقع: 5 طلبات في قاعدة البيانات. إذا لم تظهر، تحقق من حالة تسجيل الدخول."
+  },
+  "errors": {
+    "title": "خطأ",
+    "authRequired": "مطلوب مصادقة",
+    "authMessage": "يرجى تسجيل الدخول كمدير لعرض طلبات المتابعة. استخدم: admin@azino.com / Admin@2024",
+    "authIssue": "مشكلة في المصادقة",
+    "authIssueMessage": "يرجى تسجيل الخروج وتسجيل الدخول مرة أخرى. الرمز المميز مفقود ولكن بيانات المستخدم موجودة.",
+    "loadFailed": "فشل في تحميل طلبات المتابعة. يرجى المحاولة مرة أخرى.",
+    "updateFailed": "فشل في تحديث حالة الطلب. يرجى المحاولة مرة أخرى.",
+    "downloadFailed": "فشل في تحميل الملف. يرجى المحاولة مرة أخرى.",
+    "deleteFailed": "فشل في حذف الطلب. يرجى المحاولة مرة أخرى.",
+    "statusUpdated": "تم تحديث الحالة",
+    "requestDeleted": "تم حذف الطلب"
+  },
+  "tshirtSizes": {
+    "size6": "مقاس 6",
+    "size8": "مقاس 8",
+    "size10": "مقاس 10",
+    "sizeL": "مقاس L",
+    "sizeXL": "مقاس XL",
+    "sizeXXL": "مقاس XXL"
+  }
+}

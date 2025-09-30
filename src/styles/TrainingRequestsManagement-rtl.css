@@ -1,0 +1,116 @@
+/* RTL styles for TrainingRequestsManagement component */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .training-requests-container {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+/* Stats cards RTL */
+.rtl .stats-card {
+  direction: rtl;
+}
+
+.rtl .stats-card .card-content {
+  text-align: right;
+}
+
+/* Search input RTL */
+.rtl .search-input {
+  text-align: right;
+  padding-right: 30px;
+  padding-left: 12px;
+}
+
+.rtl .search-icon {
+  right: 12px;
+  left: auto;
+}
+
+/* Table RTL */
+.rtl .table-container {
+  direction: rtl;
+}
+
+.rtl .table-header {
+  text-align: right;
+}
+
+.rtl .table-cell {
+  text-align: right;
+}
+
+/* Dialog RTL */
+.rtl .dialog-content {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .dialog-title {
+  text-align: right;
+}
+
+/* Form fields RTL */
+.rtl .form-field {
+  text-align: right;
+}
+
+.rtl .form-label {
+  text-align: right;
+}
+
+/* Action buttons RTL */
+.rtl .action-buttons {
+  flex-direction: row-reverse;
+}
+
+.rtl .action-buttons > * + * {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* Badge RTL */
+.rtl .status-badge {
+  direction: rtl;
+}
+
+/* Empty state RTL */
+.rtl .empty-state {
+  text-align: right;
+}
+
+.rtl .empty-state h3,
+.rtl .empty-state p {
+  text-align: right;
+}
+
+/* Responsive adjustments for RTL */
+@media (max-width: 768px) {
+  .rtl .mobile-card {
+    text-align: right;
+  }
+  
+  .rtl .mobile-filters {
+    flex-direction: column;
+  }
+}
+
+/* Filter layout RTL */
+.rtl .filters-container {
+  direction: rtl;
+}
+
+.rtl .filter-select {
+  text-align: right;
+}
+
+/* Nearby churches RTL */
+.rtl .nearby-church-card {
+  text-align: right;
+}
+
+.rtl .nearby-church-card .church-info {
+  text-align: right;
+}

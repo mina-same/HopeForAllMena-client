@@ -8,7 +8,7 @@ import HeaderTwo from "../components/header/header-two";
 
 const News = () => {
   return (
-    <Layout pageTitle="News Page || Azino || Charity React Next Template">
+    <Layout pageTitle="News Page || Hope for All Mena || Charity React Next Template">
       <HeaderTwo />
       <StickyHeader />
       <PageHeader title="News Page" crumbTitle="News" />

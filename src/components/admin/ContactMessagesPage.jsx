@@ -152,7 +152,7 @@ const ContactMessagesPage = () => {
   return (
     <div className={`p-4 md:p-6 space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${currentLanguage === 'ar' ? 'sm:' : ''}`}>
         <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
           <h1 className="text-2xl md:text-3xl font-bold text-foreground">{t('title')}</h1>
           <p className="text-muted-foreground mt-2 text-sm md:text-base">
@@ -161,7 +161,7 @@ const ContactMessagesPage = () => {
         </div>
         <div className="flex items-center gap-4">
           <div className="bg-card border rounded-lg p-3">
-            <div className="flex items-center gap-3 text-sm">
+            <div className="flex items-center gap-3 text-sm flex-row">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-blue-600" />
                 <span className="font-medium">{t('stats.unread', { count: unreadCount })}</span>
@@ -185,7 +185,7 @@ const ContactMessagesPage = () => {
       {/* Filters */}
       <Card>
         <CardContent className="p-4">
-          <div className={`flex flex-col md:flex-row gap-4 ${currentLanguage === 'ar' ? 'md:flex-row-reverse' : ''}`}>
+          <div className={`flex flex-col md:flex-row gap-4 ${currentLanguage === 'ar' ? 'md:' : ''}`}>
             <div className="relative flex-1">
               <Search className={`absolute ${currentLanguage === 'ar' ? 'right-3' : 'left-3'} top-3 h-4 w-4 text-muted-foreground`} />
               <Input
@@ -267,9 +267,9 @@ const ContactMessagesPage = () => {
             return (
             <Card key={message.id} className={`hover:shadow-md transition-shadow ${message.status === 'unread' ? `${currentLanguage === 'ar' ? 'border-r-4 border-r-primary' : 'border-l-4 border-l-primary'}` : ''}`}>
               <CardContent className="p-4 md:p-6">
-                <div className={`flex flex-col md:flex-row items-start justify-between gap-4 ${currentLanguage === 'ar' ? 'md:flex-row-reverse' : ''}`}>
+                <div className={`flex flex-col md:flex-row items-start justify-between gap-4 ${currentLanguage === 'ar' ? 'md:' : ''}`}>
                   <div className="flex-1 space-y-3 w-full">
-                    <div className={`flex flex-wrap items-center gap-2 md:gap-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex flex-wrap items-center gap-2 md:gap-3 ${currentLanguage === 'ar' ? '' : ''}`}>
                       <h3 className="font-semibold text-base md:text-lg line-clamp-1">{message.subject}</h3>
                       {message.isNew && (
                         <Badge className="bg-red-500 text-white animate-pulse text-xs">{t('messageCard.new')}</Badge>
@@ -289,13 +289,13 @@ const ContactMessagesPage = () => {
                       )}
                     </div>
                     
-                    <div className={`flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-muted-foreground ${currentLanguage === 'ar' ? '' : ''}`}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
                         <User className="h-3 md:h-4 w-3 md:w-4" />
                         <span className="font-medium">{message.name}</span>
                       </div>
                       <span className="hidden sm:inline">{message.email}</span>
-                      <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? '' : ''}`}>
                         <Calendar className="h-3 md:h-4 w-3 md:w-4" />
                         <span>{new Date(message.date).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US')}</span>
                       </div>
@@ -304,7 +304,7 @@ const ContactMessagesPage = () => {
                     <p className={`text-foreground leading-relaxed line-clamp-2 md:line-clamp-3 text-sm md:text-base ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>{message.message}</p>
                   </div>
                   
-                  <div className={`flex flex-row md:flex-col items-center gap-2 w-full md:w-auto ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex flex-row md:flex-col items-center gap-2 w-full md:w-auto ${currentLanguage === 'ar' ? '' : ''}`}>
                     <Dialog>
                       <DialogTrigger asChild>
                         <Button 
@@ -327,7 +327,7 @@ const ContactMessagesPage = () => {
                           <div className="flex items-start justify-between">
                             <div className="space-y-1">
                               <DialogTitle className="text-xl font-semibold">{selectedMessage?.subject}</DialogTitle>
-                              <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                              <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
                                 <Badge className={getStatusColor(selectedMessage?.status) + " text-xs"}>
                                   {selectedMessage?.status && t(`statuses.${selectedMessage.status}`)}
                                 </Badge>
@@ -352,7 +352,7 @@ const ContactMessagesPage = () => {
                               <CardContent className="p-4">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   <div className="space-y-2">
-                                    <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                                    <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
                                       <User className="h-4 w-4 text-blue-600" />
                                       <span className="font-medium text-sm text-muted-foreground">{t('viewDialog.contact')}</span>
                                     </div>
@@ -366,7 +366,7 @@ const ContactMessagesPage = () => {
                                   </div>
                                   {selectedMessage.bookTitle && (
                                     <div className="space-y-2">
-                                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
                                         <Book className="h-4 w-4 text-purple-600" />
                                         <span className="font-medium text-sm text-muted-foreground">{t('viewDialog.relatedBook')}</span>
                                       </div>
@@ -380,7 +380,7 @@ const ContactMessagesPage = () => {
                             {/* Message Content */}
                             <Card>
                               <CardHeader className="pb-3">
-                                <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                                <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
                                   <Mail className="h-4 w-4 text-green-600" />
                                   <CardTitle className="text-base">{t('viewDialog.message')}</CardTitle>
                                 </div>
@@ -396,7 +396,7 @@ const ContactMessagesPage = () => {
                             {selectedMessage.status !== 'replied' && (
                               <Card className="border-dashed">
                                 <CardHeader className="pb-3">
-                                  <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                                  <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
                                     <MessageSquare className="h-4 w-4 text-blue-600" />
                                     <CardTitle className="text-base">{t('viewDialog.sendReply')}</CardTitle>
                                   </div>
@@ -409,7 +409,7 @@ const ContactMessagesPage = () => {
                                     className={`min-h-[120px] resize-none ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
                                     dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                                   />
-                                  <div className={`flex ${currentLanguage === 'ar' ? 'justify-start flex-row-reverse' : 'justify-end'} gap-3`}>
+                                  <div className={`flex ${currentLanguage === 'ar' ? 'justify-start ' : 'justify-end'} gap-3`}>
                                     <Button 
                                       variant="outline"
                                       onClick={() => {
@@ -423,7 +423,7 @@ const ContactMessagesPage = () => {
                                     <Button 
                                       onClick={() => handleReply(selectedMessage.id)}
                                       disabled={!replyText.trim()}
-                                      className={`bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-6 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+                                      className={`bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-6 ${currentLanguage === 'ar' ? '' : ''}`}
                                     >
                                       <Send className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
                                       {t('viewDialog.send')}

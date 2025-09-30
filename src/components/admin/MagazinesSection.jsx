@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
+import { Link } from 'gatsby';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -11,6 +15,8 @@ import { useToast } from '../../hooks/use-toast';
 import { Search, Eye, Check, X, Trash2, BookOpen, Phone, MapPin, Church, Hash, FileText, Package, Truck } from 'lucide-react';
 
 export const MagazinesSection = () => {
+  const { t } = useTranslation('MagazinesManagement');
+  const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
   const [magazineRequests, setMagazineRequests] = useState([]);
   const [statistics, setStatistics] = useState(null);
@@ -44,8 +50,8 @@ export const MagazinesSection = () => {
     } catch (error) {
       console.error('Error fetching requests:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch magazine requests",
+        title: t('toast.error'),
+        description: t('toast.failedToFetch'),
         variant: "destructive"
       });
     } finally {
@@ -68,16 +74,16 @@ export const MagazinesSection = () => {
     try {
       await magazineRequestsAPI.updateRequestStatus(id, { status });
       toast({
-        title: "Status Updated",
-        description: `Magazine request has been ${status}.`,
+        title: t('toast.statusUpdated', { status: t(`status.${status}`) }),
+        description: t('toast.statusUpdated', { status: t(`status.${status}`) }),
       });
       fetchRequests();
       fetchStatistics();
     } catch (error) {
       console.error('Error updating status:', error);
       toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to update request status",
+        title: t('toast.error'),
+        description: error.response?.data?.message || t('toast.failedToUpdate'),
         variant: "destructive"
       });
     }
@@ -87,16 +93,16 @@ export const MagazinesSection = () => {
     try {
       await magazineRequestsAPI.deleteRequest(id);
       toast({
-        title: "Request Deleted",
-        description: "Magazine request has been deleted successfully.",
+        title: t('toast.requestDeleted'),
+        description: t('toast.requestDeleted'),
       });
       fetchRequests();
       fetchStatistics();
     } catch (error) {
       console.error('Error deleting request:', error);
       toast({
-        title: "Error",
-        description: error.response?.data?.message || "Failed to delete request",
+        title: t('toast.error'),
+        description: error.response?.data?.message || t('toast.failedToDelete'),
         variant: "destructive"
       });
     }
@@ -105,15 +111,15 @@ export const MagazinesSection = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'approved':
-        return <Badge className="bg-emerald-400 text-white border-emerald-300 font-medium">Approved</Badge>;
+        return <Badge className="bg-emerald-400 text-white border-emerald-300 font-medium">{t('status.approved')}</Badge>;
       case 'rejected':
-        return <Badge className="bg-rose-400 text-white border-rose-300 font-medium">Rejected</Badge>;
+        return <Badge className="bg-rose-400 text-white border-rose-300 font-medium">{t('status.rejected')}</Badge>;
       case 'fulfilled':
-        return <Badge className="bg-green-400 text-white border-green-300 font-medium">Fulfilled</Badge>;
+        return <Badge className="bg-green-400 text-white border-green-300 font-medium">{t('status.fulfilled')}</Badge>;
       case 'cancelled':
-        return <Badge className="bg-slate-400 text-white border-slate-300 font-medium">Cancelled</Badge>;
+        return <Badge className="bg-slate-400 text-white border-slate-300 font-medium">{t('status.cancelled')}</Badge>;
       default:
-        return <Badge className="bg-amber-400 text-white border-amber-300 font-medium">Pending</Badge>;
+        return <Badge className="bg-amber-400 text-white border-amber-300 font-medium">{t('status.pending')}</Badge>;
     }
   };
 
@@ -132,12 +138,12 @@ export const MagazinesSection = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className={`flex items-center justify-between flex-row ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
         <div>
-          <h2 className="text-3xl font-bold text-foreground">Magazine Requests</h2>
-          <p className="text-muted-foreground">Manage magazine subscription requests from churches and communities.</p>
+          <h2 className="text-3xl font-bold text-foreground">{t('title')}</h2>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
       </div>
 
@@ -145,9 +151,9 @@ export const MagazinesSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card className="border-l-4 border-l-indigo-500">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Requests</p>
+            <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? '' : 'flex-row'}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <p className="text-sm font-medium text-muted-foreground">{t('stats.totalRequests')}</p>
                 <p className="text-3xl font-bold text-foreground">{stats.total}</p>
               </div>
               <BookOpen className="h-8 w-8 text-indigo-500" />
@@ -157,9 +163,9 @@ export const MagazinesSection = () => {
 
         <Card className="border-l-4 border-l-amber-500">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Pending</p>
+            <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? '' : 'flex-row'}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <p className="text-sm font-medium text-muted-foreground">{t('stats.pending')}</p>
                 <p className="text-3xl font-bold text-foreground">{stats.pending}</p>
               </div>
               <div className="h-8 w-8 rounded-full bg-amber-100 flex items-center justify-center">
@@ -171,9 +177,9 @@ export const MagazinesSection = () => {
 
         <Card className="border-l-4 border-l-emerald-500">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Approved</p>
+            <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? '' : 'flex-row'}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <p className="text-sm font-medium text-muted-foreground">{t('stats.approved')}</p>
                 <p className="text-3xl font-bold text-foreground">{stats.approved}</p>
               </div>
               <Check className="h-8 w-8 text-emerald-500" />
@@ -183,9 +189,9 @@ export const MagazinesSection = () => {
 
         <Card className="border-l-4 border-l-green-500">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">Fulfilled</p>
+            <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? '' : 'flex-row'}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <p className="text-sm font-medium text-muted-foreground">{t('stats.fulfilled')}</p>
                 <p className="text-3xl font-bold text-foreground">{stats.fulfilled}</p>
               </div>
               <Package className="h-8 w-8 text-green-500" />
@@ -197,32 +203,33 @@ export const MagazinesSection = () => {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle>Filter Requests</CardTitle>
+          <CardTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('filters.title')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className={`flex flex-col md:flex-row gap-4 ${currentLanguage === 'ar' ? 'md:' : ''}`}>
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Search className={`absolute top-3 h-4 w-4 text-muted-foreground ${currentLanguage === 'ar' ? 'right-3' : 'left-3'}`} />
                 <Input
-                  placeholder="Search by name, church, or magazine..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-[30px]"
+                  className={currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-[200px]">
-                <SelectValue placeholder="Filter by status" />
+              <SelectTrigger className="w-full md:w-[200px] flex-row">
+                <SelectValue placeholder={t('filters.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
-                <SelectItem value="fulfilled">Fulfilled</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="pending">{t('filters.status.pending')}</SelectItem>
+                <SelectItem value="approved">{t('filters.status.approved')}</SelectItem>
+                <SelectItem value="rejected">{t('filters.status.rejected')}</SelectItem>
+                <SelectItem value="fulfilled">{t('filters.status.fulfilled')}</SelectItem>
+                <SelectItem value="cancelled">{t('filters.status.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -232,71 +239,73 @@ export const MagazinesSection = () => {
       {/* Requests Table */}
       <Card>
         <CardHeader>
-          <CardTitle>Magazine Requests ({filteredRequests.length})</CardTitle>
-          <CardDescription>
-            Review and manage magazine subscription requests
+          <CardTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+            {t('table.count', { count: filteredRequests.length })}
+          </CardTitle>
+          <CardDescription className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+            {t('table.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-center py-8">Loading requests...</div>
+            <div className="text-center py-8">{t('loading.requests')}</div>
           ) : (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Request Details</TableHead>
-                    <TableHead>Church Info</TableHead>
-                    <TableHead>Magazine</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Actions</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.requestDetails')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.churchInfo')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.magazine')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.status')}</TableHead>
+                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredRequests.map((request) => (
                     <TableRow key={request._id}>
-                      <TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                         <div className="space-y-2">
                           {request.magazines && request.magazines.length > 0 ? (
                             <div>
-                              <p className="font-medium">Magazines:</p>
-                              <ul className="ml-4 mt-1">
+                              <p className="font-medium">{t('table.magazines')}</p>
+                              <ul className={`mt-1 ${currentLanguage === 'ar' ? 'mr-4' : 'ml-4'}`}>
                                 {request.magazines.map((mag, index) => (
                                   <li key={index} className="text-sm text-gray-600">
-                                    • {mag.magazineName} ({mag.numberOfCopies} copies)
+                                    • {mag.magazineName} ({t('table.copiesCount', { count: mag.numberOfCopies })})
                                   </li>
                                 ))}
                               </ul>
                             </div>
                           ) : (
                             <>
-                              <p><span className="font-medium">Magazine:</span> {request.magazineName}</p>
-                              <p><span className="font-medium">Copies:</span> {request.numberOfCopies}</p>
+                              <p><span className="font-medium">{t('table.magazine')}</span> {request.magazineName}</p>
+                              <p><span className="font-medium">{t('table.copies')}</span> {request.numberOfCopies}</p>
                             </>
                           )}
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                         <div className="space-y-1">
-                          <div className="flex items-center text-sm">
-                            <Church className="h-3 w-3 mr-1 text-muted-foreground" />
+                          <div className={`flex items-center text-sm ${currentLanguage === 'ar' ? '' : ''}`}>
+                            <Church className={`h-3 w-3 text-muted-foreground ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
                             <span className="font-medium">{request.churchName}</span>
                           </div>
-                          <div className="flex items-start text-xs text-muted-foreground">
-                            <MapPin className="h-3 w-3 mr-1 mt-0.5 flex-shrink-0" />
+                          <div className={`flex items-start text-xs text-muted-foreground ${currentLanguage === 'ar' ? '' : ''}`}>
+                            <MapPin className={`h-3 w-3 mt-0.5 flex-shrink-0 ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
                             <span className="line-clamp-2">{request.churchAddress}</span>
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                         <div className="space-y-1">
-                          <div className="flex items-center text-sm font-medium">
-                            <BookOpen className="h-3 w-3 mr-1 text-muted-foreground" />
+                          <div className={`flex items-center text-sm font-medium ${currentLanguage === 'ar' ? '' : ''}`}>
+                            <BookOpen className={`h-3 w-3 text-muted-foreground ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
                             {request.magazineName}
                           </div>
-                          <div className="flex items-center text-xs text-muted-foreground">
-                            <Hash className="h-3 w-3 mr-1" />
-                            {request.numberOfCopies} copies
+                          <div className={`flex items-center text-xs text-muted-foreground ${currentLanguage === 'ar' ? '' : ''}`}>
+                            <Hash className={`h-3 w-3 ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
+                            {t('table.copiesCount', { count: request.numberOfCopies })}
                           </div>
                         </div>
                       </TableCell>
@@ -304,11 +313,12 @@ export const MagazinesSection = () => {
                         {getStatusBadge(request.status)}
                       </TableCell>
                       <TableCell>
-                        <div className="flex items-center gap-2">
+                        <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => setSelectedRequest(request)}
+                            title={t('actions.view')}
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
@@ -320,6 +330,7 @@ export const MagazinesSection = () => {
                                 size="sm"
                                 onClick={() => handleStatusUpdate(request._id, 'approved')}
                                 className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
+                                title={t('actions.approve')}
                               >
                                 <Check className="h-4 w-4" />
                               </Button>
@@ -328,6 +339,7 @@ export const MagazinesSection = () => {
                                 size="sm"
                                 onClick={() => handleStatusUpdate(request._id, 'rejected')}
                                 className="text-rose-600 hover:text-rose-700 hover:bg-rose-50"
+                                title={t('actions.reject')}
                               >
                                 <X className="h-4 w-4" />
                               </Button>
@@ -340,6 +352,7 @@ export const MagazinesSection = () => {
                               size="sm"
                               onClick={() => handleStatusUpdate(request._id, 'fulfilled')}
                               className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                              title={t('actions.fulfill')}
                             >
                               <Truck className="h-4 w-4" />
                             </Button>
@@ -351,24 +364,27 @@ export const MagazinesSection = () => {
                                 variant="ghost"
                                 size="sm"
                                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                title={t('actions.delete')}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
                               <AlertDialogHeader>
-                                <AlertDialogTitle>Delete Request</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  Are you sure you want to delete this magazine request? This action cannot be undone.
+                                <AlertDialogTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                                  {t('deleteModal.title')}
+                                </AlertDialogTitle>
+                                <AlertDialogDescription className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                                  {t('deleteModal.description')}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogFooter className={`${currentLanguage === 'ar' ? 'justify-start flex-row-reverse gap-3' : 'gap-3'}`}>
+                                <AlertDialogCancel className="mt-0">{t('deleteModal.cancelText')}</AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => handleDelete(request._id)}
-                                  className="bg-red-600 hover:bg-red-700"
+                                  className="bg-red-600 hover:bg-red-700 mt-0"
                                 >
-                                  Delete
+                                  {t('deleteModal.confirmText')}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -383,11 +399,11 @@ export const MagazinesSection = () => {
               {filteredRequests.length === 0 && (
                 <div className="text-center py-12">
                   <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-lg font-medium text-muted-foreground mb-2">No magazine requests found</p>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-lg font-medium text-muted-foreground mb-2 text-center">{t('empty.noRequests')}</p>
+                  <p className="text-sm text-muted-foreground text-center">
                     {searchTerm || statusFilter !== 'all'
-                      ? 'Try adjusting your search criteria'
-                      : 'Magazine requests will appear here when submitted'
+                      ? t('empty.adjustCriteria')
+                      : t('empty.willAppear')
                     }
                   </p>
                 </div>
@@ -402,80 +418,80 @@ export const MagazinesSection = () => {
         <AlertDialog open={!!selectedRequest} onOpenChange={() => setSelectedRequest(null)}>
           <AlertDialogContent className="max-w-2xl">
             <AlertDialogHeader>
-              <AlertDialogTitle className="flex items-center gap-2">
+              <AlertDialogTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? ' text-right' : 'text-left'}`}>
                 <BookOpen className="h-5 w-5" />
-                Magazine Request Details
+                {t('modal.title')}
               </AlertDialogTitle>
             </AlertDialogHeader>
 
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Requester Name</label>
+                  <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                    <label className="text-sm font-medium text-muted-foreground">{t('modal.requesterName')}</label>
                     <p className="text-foreground font-medium">{selectedRequest.name}</p>
                   </div>
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Phone Number</label>
+                  <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                    <label className="text-sm font-medium text-muted-foreground">{t('modal.phoneNumber')}</label>
                     <p className="text-foreground">{selectedRequest.phoneNumber}</p>
                   </div>
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Church Name</label>
+                  <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                    <label className="text-sm font-medium text-muted-foreground">{t('modal.churchName')}</label>
                     <p className="text-foreground font-medium">{selectedRequest.churchName}</p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium text-muted-foreground">Status</label>
+                  <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                    <label className="text-sm font-medium text-muted-foreground">{t('modal.status')}</label>
                     <div className="mt-1">{getStatusBadge(selectedRequest.status)}</div>
                   </div>
                   {selectedRequest.priority && (
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Priority</label>
-                      <p className="text-foreground capitalize">{selectedRequest.priority}</p>
+                    <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                      <label className="text-sm font-medium text-muted-foreground">{t('modal.priority')}</label>
+                      <p className="text-foreground capitalize">{t(`priority.${selectedRequest.priority}`)}</p>
                     </div>
                   )}
                   {selectedRequest.trackingNumber && (
-                    <div>
-                      <label className="text-sm font-medium text-muted-foreground">Tracking Number</label>
+                    <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                      <label className="text-sm font-medium text-muted-foreground">{t('modal.trackingNumber')}</label>
                       <p className="text-foreground font-mono">{selectedRequest.trackingNumber}</p>
                     </div>
                   )}
                 </div>
               </div>
 
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Church Address</label>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <label className="text-sm font-medium text-muted-foreground">{t('modal.churchAddress')}</label>
                 <p className="text-foreground mt-1">{selectedRequest.churchAddress}</p>
               </div>
 
               {/* Magazine Requests */}
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Magazine Requests</label>
-                <div className="mt-2 space-y-3">
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                <label className="text-sm font-medium text-muted-foreground">{t('modal.magazineRequests')}</label>
+                <div className="space-y-3">
                   {selectedRequest.magazines && selectedRequest.magazines.length > 0 ? (
                     selectedRequest.magazines.map((magazine, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
-                        <div className="flex items-center gap-3">
+                      <div key={index} className={`flex items-center justify-between p-3 bg-muted/50 rounded-lg border ${currentLanguage === 'ar' ? '' : ''}`}>
+                        <div className={`flex items-center gap-3 ${currentLanguage === 'ar' ? '' : ''}`}>
                           <BookOpen className="h-4 w-4 text-muted-foreground" />
                           <span className="font-medium">{magazine.magazineName}</span>
                         </div>
                         <Badge variant="outline" className="font-medium">
-                          {magazine.numberOfCopies} copies
+                          {t('table.copiesCount', { count: magazine.numberOfCopies })}
                         </Badge>
                       </div>
                     ))
                   ) : (
                     // Fallback for old format
                     selectedRequest.magazineName && (
-                      <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg border">
-                        <div className="flex items-center gap-3">
+                      <div className={`flex items-center justify-between p-3 bg-muted/50 rounded-lg border ${currentLanguage === 'ar' ? '' : ''}`}>
+                        <div className={`flex items-center gap-3 ${currentLanguage === 'ar' ? '' : ''}`}>
                           <BookOpen className="h-4 w-4 text-muted-foreground" />
                           <span className="font-medium">{selectedRequest.magazineName}</span>
                         </div>
                         <Badge variant="outline" className="font-medium">
-                          {selectedRequest.numberOfCopies} copies
+                          {t('table.copiesCount', { count: selectedRequest.numberOfCopies })}
                         </Badge>
                       </div>
                     )
@@ -484,14 +500,14 @@ export const MagazinesSection = () => {
               </div>
 
               {selectedRequest.adminNotes && (
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Admin Notes</label>
+                <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                  <label className="text-sm font-medium text-muted-foreground">{t('modal.adminNotes')}</label>
                   <p className="text-foreground mt-1 p-3 bg-muted rounded-lg">{selectedRequest.adminNotes}</p>
                 </div>
               )}
 
-              <div className="text-sm text-muted-foreground">
-                <p>Request submitted on: {new Date(selectedRequest.createdAt).toLocaleDateString('en-US', {
+              <div className={`text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                <p>{t('modal.requestSubmitted')} {new Date(selectedRequest.createdAt).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric'
@@ -499,8 +515,8 @@ export const MagazinesSection = () => {
               </div>
             </div>
 
-            <AlertDialogFooter>
-              <AlertDialogCancel>Close</AlertDialogCancel>
+            <AlertDialogFooter className={`${currentLanguage === 'ar' ? 'justify-start' : ''}`}>
+              <AlertDialogCancel>{t('modal.close')}</AlertDialogCancel>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -508,3 +524,17 @@ export const MagazinesSection = () => {
     </div>
   );
 };
+
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

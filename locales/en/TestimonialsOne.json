@@ -1,0 +1,22 @@
+{
+  "badge": "Our Testimonials",
+  "title": "What they are saying about Hope For All Mena",
+  "description": "Discover the inspiring stories and experiences shared by our community members, partners, and beneficiaries who have been touched by our mission to spread hope across the MENA region.",
+  "testimonials": [
+    {
+      "text": "Hope For All Mena has transformed our community through their incredible book distribution program. The knowledge and inspiration we've gained has opened new doors for our youth and brought positive change to countless families.",
+      "name": "Sarah Al-Mahmoud",
+      "designation": "Community Leader"
+    },
+    {
+      "text": "The training programs offered by Hope For All Mena have equipped me with valuable skills and knowledge. Their dedication to education and empowerment is truly remarkable and has made a lasting impact on my life.",
+      "name": "Ahmed Hassan",
+      "designation": "Training Participant"
+    },
+    {
+      "text": "As a partner organization, we've witnessed firsthand the dedication and professionalism of Hope For All Mena. Their magazine distribution and educational initiatives have reached thousands of people across our region.",
+      "name": "Fatima Al-Zahra",
+      "designation": "Partner Organization"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "title": "Training Follow-up Requests",
+  "description": "Manage follow-up training material requests",
+  "stats": {
+    "totalRequests": "Total Requests",
+    "pending": "Pending",
+    "processing": "Processing",
+    "fulfilled": "Fulfilled"
+  },
+  "table": {
+    "title": "Training Follow-up Requests",
+    "count": "Training Follow-up Requests ({{count}})",
+    "headers": {
+      "trainer": "Trainer",
+      "requester": "Requester",
+      "church": "Church",
+      "address": "Address",
+      "books": "Books",
+      "tshirts": "T-shirts",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "booksCount": "{{count}} books",
+    "notAvailable": "N/A"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by name, email, phone, training type, or company...",
+    "filterByStatus": "Filter by status",
+    "status": {
+      "all": "All Statuses",
+      "pending": "Pending",
+      "processing": "Processing",
+      "fulfilled": "Fulfilled",
+      "cancelled": "Cancelled"
+    }
+  },
+  "status": {
+    "pending": "Pending",
+    "processing": "Processing",
+    "fulfilled": "Fulfilled",
+    "cancelled": "Cancelled"
+  },
+  "actions": {
+    "view": "View Details",
+    "markProcessing": "Mark as Processing",
+    "markFulfilled": "Mark as Fulfilled",
+    "markCancelled": "Mark as Cancelled",
+    "delete": "Delete Request"
+  },
+  "detailsModal": {
+    "title": "Follow-up Request Details",
+    "contactInformation": "Contact Information",
+    "tshirtSizes": "T-shirt Sizes",
+    "booksRequested": "Books Requested",
+    "attendeeNamesFile": "Attendee Names File",
+    "requestDetails": "Request Details",
+    "fields": {
+      "trainer": "Trainer",
+      "requester": "Requester",
+      "church": "Church",
+      "phone": "Phone",
+      "address": "Address",
+      "peopleServed": "People Served",
+      "submitted": "Submitted",
+      "status": "Status",
+      "notes": "Notes",
+      "totalTshirts": "Total T-shirts",
+      "copiesNeeded": "Copies needed",
+      "unknownBook": "Unknown Book"
+    },
+    "buttons": {
+      "downloadFile": "Download Names File"
+    }
+  },
+  "deleteModal": {
+    "title": "Confirm Deletion",
+    "description": "Are you sure you want to delete this follow-up request?",
+    "warning": "This action cannot be undone. All request data will be permanently removed.",
+    "requestDetails": "Request Details:",
+    "submitted": "Submitted: {{date}}",
+    "confirmText": "Delete Request",
+    "cancelText": "Cancel"
+  },
+  "statusMessages": {
+    "processing": "Follow-up request is being processed",
+    "fulfilled": "Follow-up request has been fulfilled",
+    "cancelled": "Follow-up request has been cancelled",
+    "pending": "Follow-up request status updated",
+    "deleted": "Follow-up request has been successfully deleted"
+  },
+  "loading": {
+    "requests": "Loading follow-up requests..."
+  },
+  "empty": {
+    "noRequests": "No Follow-up Requests",
+    "noMatching": "No matching requests found",
+    "description": "Follow-up requests will appear here when submitted.",
+    "tryAdjusting": "Try adjusting your search or filter criteria.",
+    "debugInfo": "Debug Info: Check browser console for authentication details.",
+    "expectedRequests": "Expected: 5 requests in database. If not showing, check login status."
+  },
+  "errors": {
+    "title": "Error",
+    "authRequired": "Authentication Required",
+    "authMessage": "Please log in as an admin to view follow-up requests. Use: admin@azino.com / Admin@2024",
+    "authIssue": "Authentication Issue",
+    "authIssueMessage": "Please log out and log back in. Token is missing but user data exists.",
+    "loadFailed": "Failed to load follow-up requests. Please try again.",
+    "updateFailed": "Failed to update request status. Please try again.",
+    "downloadFailed": "Failed to download file. Please try again.",
+    "deleteFailed": "Failed to delete request. Please try again.",
+    "statusUpdated": "Status Updated",
+    "requestDeleted": "Request Deleted"
+  },
+  "tshirtSizes": {
+    "size6": "Size 6",
+    "size8": "Size 8", 
+    "size10": "Size 10",
+    "sizeL": "Size L",
+    "sizeXL": "Size XL",
+    "sizeXXL": "Size XXL"
+  }
+}

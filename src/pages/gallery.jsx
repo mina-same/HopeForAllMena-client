@@ -8,7 +8,7 @@ import HeaderTwo from "../components/header/header-two";
 
 const Gallery = () => {
   return (
-    <Layout pageTitle="Gallery Page || Azino || Charity React Next Template">
+    <Layout pageTitle="Gallery Page || Hope for All Mena || Charity React Next Template">
       <HeaderTwo />
       <StickyHeader />
       <PageHeader title="Gallery Page" crumbTitle="Gallery" />

@@ -6349,7 +6349,7 @@ h6 {
 }
 
 #testimonials-two__thumb .swiper-slide {
-  padding-top: 19px;
+  padding-top: 30px;
   position: relative;
 }
 
@@ -6364,7 +6364,7 @@ h6 {
   border-radius: 50%;
   background-image: url(../images/shapes/testimonials-qoute-1-1.png);
   position: absolute;
-  top: 0;
+  top: -10px;
   left: 50%;
   -webkit-transform: translate(-50%, 0%);
   transform: translate(-50%, 0%);

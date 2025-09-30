@@ -1,0 +1,98 @@
+{
+  "title": "Training Requests",
+  "description": "Manage new training requests from churches",
+  "stats": {
+    "totalRequests": "Total Requests",
+    "pending": "Pending",
+    "approved": "Approved",
+    "scheduled": "Scheduled"
+  },
+  "table": {
+    "title": "Training Requests",
+    "count": "Training Requests ({{count}})",
+    "headers": {
+      "requester": "Requester",
+      "phone": "Phone",
+      "church": "Church",
+      "serviceType": "Service Type",
+      "participants": "Participants",
+      "suggestedDate": "Suggested Date",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  },
+  "filters": {
+    "searchPlaceholder": "Search by name, email, church, service type, or address...",
+    "filterByStatus": "Filter by status",
+    "status": {
+      "all": "All Statuses",
+      "pending": "Pending",
+      "approved": "Approved",
+      "scheduled": "Scheduled",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    }
+  },
+  "serviceTypes": {
+    "sunday-school": "Sunday School",
+    "youth": "Youth",
+    "other": "Other"
+  },
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "scheduled": "Scheduled",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "actions": {
+    "view": "View Details",
+    "approve": "Approve",
+    "cancel": "Cancel",
+    "schedule": "Schedule"
+  },
+  "detailsModal": {
+    "title": "Training Request Details",
+    "contactInformation": "Contact Information",
+    "churchInformation": "Church Information",
+    "serviceInformation": "Service Information",
+    "nearbyChurches": "Nearby Churches",
+    "fields": {
+      "contactPerson": "Contact Person",
+      "phone": "Phone",
+      "email": "Email",
+      "status": "Status",
+      "churchName": "Church Name",
+      "address": "Address",
+      "serviceType": "Service Type",
+      "suggestedDate": "Suggested Date",
+      "numberOfServants": "Number of Servants",
+      "numberOfServed": "Number of People Served",
+      "responsiblePerson": "Responsible Person"
+    }
+  },
+  "statusMessages": {
+    "approved": "Training request has been approved",
+    "cancelled": "Training request has been cancelled",
+    "scheduled": "Training has been scheduled and added to calendar",
+    "completed": "Training has been marked as completed",
+    "pending": "Training request status updated"
+  },
+  "loading": {
+    "requests": "Loading training requests..."
+  },
+  "empty": {
+    "noRequests": "No Training Requests",
+    "noMatching": "No matching requests found",
+    "description": "Training requests will appear here when submitted.",
+    "tryAdjusting": "Try adjusting your search or filter criteria.",
+    "debugInfo": "Debug Info: Check browser console for authentication details.",
+    "adminNote": "If logged in as admin, requests should appear here."
+  },
+  "errors": {
+    "title": "Error",
+    "loadFailed": "Failed to load training requests. Please try again.",
+    "updateFailed": "Failed to update request status. Please try again.",
+    "statusUpdated": "Status Updated"
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "title": "Training Books",
+  "description": "Manage your training materials and resources",
+  "addBook": "Add Training Book",
+  "searchPlaceholder": "Search books...",
+  "booksCount": "{{count}} training books",
+  
+  "stats": {
+    "totalBooks": "Total Books",
+    "activeBooks": "Active Books", 
+    "updatedThisMonth": "Updated This Month"
+  },
+
+  "filters": {
+    "allBooks": "All Books",
+    "activeOnly": "Active Only",
+    "inactiveOnly": "Inactive Only"
+  },
+
+  "form": {
+    "createTitle": "Add New Training Book",
+    "editTitle": "Edit Training Book",
+    "fields": {
+      "nameEn": "Book Name (English)",
+      "nameAr": "Book Name (Arabic)",
+      "nameEnPlaceholder": "Enter training book name",
+      "nameArPlaceholder": "أدخل اسم الكتاب",
+      "descriptionEn": "Description (English)",
+      "descriptionAr": "Description (Arabic)",
+      "descriptionEnPlaceholder": "Enter book description",
+      "descriptionArPlaceholder": "أدخل وصف الكتاب",
+      "coverImage": "Training Book Cover Image",
+      "bookParts": "Book Parts",
+      "partNameEn": "Part name (English)",
+      "partNameAr": "Part name (Arabic)",
+      "isActive": "Active (Book will be available for training requests)"
+    },
+    "buttons": {
+      "addPart": "Add Part",
+      "removePart": "Remove Part",
+      "cancel": "Cancel",
+      "create": "Create Book",
+      "update": "Update Book"
+    }
+  },
+
+  "table": {
+    "updated": "Updated",
+    "parts": "Parts"
+  },
+
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive"
+  },
+
+  "actions": {
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+
+  "deleteConfirm": {
+    "title": "Delete Training Book",
+    "message": "Are you sure you want to delete this training book?",
+    "confirm": "Delete",
+    "cancel": "Cancel"
+  },
+
+  "empty": {
+    "noBooks": "No training books added yet.",
+    "noFilteredBooks": "No books match your current filters.",
+    "addFirstBook": "Add your first training book to get started.",
+    "adjustFilters": "Try adjusting your search term or filter settings."
+  },
+
+  "loading": {
+    "books": "Loading training books..."
+  },
+
+  "success": {
+    "bookCreated": "Training book created successfully",
+    "bookUpdated": "Training book updated successfully",
+    "bookDeleted": "Training book deleted successfully"
+  },
+
+  "errors": {
+    "loadBooks": "Failed to load training books",
+    "saveBook": "Failed to save training book",
+    "deleteBook": "Failed to delete training book"
+  }
+}

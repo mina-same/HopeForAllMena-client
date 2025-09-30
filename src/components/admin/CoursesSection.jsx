@@ -161,7 +161,7 @@ export const CoursesSection = () => {
     <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
       <DialogContent className={`max-w-4xl max-h-[90vh] overflow-y-auto ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <DialogHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between flex-row">
             <DialogTitle className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
               {editingCourse ? t('form.editTitle') : t('form.createTitle')}
             </DialogTitle>
@@ -426,12 +426,12 @@ export const CoursesSection = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            <div className={`flex items-center justify-between flex-row ${currentLanguage === 'ar' ? '' : 'flex-row'}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                 <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                   {t('stats.totalCourses')}
                 </p>
-                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{courses.length}</p>
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text ">{courses.length}</p>
               </div>
               <BookOpen className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -440,12 +440,12 @@ export const CoursesSection = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            <div className={`flex items-center justify-between flex-row ${currentLanguage === 'ar' ? '' : 'flex-row'}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                 <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                   {t('stats.categories')}
                 </p>
-                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{categories.length}</p>
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text ">{categories.length}</p>
               </div>
               <Filter className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -454,12 +454,12 @@ export const CoursesSection = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            <div className={`flex items-center justify-between flex-row ${currentLanguage === 'ar' ? '' : 'flex-row'}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                 <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                   {t('stats.totalEnrollments')}
                 </p>
-                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">{courses.reduce((sum, course) => sum + course.totalEnrollments, 0)}</p>
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text">{courses.reduce((sum, course) => sum + course.totalEnrollments, 0)}</p>
               </div>
               <Users className="h-6 w-6 md:h-8 md:w-8 text-theme-primary opacity-70" />
             </div>
@@ -468,12 +468,12 @@ export const CoursesSection = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-theme-light/20">
           <CardContent className="p-4 md:p-6">
-            <div className="flex items-center justify-between">
-              <div>
+            <div className={`flex items-center justify-between flex-row ${currentLanguage === 'ar' ? '' : 'flex-row'}`}>
+              <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
                 <p className={`text-xs md:text-sm font-medium text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                   {t('stats.avgRating')}
                 </p>
-                <p className="text-xl md:text-2xl font-bold  bg-clip-text text-transparent">
+                <p className="text-xl md:text-2xl font-bold  bg-clip-text ">
                   {courses.length > 0 
                     ? (courses.reduce((sum, course) => sum + course.averageRating, 0) / courses.length).toFixed(1)
                     : '0.0'
@@ -504,7 +504,7 @@ export const CoursesSection = () => {
             </div>
             
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-full sm:w-44 md:w-48">
+              <SelectTrigger className="w-full sm:w-44 md:w-48 flex-row">
                 <SelectValue placeholder={t('filters.filterByCategory')} />
               </SelectTrigger>
               <SelectContent>
@@ -527,8 +527,9 @@ export const CoursesSection = () => {
             {t('coursesCount', { count: filteredCourses.length })}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
+        <CardContent className="p-3 xs:p-4 sm:p-6">
+          {/* Desktop Table - Hidden on mobile */}
+          <div className="hidden lg:block overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -611,16 +612,98 @@ export const CoursesSection = () => {
                 ))}
               </TableBody>
             </Table>
-            
-            {filteredCourses.length === 0 && (
-              <div className="text-center py-12">
-                <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <p className="text-muted-foreground text-center">
-                  {searchTerm || selectedCategory !== 'all' ? t('empty.description') : t('empty.noCoursesYet')}
-                </p>
-              </div>
-            )}
           </div>
+
+          {/* Mobile Card Layout - Visible on mobile/tablet */}
+          <div className="lg:hidden space-y-3 xs:space-y-4">
+            {filteredCourses.map((course) => (
+              <Card key={course.id} className="border border-border hover:shadow-md transition-shadow">
+                <CardContent className="p-3 xs:p-4">
+                  {/* Course Header */}
+                  <div className={`flex flex-col xs:flex-row xs:items-start xs:justify-between gap-2 xs:gap-3 ${currentLanguage === 'ar' ? 'xs:flex-row-reverse' : ''}`}>
+                    <div className={`flex-1 min-w-0 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <h3 className="font-semibold text-foreground text-sm xs:text-base truncate">
+                        {course.title}
+                      </h3>
+                      <p className="text-xs xs:text-sm text-muted-foreground mt-1">
+                        {course.duration}
+                      </p>
+                    </div>
+                    <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <Star className="h-3 w-3 xs:h-4 xs:w-4 fill-yellow-400 text-yellow-400" />
+                      <span className="text-xs xs:text-sm font-medium">{course.averageRating.toFixed(1)}</span>
+                    </div>
+                  </div>
+
+                  {/* Course Details */}
+                  <div className={`grid grid-cols-1 xs:grid-cols-2 gap-2 xs:gap-3 mt-3 text-xs xs:text-sm ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <div>
+                      <span className="text-muted-foreground">{t('table.headers.instructor')}: </span>
+                      <span className="font-medium">{course.instructor}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">{t('table.headers.institution')}: </span>
+                      <span className="font-medium">{course.institution.name}</span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">{t('table.headers.price')}: </span>
+                      <span className="font-medium">
+                        {course.price === 0 ? t('table.free') : `${course.currency}${course.price}`}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-muted-foreground">{t('table.headers.enrollment')}: </span>
+                      <span className="font-medium">{course.totalEnrollments}/20</span>
+                    </div>
+                  </div>
+
+                  {/* Badges */}
+                  <div className={`flex flex-wrap items-center gap-1 xs:gap-2 mt-3 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Badge variant="secondary" className="text-xs">{course.category}</Badge>
+                    <Badge variant={
+                      course.level === 'beginner' ? 'default' :
+                      course.level === 'intermediate' ? 'secondary' : 'destructive'
+                    } className="text-xs">
+                      {t(`form.levels.${course.level}`)}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">{t(`form.formats.${course.format}`)}</Badge>
+                  </div>
+
+                  {/* Actions */}
+                  <div className={`flex items-center gap-2 mt-3 pt-3 border-t border-border ${currentLanguage === 'ar' ? 'justify-end flex-row-reverse' : 'justify-start'}`}>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleEdit(course)}
+                      className="text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
+                    >
+                      <Edit className="h-3 w-3 xs:h-4 xs:w-4 mr-1" />
+                      {t('actions.edit')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleDelete(course)}
+                      className="text-destructive hover:text-destructive text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
+                    >
+                      <Trash2 className="h-3 w-3 xs:h-4 xs:w-4 mr-1" />
+                      {t('actions.delete')}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Empty State */}
+          {filteredCourses.length === 0 && (
+            <div className="text-center py-8 xs:py-12">
+              <BookOpen className="h-8 w-8 xs:h-12 xs:w-12 mx-auto mb-3 xs:mb-4 text-muted-foreground opacity-50" />
+              <p className="text-muted-foreground text-center text-sm xs:text-base">
+                {searchTerm || selectedCategory !== 'all' ? t('empty.description') : t('empty.noCoursesYet')}
+              </p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

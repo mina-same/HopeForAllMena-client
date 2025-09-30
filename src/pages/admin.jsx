@@ -703,7 +703,7 @@ const AdminDashboard = () => {
       requireAuth={true}
       requiredPermissions={['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids']}
     >
-      <Layout pageTitle="Admin Dashboard || Azino || Charity React Next Template">
+      <Layout pageTitle="Admin Dashboard || Hope for All Mena || Charity React Next Template">
         <AdminDashboardContent />
       </Layout>
     </ProtectedRoute>

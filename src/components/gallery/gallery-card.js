@@ -10,8 +10,18 @@ const GalleryCard = ({ image }) => {
 
   return (
     <>
-      <div className={cn("gallery-card")}>
-        <img src={image} className="img-fluid" alt="" />
+      <div className={cn("gallery-card")} style={{ height: "300px" }}>
+        <img
+          src={image}
+          className="img-fluid"
+          alt=""
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
+        />
         <div className="gallery-content">
           <button
             type="button"

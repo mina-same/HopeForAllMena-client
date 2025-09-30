@@ -1,0 +1,63 @@
+{
+  "title": "إدارة التسجيلات",
+  "description": "إدارة تسجيلات الدورات والطلبات",
+  "stats": {
+    "totalEnrollments": "إجمالي التسجيلات",
+    "pending": "قيد الانتظار",
+    "approved": "موافق عليها",
+    "rejected": "مرفوضة"
+  },
+  "filters": {
+    "searchPlaceholder": "البحث في التسجيلات...",
+    "filterByStatus": "تصفية حسب الحالة",
+    "status": {
+      "all": "جميع الحالات",
+      "pending": "قيد الانتظار",
+      "approved": "موافق عليها",
+      "rejected": "مرفوضة"
+    }
+  },
+  "table": {
+    "enrollmentsCount": "التسجيلات ({{count}})",
+    "headers": {
+      "student": "الطالب",
+      "course": "الدورة",
+      "enrollmentDate": "تاريخ التسجيل",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "noEnrollments": "لم يتم العثور على تسجيلات."
+  },
+  "status": {
+    "pending": "قيد الانتظار",
+    "approved": "موافق عليها",
+    "rejected": "مرفوضة",
+    "cancelled": "ملغية",
+    "completed": "مكتملة"
+  },
+  "actions": {
+    "changeStatus": "تغيير الحالة",
+    "delete": "حذف",
+    "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذا التسجيل؟"
+  },
+  "toast": {
+    "statusUpdated": "تم تحديث الحالة",
+    "statusChanged": "تم تغيير حالة التسجيل إلى {{status}}",
+    "enrollmentDeleted": "تم حذف التسجيل",
+    "enrollmentRemoved": "تم إزالة التسجيل.",
+    "error": {
+      "updateStatus": "فشل في تحديث حالة التسجيل",
+      "deleteEnrollment": "فشل في حذف التسجيل",
+      "loadEnrollments": "فشل في تحميل التسجيلات"
+    }
+  },
+  "loading": {
+    "enrollments": "جاري تحميل التسجيلات...",
+    "updating": "جاري التحديث...",
+    "deleting": "جاري الحذف..."
+  },
+  "empty": {
+    "description": "لم يتم العثور على تسجيلات تطابق معاييرك.",
+    "noEnrollmentsYet": "لم يتم تقديم أي تسجيلات بعد."
+  }
+}

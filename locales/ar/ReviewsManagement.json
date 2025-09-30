@@ -1,0 +1,87 @@
+{
+  "title": "إدارة المراجعات",
+  "description": "إدارة مراجعات الكتب ومراقبة المحتوى",
+  "searchPlaceholder": "البحث في المراجعات...",
+  "filters": {
+    "status": {
+      "all": "جميع الحالات",
+      "pending": "في الانتظار",
+      "approved": "مُعتمد",
+      "rejected": "مرفوض"
+    },
+    "rating": {
+      "all": "جميع التقييمات",
+      "5": "5 نجوم",
+      "4": "4 نجوم",
+      "3": "3 نجوم",
+      "2": "نجمتان",
+      "1": "نجمة واحدة"
+    }
+  },
+  "table": {
+    "title": "المراجعات",
+    "count": "المراجعات ({{count}})",
+    "reviewFor": "مراجعة لـ:",
+    "by": "بواسطة",
+    "verifiedPurchase": "شراء مُتحقق منه",
+    "guestReview": "مراجعة زائر",
+    "helpful": "{{percent}}% مفيدة"
+  },
+  "status": {
+    "approved": "مُعتمد",
+    "rejected": "مرفوض",
+    "pending": "في الانتظار"
+  },
+  "actions": {
+    "approve": "اعتماد المراجعة",
+    "reject": "رفض المراجعة",
+    "moderate": "مراقبة المراجعة",
+    "markHelpful": "تمييز كمفيدة",
+    "markNotHelpful": "تمييز كغير مفيدة"
+  },
+  "moderationModal": {
+    "title": "مراقبة المراجعة",
+    "review": "المراجعة:",
+    "author": "بواسطة:",
+    "bookTitle": "لـ:",
+    "decision": "قرار المراقبة",
+    "selectDecision": "اختر القرار",
+    "approve": "اعتماد",
+    "reject": "رفض",
+    "notes": "ملاحظات (اختيارية)",
+    "notesPlaceholder": "أضف ملاحظات حول قرار المراقبة...",
+    "confirmText": "مراقبة المراجعة",
+    "cancelText": "إلغاء"
+  },
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "page": "الصفحة {{current}} من {{total}}"
+  },
+  "loading": {
+    "reviews": "جاري تحميل المراجعات...",
+    "moderating": "جاري المراقبة..."
+  },
+  "empty": {
+    "noReviews": "لا توجد مراجعات.",
+    "description": "لا توجد مراجعات تطابق المرشحات الحالية."
+  },
+  "toast": {
+    "reviewApproved": "تم اعتماد المراجعة",
+    "reviewApprovedDesc": "تم اعتماد المراجعة بنجاح.",
+    "reviewRejected": "تم رفض المراجعة",
+    "reviewRejectedDesc": "تم رفض المراجعة بنجاح.",
+    "reviewModerated": "تم مراقبة المراجعة",
+    "reviewModeratedDesc": "تم {{status}} المراجعة بنجاح.",
+    "reviewUpdated": "تم تحديث المراجعة",
+    "markedHelpful": "تم تمييز المراجعة كمفيدة.",
+    "markedNotHelpful": "تم تمييز المراجعة كغير مفيدة.",
+    "error": "خطأ",
+    "fetchError": "فشل في تحميل المراجعات. يرجى المحاولة مرة أخرى.",
+    "approveError": "فشل في اعتماد المراجعة. يرجى المحاولة مرة أخرى.",
+    "rejectError": "فشل في رفض المراجعة. يرجى المحاولة مرة أخرى.",
+    "moderateError": "فشل في مراقبة المراجعة. يرجى المحاولة مرة أخرى.",
+    "updateError": "فشل في تحديث المراجعة. يرجى المحاولة مرة أخرى."
+  },
+  "moderatorNotes": "ملاحظات المراقب:"
+}

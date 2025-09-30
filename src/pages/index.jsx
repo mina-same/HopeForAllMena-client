@@ -47,7 +47,7 @@ const HomeOne = () => {
       </GalleryTestimonials>
       {/* <PriceOne /> */}
       <BlogHome />
-      <CallToAction />
+
       <GoogleMap extraClass="home" />
       <BrandCarousel extraClass="client-carousel__has-top-shadow" />
       <Footer />

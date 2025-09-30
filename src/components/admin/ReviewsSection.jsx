@@ -8,8 +8,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useToast } from '../../hooks/use-toast';
 import { reviewsAPI } from '../../services/api';
 import ConfirmationModal from '../ui/ConfirmationModal';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { Link, graphql } from 'gatsby';
+import '../../styles/ReviewsManagement-rtl.css';
 
 export function ReviewsSection() {
+  const { t } = useTranslation('ReviewsManagement');
+  const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,7 +44,8 @@ export function ReviewsSection() {
         status: statusFilter === 'all' ? '' : statusFilter,
         rating: ratingFilter === 'all' ? '' : ratingFilter,
         sortBy: 'createdAt',
-        sortOrder: 'desc'
+        sortOrder: 'desc',
+        language: currentLanguage
       };
 
       const response = await reviewsAPI.getReviews(params);
@@ -50,8 +57,8 @@ export function ReviewsSection() {
     } catch (error) {
       console.error('Failed to fetch reviews:', error);
       toast({
-        title: "Error",
-        description: "Failed to fetch reviews. Please try again.",
+        title: t('toast.error'),
+        description: t('toast.fetchError'),
         variant: "destructive"
       });
     } finally {
@@ -61,7 +68,7 @@ export function ReviewsSection() {
 
   useEffect(() => {
     fetchReviews();
-  }, [currentPage, searchTerm, statusFilter, ratingFilter]);
+  }, [currentPage, searchTerm, statusFilter, ratingFilter, currentLanguage]);
 
   const handleModerate = (review) => {
     setReviewToModerate(review);
@@ -74,15 +81,15 @@ export function ReviewsSection() {
     try {
       await reviewsAPI.moderateReview(review._id, { status: 'approved', notes: '' });
       toast({
-        title: "Review Approved",
-        description: "Review has been approved successfully.",
+        title: t('toast.reviewApproved'),
+        description: t('toast.reviewApprovedDesc'),
       });
       fetchReviews();
     } catch (error) {
       console.error('Failed to approve review:', error);
       toast({
-        title: "Error",
-        description: "Failed to approve review. Please try again.",
+        title: t('toast.error'),
+        description: t('toast.approveError'),
         variant: "destructive"
       });
     }
@@ -92,15 +99,15 @@ export function ReviewsSection() {
     try {
       await reviewsAPI.moderateReview(review._id, { status: 'rejected', notes: 'Rejected by admin' });
       toast({
-        title: "Review Rejected",
-        description: "Review has been rejected successfully.",
+        title: t('toast.reviewRejected'),
+        description: t('toast.reviewRejectedDesc'),
       });
       fetchReviews();
     } catch (error) {
       console.error('Failed to reject review:', error);
       toast({
-        title: "Error",
-        description: "Failed to reject review. Please try again.",
+        title: t('toast.error'),
+        description: t('toast.rejectError'),
         variant: "destructive"
       });
     }
@@ -113,8 +120,8 @@ export function ReviewsSection() {
     try {
       await reviewsAPI.moderateReview(reviewToModerate._id, moderationStatus, moderationNotes);
       toast({
-        title: "Review Moderated",
-        description: `Review has been ${moderationStatus} successfully.`,
+        title: t('toast.reviewModerated'),
+        description: t('toast.reviewModeratedDesc', { status: t(`status.${moderationStatus}`) }),
       });
       fetchReviews();
       setShowModerateModal(false);
@@ -122,8 +129,8 @@ export function ReviewsSection() {
     } catch (error) {
       console.error('Failed to moderate review:', error);
       toast({
-        title: "Error",
-        description: "Failed to moderate review. Please try again.",
+        title: t('toast.error'),
+        description: t('toast.moderateError'),
         variant: "destructive"
       });
     } finally {
@@ -135,15 +142,15 @@ export function ReviewsSection() {
     try {
       await reviewsAPI.markHelpful(review._id);
       toast({
-        title: "Review Updated",
-        description: "Review marked as helpful.",
+        title: t('toast.reviewUpdated'),
+        description: t('toast.markedHelpful'),
       });
       fetchReviews();
     } catch (error) {
       console.error('Failed to mark helpful:', error);
       toast({
-        title: "Error",
-        description: "Failed to update review. Please try again.",
+        title: t('toast.error'),
+        description: t('toast.updateError'),
         variant: "destructive"
       });
     }
@@ -153,22 +160,23 @@ export function ReviewsSection() {
     try {
       await reviewsAPI.markNotHelpful(review._id);
       toast({
-        title: "Review Updated",
-        description: "Review marked as not helpful.",
+        title: t('toast.reviewUpdated'),
+        description: t('toast.markedNotHelpful'),
       });
       fetchReviews();
     } catch (error) {
       console.error('Failed to mark not helpful:', error);
       toast({
-        title: "Error",
-        description: "Failed to update review. Please try again.",
+        title: t('toast.error'),
+        description: t('toast.updateError'),
         variant: "destructive"
       });
     }
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    const locale = currentLanguage === 'ar' ? 'ar-EG' : 'en-US';
+    return new Date(dateString).toLocaleDateString(locale, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -188,64 +196,99 @@ export function ReviewsSection() {
   };
 
   const getStatusBadge = (status) => {
+    const iconClass = currentLanguage === 'ar' ? 'h-3 w-3 xs:h-3.5 xs:w-3.5 mr-1' : 'h-3 w-3 xs:h-3.5 xs:w-3.5 ml-1';
+    const baseClasses = `text-xs xs:text-sm font-medium px-2 xs:px-2.5 py-1 xs:py-1.5 rounded-full transition-all duration-200 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`;
+    
     switch (status) {
       case 'approved':
-        return <Badge variant="default" className="bg-green-100 text-green-800 hover:text-white hover:bg-green-400"><CheckCircle className="h-3 w-3 mr-1" />Approved</Badge>;
+        return (
+          <Badge 
+            variant="default" 
+            className={`${baseClasses} bg-emerald-400 text-emerald-700 border border-emerald-200 hover:bg-emerald-600 hover:text-emerald-800 hover:border-emerald-300`}
+          >
+            <CheckCircle className={iconClass} />
+            {t('status.approved')}
+          </Badge>
+        );
       case 'rejected':
-        return <Badge variant="destructive"><XCircle className="h-3 w-3 mr-1" />Rejected</Badge>;
+        return (
+          <Badge 
+            variant="destructive" 
+            className={`${baseClasses} bg-red-400 text-red-700 border border-red-200 hover:bg-red-600 hover:text-red-800 hover:border-red-300`}
+          >
+            <XCircle className={iconClass} />
+            {t('status.rejected')}
+          </Badge>
+        );
       case 'pending':
-        return <Badge variant="secondary"><Clock className="h-3 w-3 mr-1" />Pending</Badge>;
+        return (
+          <Badge 
+            variant="secondary" 
+            className={`${baseClasses} bg-amber-400 text-amber-700 border border-amber-200 hover:bg-amber-600 hover:text-amber-800 hover:border-amber-300`}
+          >
+            <Clock className={iconClass} />
+            {t('status.pending')}
+          </Badge>
+        );
       default:
-        return <Badge variant="outline">{status}</Badge>;
+        return (
+          <Badge 
+            variant="outline" 
+            className={`${baseClasses} bg-gray-400 text-gray-700 border border-gray-200 hover:bg-gray-200 hover:text-gray-500 hover:border-gray-300`}
+          >
+            {t(`status.${status}`)}
+          </Badge>
+        );
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Reviews Management</h2>
-          <p className="text-muted-foreground text-sm md:text-base">Manage book reviews and moderate content</p>
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl reviews-management-rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 xs:gap-4">
+        <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'} w-full sm:w-auto`}>
+          <h2 className="text-lg xs:text-xl md:text-2xl font-bold text-foreground">{t('title')}</h2>
+          <p className="text-muted-foreground text-xs xs:text-sm md:text-base mt-1">{t('description')}</p>
         </div>
       </div>
 
       {/* Filters */}
       <Card className="border-0 shadow-modern">
-        <CardContent className="p-4">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <CardContent className="p-3 xs:p-4 sm:p-6">
+          <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className={`absolute ${currentLanguage === 'ar' ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground`} />
                 <Input
-                  placeholder="Search reviews..."
+                  placeholder={t('searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-[30px]"
+                  className={`${currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'} h-10`}
+                  dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Status" />
+              <SelectTrigger className={`w-full sm:w-40 h-10 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <SelectValue placeholder={t('filters.status.all')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Status</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="approved">Approved</SelectItem>
-                <SelectItem value="rejected">Rejected</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="pending">{t('filters.status.pending')}</SelectItem>
+                <SelectItem value="approved">{t('filters.status.approved')}</SelectItem>
+                <SelectItem value="rejected">{t('filters.status.rejected')}</SelectItem>
               </SelectContent>
             </Select>
             <Select value={ratingFilter} onValueChange={setRatingFilter}>
-              <SelectTrigger className="w-full sm:w-40">
-                <SelectValue placeholder="Rating" />
+              <SelectTrigger className={`w-full sm:w-40 h-10 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <SelectValue placeholder={t('filters.rating.all')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Ratings</SelectItem>
-                <SelectItem value="5">5 Stars</SelectItem>
-                <SelectItem value="4">4 Stars</SelectItem>
-                <SelectItem value="3">3 Stars</SelectItem>
-                <SelectItem value="2">2 Stars</SelectItem>
-                <SelectItem value="1">1 Star</SelectItem>
+                <SelectItem value="all">{t('filters.rating.all')}</SelectItem>
+                <SelectItem value="5">{t('filters.rating.5')}</SelectItem>
+                <SelectItem value="4">{t('filters.rating.4')}</SelectItem>
+                <SelectItem value="3">{t('filters.rating.3')}</SelectItem>
+                <SelectItem value="2">{t('filters.rating.2')}</SelectItem>
+                <SelectItem value="1">{t('filters.rating.1')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -253,147 +296,110 @@ export function ReviewsSection() {
       </Card>
 
       <Card className="border-0 shadow-modern">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <MessageSquare className="h-5 w-5 text-theme-base" />
-            Reviews ({totalReviews})
+        <CardHeader className="p-3 xs:p-4 sm:p-6">
+          <CardTitle className={`flex items-center gap-2 text-base xs:text-lg md:text-xl ${currentLanguage === 'ar' ? '' : ''}`}>
+            <MessageSquare className="h-4 w-4 xs:h-5 xs:w-5 text-theme-base" />
+            {t('table.count', { count: totalReviews })}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-3 xs:p-4 sm:p-6">
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-base mx-auto"></div>
-              <p className="text-muted-foreground mt-2">Loading reviews...</p>
+              <p className="text-muted-foreground mt-2">{t('loading.reviews')}</p>
             </div>
           ) : reviews.length > 0 ? (
-            <div className="space-y-4">
-              {reviews.map((review) => (
-                <div key={review._id} className="p-4 border border-border rounded-lg hover:bg-gray-200 transition-colors">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="font-semibold text-foreground">{review.title}</h3>
+            <div className="space-y-3 xs:space-y-4">
+              {reviews.map((review) => {
+                // Dynamic content rendering based on language
+                const bookTitle = currentLanguage === 'ar' && review.book.titleAr ? review.book.titleAr : review.book.title;
+                const authorName = currentLanguage === 'ar' && review.book.author.nameAr ? review.book.author.nameAr : review.book.author.name;
+                
+                return (
+                <div key={review._id} className="p-3 xs:p-4 sm:p-5 border border-border rounded-lg hover:bg-gray-50 transition-colors">
+                  <div className={`flex flex-col sm:flex-row items-start justify-between gap-3 mb-3 ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
+                    <div className={`flex-1 w-full ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <div className={`flex flex-wrap items-center gap-2 mb-2 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
+                        <h3 className="font-semibold text-sm xs:text-base text-foreground line-clamp-1">{review.title}</h3>
                         {getStatusBadge(review.status)}
                         {review.verifiedPurchase && (
-                          <Badge variant="outline" className="bg-blue-50 text-blue-700">
-                            Verified Purchase
+                          <Badge 
+                            variant="outline" 
+                            className="text-xs xs:text-sm font-medium px-2 xs:px-2.5 py-1 xs:py-1.5 rounded-full bg-blue-100 text-blue-700 border border-blue-200 hover:bg-blue-200 hover:text-blue-800 hover:border-blue-300 transition-all duration-200"
+                          >
+                            {t('table.verifiedPurchase')}
                           </Badge>
                         )}
                         {!review.user && review.guestInfo && (
-                          <Badge variant="outline" className="bg-orange-50 text-orange-700">
-                            Guest Review
+                          <Badge 
+                            variant="outline" 
+                            className="text-xs xs:text-sm font-medium px-2 xs:px-2.5 py-1 xs:py-1.5 rounded-full bg-orange-100 text-orange-700 border border-orange-200 hover:bg-orange-200 hover:text-orange-800 hover:border-orange-300 transition-all duration-200"
+                          >
+                            {t('table.guestReview')}
                           </Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="flex items-center gap-1">
+                      <div className={`flex flex-wrap items-center gap-1 xs:gap-2 mb-2 text-xs xs:text-sm ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
+                        <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                           {renderStars(review.rating)}
                         </div>
-                        <span className="text-sm text-muted-foreground">by {review.user ? review.user.name : review.guestInfo.name}</span>
-                        <span className="text-sm text-muted-foreground">•</span>
-                        <span className="text-sm text-muted-foreground">{formatDate(review.createdAt)}</span>
+                        <span className="text-muted-foreground">{t('table.by')} {review.user ? review.user.name : review.guestInfo.name}</span>
+                        <span className="text-muted-foreground hidden xs:inline">•</span>
+                        <span className="text-muted-foreground">{formatDate(review.createdAt)}</span>
                       </div>
-                      <p className="text-sm text-muted-foreground mb-2">
-                        Review for: <span className="font-medium">{review.book.title}</span> by {review.book.author.name}
+                      <p className="text-xs xs:text-sm text-muted-foreground mb-2">
+                        {t('table.reviewFor')} <Link to={`/book/${review.book.slug || review.book._id}`} className="font-medium text-theme-base hover:underline transition-colors">{bookTitle}</Link> {t('table.by')} {authorName}
                       </p>
                       {review.status === 'pending' && (
-                        <p className="text-sm text-foreground mb-2">{review.content}</p>
+                        <p className="text-xs xs:text-sm text-foreground mb-2 line-clamp-2 xs:line-clamp-3" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>{review.content}</p>
                       )}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleMarkHelpful(review)}
-                          className="text-green-600 hover:text-green-700"
-                        >
-                          <ThumbsUp className="h-4 w-4 mr-1" />
-                          {review.helpful}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleMarkNotHelpful(review)}
-                          className="text-red-600 hover:text-red-700"
-                        >
-                          <ThumbsDown className="h-4 w-4 mr-1" />
-                          {review.notHelpful}
-                        </Button>
-                      </div>
-                      {review.helpful + review.notHelpful > 0 && (
-                        <span className="text-sm text-muted-foreground">
-                          {Math.round((review.helpful / (review.helpful + review.notHelpful)) * 100)}% helpful
-                        </span>
-                      )}
-                    </div>
-
-                    {review.status === 'pending' && (
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleQuickApprove(review)}
-                          className="bg-green-200 text-green-700 hover:bg-green-400 p-2"
-                          title="Approve Review"
-                        >
-                          <Check className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleQuickReject(review)}
-                          className="bg-red-50 text-red-700 hover:bg-red-100 p-2"
-                          title="Reject Review"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    )}
-                  </div>
+                  
 
                   {review.moderatorNotes && (
-                    <div className="mt-3 p-3 bg-muted/50 rounded-md">
-                      <p className="text-sm text-muted-foreground">
-                        <strong>Moderator Notes:</strong> {review.moderatorNotes}
+                    <div className="mt-3 p-2 xs:p-3 bg-slate-50 border border-slate-200 rounded-md">
+                      <p className={`text-xs xs:text-sm text-slate-700 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                        <strong className="text-slate-800">{t('moderatorNotes')}</strong> {review.moderatorNotes}
                       </p>
                     </div>
                   )}
                 </div>
-              ))}
+                );
+              })}
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-6">
+                <div className={`flex flex-col xs:flex-row justify-center items-center gap-2 xs:gap-3 mt-4 xs:mt-6 ${currentLanguage === 'ar' ? 'xs:flex-row-reverse' : ''}`}>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
+                    className="h-8 xs:h-9 px-3 xs:px-4 text-xs xs:text-sm transition-all duration-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Previous
+                    {t('pagination.previous')}
                   </Button>
-                  <span className="text-sm text-muted-foreground">
-                    Page {currentPage} of {totalPages}
+                  <span className="text-xs xs:text-sm text-muted-foreground px-2 py-1 bg-gray-50 rounded-md border">
+                    {t('pagination.page', { current: currentPage, total: totalPages })}
                   </span>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages}
+                    className="h-8 xs:h-9 px-3 xs:px-4 text-xs xs:text-sm transition-all duration-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Next
+                    {t('pagination.next')}
                   </Button>
                 </div>
               )}
             </div>
           ) : (
-            <div className="text-center py-8">
-              <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">No reviews found.</p>
+            <div className="text-center py-6 xs:py-8">
+              <MessageSquare className="h-10 w-10 xs:h-12 xs:w-12 mx-auto mb-3 xs:mb-4 text-muted-foreground opacity-50" />
+              <p className="text-sm xs:text-base text-muted-foreground">{t('empty.noReviews')}</p>
             </div>
           )}
         </CardContent>
@@ -407,47 +413,52 @@ export function ReviewsSection() {
           setReviewToModerate(null);
         }}
         onConfirm={confirmModeration}
-        title="Moderate Review"
+        title={t('moderationModal.title')}
         description={
-          <div className="space-y-4">
+          <div className={`space-y-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
             <div>
               <p className="text-sm text-muted-foreground mb-2">
-                <strong>Review:</strong> {reviewToModerate?.title}
+                <strong>{t('moderationModal.review')}</strong> {reviewToModerate?.title}
               </p>
               <p className="text-sm text-muted-foreground mb-2">
-                <strong>By:</strong> {reviewToModerate?.user ? reviewToModerate.user.name : reviewToModerate?.guestInfo?.name}
+                <strong>{t('moderationModal.author')}</strong> {reviewToModerate?.user ? reviewToModerate.user.name : reviewToModerate?.guestInfo?.name}
               </p>
               <p className="text-sm text-muted-foreground mb-2">
-                <strong>For:</strong> {reviewToModerate?.book.title}
+                <strong>{t('moderationModal.bookTitle')}</strong> {
+                  currentLanguage === 'ar' && reviewToModerate?.book.titleAr 
+                    ? reviewToModerate.book.titleAr 
+                    : reviewToModerate?.book.title
+                }
               </p>
-              <p className="text-sm text-foreground">{reviewToModerate?.content}</p>
+              <p className="text-sm text-foreground" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>{reviewToModerate?.content}</p>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Moderation Decision</label>
+              <label className={`text-sm font-medium ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('moderationModal.decision')}</label>
               <Select value={moderationStatus} onValueChange={setModerationStatus}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select decision" />
+                  <SelectValue placeholder={t('moderationModal.selectDecision')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="approved">Approve</SelectItem>
-                  <SelectItem value="rejected">Reject</SelectItem>
+                  <SelectItem value="approved">{t('moderationModal.approve')}</SelectItem>
+                  <SelectItem value="rejected">{t('moderationModal.reject')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Notes (Optional)</label>
+              <label className={`text-sm font-medium ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('moderationModal.notes')}</label>
               <textarea
                 value={moderationNotes}
                 onChange={(e) => setModerationNotes(e.target.value)}
-                placeholder="Add notes about the moderation decision..."
+                placeholder={t('moderationModal.notesPlaceholder')}
                 className="w-full p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-base"
                 rows={3}
+                dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
               />
             </div>
           </div>
         }
-        confirmText="Moderate Review"
-        cancelText="Cancel"
+        confirmText={t('moderationModal.confirmText')}
+        cancelText={t('moderationModal.cancelText')}
         variant="info"
         isLoading={isModerating}
         icon={
@@ -459,3 +470,17 @@ export function ReviewsSection() {
     </div>
   );
 }
+
+export const query = graphql`
+  query {
+    locales: allLocale {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

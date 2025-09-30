@@ -1,0 +1,26 @@
+{
+  "tagLine": "Our Testimonials",
+  "title": "What they are saying about Hope For All Mena",
+  "description": "Hear from our community members, partners, and beneficiaries who have experienced the transformative impact of our educational programs, book distributions, and training initiatives across the MENA region.",
+  "testimonials": [
+    {
+      "text": "Hope For All Mena's educational programs have been a beacon of light for our community. Their comprehensive approach to learning and development has empowered countless individuals to pursue their dreams and build better futures for their families.",
+      "name": "Pastor Radi Atallah",
+      "designation": "Religious Leader"
+    },
+    {
+      "text": "The magazine distribution program has brought valuable knowledge and inspiration to remote areas that were previously underserved. Hope For All Mena's commitment to reaching every corner of our region is truly commendable and life-changing.",
+      "name": "Pastor Andre Zee",
+      "designation": "Community Pastor"
+    },
+    {
+      "text": "As a training facilitator, I've witnessed firsthand how Hope For All Mena's programs transform lives. Their holistic approach to education and empowerment creates lasting positive change in communities across the Middle East and North Africa.",
+      "name": "Pastor Sameh Morris",
+      "designation": "Training Pastor"
+    }
+  ],
+  "cta": {
+    "learnMore": "Learn More",
+    "getInvolved": "Get Involved"
+  }
+}

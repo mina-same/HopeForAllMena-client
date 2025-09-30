@@ -1,0 +1,166 @@
+/* RTL Styles for TestimonialsOne Component */
+
+.testimonials-one-rtl {
+  direction: rtl;
+}
+
+.testimonials-one-rtl .block-title {
+  text-align: right;
+}
+
+.testimonials-one-rtl .block-title p {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.testimonials-one-rtl .block-title h3 {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  line-height: 1.4;
+}
+
+.testimonials-one-rtl .team-about__top-text {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  line-height: 1.6;
+}
+
+.testimonials-one-rtl .testimonials-one__single {
+  text-align: right;
+  padding: 30px 20px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  transition: all 0.3s ease;
+}
+
+.testimonials-one-rtl .testimonials-one__single:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.testimonials-one-rtl .testimonials-one__single p {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  line-height: 1.7;
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.testimonials-one-rtl .testimonials-one__single h3 {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  color: #2194D1;
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.testimonials-one-rtl .testimonials-one__single span {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  color: #999;
+  font-size: 14px;
+  display: block;
+}
+
+.testimonials-one-rtl .testimonials-one__image {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.testimonials-one-rtl .testimonials-one__image img {
+  border: 3px solid #2194D1;
+  transition: all 0.3s ease;
+}
+
+.testimonials-one-rtl .testimonials-one__single:hover .testimonials-one__image img {
+  border-color: #1a7bb8;
+}
+
+.testimonials-one-rtl .testimonials-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 40px;
+  flex-direction: row-reverse;
+}
+
+.testimonials-one-rtl .btn {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.testimonials-one-rtl .btn-primary {
+  background-color: #2194D1;
+  border-color: #2194D1;
+  color: #fff;
+}
+
+.testimonials-one-rtl .btn-primary:hover {
+  background-color: #1a7bb8;
+  border-color: #1a7bb8;
+  transform: translateY(-2px);
+}
+
+.testimonials-one-rtl .btn-outline-primary {
+  background-color: transparent;
+  border: 2px solid #2194D1;
+  color: #2194D1;
+}
+
+.testimonials-one-rtl .btn-outline-primary:hover {
+  background-color: #2194D1;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments for Arabic */
+@media (max-width: 991px) {
+  .testimonials-one-rtl .block-title h3 {
+    font-size: 24px;
+  }
+  
+  .testimonials-one-rtl .testimonials-cta {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .testimonials-one-rtl .btn {
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 767px) {
+  .testimonials-one-rtl .block-title h3 {
+    font-size: 20px;
+  }
+  
+  .testimonials-one-rtl .testimonials-one__single {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .testimonials-one-rtl .testimonials-one__single p {
+    font-size: 14px;
+  }
+  
+  .testimonials-one-rtl .testimonials-one__single h3 {
+    font-size: 16px;
+  }
+}
+
+/* Arabic font loading */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap');

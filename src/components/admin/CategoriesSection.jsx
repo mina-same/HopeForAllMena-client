@@ -322,18 +322,18 @@ export function CategoriesSection() {
 
   return (
     <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-        <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">{t('title')}</h2>
-          <p className="text-muted-foreground text-sm md:text-base">{t('description')}</p>
+      <div className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 xs:gap-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+        <div className="flex-1 min-w-0">
+          <h2 className="text-lg xs:text-xl md:text-2xl font-bold text-foreground truncate">{t('title')}</h2>
+          <p className="text-muted-foreground text-xs xs:text-sm md:text-base">{t('description')}</p>
         </div>
-        <Button onClick={openAddDialog} className={`text-white shadow-elegant hover:shadow-lg transition-all duration-300 ${currentLanguage === 'ar' ? '' : ''}`}>
+        <Button onClick={openAddDialog} className={`text-white shadow-elegant hover:shadow-lg transition-all duration-300 w-full sm:w-auto ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
           <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
-          {t('addCategory')}
+          <span className="text-sm xs:text-base">{t('addCategory')}</span>
         </Button>
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className={`max-w-2xl max-h-[90vh] overflow-y-auto ${currentLanguage === 'ar' ? 'rtl' : 'ltr'} [&>button]:hidden`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+          <DialogContent className={`w-full max-w-2xl max-h-[90vh] overflow-y-auto ${currentLanguage === 'ar' ? 'rtl' : 'ltr'} [&>button]:hidden`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
             <DialogHeader className="relative pb-4">
               <DialogTitle className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'} text-lg font-semibold`}>
                 {editingCategory ? t('form.editTitle') : t('form.createTitle')}
@@ -348,8 +348,8 @@ export function CategoriesSection() {
                 <X className="h-4 w-4 text-gray-500 hover:text-gray-700" />
               </Button>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form onSubmit={handleSubmit} className="space-y-3 xs:space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name_en" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.nameEn')} *</Label>
                   <Input
@@ -380,9 +380,9 @@ export function CategoriesSection() {
                 </div>
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3 xs:space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="description_en" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.descriptionEn')} * (min 10 characters)</Label>
+                  <Label htmlFor="description_en" className={`text-xs xs:text-sm ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.descriptionEn')} * (min 10 characters)</Label>
                   <Textarea
                     id="description_en"
                     name="description_en"
@@ -421,9 +421,9 @@ export function CategoriesSection() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="sortOrder" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.sortOrder')}</Label>
+                  <Label htmlFor="sortOrder" className={`text-xs xs:text-sm ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.sortOrder')}</Label>
                   <Input
                     id="sortOrder"
                     name="sortOrder"
@@ -439,9 +439,9 @@ export function CategoriesSection() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 xs:gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="icon" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.icon')}</Label>
+                  <Label htmlFor="icon" className={`text-xs xs:text-sm ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.icon')}</Label>
                   <Select value={categoryForm.icon} onValueChange={(value) => setCategoryForm(prev => ({ ...prev, icon: value }))} disabled={isSubmitting}>
                     <SelectTrigger className={`bg-white border border-gray-200 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                       <SelectValue />
@@ -454,9 +454,9 @@ export function CategoriesSection() {
                   </Select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="color" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.colorTheme')}</Label>
+                  <Label htmlFor="color" className={`text-xs xs:text-sm ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.colorTheme')}</Label>
                   <Select value={categoryForm.color} onValueChange={(value) => setCategoryForm(prev => ({ ...prev, color: value }))} disabled={isSubmitting}>
-                    <SelectTrigger className={`bg-white border border-gray-200 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <SelectTrigger className={`bg-white border border-gray-200 flex-row ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -474,7 +474,7 @@ export function CategoriesSection() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="parentCategory" className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('form.fields.parentCategory')}</Label>
+                <Label htmlFor="parentCategory" className={`text-xs xs:text-sm ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('form.fields.parentCategory')}</Label>
                 <Select value={categoryForm.parentCategory} onValueChange={(value) => setCategoryForm(prev => ({ ...prev, parentCategory: value }))} disabled={isSubmitting}>
                   <SelectTrigger className={`bg-white border border-gray-200 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                     <SelectValue placeholder={t('form.fields.parentCategoryPlaceholder')} />
@@ -490,8 +490,8 @@ export function CategoriesSection() {
                 </Select>
               </div>
 
-              <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start flex-row-reverse'}`}>
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200" disabled={isSubmitting}>
+              <div className={`flex flex-col xs:flex-row gap-2 xs:gap-3 ${currentLanguage === 'ar' ? 'xs:justify-end' : 'xs:justify-start xs:flex-row'}`}>
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-4 xs:px-6 py-2 rounded-lg font-medium transition-colors duration-200 text-sm xs:text-base" disabled={isSubmitting}>
                   {isSubmitting ? t('form.buttons.saving') : (editingCategory ? t('form.buttons.update') : t('form.buttons.create'))}
                 </Button>
                 <Button 
@@ -499,7 +499,7 @@ export function CategoriesSection() {
                   variant="outline" 
                   onClick={() => setIsDialogOpen(false)} 
                   disabled={isSubmitting}
-                  className="border-gray-300 text-gray-700 hover:bg-gray-50 px-6 py-2 rounded-lg font-medium transition-colors duration-200"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-50 px-4 xs:px-6 py-2 rounded-lg font-medium transition-colors duration-200 text-sm xs:text-base"
                 >
                   {t('form.buttons.cancel')}
                 </Button>
@@ -511,8 +511,8 @@ export function CategoriesSection() {
 
       {/* Filters */}
       <Card className="border-0 shadow-modern">
-        <CardContent className="p-4">
-          <div className={`flex flex-col sm:flex-row gap-4 ${currentLanguage === 'ar' ? 'sm:' : ''}`}>
+        <CardContent className="p-3 xs:p-4">
+          <div className={`flex flex-col sm:flex-row gap-3 xs:gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row' : ''}`}>
             <div className="flex-1">
               <div className="relative">
                 <Search className={`absolute top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 ${currentLanguage === 'ar' ? 'right-3' : 'left-3'}`} />
@@ -526,7 +526,7 @@ export function CategoriesSection() {
               </div>
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-40 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+              <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-32 lg:w-40 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                 <SelectValue placeholder={t('status.all')} />
               </SelectTrigger>
               <SelectContent>
@@ -553,47 +553,47 @@ export function CategoriesSection() {
               <p className="text-muted-foreground mt-2">{t('loading.categories')}</p>
             </div>
           ) : categories.length > 0 ? (
-            <div className="space-y-4">
+            <div className="space-y-3 xs:space-y-4">
               {categories.map((category) => (
-                <div key={category._id} className={`flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors ${currentLanguage === 'ar' ? '' : ''}`}>
-                  <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? '' : ''}`}>
-                    <div className={`p-3 rounded-lg ${category.color}`}>
-                      <FolderOpen className="h-6 w-6" />
+                <div key={category._id} className={`flex flex-col lg:flex-row lg:items-center lg:justify-between p-3 xs:p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors gap-3 lg:gap-4 ${currentLanguage === 'ar' ? 'lg:flex-row' : ''}`}>
+                  <div className={`flex items-center gap-3 xs:gap-4 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+                    <div className={`p-2 xs:p-3 rounded-lg ${category.color} flex-shrink-0`}>
+                      <FolderOpen className="h-5 w-5 xs:h-6 xs:w-6" />
                     </div>
-                    <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
-                        <h3 className="font-semibold text-foreground">
+                    <div className={`flex-1 min-w-0 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <div className={`flex flex-wrap items-center gap-1 xs:gap-2 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
+                        <h3 className="font-semibold text-foreground text-sm xs:text-base truncate">
                           {currentLanguage === 'ar' ? (category.name_ar || category.name_en || category.name) : (category.name_en || category.name)}
                         </h3>
-                        <Badge variant={category.status === 'active' ? 'default' : 'secondary'}>
+                        <Badge variant={category.status === 'active' ? 'default' : 'secondary'} className="text-xs">
                           {t(`status.${category.status}`)}
                         </Badge>
                         {category.parentCategory && (
-                          <Badge variant="outline">
+                          <Badge variant="outline" className="text-xs">
                             {t('table.subcategory')}
                           </Badge>
                         )}
                       </div>
-                      <div className={`flex items-center gap-4 mt-1 ${currentLanguage === 'ar' ? '' : ''}`}>
-                        <div className={`flex items-center gap-1 text-sm text-muted-foreground ${currentLanguage === 'ar' ? '' : ''}`}>
-                          <Book className="h-4 w-4" />
-                          {t('table.booksCount', { count: category.booksCount || 0 })}
+                      <div className={`flex flex-wrap items-center gap-2 xs:gap-4 mt-1 text-xs xs:text-sm ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
+                        <div className={`flex items-center gap-1 text-muted-foreground ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+                          <Book className="h-3 w-3 xs:h-4 xs:w-4" />
+                          <span>{t('table.booksCount', { count: category.booksCount || 0 })}</span>
                         </div>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-muted-foreground">
                           {t('table.sortOrder', { order: category.sortOrder })}
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? '' : ''}`}>
-                    <div className={currentLanguage === 'ar' ? 'text-left' : 'text-right'}>
-                      <div className="text-sm text-muted-foreground">
+                  <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-2 xs:gap-3 sm:gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row' : ''}`}>
+                    <div className={`${currentLanguage === 'ar' ? 'text-right sm:text-left' : 'text-left sm:text-right'} order-2 sm:order-1`}>
+                      <div className="text-xs xs:text-sm text-muted-foreground">
                         {formatDate(category.createdAt)}
                       </div>
                     </div>
-                    <div className={`flex gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
+                    <div className={`flex flex-wrap gap-1 xs:gap-2 order-1 sm:order-2 flex-row ${currentLanguage === 'ar' ? 'justify-end sm:justify-start' : 'justify-start'}`}>
                       <Select value={category.status} onValueChange={(value) => handleStatusChange(category, value)}>
-                        <SelectTrigger className={`bg-white border border-gray-200 w-24 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        <SelectTrigger className={`bg-white border border-gray-200 w-20 xs:w-24 text-xs xs:text-sm  flex-row ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -606,17 +606,18 @@ export function CategoriesSection() {
                         size="sm"
                         onClick={() => handleEdit(category)}
                         title={t('actions.edit')}
+                        className="p-1 xs:p-2"
                       >
-                        <Edit className="h-4 w-4" />
+                        <Edit className="h-3 w-3 xs:h-4 xs:w-4" />
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleDelete(category)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1 xs:p-2"
                         title={t('actions.delete')}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <Trash2 className="h-3 w-3 xs:h-4 xs:w-4" />
                       </Button>
                     </div>
                   </div>
@@ -625,16 +626,17 @@ export function CategoriesSection() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className={`flex justify-center items-center gap-2 mt-6 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex flex-col xs:flex-row justify-center items-center gap-2 xs:gap-3 mt-4 xs:mt-6 flex-row ${currentLanguage === 'ar' ? '' : ''}`}>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                     disabled={currentPage === 1}
+                    className="text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
                   >
                     {t('pagination.previous')}
                   </Button>
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-xs xs:text-sm text-muted-foreground text-center">
                     {t('pagination.page', { current: currentPage, total: totalPages })}
                   </span>
                   <Button
@@ -642,6 +644,7 @@ export function CategoriesSection() {
                     size="sm"
                     onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages}
+                    className="text-xs xs:text-sm px-2 xs:px-3 py-1 xs:py-2"
                   >
                     {t('pagination.next')}
                   </Button>

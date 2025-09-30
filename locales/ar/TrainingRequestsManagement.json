@@ -1,0 +1,98 @@
+{
+  "title": "طلبات التدريب",
+  "description": "إدارة طلبات التدريب الجديدة من الكنائس",
+  "stats": {
+    "totalRequests": "إجمالي الطلبات",
+    "pending": "قيد الانتظار",
+    "approved": "موافق عليها",
+    "scheduled": "مجدولة"
+  },
+  "table": {
+    "title": "طلبات التدريب",
+    "count": "طلبات التدريب ({{count}})",
+    "headers": {
+      "requester": "مقدم الطلب",
+      "phone": "الهاتف",
+      "church": "الكنيسة",
+      "serviceType": "نوع الخدمة",
+      "participants": "المشاركون",
+      "suggestedDate": "التاريخ المقترح",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    }
+  },
+  "filters": {
+    "searchPlaceholder": "البحث بالاسم، البريد الإلكتروني، الكنيسة، نوع الخدمة، أو العنوان...",
+    "filterByStatus": "تصفية حسب الحالة",
+    "status": {
+      "all": "جميع الحالات",
+      "pending": "قيد الانتظار",
+      "approved": "موافق عليها",
+      "scheduled": "مجدولة",
+      "completed": "مكتملة",
+      "cancelled": "ملغية"
+    }
+  },
+  "serviceTypes": {
+    "sunday-school": "مدرسة الأحد",
+    "youth": "الشباب",
+    "other": "أخرى"
+  },
+  "status": {
+    "pending": "قيد الانتظار",
+    "approved": "موافق عليها",
+    "scheduled": "مجدولة",
+    "completed": "مكتملة",
+    "cancelled": "ملغية"
+  },
+  "actions": {
+    "view": "عرض التفاصيل",
+    "approve": "موافقة",
+    "cancel": "إلغاء",
+    "schedule": "جدولة"
+  },
+  "detailsModal": {
+    "title": "تفاصيل طلب التدريب",
+    "contactInformation": "معلومات الاتصال",
+    "churchInformation": "معلومات الكنيسة",
+    "serviceInformation": "معلومات الخدمة",
+    "nearbyChurches": "الكنائس القريبة",
+    "fields": {
+      "contactPerson": "الشخص المسؤول",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "status": "الحالة",
+      "churchName": "اسم الكنيسة",
+      "address": "العنوان",
+      "serviceType": "نوع الخدمة",
+      "suggestedDate": "التاريخ المقترح",
+      "numberOfServants": "عدد الخدام",
+      "numberOfServed": "عدد المخدومين",
+      "responsiblePerson": "الشخص المسؤول"
+    }
+  },
+  "statusMessages": {
+    "approved": "تم الموافقة على طلب التدريب",
+    "cancelled": "تم إلغاء طلب التدريب",
+    "scheduled": "تم جدولة التدريب وإضافته للتقويم",
+    "completed": "تم تحديد التدريب كمكتمل",
+    "pending": "تم تحديث حالة طلب التدريب"
+  },
+  "loading": {
+    "requests": "جاري تحميل طلبات التدريب..."
+  },
+  "empty": {
+    "noRequests": "لا توجد طلبات تدريب",
+    "noMatching": "لم يتم العثور على طلبات مطابقة",
+    "description": "ستظهر طلبات التدريب هنا عند تقديمها.",
+    "tryAdjusting": "حاول تعديل معايير البحث أو التصفية.",
+    "debugInfo": "معلومات التشخيص: تحقق من وحدة تحكم المتصفح للحصول على تفاصيل المصادقة.",
+    "adminNote": "إذا كنت مسجل الدخول كمدير، يجب أن تظهر الطلبات هنا."
+  },
+  "errors": {
+    "title": "خطأ",
+    "loadFailed": "فشل في تحميل طلبات التدريب. يرجى المحاولة مرة أخرى.",
+    "updateFailed": "فشل في تحديث حالة الطلب. يرجى المحاولة مرة أخرى.",
+    "statusUpdated": "تم تحديث الحالة"
+  }
+}

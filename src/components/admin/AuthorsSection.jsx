@@ -19,7 +19,7 @@ import { graphql } from 'gatsby';
 
 export function AuthorsSection() {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useTranslation('AuthorsManagement');
   const { language: currentLanguage } = useI18next();
   const [authors, setAuthors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -282,7 +282,7 @@ export function AuthorsSection() {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={openAddDialog} className=" text-white shadow-elegant hover:shadow-lg transition-all duration-300">
-              <div className={`flex items-center ${currentLanguage === 'ar' ? '' : ''}`}>
+              <div className={`flex items-center flex-row`}>
                 <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
                 {t('addAuthor')}
               </div>
@@ -421,7 +421,7 @@ export function AuthorsSection() {
               </div>
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full sm:w-40">
+              <SelectTrigger className="w-full sm:w-40 flex-row">
                 <SelectValue placeholder={t('filters.status.placeholder')} />
               </SelectTrigger>
               <SelectContent>
@@ -431,7 +431,7 @@ export function AuthorsSection() {
               </SelectContent>
             </Select>
             <Select value={featuredFilter} onValueChange={setFeaturedFilter}>
-              <SelectTrigger className="w-full sm:w-40">
+              <SelectTrigger className="w-full sm:w-40 flex-row">
                 <SelectValue placeholder={t('filters.featured.placeholder')} />
               </SelectTrigger>
               <SelectContent>
@@ -464,85 +464,174 @@ export function AuthorsSection() {
               {authors.map((author) => {
                 const displayName = currentLanguage === 'ar' ? author.nameAr || author.name : author.name;
                 return (
-                <div key={author._id} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md hover:border-gray-300 transition-all duration-200">
-                  <div className={`flex gap-6 ${currentLanguage === 'ar' ? '' : ''}`}>
-                    {/* Author Image */}
-                    <div className="flex-shrink-0">
-                      <Avatar className="h-20 w-20 border-2 border-gray-100 shadow-sm">
+                <div key={author._id} className="bg-white border border-gray-200 rounded-lg p-3 sm:p-4 md:p-6 hover:shadow-md hover:border-gray-300 transition-all duration-200">
+                  {/* Mobile Layout */}
+                  <div className="block sm:hidden">
+                    {/* Mobile Header with Avatar and Name */}
+                    <div className="flex items-center gap-3 mb-3">
+                      <Avatar className="h-12 w-12 border-2 border-gray-100 shadow-sm">
                         <AvatarImage src={author.avatarUrl} alt={displayName} />
-                        <AvatarFallback className="bg-gradient-to-br from-gray-100 to-gray-200 text-gray-700 font-semibold text-xl">
+                        <AvatarFallback className="font-semibold text-sm">
                           {displayName.split(' ').map(n => n[0]).join('')}
                         </AvatarFallback>
                       </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-semibold text-gray-900 text-base truncate">{displayName}</h4>
+                        <div className="flex items-center gap-2 mt-1">
+                          {author.featured && (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                              {t('table.featured')}
+                            </span>
+                          )}
+                          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold border ${
+                            author.status === 'active' 
+                              ? 'bg-green-50 text-green-700 border-green-200' 
+                              : 'bg-gray-50 text-gray-700 border-gray-200'
+                          }`}>
+                            {t(`status.${author.status}`)}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                     
-                    {/* Author Details */}
-                    <div className="flex-1 min-w-0">
-                      <div className={`flex items-start ${currentLanguage === 'ar' ? 'justify-between ' : 'justify-between'}`}>
-                        <div className={`flex-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                          <div className={`flex items-center gap-3 mb-3 ${currentLanguage === 'ar' ? ' justify-end' : ''}`}>
-                            <h4 className="font-semibold text-gray-900 text-xl">{displayName}</h4>
-                            {author.featured && (
-                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                                {t('table.featured')}
+                    {/* Mobile Meta Info */}
+                    <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                      <span className="font-medium">
+                        {t('table.booksCount', { count: author.booksCount })}
+                      </span>
+                      <span>{t('table.addedOn', { date: formatDate(author.createdAt) })}</span>
+                    </div>
+                    
+                    {/* Mobile Action Buttons */}
+                    <div className="pt-3 border-t border-gray-100 space-y-3">
+                      {/* Edit and Delete Buttons Row */}
+                      <div className="flex items-center justify-center gap-3 flex-row">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(author)}
+                          className="h-8 w-8 p-0 hover:bg-gray-100 rounded-lg"
+                          title={t('actions.edit')}
+                        >
+                          <Edit className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDelete(author)}
+                          className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-500 hover:text-red-600 rounded-lg"
+                          title={t('actions.delete')}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      
+                      {/* Feature Toggle and Status Selection Row */}
+                      <div className="flex items-center gap-2 flex-row">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleToggleFeatured(author)}
+                          className="h-8 px-3 text-xs hover:bg-gray-100 rounded-lg flex-1"
+                          title={author.featured ? t('actions.unfeature') : t('actions.feature')}
+                        >
+                          {author.featured ? <EyeOff className="h-3 w-3 mr-1" /> : <Eye className="h-3 w-3 mr-1" />}
+                          <span className="truncate">{author.featured ? t('actions.unfeature') : t('actions.feature')}</span>
+                        </Button>
+                        <Select value={author.status} onValueChange={(value) => handleStatusChange(author, value)}>
+                          <SelectTrigger className="w-24 h-8 text-xs border-gray-300 rounded-lg">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="active">{t('status.active')}</SelectItem>
+                            <SelectItem value="inactive">{t('status.inactive')}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Desktop Layout */}
+                  <div className="hidden sm:block">
+                    <div className={`flex gap-4 md:gap-6 ${currentLanguage === 'ar' ? '' : ''}`}>
+                      {/* Author Image */}
+                      <div className="flex-shrink-0">
+                        <Avatar className="h-16 w-16 md:h-20 md:w-20 border-2 border-gray-100 shadow-sm">
+                          <AvatarImage src={author.avatarUrl} alt={displayName} />
+                          <AvatarFallback className="font-semibold text-lg md:text-xl">
+                            {displayName.split(' ').map(n => n[0]).join('')}
+                          </AvatarFallback>
+                        </Avatar>
+                      </div>
+                      
+                      {/* Author Details */}
+                      <div className="flex-1 min-w-0">
+                        <div className={`flex items-start ${currentLanguage === 'ar' ? 'justify-between ' : 'justify-between'}`}>
+                          <div className={`flex-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                            <div className={`flex items-center gap-3 mb-2 md:mb-3 ${currentLanguage === 'ar' ? ' justify-end' : ''}`}>
+                              <h4 className="font-semibold text-gray-900 text-lg md:text-xl">{displayName}</h4>
+                              {author.featured && (
+                                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                                  {t('table.featured')}
+                                </span>
+                              )}
+                              <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                                author.status === 'active' 
+                                  ? 'bg-green-50 text-green-700 border-green-200' 
+                                  : 'bg-gray-50 text-gray-700 border-gray-200'
+                              }`}>
+                                {t(`status.${author.status}`)}
                               </span>
-                            )}
-                            <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold border ${
-                              author.status === 'active' 
-                                ? 'bg-green-50 text-green-700 border-green-200' 
-                                : 'bg-gray-50 text-gray-700 border-gray-200'
-                            }`}>
-                              {t(`status.${author.status}`)}
-                            </span>
+                            </div>
+                            
+                            <div className={`flex items-center gap-4 text-sm text-gray-500 ${currentLanguage === 'ar' ? ' justify-end' : ''}`}>
+                              <span className="font-medium">
+                                {t('table.booksCount', { count: author.booksCount })}
+                              </span>
+                              <span>•</span>
+                              <span>{t('table.addedOn', { date: formatDate(author.createdAt) })}</span>
+                            </div>
                           </div>
                           
-                          <div className={`flex items-center gap-4 text-sm text-gray-500 ${currentLanguage === 'ar' ? ' justify-end' : ''}`}>
-                            <span className="font-medium">
-                              {t('table.booksCount', { count: author.booksCount })}
-                            </span>
-                            <span>•</span>
-                            <span>{t('table.addedOn', { date: formatDate(author.createdAt) })}</span>
+                          {/* Action Buttons */}
+                          <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'mr-4' : 'ml-4'}`}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleToggleFeatured(author)}
+                              className="h-9 w-9 p-0 hover:bg-gray-100 rounded-lg"
+                              title={author.featured ? t('actions.unfeature') : t('actions.feature')}
+                            >
+                              {author.featured ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                            </Button>
+                            <Select value={author.status} onValueChange={(value) => handleStatusChange(author, value)}>
+                              <SelectTrigger className="w-24 h-9 text-xs border-gray-300 rounded-lg">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="active">{t('status.active')}</SelectItem>
+                                <SelectItem value="inactive">{t('status.inactive')}</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEdit(author)}
+                              className="h-9 w-9 p-0 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+                              title={t('actions.edit')}
+                            >
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDelete(author)}
+                              className="h-9 w-9 p-0 hover:bg-red-50 text-gray-500 hover:text-red-600 rounded-lg"
+                              title={t('actions.delete')}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
-                        </div>
-                        
-                        {/* Action Buttons */}
-                        <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'mr-4' : 'ml-4'}`}>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleToggleFeatured(author)}
-                            className="h-9 w-9 p-0 hover:bg-gray-100 rounded-lg"
-                            title={author.featured ? t('actions.unfeature') : t('actions.feature')}
-                          >
-                            {author.featured ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                          </Button>
-                          <Select value={author.status} onValueChange={(value) => handleStatusChange(author, value)}>
-                            <SelectTrigger className="w-24 h-9 text-xs border-gray-300 rounded-lg">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="active">{t('status.active')}</SelectItem>
-                              <SelectItem value="inactive">{t('status.inactive')}</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEdit(author)}
-                            className="h-9 w-9 p-0 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
-                            title={t('actions.edit')}
-                          >
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDelete(author)}
-                            className="h-9 w-9 p-0 hover:bg-red-50 text-gray-500 hover:text-red-600 rounded-lg"
-                            title={t('actions.delete')}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
                         </div>
                       </div>
                     </div>
@@ -552,9 +641,9 @@ export function AuthorsSection() {
               })}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <Users className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-              <p className={`text-gray-500 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            <div className="text-center py-8 sm:py-12">
+              <Users className="h-10 w-10 sm:h-12 sm:w-12 mx-auto mb-3 sm:mb-4 text-gray-400" />
+              <p className="text-gray-500 text-sm sm:text-base text-center">
                 {t('empty.description')}
               </p>
             </div>

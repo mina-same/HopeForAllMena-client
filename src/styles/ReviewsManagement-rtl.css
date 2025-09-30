@@ -1,0 +1,175 @@
+/* ReviewsManagement RTL Support */
+.reviews-management-rtl {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+/* Header RTL */
+.reviews-management-rtl h2,
+.reviews-management-rtl h3,
+.reviews-management-rtl h4 {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+/* Search Input RTL */
+.reviews-management-rtl .search-input {
+  padding-left: 12px;
+  padding-right: 40px;
+  text-align: right;
+  direction: rtl;
+}
+
+.reviews-management-rtl .search-icon {
+  left: auto;
+  right: 12px;
+}
+
+/* Review Cards RTL */
+.reviews-management-rtl .review-card {
+  text-align: right;
+  direction: rtl;
+}
+
+.reviews-management-rtl .review-header {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+.reviews-management-rtl .review-badges {
+  flex-direction: row-reverse;
+}
+
+.reviews-management-rtl .review-meta {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+.reviews-management-rtl .star-rating {
+  flex-direction: row-reverse;
+}
+
+/* Action Buttons RTL */
+.reviews-management-rtl .action-buttons {
+  flex-direction: row-reverse;
+}
+
+.reviews-management-rtl .helpful-buttons {
+  flex-direction: row-reverse;
+}
+
+.reviews-management-rtl .moderation-buttons {
+  flex-direction: row-reverse;
+}
+
+/* Pagination RTL */
+.reviews-management-rtl .pagination {
+  flex-direction: row-reverse;
+}
+
+/* Modal RTL */
+.reviews-management-rtl .modal-content {
+  text-align: right;
+  direction: rtl;
+}
+
+.reviews-management-rtl .modal-form {
+  text-align: right;
+}
+
+.reviews-management-rtl .modal-form label {
+  text-align: right;
+}
+
+.reviews-management-rtl .modal-form textarea {
+  text-align: right;
+  direction: rtl;
+}
+
+.reviews-management-rtl .modal-buttons {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+/* Status Badges RTL */
+.reviews-management-rtl .status-badge {
+  flex-direction: row-reverse;
+}
+
+/* Filter Controls RTL */
+.reviews-management-rtl .filters {
+  flex-direction: row-reverse;
+}
+
+/* Responsive RTL Adjustments */
+@media (max-width: 640px) {
+  .reviews-management-rtl .review-card {
+    padding: 12px;
+  }
+  
+  .reviews-management-rtl .review-actions {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+  
+  .reviews-management-rtl .helpful-buttons {
+    margin-bottom: 8px;
+  }
+}
+
+/* Arabic Font Support */
+.reviews-management-rtl * {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+/* Review Content RTL */
+.reviews-management-rtl .review-content {
+  text-align: right;
+  direction: rtl;
+  line-height: 1.6;
+}
+
+/* Moderator Notes RTL */
+.reviews-management-rtl .moderator-notes {
+  text-align: right;
+  direction: rtl;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-right: 3px solid #2194D1;
+  border-left: none;
+  padding-right: 12px;
+  padding-left: 8px;
+}
+
+/* Book Link RTL */
+.reviews-management-rtl .book-link {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Loading State RTL */
+.reviews-management-rtl .loading-state {
+  text-align: center;
+}
+
+/* Empty State RTL */
+.reviews-management-rtl .empty-state {
+  text-align: center;
+}
+
+/* Table Headers RTL */
+.reviews-management-rtl .table-header {
+  text-align: right;
+  flex-direction: row-reverse;
+}
+
+/* Icon Spacing RTL */
+.reviews-management-rtl .icon-left {
+  margin-left: 0;
+  margin-right: 8px;
+}
+
+.reviews-management-rtl .icon-right {
+  margin-right: 0;
+  margin-left: 8px;
+}

@@ -26,7 +26,7 @@ const NotFoundPage = () => {
   };
 
   return (
-    <Layout pageTitle="Page Not Found || Azino || Charity React Next Template">
+    <Layout pageTitle="Page Not Found || Hope for All Mena || Charity React Next Template">
       <HeaderTwo />
       <StickyHeader />
       
@@ -200,7 +200,7 @@ export default NotFoundPage;
 
 export const Head = () => (
   <>
-    <title>404 - Page Not Found || Azino</title>
+    <title>404 - Page Not Found || Hope for All Mena</title>
     <meta name="description" content="The page you're looking for could not be found. Navigate back to our homepage or explore our other pages." />
     <meta name="robots" content="noindex, nofollow" />
   </>

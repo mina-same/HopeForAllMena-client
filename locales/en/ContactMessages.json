@@ -1,83 +1,126 @@
 {
   "title": "Contact Messages",
-  "description": "Manage customer inquiries and support requests",
+  "description": "Manage customer inquiries and book orders",
+  "searchPlaceholder": "Search messages...",
+  "messagesCount": "Messages ({{count}})",
   "stats": {
-    "unread": "{{count}} Unread",
-    "new": "{{count}} New"
+    "new": "{{count}} New",
+    "unread": "{{count}} Unread"
   },
   "filters": {
-    "searchPlaceholder": "Search messages, names, or emails...",
-    "filterByStatus": "Filter by status",
-    "filterByType": "Filter by type",
+    "searchPlaceholder": "Search messages...",
+    "filterByStatus": "Filter by Status",
+    "filterByType": "Filter by Type",
     "status": {
-      "all": "All Messages",
+      "all": "All Status",
       "new": "New",
       "unread": "Unread",
       "read": "Read",
       "inProgress": "In Progress",
       "resolved": "Resolved",
-      "closed": "Closed",
-      "replied": "Replied"
+      "closed": "Closed"
     },
     "type": {
       "all": "All Types",
-      "bookOrder": "Book Orders",
-      "bookInquiry": "Book Inquiries",
-      "general": "General",
-      "support": "Support",
-      "partnership": "Partnership",
-      "feedback": "Feedback",
-      "complaint": "Complaint"
+      "bookOrder": "Book Order",
+      "bookInquiry": "Book Inquiry",
+      "general": "General Inquiry",
+      "support": "Support"
+    },
+    "priority": {
+      "all": "All Priority",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
     }
   },
-  "messageCard": {
-    "new": "New",
-    "view": "View",
-    "markRead": "Mark Read",
-    "read": "Read",
-    "delete": "Delete",
-    "addedOn": "Added on"
-  },
-  "viewDialog": {
-    "contact": "Contact",
-    "relatedBook": "Related Book",
-    "message": "Message",
-    "sendReply": "Send Reply",
-    "typeReply": "Type your reply here...",
-    "cancel": "Cancel",
-    "send": "Send Reply",
-    "replySent": "Reply Sent",
-    "replySuccess": "This message has been replied to successfully."
-  },
-  "loading": {
-    "title": "Loading messages...",
-    "description": "Please wait while we fetch your contact messages."
-  },
-  "error": {
-    "title": "Error Loading Messages",
-    "tryAgain": "Try Again"
-  },
-  "empty": {
-    "title": "No messages found",
-    "withFilters": "Try adjusting your search or filter criteria.",
-    "noMessages": "No messages have been received yet."
-  },
   "types": {
-    "bookOrder": "Book Order",
-    "bookInquiry": "Book Inquiry",
-    "general": "General",
-    "support": "Support",
-    "partnership": "Partnership",
-    "feedback": "Feedback",
-    "complaint": "Complaint"
+    "bookorder": "Book Order",
+    "bookinquiry": "Book Inquiry",
+    "general": "General Inquiry",
+    "support": "Support"
   },
   "statuses": {
     "new": "New",
     "unread": "Unread",
     "read": "Read",
-    "inProgress": "In Progress",
     "resolved": "Resolved",
     "closed": "Closed",
     "replied": "Replied"
+  },
+  "loading": {
+    "title": "Loading Messages",
+    "description": "Please wait while we fetch your messages...",
+    "messages": "Loading messages..."
+  },
+  "error": {
+    "title": "Error Loading Messages",
+    "tryAgain": "Try Again"
+  },
+  "messageCard": {
+    "new": "New",
+    "view": "View",
+    "read": "Read",
+    "markRead": "Mark as Read",
+    "delete": "Delete"
+  },
+  "viewDialog": {
+    "contact": "Contact Information",
+    "relatedBook": "Related Book",
+    "message": "Message Content",
+    "sendReply": "Send Reply",
+    "typeReply": "Type your reply here...",
+    "cancel": "Cancel",
+    "send": "Send",
+    "replySent": "Reply Sent Successfully",
+    "replySuccess": "Your reply has been sent to the customer."
+  },
+  "empty": {
+    "title": "No Messages Found",
+    "noMessages": "No messages found.",
+    "withFilters": "No messages match your current filters. Try adjusting your search criteria."
+  },
+  "message": {
+    "from": "From:",
+    "subject": "Subject:",
+    "bookOrderDetails": "Book Order Details:",
+    "book": "Book:",
+    "author": "Author:",
+    "quantity": "Quantity:",
+    "response": "Response:",
+    "respondedOn": "Responded on:"
+  },
+  "actions": {
+    "markAsRead": "Mark as Read",
+    "markAsResolved": "Mark as Resolved",
+    "respond": "Respond"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {{current}} of {{total}}"
+  },
+  "modal": {
+    "respondTitle": "Respond to Message",
+    "yourResponse": "Your Response",
+    "responsePlaceholder": "Type your response here...",
+    "sendResponse": "Send Response",
+    "cancel": "Cancel"
+  },
+  "toast": {
+    "error": {
+      "title": "Error",
+      "fetchFailed": "Failed to load messages",
+      "responseFailed": "Failed to send response",
+      "updateFailed": "Failed to update message"
+    },
+    "responseSent": {
+      "title": "Response Sent",
+      "description": "Your response has been sent successfully"
+    },
+    "messageUpdated": {
+      "title": "Message Updated",
+      "description": "Message status updated to {{status}}"
+    }
   }
 }

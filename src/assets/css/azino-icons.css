@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'azino-icon';
+  font-family: 'hope-icon';
   src:  url('../fonts/azino-icon.eot?7icgw');
   src:  url('../fonts/azino-icon.eot?7icgw#iefix') format('embedded-opentype'),
     url('../fonts/azino-icon.ttf?7icgw') format('truetype'),
@@ -12,8 +12,7 @@
 
 [class^="azino-icon-"], [class*=" azino-icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'azino-icon' !important;
-  speak: never;
+  font-family: 'hope-icon' !important;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;

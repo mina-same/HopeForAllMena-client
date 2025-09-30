@@ -1,0 +1,121 @@
+{
+  "title": "طلبات المجلات",
+  "description": "إدارة طلبات الاشتراك في المجلات من الكنائس والمجتمعات.",
+  "searchPlaceholder": "البحث بالاسم أو الكنيسة أو المجلة...",
+  
+  "stats": {
+    "totalRequests": "إجمالي الطلبات",
+    "pending": "قيد الانتظار",
+    "approved": "موافق عليها",
+    "fulfilled": "مكتملة"
+  },
+  
+  "filters": {
+    "title": "تصفية الطلبات",
+    "filterByStatus": "تصفية حسب الحالة",
+    "status": {
+      "all": "جميع الحالات",
+      "pending": "قيد الانتظار",
+      "approved": "موافق عليها",
+      "rejected": "مرفوضة",
+      "fulfilled": "مكتملة",
+      "cancelled": "ملغية"
+    }
+  },
+  
+  "table": {
+    "title": "طلبات المجلات",
+    "count": "طلبات المجلات ({{count}})",
+    "description": "مراجعة وإدارة طلبات الاشتراك في المجلات",
+    "headers": {
+      "requestDetails": "تفاصيل الطلب",
+      "churchInfo": "معلومات الكنيسة",
+      "magazine": "المجلة",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "magazines": "المجلات:",
+    "magazine": "المجلة:",
+    "copies": "النسخ:",
+    "copiesCount": "{{count}} نسخة",
+    "noRequests": "لم يتم العثور على طلبات مجلات"
+  },
+  
+  "status": {
+    "approved": "موافق عليها",
+    "rejected": "مرفوضة",
+    "fulfilled": "مكتملة",
+    "cancelled": "ملغية",
+    "pending": "قيد الانتظار"
+  },
+  
+  "actions": {
+    "view": "عرض التفاصيل",
+    "approve": "موافقة",
+    "reject": "رفض",
+    "fulfill": "تحديد كمكتملة",
+    "delete": "حذف"
+  },
+  
+  "modal": {
+    "title": "تفاصيل طلب المجلة",
+    "requesterName": "اسم مقدم الطلب",
+    "phoneNumber": "رقم الهاتف",
+    "churchName": "اسم الكنيسة",
+    "churchAddress": "عنوان الكنيسة",
+    "status": "الحالة",
+    "priority": "الأولوية",
+    "trackingNumber": "رقم التتبع",
+    "magazineRequests": "طلبات المجلات",
+    "adminNotes": "ملاحظات الإدارة",
+    "requestSubmitted": "تم تقديم الطلب في:",
+    "close": "إغلاق"
+  },
+  
+  "deleteModal": {
+    "title": "حذف الطلب",
+    "description": "هل أنت متأكد من أنك تريد حذف طلب المجلة هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+    "confirmText": "حذف",
+    "cancelText": "إلغاء"
+  },
+  
+  "loading": {
+    "requests": "جاري تحميل الطلبات...",
+    "updating": "جاري التحديث...",
+    "deleting": "جاري الحذف..."
+  },
+  
+  "empty": {
+    "noRequests": "لم يتم العثور على طلبات مجلات",
+    "adjustCriteria": "حاول تعديل معايير البحث",
+    "willAppear": "ستظهر طلبات المجلات هنا عند تقديمها"
+  },
+  
+  "toast": {
+    "statusUpdated": "تم {{status}} طلب المجلة.",
+    "requestDeleted": "تم حذف طلب المجلة بنجاح.",
+    "error": "خطأ",
+    "failedToFetch": "فشل في جلب طلبات المجلات",
+    "failedToUpdate": "فشل في تحديث حالة الطلب",
+    "failedToDelete": "فشل في حذف الطلب"
+  },
+  
+  "magazines": {
+    "theGreatBook": "الكتاب العظيم",
+    "theBookOfHope": "كتاب الرجاء",
+    "theGiftThatChangesEverything": "الهدية التي تغير كل شيء",
+    "journeyInTheWorldOfTheBible": "رحلة في عالم الكتاب المقدس",
+    "theBible": "الكتاب المقدس",
+    "theWayOfHope": "طريق الرجاء",
+    "onTheEdge": "على الحافة",
+    "howTheShepherdSavedHisSheep": "كيف أنقذ الراعي خرافه",
+    "theGoodNeighbor": "الجار الصالح"
+  },
+  
+  "priority": {
+    "low": "منخفضة",
+    "medium": "متوسطة",
+    "high": "عالية",
+    "urgent": "عاجلة"
+  }
+}

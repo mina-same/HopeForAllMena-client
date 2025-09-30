@@ -1,83 +1,126 @@
 {
   "title": "رسائل التواصل",
-  "description": "إدارة استفسارات العملاء وطلبات الدعم",
+  "description": "إدارة استفسارات العملاء وطلبات الكتب",
+  "searchPlaceholder": "البحث في الرسائل...",
+  "messagesCount": "الرسائل ({{count}})",
   "stats": {
-    "unread": "{{count}} غير مقروءة",
-    "new": "{{count}} جديدة"
+    "new": "{{count}} جديد",
+    "unread": "{{count}} غير مقروء"
   },
   "filters": {
-    "searchPlaceholder": "البحث في الرسائل، الأسماء، أو البريد الإلكتروني...",
+    "searchPlaceholder": "البحث في الرسائل...",
     "filterByStatus": "تصفية حسب الحالة",
     "filterByType": "تصفية حسب النوع",
     "status": {
-      "all": "جميع الرسائل",
+      "all": "جميع الحالات",
       "new": "جديد",
       "unread": "غير مقروء",
       "read": "مقروء",
       "inProgress": "قيد المعالجة",
       "resolved": "محلول",
-      "closed": "مغلق",
-      "replied": "تم الرد"
+      "closed": "مغلق"
     },
     "type": {
       "all": "جميع الأنواع",
-      "bookOrder": "طلبات الكتب",
-      "bookInquiry": "استفسارات الكتب",
-      "general": "عام",
-      "support": "الدعم",
-      "partnership": "شراكة",
-      "feedback": "ملاحظات",
-      "complaint": "شكوى"
+      "bookOrder": "طلب كتاب",
+      "bookInquiry": "استفسار عن كتاب",
+      "general": "استفسار عام",
+      "support": "الدعم"
+    },
+    "priority": {
+      "all": "جميع الأولويات",
+      "high": "عالية",
+      "medium": "متوسطة",
+      "low": "منخفضة"
     }
   },
-  "messageCard": {
-    "new": "جديد",
-    "view": "عرض",
-    "markRead": "تحديد كمقروء",
-    "read": "مقروء",
-    "delete": "حذف",
-    "addedOn": "أضيف في"
-  },
-  "viewDialog": {
-    "contact": "جهة الاتصال",
-    "relatedBook": "الكتاب المرتبط",
-    "message": "الرسالة",
-    "sendReply": "إرسال رد",
-    "typeReply": "اكتب ردك هنا...",
-    "cancel": "إلغاء",
-    "send": "إرسال الرد",
-    "replySent": "تم إرسال الرد",
-    "replySuccess": "تم الرد على هذه الرسالة بنجاح."
-  },
-  "loading": {
-    "title": "جاري تحميل الرسائل...",
-    "description": "يرجى الانتظار بينما نجلب رسائل الاتصال الخاصة بك."
-  },
-  "error": {
-    "title": "خطأ في تحميل الرسائل",
-    "tryAgain": "حاول مرة أخرى"
-  },
-  "empty": {
-    "title": "لم يتم العثور على رسائل",
-    "withFilters": "حاول تعديل معايير البحث أو التصفية.",
-    "noMessages": "لم يتم استلام أي رسائل بعد."
-  },
   "types": {
-    "bookOrder": "طلب كتاب",
-    "bookInquiry": "استفسار عن كتاب",
-    "general": "عام",
-    "support": "الدعم",
-    "partnership": "شراكة",
-    "feedback": "ملاحظات",
-    "complaint": "شكوى"
+    "bookorder": "طلب كتاب",
+    "bookinquiry": "استفسار عن كتاب",
+    "general": "استفسار عام",
+    "support": "الدعم"
   },
   "statuses": {
     "new": "جديد",
     "unread": "غير مقروء",
     "read": "مقروء",
-    "inProgress": "قيد المعالجة",
     "resolved": "محلول",
     "closed": "مغلق",
     "replied": "تم الرد"
+  },
+  "loading": {
+    "title": "جاري تحميل الرسائل",
+    "description": "يرجى الانتظار بينما نقوم بجلب رسائلك...",
+    "messages": "جاري تحميل الرسائل..."
+  },
+  "error": {
+    "title": "خطأ في تحميل الرسائل",
+    "tryAgain": "حاول مرة أخرى"
+  },
+  "messageCard": {
+    "new": "جديد",
+    "view": "عرض",
+    "read": "قراءة",
+    "markRead": "تحديد كمقروء",
+    "delete": "حذف"
+  },
+  "viewDialog": {
+    "contact": "معلومات الاتصال",
+    "relatedBook": "الكتاب المرتبط",
+    "message": "محتوى الرسالة",
+    "sendReply": "إرسال رد",
+    "typeReply": "اكتب ردك هنا...",
+    "cancel": "إلغاء",
+    "send": "إرسال",
+    "replySent": "تم إرسال الرد بنجاح",
+    "replySuccess": "تم إرسال ردك إلى العميل."
+  },
+  "empty": {
+    "title": "لم يتم العثور على رسائل",
+    "noMessages": "لم يتم العثور على رسائل.",
+    "withFilters": "لا توجد رسائل تطابق المرشحات الحالية. حاول تعديل معايير البحث."
+  },
+  "message": {
+    "from": "من:",
+    "subject": "الموضوع:",
+    "bookOrderDetails": "تفاصيل طلب الكتاب:",
+    "book": "الكتاب:",
+    "author": "المؤلف:",
+    "quantity": "الكمية:",
+    "response": "الرد:",
+    "respondedOn": "تم الرد في:"
+  },
+  "actions": {
+    "markAsRead": "تحديد كمقروء",
+    "markAsResolved": "تحديد كمحلول",
+    "respond": "رد"
+  },
+  "pagination": {
+    "previous": "السابق",
+    "next": "التالي",
+    "page": "الصفحة {{current}} من {{total}}"
+  },
+  "modal": {
+    "respondTitle": "الرد على الرسالة",
+    "yourResponse": "ردك",
+    "responsePlaceholder": "اكتب ردك هنا...",
+    "sendResponse": "إرسال الرد",
+    "cancel": "إلغاء"
+  },
+  "toast": {
+    "error": {
+      "title": "خطأ",
+      "fetchFailed": "فشل في تحميل الرسائل",
+      "responseFailed": "فشل في إرسال الرد",
+      "updateFailed": "فشل في تحديث الرسالة"
+    },
+    "responseSent": {
+      "title": "تم إرسال الرد",
+      "description": "تم إرسال ردك بنجاح"
+    },
+    "messageUpdated": {
+      "title": "تم تحديث الرسالة",
+      "description": "تم تحديث حالة الرسالة إلى {{status}}"
+    }
   }
 }

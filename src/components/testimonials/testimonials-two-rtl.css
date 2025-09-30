@@ -1,0 +1,226 @@
+/* RTL Styles for TestimonialsTwo Component */
+
+.testimonials-two-rtl {
+  direction: rtl;
+}
+
+.testimonials-two-rtl .team-about__top-text {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  line-height: 1.6;
+}
+
+.testimonials-two-rtl .block-title {
+  text-align: right;
+}
+
+.testimonials-two-rtl .block-title h3 {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  line-height: 1.4;
+}
+
+.testimonials-two-rtl .block-title p {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+/* Swiper RTL Support */
+.testimonials-two-rtl .rtl-swiper {
+  direction: rtl;
+}
+
+.testimonials-two-rtl .rtl-swiper .swiper-slide {
+  text-align: right;
+}
+
+/* Thumbnail Swiper Styling */
+.testimonials-two-rtl #testimonials-two__thumb {
+  margin-bottom: 30px;
+  padding: 20px 0;
+}
+
+.testimonials-two-rtl #testimonials-two__thumb .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.testimonials-two-rtl #testimonials-two__thumb .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+.testimonials-two-rtl #testimonials-two__thumb .swiper-slide img {
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.testimonials-two-rtl #testimonials-two__thumb .swiper-slide-thumb-active img {
+  border-color: #2194D1;
+  transform: scale(1.1);
+}
+
+/* Content Swiper Styling */
+.testimonials-two-rtl #testimonials-two__carousel {
+  padding: 40px 20px;
+  background: #f8f9fa;
+  border-radius: 15px;
+  margin-bottom: 40px;
+}
+
+.testimonials-two-rtl #testimonials-two__carousel .swiper-slide {
+  text-align: right;
+  padding: 20px;
+}
+
+.testimonials-two-rtl #testimonials-two__carousel p {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #666;
+  margin-bottom: 30px;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  font-style: italic;
+  position: relative;
+}
+
+.testimonials-two-rtl #testimonials-two__carousel p::before {
+  content: '"';
+  font-size: 60px;
+  color: #2194D1;
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  font-family: serif;
+  opacity: 0.3;
+}
+
+.testimonials-two-rtl #testimonials-two__carousel p::after {
+  content: '"';
+  font-size: 60px;
+  color: #2194D1;
+  position: absolute;
+  bottom: -40px;
+  left: 20px;
+  font-family: serif;
+  opacity: 0.3;
+}
+
+.testimonials-two-rtl .testimonials-two__meta {
+  text-align: right;
+  border-top: 2px solid #2194D1;
+  padding-top: 20px;
+}
+
+.testimonials-two-rtl .testimonials-two__meta h3 {
+  font-size: 20px;
+  color: #2194D1;
+  margin-bottom: 5px;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  font-weight: 600;
+}
+
+.testimonials-two-rtl .testimonials-two__meta span {
+  color: #999;
+  font-size: 14px;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  display: block;
+}
+
+/* Call to Action Styling */
+.testimonials-two-rtl .testimonials-cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 40px;
+  flex-direction: row-reverse;
+}
+
+.testimonials-two-rtl .btn {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  padding: 12px 30px;
+  border-radius: 25px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.testimonials-two-rtl .btn-primary {
+  background-color: #2194D1;
+  border-color: #2194D1;
+  color: #fff;
+}
+
+.testimonials-two-rtl .btn-primary:hover {
+  background-color: #1a7bb8;
+  border-color: #1a7bb8;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(33, 148, 209, 0.3);
+}
+
+.testimonials-two-rtl .btn-outline-primary {
+  background-color: transparent;
+  border: 2px solid #2194D1;
+  color: #2194D1;
+}
+
+.testimonials-two-rtl .btn-outline-primary:hover {
+  background-color: #2194D1;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(33, 148, 209, 0.3);
+}
+
+/* Responsive adjustments for Arabic */
+@media (max-width: 991px) {
+  .testimonials-two-rtl .block-title h3 {
+    font-size: 24px;
+  }
+  
+  .testimonials-two-rtl .testimonials-cta {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .testimonials-two-rtl .btn {
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+  }
+  
+  .testimonials-two-rtl #testimonials-two__carousel p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  .testimonials-two-rtl .block-title h3 {
+    font-size: 20px;
+  }
+  
+  .testimonials-two-rtl #testimonials-two__carousel {
+    padding: 20px 15px;
+    margin-bottom: 20px;
+  }
+  
+  .testimonials-two-rtl #testimonials-two__carousel p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .testimonials-two-rtl .testimonials-two__meta h3 {
+    font-size: 18px;
+  }
+  
+  .testimonials-two-rtl #testimonials-two__thumb .swiper-slide img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* Arabic font loading */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap');

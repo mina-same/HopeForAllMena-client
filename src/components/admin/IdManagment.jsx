@@ -43,49 +43,49 @@ const IDCardGenerator = () => {
   const isFormValid = csvData.length > 0 && club.trim() && church.trim();
 
   return (
-    <div className={`min-h-screen bg-background p-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-      <div className="max-w-4xl mx-auto space-y-8">
-        <div className={`text-center space-y-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-          <h1 className={`text-4xl font-bold text-[#2194D1] ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+    <div className={`min-h-screen bg-background p-3 xs:p-4 sm:p-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      <div className="max-w-7xl mx-auto space-y-4 xs:space-y-6 sm:space-y-8">
+        <div className={`text-center space-y-2 xs:space-y-3 sm:space-y-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+          <h1 className={`text-2xl xs:text-3xl sm:text-4xl font-bold text-[#2194D1] ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
             {t('header.title')}
           </h1>
-          <p className={`text-muted-foreground text-lg ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+          <p className={`text-muted-foreground text-sm xs:text-base sm:text-lg ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
             {t('header.description')}
           </p>
         </div>
 
-        <div className={`grid gap-8 md:grid-cols-2 ${currentLanguage === 'ar' ? 'md:grid-flow-col-dense' : ''}`}>
+        <div className={`grid gap-4 xs:gap-6 sm:gap-8 lg:grid-cols-2 ${currentLanguage === 'ar' ? 'lg:grid-flow-col-dense' : ''}`}>
           {/* CSV Upload Section */}
           <Card className="shadow-soft">
-            <CardHeader>
-              <CardTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <Upload className="h-5 w-5 text-[#2194D1]" />
+            <CardHeader className="p-4 xs:p-5 sm:p-6">
+              <CardTitle className={`flex items-center gap-2 text-base xs:text-lg sm:text-xl ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+                <Upload className="h-4 w-4 xs:h-5 xs:w-5 text-[#2194D1]" />
                 {t('upload.title')}
               </CardTitle>
-              <CardDescription className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+              <CardDescription className={`text-sm xs:text-base ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                 {t('upload.description')}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 xs:space-y-4 p-4 xs:p-5 sm:p-6 pt-0">
               <div className="space-y-2">
-                <Label htmlFor="csv-upload" className={currentLanguage === 'ar' ? 'text-right block' : 'text-left'}>{t('upload.label')}</Label>
+                <Label htmlFor="csv-upload" className={`text-sm xs:text-base ${currentLanguage === 'ar' ? 'text-right block' : 'text-left'}`}>{t('upload.label')}</Label>
                 <Input
                   id="csv-upload"
                   type="file"
                   accept=".csv"
                   onChange={handleCSVUpload}
-                  className={`cursor-pointer ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
+                  className={`cursor-pointer text-sm xs:text-base ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
                   dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
               {csvData.length > 0 && (
-                <div className="bg-secondary p-4 rounded-lg">
+                <div className="bg-secondary p-3 xs:p-4 rounded-lg">
                   <div className={`flex items-center gap-2 text-secondary-foreground ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
                     <Users className="h-4 w-4" />
-                    <span>{t('upload.loaded', { count: csvData.length })}</span>
+                    <span className="text-sm xs:text-base">{t('upload.loaded', { count: csvData.length })}</span>
                   </div>
-                  <div className="mt-2 max-h-32 overflow-y-auto">
-                    <div className={`text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'text-right arabic-text' : 'text-left'}`}>
+                  <div className="mt-2 max-h-24 xs:max-h-32 overflow-y-auto">
+                    <div className={`text-xs xs:text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'text-right arabic-text' : 'text-left'}`}>
                       {csvData.slice(0, 5).join(', ')}
                       {csvData.length > 5 && '...'}
                     </div>
@@ -97,35 +97,35 @@ const IDCardGenerator = () => {
 
           {/* Club and Church Input Section */}
           <Card className="shadow-soft">
-            <CardHeader>
-              <CardTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
-                <FileText className="h-5 w-5 text-[#2194D1]" />
+            <CardHeader className="p-4 xs:p-5 sm:p-6">
+              <CardTitle className={`flex items-center gap-2 text-base xs:text-lg sm:text-xl ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+                <FileText className="h-4 w-4 xs:h-5 xs:w-5 text-[#2194D1]" />
                 {t('clubChurch.title')}
               </CardTitle>
-              <CardDescription className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+              <CardDescription className={`text-sm xs:text-base ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                 {t('clubChurch.description')}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 xs:space-y-4 p-4 xs:p-5 sm:p-6 pt-0">
               <div className="space-y-2">
-                <Label htmlFor="club" className={`${currentLanguage === 'ar' ? 'text-right arabic-text block' : 'text-left'}`}>{t('clubChurch.clubLabel')}</Label>
+                <Label htmlFor="club" className={`text-sm xs:text-base ${currentLanguage === 'ar' ? 'text-right arabic-text block' : 'text-left'}`}>{t('clubChurch.clubLabel')}</Label>
                 <Input
                   id="club"
                   value={club}
                   onChange={(e) => setClub(e.target.value)}
                   placeholder={t('clubChurch.clubPlaceholder')}
-                  className={`${currentLanguage === 'ar' ? 'arabic-text text-right' : 'text-left'}`}
+                  className={`text-sm xs:text-base ${currentLanguage === 'ar' ? 'arabic-text text-right' : 'text-left'}`}
                   dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="church" className={`${currentLanguage === 'ar' ? 'text-right arabic-text block' : 'text-left'}`}>{t('clubChurch.churchLabel')}</Label>
+                <Label htmlFor="church" className={`text-sm xs:text-base ${currentLanguage === 'ar' ? 'text-right arabic-text block' : 'text-left'}`}>{t('clubChurch.churchLabel')}</Label>
                 <Input
                   id="church"
                   value={church}
                   onChange={(e) => setChurch(e.target.value)}
                   placeholder={t('clubChurch.churchPlaceholder')}
-                  className={`${currentLanguage === 'ar' ? 'arabic-text text-right' : 'text-left'}`}
+                  className={`text-sm xs:text-base ${currentLanguage === 'ar' ? 'arabic-text text-right' : 'text-left'}`}
                   dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
                 />
               </div>
@@ -135,30 +135,32 @@ const IDCardGenerator = () => {
 
         {/* Preview Section */}
         <Card className="shadow-soft">
-          <CardHeader>
-            <CardTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('preview.title')}</CardTitle>
-            <CardDescription className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+          <CardHeader className="p-4 xs:p-5 sm:p-6">
+            <CardTitle className={`text-base xs:text-lg sm:text-xl ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('preview.title')}</CardTitle>
+            <CardDescription className={`text-sm xs:text-base ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
               {t('preview.description')}
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className={`relative inline-block bg-white p-4 rounded-lg shadow-strong ${currentLanguage === 'ar' ? 'mr-auto' : 'ml-auto'}`}>
-              <img
-                src="/idDesgin.png"
-                alt={t('preview.title')}
-                className="w-80 h-auto rounded"
-              />
-              <div className={`absolute bottom-8 ${currentLanguage === 'ar' ? 'right-8 text-right' : 'left-8 text-left'} arabic-text text-xs bg-black/20 p-2 rounded backdrop-blur-sm text-white`}>
-                <div>{t('preview.name', { name: csvData[0] || t('preview.example') })}</div>
-                <div>{t('preview.club', { club: club || t('clubChurch.clubLabel') })}</div>
-                <div>{t('preview.church', { church: church || t('clubChurch.churchLabel') })}</div>
+          <CardContent className="p-4 xs:p-5 sm:p-6 pt-0">
+            <div className="flex justify-center">
+              <div className={`relative inline-block bg-white p-2 xs:p-3 sm:p-4 rounded-lg shadow-strong max-w-full`}>
+                <img
+                  src="/idDesgin.png"
+                  alt={t('preview.title')}
+                  className="w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[380px] md:max-w-[420px] lg:max-w-[480px] h-auto rounded"
+                />
+                <div className={`absolute bottom-4 xs:bottom-6 sm:bottom-8 ${currentLanguage === 'ar' ? 'right-4 xs:right-6 sm:right-8 text-right' : 'left-4 xs:left-6 sm:left-8 text-left'} arabic-text text-xs xs:text-sm bg-black/20 p-1.5 xs:p-2 rounded backdrop-blur-sm text-white max-w-[200px] xs:max-w-[240px] sm:max-w-[280px]`}>
+                  <div className="truncate">{t('preview.name', { name: csvData[0] || t('preview.example') })}</div>
+                  <div className="truncate">{t('preview.club', { club: club || t('clubChurch.clubLabel') })}</div>
+                  <div className="truncate">{t('preview.church', { church: church || t('clubChurch.churchLabel') })}</div>
+                </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Generate Button */}
-        <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-center'}`}>
+        <div className={`flex flex-col items-center space-y-3 xs:space-y-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-center'}`}>
           {isFormValid ? (
             <PDFDownloadLink
               document={
@@ -175,7 +177,12 @@ const IDCardGenerator = () => {
                 if (error) {
                   console.error('PDF generation error:', error);
                   return (
-                    <Button disabled variant="destructive" size="lg" className="px-8">
+                    <Button 
+                      disabled 
+                      variant="destructive" 
+                      size="lg" 
+                      className="px-4 xs:px-6 sm:px-8 text-sm xs:text-base w-full xs:w-auto max-w-xs"
+                    >
                       {t('generate.error')}
                     </Button>
                   );
@@ -185,17 +192,17 @@ const IDCardGenerator = () => {
                     disabled={loading}
                     variant="premium"
                     size="lg"
-                    className={`px-8 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+                    className={`px-4 xs:px-6 sm:px-8 text-sm xs:text-base w-full xs:w-auto max-w-xs ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
                   >
                     {loading ? (
                       <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
-                        {t('generate.generating')}
+                        <span className="text-sm xs:text-base">{t('generate.generating')}</span>
                       </div>
                     ) : (
                       <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                        <Download className="h-5 w-5" />
-                        {t('generate.button')}
+                        <Download className="h-4 w-4 xs:h-5 xs:w-5" />
+                        <span className="text-sm xs:text-base">{t('generate.button')}</span>
                       </div>
                     )}
                   </Button>
@@ -207,16 +214,16 @@ const IDCardGenerator = () => {
               disabled
               variant="premium"
               size="lg"
-              className={`px-8 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+              className={`px-4 xs:px-6 sm:px-8 text-sm xs:text-base w-full xs:w-auto max-w-xs ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
             >
               <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                <Download className="h-5 w-5" />
-                {t('generate.button')}
+                <Download className="h-4 w-4 xs:h-5 xs:w-5" />
+                <span className="text-sm xs:text-base">{t('generate.button')}</span>
               </div>
             </Button>
           )}
           {csvData.length > 0 && (
-            <p className={`mt-2 text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-center'}`}>
+            <p className={`text-xs xs:text-sm text-muted-foreground px-4 text-center ${currentLanguage === 'ar' ? 'text-right' : 'text-center'}`}>
               {t('generate.pages', { pages: Math.ceil(csvData.length / 9), cards: csvData.length })}
             </p>
           )}

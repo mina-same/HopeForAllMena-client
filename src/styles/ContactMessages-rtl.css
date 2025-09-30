@@ -2,11 +2,23 @@
 .contact-messages-rtl {
   direction: rtl;
   text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
 }
 
+/* Header RTL */
+.contact-messages-rtl h2,
+.contact-messages-rtl h3,
+.contact-messages-rtl h4 {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+/* Search Input RTL */
 .contact-messages-rtl .search-input {
   padding-left: 12px;
   padding-right: 40px;
+  text-align: right;
+  direction: rtl;
 }
 
 .contact-messages-rtl .search-icon {
@@ -14,41 +26,61 @@
   right: 12px;
 }
 
+/* Message Cards RTL */
 .contact-messages-rtl .message-card {
   text-align: right;
+  direction: rtl;
 }
 
 .contact-messages-rtl .message-header {
   flex-direction: row-reverse;
+  justify-content: flex-start;
 }
 
 .contact-messages-rtl .message-badges {
   flex-direction: row-reverse;
+  gap: 0.5rem;
 }
 
 .contact-messages-rtl .message-actions {
   flex-direction: row-reverse;
+  justify-content: flex-start;
 }
 
-.contact-messages-rtl .pagination {
-  flex-direction: row-reverse;
+.contact-messages-rtl .message-content {
+  text-align: right;
+  direction: rtl;
 }
 
+/* Filters RTL */
 .contact-messages-rtl .filters {
   flex-direction: row-reverse;
 }
 
-.contact-messages-rtl .book-details-grid {
+.contact-messages-rtl .filter-select {
   text-align: right;
 }
 
+/* Book Order Details RTL */
+.contact-messages-rtl .book-details-grid {
+  text-align: right;
+  direction: rtl;
+}
+
+.contact-messages-rtl .book-details-grid .grid {
+  text-align: right;
+}
+
+/* Response Section RTL */
 .contact-messages-rtl .response-section {
   text-align: right;
+  direction: rtl;
 }
 
 /* Badge RTL adjustments */
 .contact-messages-rtl .badge-with-icon {
   flex-direction: row-reverse;
+  gap: 0.25rem;
 }
 
 .contact-messages-rtl .badge-with-icon svg {
@@ -56,23 +88,104 @@
   margin-right: 0;
 }
 
+/* Pagination RTL */
+.contact-messages-rtl .pagination {
+  flex-direction: row-reverse;
+}
+
+.contact-messages-rtl .pagination-button {
+  flex-direction: row-reverse;
+}
+
 /* Modal RTL support */
 .contact-messages-rtl .modal-content {
   text-align: right;
+  direction: rtl;
 }
 
 .contact-messages-rtl .modal-textarea {
   text-align: right;
   direction: rtl;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+.contact-messages-rtl .modal-header {
+  text-align: right;
+}
+
+.contact-messages-rtl .modal-footer {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+/* Form Elements RTL */
+.contact-messages-rtl input,
+.contact-messages-rtl textarea,
+.contact-messages-rtl select {
+  text-align: right;
+  direction: rtl;
+}
+
+.contact-messages-rtl input::placeholder,
+.contact-messages-rtl textarea::placeholder {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Loading State RTL */
+.contact-messages-rtl .loading-text {
+  text-align: center;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+/* Empty State RTL */
+.contact-messages-rtl .empty-state {
+  text-align: center;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
 }
 
 /* Responsive RTL adjustments */
 @media (max-width: 640px) {
   .contact-messages-rtl .mobile-filters {
     flex-direction: column;
+    gap: 1rem;
   }
   
   .contact-messages-rtl .mobile-message-actions {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .contact-messages-rtl .mobile-header {
+    text-align: right;
+  }
+  
+  .contact-messages-rtl .mobile-pagination {
+    flex-direction: row-reverse;
+    justify-content: center;
+  }
+}
+
+/* Tablet RTL adjustments */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .contact-messages-rtl .tablet-layout {
+    direction: rtl;
+  }
+  
+  .contact-messages-rtl .tablet-filters {
+    flex-direction: row-reverse;
+    gap: 1rem;
+  }
+}
+
+/* Desktop RTL enhancements */
+@media (min-width: 1025px) {
+  .contact-messages-rtl .desktop-layout {
+    direction: rtl;
+  }
+  
+  .contact-messages-rtl .desktop-actions {
     flex-direction: row-reverse;
     justify-content: flex-start;
   }

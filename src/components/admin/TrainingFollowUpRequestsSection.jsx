@@ -9,8 +9,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Input } from '../ui/input';
 import { useToast } from '../../hooks/use-toast';
 import { cn } from '../../lib/utils';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { Link } from 'gatsby';
+import { graphql } from 'gatsby';
+import '../../styles/TrainingFollowUpRequestsManagement-rtl.css';
 
 const TrainingFollowUpRequestsSection = () => {
+  const { t } = useTranslation('TrainingFollowUpRequestsManagement');
+  const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,8 +45,8 @@ const TrainingFollowUpRequestsSection = () => {
     const finalToken = token || authToken || accessToken;
     if (!finalToken && user) {
       toast({
-        title: "Authentication Issue",
-        description: "Please log out and log back in. Token is missing but user data exists.",
+        title: t('errors.authIssue'),
+        description: t('errors.authIssueMessage'),
         variant: "destructive",
         duration: 8000,
       });
@@ -76,8 +83,8 @@ const TrainingFollowUpRequestsSection = () => {
         
         if (response.status === 401) {
           toast({
-            title: "Authentication Required",
-            description: "Please log in as an admin to view follow-up requests. Use: admin@azino.com / Admin@2024",
+            title: t('errors.authRequired'),
+            description: t('errors.authMessage'),
             variant: "destructive",
             duration: 8000,
           });
@@ -88,8 +95,8 @@ const TrainingFollowUpRequestsSection = () => {
     } catch (error) {
       console.error('Fetch error:', error);
       toast({
-        title: "Error",
-        description: "Failed to load follow-up requests",
+        title: t('errors.title'),
+        description: t('errors.loadFailed'),
         variant: "destructive",
       });
     } finally {
@@ -130,16 +137,9 @@ const TrainingFollowUpRequestsSection = () => {
         const responseData = await response.json();
         console.log('✅ Update successful:', responseData);
         
-        const statusMessages = {
-          processing: 'Follow-up request is being processed',
-          fulfilled: 'Follow-up request has been fulfilled',
-          cancelled: 'Follow-up request has been cancelled',
-          pending: 'Follow-up request status updated',
-        };
-
         toast({
-          title: "Status Updated",
-          description: statusMessages[newStatus],
+          title: t('errors.statusUpdated'),
+          description: t(`statusMessages.${newStatus}`),
         });
         
         console.log('Refreshing requests list...');
@@ -164,8 +164,8 @@ const TrainingFollowUpRequestsSection = () => {
       console.error('❌ Update request error:', error);
       console.error('❌ Error stack:', error.stack);
       toast({
-        title: "Error",
-        description: error.message,
+        title: t('errors.title'),
+        description: t('errors.updateFailed'),
         variant: "destructive",
       });
     }
@@ -197,8 +197,8 @@ const TrainingFollowUpRequestsSection = () => {
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to download file",
+        title: t('errors.title'),
+        description: t('errors.downloadFailed'),
         variant: "destructive",
       });
     }
@@ -216,8 +216,8 @@ const TrainingFollowUpRequestsSection = () => {
 
       if (response.ok) {
         toast({
-          title: "Request Deleted",
-          description: "Follow-up request has been successfully deleted",
+          title: t('errors.requestDeleted'),
+          description: t('statusMessages.deleted'),
         });
         
         fetchFollowUpRequests(); // Refresh the list
@@ -228,8 +228,8 @@ const TrainingFollowUpRequestsSection = () => {
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: error.message,
+        title: t('errors.title'),
+        description: t('errors.deleteFailed'),
         variant: "destructive",
       });
     }
@@ -279,17 +279,17 @@ const TrainingFollowUpRequestsSection = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-lg">Loading follow-up requests...</div>
+        <div className="text-lg">{t('loading.requests')}</div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className={cn("space-y-6", currentLanguage === 'ar' ? 'rtl' : 'ltr')} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      <div className={cn("flex items-center justify-between flex-row", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Training Follow-up Requests</h2>
-          <p className="text-muted-foreground">Manage follow-up training material requests</p>
+          <h2 className="text-2xl font-bold text-foreground">{t('title')}</h2>
+          <p className="text-muted-foreground">{t('description')}</p>
         </div>
       </div>
 
@@ -297,9 +297,9 @@ const TrainingFollowUpRequestsSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-primary/5">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-row">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Total Requests</p>
+                <p className={cn("text-sm font-medium text-muted-foreground", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>{t('stats.totalRequests')}</p>
                 <p className="text-3xl font-bold text-foreground">{requests.length}</p>
               </div>
               <div className="p-3 rounded-lg bg-primary/10">
@@ -311,9 +311,9 @@ const TrainingFollowUpRequestsSection = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-yellow-500/5">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-row">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Pending</p>
+                <p className={cn("text-sm font-medium text-muted-foreground", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>{t('stats.pending')}</p>
                 <p className="text-3xl font-bold text-yellow-600">
                   {requests.filter(r => r.status === 'pending').length}
                 </p>
@@ -327,9 +327,9 @@ const TrainingFollowUpRequestsSection = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-purple-500/5">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-row">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Processing</p>
+                <p className={cn("text-sm font-medium text-muted-foreground", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>{t('stats.processing')}</p>
                 <p className="text-3xl font-bold text-blue-600">
                   {requests.filter(r => r.status === 'processing').length}
                 </p>
@@ -343,9 +343,9 @@ const TrainingFollowUpRequestsSection = () => {
         
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-green-500/5">
           <CardContent className="p-6">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between flex-row">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Fulfilled</p>
+                <p className={cn("text-sm font-medium text-muted-foreground", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>{t('stats.fulfilled')}</p>
                 <p className="text-3xl font-bold text-green-600">
                   {requests.filter(r => r.status === 'fulfilled').length}
                 </p>
@@ -361,47 +361,48 @@ const TrainingFollowUpRequestsSection = () => {
       {/* Requests Table */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className={cn("flex items-center gap-2", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>
             <Shirt className="h-5 w-5" />
-            Training Follow-up Requests ({filteredRequests.length})
+            {t('table.count', { count: filteredRequests.length })}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {/* Filters */}
-          <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className={cn("flex flex-row md:flex-row gap-4 mb-6", currentLanguage === 'ar' ? 'md:flex-row' : '')}>
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", currentLanguage === 'ar' ? 'right-3' : 'left-3')} />
               <Input
-                placeholder="Search by name, email, phone, training type, or company..."
+                placeholder={t('filters.searchPlaceholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-[30px]"
+                className={currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}
+                dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
               />
             </div>
             <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-48">
-                <SelectValue placeholder="Filter by status" />
+              <SelectTrigger className="w-full md:w-48 flex-row">
+                <SelectValue placeholder={t('filters.filterByStatus')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="pending">Pending</SelectItem>
-                <SelectItem value="processing">Processing</SelectItem>
-                <SelectItem value="fulfilled">Fulfilled</SelectItem>
-                <SelectItem value="cancelled">Cancelled</SelectItem>
+                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+                <SelectItem value="pending">{t('filters.status.pending')}</SelectItem>
+                <SelectItem value="processing">{t('filters.status.processing')}</SelectItem>
+                <SelectItem value="fulfilled">{t('filters.status.fulfilled')}</SelectItem>
+                <SelectItem value="cancelled">{t('filters.status.cancelled')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Trainer</TableHead>
-                <TableHead>Requester</TableHead>
-                <TableHead>Church</TableHead>
-                <TableHead>Address</TableHead>
-                <TableHead>Books</TableHead>
-                <TableHead>T-shirts</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.trainer')}</TableHead>
+                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.requester')}</TableHead>
+                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.church')}</TableHead>
+                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.address')}</TableHead>
+                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.books')}</TableHead>
+                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.tshirts')}</TableHead>
+                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.status')}</TableHead>
+                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -415,8 +416,8 @@ const TrainingFollowUpRequestsSection = () => {
                     </div>
                   </TableCell>
                   <TableCell>{request.churchName}</TableCell>
-                  <TableCell title={request.address}>{request.address || 'N/A'}</TableCell>
-                  <TableCell>{request.books?.length || 0} books</TableCell>
+                  <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'} title={request.address}>{request.address || t('table.notAvailable')}</TableCell>
+                  <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.booksCount', { count: request.books?.length || 0 })}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-1">
                       <Shirt className="h-4 w-4" />
@@ -428,11 +429,11 @@ const TrainingFollowUpRequestsSection = () => {
                       variant={getStatusBadgeVariant(request.status)}
                       className={cn("capitalize", getStatusColor(request.status))}
                     >
-                      {request.status}
+                      {t(`status.${request.status}`)}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center space-x-2">
+                    <div className={cn("flex items-center", currentLanguage === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2')}>
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button 
@@ -725,3 +726,17 @@ const TrainingFollowUpRequestsSection = () => {
 };
 
 export default TrainingFollowUpRequestsSection;
+
+export const query = graphql`
+  query($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

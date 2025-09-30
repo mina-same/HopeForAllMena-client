@@ -1,0 +1,87 @@
+{
+  "title": "Reviews Management",
+  "description": "Manage book reviews and moderate content",
+  "searchPlaceholder": "Search reviews...",
+  "filters": {
+    "status": {
+      "all": "All Status",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
+    "rating": {
+      "all": "All Ratings",
+      "5": "5 Stars",
+      "4": "4 Stars",
+      "3": "3 Stars",
+      "2": "2 Stars",
+      "1": "1 Star"
+    }
+  },
+  "table": {
+    "title": "Reviews",
+    "count": "Reviews ({{count}})",
+    "reviewFor": "Review for:",
+    "by": "by",
+    "verifiedPurchase": "Verified Purchase",
+    "guestReview": "Guest Review",
+    "helpful": "{{percent}}% helpful"
+  },
+  "status": {
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "pending": "Pending"
+  },
+  "actions": {
+    "approve": "Approve Review",
+    "reject": "Reject Review",
+    "moderate": "Moderate Review",
+    "markHelpful": "Mark as Helpful",
+    "markNotHelpful": "Mark as Not Helpful"
+  },
+  "moderationModal": {
+    "title": "Moderate Review",
+    "review": "Review:",
+    "author": "By:",
+    "bookTitle": "For:",
+    "decision": "Moderation Decision",
+    "selectDecision": "Select decision",
+    "approve": "Approve",
+    "reject": "Reject",
+    "notes": "Notes (Optional)",
+    "notesPlaceholder": "Add notes about the moderation decision...",
+    "confirmText": "Moderate Review",
+    "cancelText": "Cancel"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {{current}} of {{total}}"
+  },
+  "loading": {
+    "reviews": "Loading reviews...",
+    "moderating": "Moderating..."
+  },
+  "empty": {
+    "noReviews": "No reviews found.",
+    "description": "No reviews match your current filters."
+  },
+  "toast": {
+    "reviewApproved": "Review Approved",
+    "reviewApprovedDesc": "Review has been approved successfully.",
+    "reviewRejected": "Review Rejected",
+    "reviewRejectedDesc": "Review has been rejected successfully.",
+    "reviewModerated": "Review Moderated",
+    "reviewModeratedDesc": "Review has been {{status}} successfully.",
+    "reviewUpdated": "Review Updated",
+    "markedHelpful": "Review marked as helpful.",
+    "markedNotHelpful": "Review marked as not helpful.",
+    "error": "Error",
+    "fetchError": "Failed to fetch reviews. Please try again.",
+    "approveError": "Failed to approve review. Please try again.",
+    "rejectError": "Failed to reject review. Please try again.",
+    "moderateError": "Failed to moderate review. Please try again.",
+    "updateError": "Failed to update review. Please try again."
+  },
+  "moderatorNotes": "Moderator Notes:"
+}

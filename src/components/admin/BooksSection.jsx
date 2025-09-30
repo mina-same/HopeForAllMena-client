@@ -888,7 +888,7 @@ export function BooksSection() {
                       </div>
                       
                       {/* Mobile-Friendly Metadata */}
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-500">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-500 flex-row">
                         {book.pages && (
                           <div className="flex items-center gap-1">
                             <Book className="h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
@@ -906,7 +906,7 @@ export function BooksSection() {
                       
                       {/* Mobile Reviews Section */}
                       <div className="mt-2 sm:hidden">
-                        <div className="flex items-center gap-2 text-xs text-gray-600">
+                        <div className="flex items-center gap-2 text-xs text-gray-600 flex-row">
                           <span>{t('table.reviewsCount', { count: book.totalReviews })}</span>
                           {book.averageRating > 0 && (
                             <div className="flex items-center gap-1">
@@ -940,7 +940,7 @@ export function BooksSection() {
                       {/* Status Selector - Full width on mobile */}
                       <div className="flex-1 sm:flex-none">
                         <Select value={book.status} onValueChange={(value) => handleStatusChange(book, value)}>
-                          <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-36 h-10 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          <SelectTrigger className={`bg-white border border-gray-200 w-full sm:w-36 h-10 flex-row ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
@@ -980,7 +980,7 @@ export function BooksSection() {
 
               {/* Enhanced Pagination */}
               {totalPages > 1 && (
-                <div className={`flex justify-center items-center gap-3 mt-8 ${currentLanguage === 'ar' ? '' : ''}`}>
+                <div className={`flex justify-center items-center gap-3 mt-8 flex-row ${currentLanguage === 'ar' ? '' : ''}`}>
                   <Button
                     variant="outline"
                     size="sm"

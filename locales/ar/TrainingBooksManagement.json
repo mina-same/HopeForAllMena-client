@@ -1,0 +1,91 @@
+{
+  "title": "كتب التدريب",
+  "description": "إدارة المواد التدريبية والموارد الخاصة بك",
+  "addBook": "إضافة كتاب تدريبي",
+  "searchPlaceholder": "البحث في الكتب...",
+  "booksCount": "{{count}} كتاب تدريبي",
+  
+  "stats": {
+    "totalBooks": "إجمالي الكتب",
+    "activeBooks": "الكتب النشطة", 
+    "updatedThisMonth": "محدث هذا الشهر"
+  },
+
+  "filters": {
+    "allBooks": "جميع الكتب",
+    "activeOnly": "النشطة فقط",
+    "inactiveOnly": "غير النشطة فقط"
+  },
+
+  "form": {
+    "createTitle": "إضافة كتاب تدريبي جديد",
+    "editTitle": "تعديل كتاب التدريب",
+    "fields": {
+      "nameEn": "اسم الكتاب (إنجليزي)",
+      "nameAr": "اسم الكتاب (عربي)",
+      "nameEnPlaceholder": "أدخل اسم الكتاب التدريبي",
+      "nameArPlaceholder": "أدخل اسم الكتاب",
+      "descriptionEn": "الوصف (إنجليزي)",
+      "descriptionAr": "الوصف (عربي)",
+      "descriptionEnPlaceholder": "أدخل وصف الكتاب",
+      "descriptionArPlaceholder": "أدخل وصف الكتاب",
+      "coverImage": "صورة غلاف الكتاب التدريبي",
+      "bookParts": "أجزاء الكتاب",
+      "partNameEn": "اسم الجزء (إنجليزي)",
+      "partNameAr": "اسم الجزء (عربي)",
+      "isActive": "نشط (سيكون الكتاب متاحاً لطلبات التدريب)"
+    },
+    "buttons": {
+      "addPart": "إضافة جزء",
+      "removePart": "إزالة الجزء",
+      "cancel": "إلغاء",
+      "create": "إنشاء الكتاب",
+      "update": "تحديث الكتاب"
+    }
+  },
+
+  "table": {
+    "updated": "محدث",
+    "parts": "الأجزاء"
+  },
+
+  "status": {
+    "active": "نشط",
+    "inactive": "غير نشط"
+  },
+
+  "actions": {
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+
+  "deleteConfirm": {
+    "title": "حذف كتاب التدريب",
+    "message": "هل أنت متأكد من أنك تريد حذف هذا الكتاب التدريبي؟",
+    "confirm": "حذف",
+    "cancel": "إلغاء"
+  },
+
+  "empty": {
+    "noBooks": "لم يتم إضافة كتب تدريبية بعد.",
+    "noFilteredBooks": "لا توجد كتب تطابق المرشحات الحالية.",
+    "addFirstBook": "أضف أول كتاب تدريبي للبدء.",
+    "adjustFilters": "حاول تعديل مصطلح البحث أو إعدادات المرشح."
+  },
+
+  "loading": {
+    "books": "جاري تحميل الكتب التدريبية..."
+  },
+
+  "success": {
+    "bookCreated": "تم إنشاء الكتاب التدريبي بنجاح",
+    "bookUpdated": "تم تحديث الكتاب التدريبي بنجاح",
+    "bookDeleted": "تم حذف الكتاب التدريبي بنجاح"
+  },
+
+  "errors": {
+    "loadBooks": "فشل في تحميل الكتب التدريبية",
+    "saveBook": "فشل في حفظ الكتاب التدريبي",
+    "deleteBook": "فشل في حذف الكتاب التدريبي"
+  }
+}

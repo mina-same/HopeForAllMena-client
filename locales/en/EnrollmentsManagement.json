@@ -1,0 +1,63 @@
+{
+  "title": "Enrollment Management",
+  "description": "Manage course enrollments and applications",
+  "stats": {
+    "totalEnrollments": "Total Enrollments",
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "filters": {
+    "searchPlaceholder": "Search enrollments...",
+    "filterByStatus": "Filter by status",
+    "status": {
+      "all": "All Status",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "table": {
+    "enrollmentsCount": "Enrollments ({{count}})",
+    "headers": {
+      "student": "Student",
+      "course": "Course",
+      "enrollmentDate": "Enrollment Date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "noEnrollments": "No enrollments found."
+  },
+  "status": {
+    "pending": "Pending",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "cancelled": "Cancelled",
+    "completed": "Completed"
+  },
+  "actions": {
+    "changeStatus": "Change Status",
+    "delete": "Delete",
+    "confirmDelete": "Are you sure you want to delete this enrollment?"
+  },
+  "toast": {
+    "statusUpdated": "Status Updated",
+    "statusChanged": "Enrollment status changed to {{status}}",
+    "enrollmentDeleted": "Enrollment Deleted",
+    "enrollmentRemoved": "The enrollment has been removed.",
+    "error": {
+      "updateStatus": "Failed to update enrollment status",
+      "deleteEnrollment": "Failed to delete enrollment",
+      "loadEnrollments": "Failed to load enrollments"
+    }
+  },
+  "loading": {
+    "enrollments": "Loading enrollments...",
+    "updating": "Updating...",
+    "deleting": "Deleting..."
+  },
+  "empty": {
+    "description": "No enrollments found matching your criteria.",
+    "noEnrollmentsYet": "No enrollments have been submitted yet."
+  }
+}

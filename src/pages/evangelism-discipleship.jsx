@@ -12,7 +12,7 @@ import Layout from "../components/layout";
 
 const EvangelismDiscipleship = () => {
   return (
-    <Layout pageTitle="Evangelism & Discipleship || Azino || Charity React Next Template">
+    <Layout pageTitle="Evangelism & Discipleship || Hope for All Mena || Charity React Next Template">
     <div className="min-h-screen bg-background">
       <HeaderTwo />
       <StickyHeader />
