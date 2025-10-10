@@ -13,10 +13,26 @@ const UnauthorizedPage = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const { user, logout } = useAuth();
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Safe auth context usage for SSR
+  let user = null;
+  let logout = null;
+
+  try {
+    const authContext = useAuth();
+    user = authContext?.user;
+    logout = authContext?.logout;
+  } catch (error) {
+    // Handle SSR where context might not be available
+    console.warn('Auth context not available during SSR');
+  }
   const brandPrimary = '#2194D1';
 
   useEffect(() => {
+    // Mark component as mounted for client-side rendering
+    setIsMounted(true);
+
     // Trigger animations after component mounts
     const timer = setTimeout(() => {
       setIsVisible(true);
@@ -35,6 +51,12 @@ const UnauthorizedPage = () => {
   };
 
   const confirmLogout = async () => {
+    if (!logout) {
+      // If logout function is not available, just navigate to login
+      navigate('/login');
+      return;
+    }
+
     setIsLoggingOut(true);
     try {
       await logout();
@@ -51,9 +73,9 @@ const UnauthorizedPage = () => {
     <Layout pageTitle="Access Denied || Hope for All Mena || Charity React Next Template">
       <HeaderTwo />
       <StickyHeader />
-      
+
       {/* Background decorative elements */}
-      <div 
+      <div
         style={{
           position: 'absolute',
           top: '10%',
@@ -65,7 +87,7 @@ const UnauthorizedPage = () => {
           zIndex: 0
         }}
       />
-      <div 
+      <div
         style={{
           position: 'absolute',
           bottom: '20%',
@@ -79,7 +101,7 @@ const UnauthorizedPage = () => {
         }}
       />
 
-      <div 
+      <div
         className="d-flex align-items-center min-vh-100 position-relative"
         style={{
           background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
@@ -90,7 +112,7 @@ const UnauthorizedPage = () => {
           <Row className="justify-content-center text-center">
             <Col lg={8} md={10}>
               {/* Main Unauthorized Content */}
-              <div 
+              <div
                 className={`mb-5 ${isVisible ? 'fade-in' : 'opacity-0'}`}
                 style={{
                   transition: 'all 0.8s ease-out',
@@ -99,7 +121,7 @@ const UnauthorizedPage = () => {
               >
                 {/* Animated Icon */}
                 <div className="position-relative mb-4">
-                  <div 
+                  <div
                     style={{
                       fontSize: 'clamp(4rem, 15vw, 8rem)',
                       animation: isVisible ? 'bounceIn 1s ease-out' : 'none',
@@ -111,9 +133,9 @@ const UnauthorizedPage = () => {
                 </div>
 
                 {/* Error Message */}
-                <h2 
-                  className="h2 fw-bold mb-3" 
-                  style={{ 
+                <h2
+                  className="h2 fw-bold mb-3"
+                  style={{
                     color: '#dc3545',
                     fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
                     fontFamily: 'Jost, sans-serif',
@@ -122,8 +144,8 @@ const UnauthorizedPage = () => {
                 >
                   Access Denied
                 </h2>
-                
-                <p 
+
+                <p
                   className="lead text-muted mb-4"
                   style={{
                     fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
@@ -131,15 +153,15 @@ const UnauthorizedPage = () => {
                     animation: isVisible ? 'slideInUp 0.8s ease-out 0.5s both' : 'none'
                   }}
                 >
-                  Sorry, you don't have permission to access this area. 
-                  {user && (
+                  Sorry, you don't have permission to access this area.
+                  {isMounted && user && (
                     <span> You are logged in as <strong>{user.name || user.username || user.email}</strong>.</span>
                   )}
                 </p>
               </div>
 
               {/* Action Buttons */}
-              <div 
+              <div
                 className={`d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center mb-5 ${isVisible ? 'fade-in' : 'opacity-0'}`}
                 style={{
                   transition: 'all 0.8s ease-out 0.8s',
@@ -176,33 +198,35 @@ const UnauthorizedPage = () => {
                   </Button>
                 </Link>
 
-                <Button
-                  variant="outline-danger"
-                  size="lg"
-                  onClick={handleLogout}
-                  style={{
-                    borderColor: '#dc3545',
-                    color: '#dc3545',
-                    borderRadius: '50px',
-                    padding: '15px 40px',
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    transition: 'all 0.3s ease',
-                    borderWidth: '2px'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = '#dc3545';
-                    e.target.style.color = 'white';
-                    e.target.style.transform = 'translateY(-3px) scale(1.05)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = 'transparent';
-                    e.target.style.color = '#dc3545';
-                    e.target.style.transform = 'translateY(0) scale(1)';
-                  }}
-                >
-                  🔐 Logout
-                </Button>
+                {isMounted && (
+                  <Button
+                    variant="outline-danger"
+                    size="lg"
+                    onClick={handleLogout}
+                    style={{
+                      borderColor: '#dc3545',
+                      color: '#dc3545',
+                      borderRadius: '50px',
+                      padding: '15px 40px',
+                      fontSize: '18px',
+                      fontWeight: '600',
+                      transition: 'all 0.3s ease',
+                      borderWidth: '2px'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = '#dc3545';
+                      e.target.style.color = 'white';
+                      e.target.style.transform = 'translateY(-3px) scale(1.05)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = 'transparent';
+                      e.target.style.color = '#dc3545';
+                      e.target.style.transform = 'translateY(0) scale(1)';
+                    }}
+                  >
+                    🔐 Logout
+                  </Button>
+                )}
               </div>
             </Col>
           </Row>
@@ -267,24 +291,26 @@ const UnauthorizedPage = () => {
 
       <Footer />
       {/* Logout Confirmation Modal */}
-      <ConfirmationModal
-        isOpen={showLogoutModal}
-        onClose={() => setShowLogoutModal(false)}
-        onConfirm={confirmLogout}
-        title="Confirm Logout"
-        description="Are you sure you want to logout? You will need to sign in again to access your account."
-        confirmText="Logout"
-        cancelText="Cancel"
-        variant="warning"
-        isLoading={isLoggingOut}
-        icon={
-          <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 border-yellow-200 border-2">
-            <svg className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-          </div>
-        }
-      />
+      {isMounted && (
+        <ConfirmationModal
+          isOpen={showLogoutModal}
+          onClose={() => setShowLogoutModal(false)}
+          onConfirm={confirmLogout}
+          title="Confirm Logout"
+          description="Are you sure you want to logout? You will need to sign in again to access your account."
+          confirmText="Logout"
+          cancelText="Cancel"
+          variant="warning"
+          isLoading={isLoggingOut}
+          icon={
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-yellow-100 border-yellow-200 border-2">
+              <svg className="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </div>
+          }
+        />
+      )}
     </Layout>
   );
 };

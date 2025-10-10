@@ -45,7 +45,7 @@ const ServiceOne = () => {
   const { t } = useTranslation('About');
   const { i18n } = useI18next();
   const currentLanguage = i18n?.resolvedLanguage || 'en';
-  
+
   const serviceData = getServiceOneData(t);
 
   return (
@@ -80,7 +80,7 @@ const ServiceOne = () => {
               <img src={blockTitleHeart} width="15" alt="" />
               {t('serviceOne.header.tagLine')}
             </p>
-            <h3>
+            <h3 style={{ textAlign: "center" }}>
               {t('serviceOne.header.title')}
             </h3>
           </div>
