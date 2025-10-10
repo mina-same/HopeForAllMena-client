@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 import BigCalendar from '../../pages/Calendar/Calendar';
-import Breadcrumb from '../../pages/Calendar/Breadcrumb';
+import Breadcrumb from '../Calendar/Breadcrumb';
 
 const CalendarSection = () => {
     return (
