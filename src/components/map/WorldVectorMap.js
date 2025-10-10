@@ -1,8 +1,40 @@
-import React from 'react';
-import { VectorMap } from 'react-jvectormap';
+import React, { useState, useEffect } from 'react';
 import './jquery-jvectormap.css';
 
 const WorldVectorMap = () => {
+  const [isClient, setIsClient] = useState(false);
+  const [VectorMap, setVectorMap] = useState(null);
+
+  useEffect(() => {
+    setIsClient(true);
+    // Dynamically import the VectorMap component only on client side
+    import('react-jvectormap').then((module) => {
+      setVectorMap(() => module.VectorMap);
+    }).catch((error) => {
+      console.error('Failed to load VectorMap:', error);
+    });
+  }, []);
+
+  if (!isClient || !VectorMap) {
+    return (
+      <div style={{ 
+        width: '100%', 
+        height: '500px', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        backgroundColor: '#f5f5f5',
+        border: '1px solid #ddd',
+        borderRadius: '8px'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ fontSize: '18px', marginBottom: '10px' }}>🌍</div>
+          <div>Loading MENA Region Map...</div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ width: '100%', height: '500px' }}>
       <VectorMap

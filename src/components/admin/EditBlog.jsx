@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Row, Col, Card, Form, Button, Alert, Badge } from 'react-bootstrap';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import QuillEditor from '../ui/QuillEditor';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
 import { ArrowLeft, Save, Eye } from 'lucide-react';
@@ -284,11 +283,9 @@ const EditBlog = ({ blogId, onBack }) => {
                 <Form.Group className="mb-4">
                   <Form.Label className="fw-medium text-dark">Content (English) *</Form.Label>
                   <div style={{ backgroundColor: '#f8f9fa', borderRadius: '8px', padding: '1px' }}>
-                    <ReactQuill
-                      theme="snow"
+                    <QuillEditor
                       value={formData.content}
                       onChange={(content) => setFormData(prev => ({ ...prev, content }))}
-                      modules={quillModules}
                       placeholder="Write your blog content here..."
                       style={{ 
                         minHeight: '350px',
@@ -302,22 +299,9 @@ const EditBlog = ({ blogId, onBack }) => {
                 <Form.Group className="mb-4">
                   <Form.Label className="fw-medium text-dark">Content (Arabic)</Form.Label>
                   <div style={{ backgroundColor: '#f8f9fa', borderRadius: '8px', padding: '1px' }}>
-                    <ReactQuill
-                      theme="snow"
+                    <QuillEditor
                       value={formData.contentAr}
                       onChange={(content) => setFormData(prev => ({ ...prev, contentAr: content }))}
-                      modules={{
-                        ...quillModules,
-                        toolbar: [
-                          [{ 'header': [1, 2, 3, false] }],
-                          ['bold', 'italic', 'underline', 'strike'],
-                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                          ['blockquote', 'code-block'],
-                          [{ 'direction': 'rtl' }],
-                          ['link', 'image'],
-                          ['clean']
-                        ]
-                      }}
                       placeholder="اكتب محتوى المقال هنا..."
                       style={{ 
                         minHeight: '350px',

@@ -106,16 +106,34 @@ exports.onCreateDevServer = ({ app }) => {
   });
 };
 
-// Handle 404 pages in production
+// Handle 404 pages in production and resolve dependency conflicts
 exports.onCreateWebpackConfig = ({ actions, stage }) => {
-  if (stage === 'build-html' || stage === 'develop-html') {
-    actions.setWebpackConfig({
-      resolve: {
-        fallback: {
-          fs: false,
-          path: false,
-        },
+  const config = {
+    resolve: {
+      fallback: {
+        fs: false,
+        path: false,
       },
-    });
+    },
+  };
+
+  // Handle build-time dependency conflicts
+  if (stage === 'build-html' || stage === 'develop-html') {
+    config.resolve.alias = {
+      // Force all date-fns imports to use the same version
+      'date-fns': path.resolve(__dirname, 'node_modules/date-fns'),
+      // Force all lodash imports to use the same version
+      'lodash': path.resolve(__dirname, 'node_modules/lodash'),
+    };
   }
+
+  // Handle client-side build
+  if (stage === 'build-javascript' || stage === 'develop') {
+    config.resolve.alias = {
+      'date-fns': path.resolve(__dirname, 'node_modules/date-fns'),
+      'lodash': path.resolve(__dirname, 'node_modules/lodash'),
+    };
+  }
+
+  actions.setWebpackConfig(config);
 };

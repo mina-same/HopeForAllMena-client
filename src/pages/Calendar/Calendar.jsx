@@ -7,9 +7,7 @@ import Fab from '@mui/material/Fab';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// Removed MUI date pickers - using native HTML date inputs instead
 import moment from 'moment';
 import eventService from '../../services/eventService';
 import { IconCheck } from '@tabler/icons-react';
@@ -289,36 +287,32 @@ const BigCalendar = () => {
           {/* ------------------------------------------- */}
           {/* Selection of Start and end date */}
           {/* ------------------------------------------- */}
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker
-              label="Start Date"
-              inputFormat="MM/dd/yyyy"
-              value={start}
-              onChange={handleStartChange}
-              slotProps={{
-                textField: {
-                  label: "Start Date",
-                  fullWidth: true,
-                  sx: { mb: 3 },
-                },
-              }}
-            />
-            <DatePicker
-              label="End Date"
-              inputFormat="MM/dd/yyyy"
-              value={end}
-              onChange={handleEndChange}
-              slotProps={{
-                textField: {
-                  label: "End Date",
-                  fullWidth: true,
-                  sx: { mb: 3 },
-                  error: start && end && start > end,
-                  helperText: start && end && start > end ? "End date must be later than start date" : "",
-                },
-              }}
-            />
-          </LocalizationProvider>
+          <TextField
+            id="start-date"
+            label="Start Date"
+            type="datetime-local"
+            value={start ? moment(start).format('YYYY-MM-DDTHH:mm') : ''}
+            onChange={(e) => handleStartChange(new Date(e.target.value))}
+            fullWidth
+            sx={{ mb: 3 }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            id="end-date"
+            label="End Date"
+            type="datetime-local"
+            value={end ? moment(end).format('YYYY-MM-DDTHH:mm') : ''}
+            onChange={(e) => handleEndChange(new Date(e.target.value))}
+            fullWidth
+            sx={{ mb: 3 }}
+            error={start && end && start > end}
+            helperText={start && end && start > end ? "End date must be later than start date" : ""}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
 
           {/* ------------------------------------------- */}
           {/* Calendar Event Color*/}

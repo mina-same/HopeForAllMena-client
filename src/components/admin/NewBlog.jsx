@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import QuillEditor from '../ui/QuillEditor';
 import { Link } from 'gatsby';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
@@ -294,24 +293,10 @@ const NewBlog = () => {
                     {t('form.contentEn')} *
                   </label>
                   <div className="border border-gray-300 rounded-lg overflow-hidden">
-                    <ReactQuill
-                      theme="snow"
+                    <QuillEditor
                       value={formData.content}
                       onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
                       placeholder={t('form.contentEnPlaceholder')}
-                      modules={{
-                        toolbar: [
-                          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                          ['bold', 'italic', 'underline', 'strike'],
-                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                          [{ 'script': 'sub'}, { 'script': 'super' }],
-                          [{ 'indent': '-1'}, { 'indent': '+1' }],
-                          [{ 'color': [] }, { 'background': [] }],
-                          [{ 'align': [] }],
-                          ['link', 'image', 'video'],
-                          ['clean']
-                        ]
-                      }}
                       style={{ height: '300px', marginBottom: '50px' }}
                     />
                   </div>
@@ -323,25 +308,10 @@ const NewBlog = () => {
                     {t('form.contentAr')}
                   </label>
                   <div className="border border-gray-300 rounded-lg overflow-hidden">
-                    <ReactQuill
-                      theme="snow"
+                    <QuillEditor
                       value={formData.contentAr}
                       onChange={(value) => setFormData(prev => ({ ...prev, contentAr: value }))}
                       placeholder={t('form.contentArPlaceholder')}
-                      modules={{
-                        toolbar: [
-                          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                          ['bold', 'italic', 'underline', 'strike'],
-                          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                          [{ 'script': 'sub'}, { 'script': 'super' }],
-                          [{ 'indent': '-1'}, { 'indent': '+1' }],
-                          [{ 'direction': 'rtl' }],
-                          [{ 'color': [] }, { 'background': [] }],
-                          [{ 'align': [] }],
-                          ['link', 'image', 'video'],
-                          ['clean']
-                        ]
-                      }}
                       style={{ height: '300px', marginBottom: '50px', direction: 'rtl' }}
                     />
                   </div>
