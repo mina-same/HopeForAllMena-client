@@ -13,10 +13,10 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import moment from 'moment';
 import eventService from '../../services/eventService';
 import { IconCheck } from '@tabler/icons-react';
-import BlankCard from './BlankCard';
+import BlankCard from '../../components/Calendar/BlankCard';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './Calendar.css';
+import '../../components/Calendar/Calendar.css';
 
 moment.locale('en-GB');
 const localizer = momentLocalizer(moment);
