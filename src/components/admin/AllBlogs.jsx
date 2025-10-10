@@ -240,90 +240,190 @@ const AllBlogs = () => {
       )}
 
       {/* Blogs Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>{t('table.title', { count: blogs.length })}</CardTitle>
+      <Card className="border-0 shadow-modern">
+        <CardHeader className="pb-4">
+          <CardTitle className={`text-lg font-semibold ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            {t('table.title', { count: blogs.length })}
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            {loading ? (
-              <div className="text-center py-12">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-muted-foreground">{t('loading.blogs')}</p>
+        <CardContent className="p-0">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-primary mb-4"></div>
+              <p className="text-muted-foreground text-sm">{t('loading.blogs')}</p>
+            </div>
+          ) : blogs.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+              <FileText className="h-16 w-16 mb-4 text-muted-foreground opacity-40" />
+              <p className="text-muted-foreground text-center max-w-md">
+                {filters.search || filters.status || filters.category ? t('empty.noResults') : t('empty.noBlogs')}
+              </p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              {/* Desktop Table */}
+              <div className="hidden md:block">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-b border-border/50">
+                      <TableHead className={`font-medium text-xs uppercase tracking-wider ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        {t('table.headers.title')}
+                      </TableHead>
+                      <TableHead className={`font-medium text-xs uppercase tracking-wider ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        {t('table.headers.author')}
+                      </TableHead>
+                      <TableHead className={`font-medium text-xs uppercase tracking-wider ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        {t('table.headers.category')}
+                      </TableHead>
+                      <TableHead className={`font-medium text-xs uppercase tracking-wider ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        {t('table.headers.status')}
+                      </TableHead>
+                      <TableHead className={`font-medium text-xs uppercase tracking-wider ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        {t('table.headers.views')}
+                      </TableHead>
+                      <TableHead className={`font-medium text-xs uppercase tracking-wider ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        {t('table.headers.date')}
+                      </TableHead>
+                      <TableHead className={`font-medium text-xs uppercase tracking-wider ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        {t('table.headers.actions')}
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {blogs.map((blog) => (
+                      <TableRow key={blog._id} className="border-b border-border/30 hover:bg-muted/30 transition-colors">
+                        <TableCell className={`py-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          <div className="space-y-1">
+                            <p className="font-medium text-sm leading-tight" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                              {currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title}
+                            </p>
+                            <p className="text-xs text-muted-foreground line-clamp-2 max-w-xs" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                              {currentLanguage === 'ar' && blog.excerptAr ? blog.excerptAr : (blog.excerpt || t('table.noExcerpt'))}
+                            </p>
+                          </div>
+                        </TableCell>
+                        <TableCell className={`py-4 text-sm ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          {blog.author?.name || t('table.unknownAuthor')}
+                        </TableCell>
+                        <TableCell className={`py-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          <Badge variant="secondary" className="text-xs font-medium">
+                            {t(`filters.category.${blog.category}`) || t('table.uncategorized')}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className={`py-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          <Badge 
+                            variant={blog.status === 'published' ? 'default' : 'secondary'}
+                            className="text-xs font-medium"
+                          >
+                            {t(`status.${blog.status}`)}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className={`py-4 text-sm font-medium ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          {blog.views || 0}
+                        </TableCell>
+                        <TableCell className={`py-4 text-sm ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          {formatDate(blog.createdAt)}
+                        </TableCell>
+                        <TableCell className={`py-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                          <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-start' : 'justify-start'}`}>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleEdit(blog)}
+                              className="h-8 w-8 p-0 hover:bg-muted"
+                              title={t('actions.edit')}
+                            >
+                              <Edit3 className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => handleDeleteClick(blog)}
+                              className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                              title={t('actions.delete')}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
-            ) : blogs.length === 0 ? (
-              <div className="text-center py-12">
-                <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <p className="text-muted-foreground">
-                  {filters.search || filters.status || filters.category ? t('empty.noResults') : t('empty.noBlogs')}
-                </p>
-              </div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.title')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.author')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.category')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.status')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.views')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.date')}</TableHead>
-                    <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {blogs.map((blog) => (
-                    <TableRow key={blog._id}>
-                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+
+              {/* Mobile Cards */}
+              <div className="block md:hidden space-y-4 p-4">
+                {blogs.map((blog) => (
+                  <Card key={blog._id} className="border border-border/50 shadow-sm hover:shadow-md transition-shadow">
+                    <CardContent className="p-4 space-y-3">
+                      {/* Title and Excerpt */}
+                      <div className={`space-y-2 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                        <h3 className="font-medium text-sm leading-tight" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                          {currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title}
+                        </h3>
+                        <p className="text-xs text-muted-foreground line-clamp-2" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+                          {currentLanguage === 'ar' && blog.excerptAr ? blog.excerptAr : (blog.excerpt || t('table.noExcerpt'))}
+                        </p>
+                      </div>
+
+                      {/* Meta Information */}
+                      <div className={`grid grid-cols-2 gap-3 text-xs ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                         <div>
-                          <p className="font-medium">
-                            {currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title}
-                          </p>
-                          <p className="text-sm text-muted-foreground truncate max-w-xs" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-                            {currentLanguage === 'ar' && blog.excerptAr ? blog.excerptAr : (blog.excerpt || t('table.noExcerpt'))}
-                          </p>
+                          <span className="text-muted-foreground">{t('table.headers.author')}: </span>
+                          <span className="font-medium">{blog.author?.name || t('table.unknownAuthor')}</span>
                         </div>
-                      </TableCell>
-                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{blog.author?.name || t('table.unknownAuthor')}</TableCell>
-                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                        <Badge variant="secondary">{t(`filters.category.${blog.category}`) || t('table.uncategorized')}</Badge>
-                      </TableCell>
-                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                        <Badge variant={
-                          blog.status === 'published' ? 'default' : 'secondary'
-                        }>
+                        <div>
+                          <span className="text-muted-foreground">{t('table.headers.views')}: </span>
+                          <span className="font-medium">{blog.views || 0}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">{t('table.headers.date')}: </span>
+                          <span className="font-medium">{formatDate(blog.createdAt)}</span>
+                        </div>
+                        <div>
+                          <span className="text-muted-foreground">{t('table.headers.category')}: </span>
+                          <Badge variant="secondary" className="text-xs">
+                            {t(`filters.category.${blog.category}`) || t('table.uncategorized')}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      {/* Status and Actions */}
+                      <div className={`flex items-center justify-between pt-2 border-t border-border/30 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                        <Badge 
+                          variant={blog.status === 'published' ? 'default' : 'secondary'}
+                          className="text-xs"
+                        >
                           {t(`status.${blog.status}`)}
                         </Badge>
-                      </TableCell>
-                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{blog.views || 0}</TableCell>
-                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{formatDate(blog.createdAt)}</TableCell>
-                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                        <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                        <div className={`flex items-center gap-1 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                           <Button
                             size="sm"
-                            variant="outline"
+                            variant="ghost"
                             onClick={() => handleEdit(blog)}
+                            className="h-8 w-8 p-0 hover:bg-muted"
                             title={t('actions.edit')}
                           >
                             <Edit3 className="h-4 w-4" />
                           </Button>
                           <Button
                             size="sm"
-                            variant="outline"
+                            variant="ghost"
                             onClick={() => handleDeleteClick(blog)}
-                            className="text-destructive hover:text-destructive"
+                            className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
                             title={t('actions.delete')}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -361,36 +461,39 @@ const AllBlogs = () => {
       )}
       {/* Delete Confirmation Modal */}
       <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
-        <DialogContent>
+        <DialogContent className={currentLanguage === 'ar' ? 'rtl' : 'ltr'} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
           <DialogHeader>
-            <DialogTitle>Delete Blog Post</DialogTitle>
+            <DialogTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('deleteModal.title')}</DialogTitle>
           </DialogHeader>
-          <div className="flex items-start space-x-3">
+          <div className={`flex items-start ${currentLanguage === 'ar' ? 'space-x-reverse space-x-3' : 'space-x-3'}`}>
             <div className="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
               <Trash2 className="h-5 w-5 text-red-600" />
             </div>
-            <div className="flex-1">
-              <p className="text-foreground mb-2">
-                Are you sure you want to delete <strong>"{blogToDelete?.title}"</strong>?
-              </p>
+            <div className={`flex-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+              <p className="text-foreground mb-2" dangerouslySetInnerHTML={{
+                __html: t('deleteModal.description', { 
+                  title: currentLanguage === 'ar' && blogToDelete?.titleAr ? blogToDelete.titleAr : blogToDelete?.title 
+                })
+              }} />
               <p className="text-sm text-muted-foreground">
-                This action cannot be undone. All comments and associated data will also be permanently deleted.
+                {t('deleteModal.warning')}
               </p>
             </div>
           </div>
-          <div className="flex justify-end gap-3 pt-4">
+          <div className={`flex gap-3 pt-4 ${currentLanguage === 'ar' ? 'justify-start flex-row-reverse' : 'justify-end'}`}>
             <Button 
               variant="outline" 
               onClick={() => setShowDeleteModal(false)}
             >
-              Cancel
+              {t('deleteModal.cancelText')}
             </Button>
             <Button 
               variant="destructive"
               onClick={handleDeleteConfirm}
+              className={currentLanguage === 'ar' ? 'flex-row-reverse' : ''}
             >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete Blog Post
+              <Trash2 className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+              {t('deleteModal.confirmText')}
             </Button>
           </div>
         </DialogContent>
@@ -400,3 +503,17 @@ const AllBlogs = () => {
 };
 
 export default AllBlogs;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

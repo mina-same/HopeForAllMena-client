@@ -1,0 +1,90 @@
+{
+  "title": "Create New Blog Post",
+  "description": "Share your stories and updates with the world",
+  "form": {
+    "titleEn": "Title (English)",
+    "titleAr": "Title (Arabic)",
+    "titleEnPlaceholder": "Enter an engaging blog title...",
+    "titleArPlaceholder": "أدخل عنوان المقال باللغة العربية...",
+    "excerptEn": "Excerpt (English)",
+    "excerptAr": "Excerpt (Arabic)",
+    "excerptEnPlaceholder": "Write a compelling summary that will attract readers...",
+    "excerptArPlaceholder": "اكتب ملخصاً جذاباً سيجذب القراء...",
+    "excerptHelp": "This will appear in blog previews",
+    "excerptHelpAr": "سيظهر في معاينات المقالات",
+    "category": "Category",
+    "contentEn": "Content (English)",
+    "contentAr": "Content (Arabic)",
+    "contentEnPlaceholder": "Tell your story... Use the toolbar above to format your content.",
+    "contentArPlaceholder": "احك قصتك... استخدم شريط الأدوات أعلاه لتنسيق المحتوى.",
+    "tagsEn": "Tags (English)",
+    "tagsAr": "Tags (Arabic)",
+    "tagsEnPlaceholder": "charity, education, community, impact...",
+    "tagsArPlaceholder": "خيرية، تعليم، مجتمع، تأثير...",
+    "tagsHelp": "Use relevant tags to help readers discover your content",
+    "tagsHelpAr": "استخدم علامات ذات صلة لمساعدة القراء في اكتشاف المحتوى",
+    "featuredImage": "Featured Image",
+    "publicationStatus": "Publication Status",
+    "featuredPost": "Featured Post",
+    "featuredPostHelp": "Featured posts appear prominently on the homepage",
+    "autoSave": "Your progress is automatically saved"
+  },
+  "categories": {
+    "news": "News",
+    "events": "Events", 
+    "updates": "Updates",
+    "stories": "Stories",
+    "announcements": "Announcements"
+  },
+  "status": {
+    "draft": "📝 Draft - Save for later",
+    "published": "🌍 Published - Make it live"
+  },
+  "buttons": {
+    "preview": "Preview",
+    "saveDraft": "Save Draft",
+    "publishPost": "Publish Post",
+    "creating": "Creating...",
+    "needHelp": "Need Help?"
+  },
+  "guidelines": {
+    "title": "Publishing Guidelines",
+    "contentTips": "Content Tips",
+    "imageRequirements": "Image Requirements",
+    "publicationStatus": "Publication Status",
+    "tips": {
+      "engaging": "Write engaging and informative content",
+      "clear": "Use clear and concise language",
+      "images": "Include relevant images",
+      "tags": "Add appropriate tags for discoverability"
+    },
+    "imageSpecs": {
+      "size": "Size",
+      "format": "Format",
+      "maxSize": "Max Size",
+      "recommended": "800x600px",
+      "formats": "JPG, PNG, WebP",
+      "limit": "5MB"
+    },
+    "statusInfo": {
+      "draft": "Private & editable",
+      "published": "Live & visible"
+    }
+  },
+  "upload": {
+    "ready": "Ready",
+    "uploadText": "Upload a high-quality image (recommended: 800x600px)"
+  },
+  "readyToPublish": {
+    "title": "Ready to Publish?",
+    "description": "Your blog post will be reviewed and published within 24 hours."
+  },
+  "validation": {
+    "requiredFields": "Please fill in all required English fields.",
+    "imageRequired": "Please select an image for the blog post."
+  },
+  "messages": {
+    "createSuccess": "Blog post created successfully!",
+    "createError": "Failed to create blog post."
+  }
+}

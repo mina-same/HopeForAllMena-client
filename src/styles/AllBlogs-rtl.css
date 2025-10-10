@@ -1,0 +1,153 @@
+/* AllBlogs RTL Styles for Arabic Language */
+
+/* Main container RTL support */
+.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .ltr {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Stats cards RTL */
+.rtl .stats-card {
+  text-align: right;
+}
+
+.rtl .stats-card .icon {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+/* Search input RTL */
+.rtl .search-input {
+  padding-right: 2.5rem;
+  padding-left: 0.75rem;
+  text-align: right;
+}
+
+.rtl .search-icon {
+  right: 0.75rem;
+  left: auto;
+}
+
+/* Table RTL */
+.rtl table {
+  direction: rtl;
+}
+
+.rtl th,
+.rtl td {
+  text-align: right;
+}
+
+.rtl .table-actions {
+  justify-content: flex-start;
+}
+
+/* Dialog RTL */
+.rtl .dialog-content {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .dialog-title {
+  text-align: right;
+}
+
+.rtl .dialog-buttons {
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+}
+
+/* Button RTL */
+.rtl .button-with-icon {
+  flex-direction: row-reverse;
+}
+
+.rtl .button-with-icon .icon {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+/* Pagination RTL */
+.rtl .pagination {
+  flex-direction: row-reverse;
+}
+
+.rtl .pagination-info {
+  text-align: right;
+}
+
+.rtl .pagination-buttons {
+  flex-direction: row-reverse;
+}
+
+/* Badge RTL */
+.rtl .badge {
+  text-align: center;
+}
+
+/* Select dropdown RTL */
+.rtl .select-trigger {
+  text-align: right;
+}
+
+.rtl .select-content {
+  text-align: right;
+}
+
+/* Alert RTL */
+.rtl .alert {
+  text-align: right;
+}
+
+/* Card RTL */
+.rtl .card-header {
+  text-align: right;
+}
+
+.rtl .card-title {
+  text-align: right;
+}
+
+/* Filter section RTL */
+.rtl .filters {
+  flex-direction: row-reverse;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 640px) {
+  .rtl .mobile-stack {
+    text-align: right;
+  }
+  
+  .rtl .mobile-buttons {
+    flex-direction: row-reverse;
+  }
+}
+
+/* Arabic font support */
+.rtl {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+/* Loading spinner RTL */
+.rtl .loading-container {
+  text-align: center;
+}
+
+.rtl .loading-text {
+  text-align: center;
+}
+
+/* Empty state RTL */
+.rtl .empty-state {
+  text-align: center;
+}
+
+.rtl .empty-state p {
+  text-align: center;
+}

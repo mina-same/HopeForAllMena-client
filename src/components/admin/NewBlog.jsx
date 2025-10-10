@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
-import { Row, Col, Card, Form, Button, Alert, Badge } from 'react-bootstrap';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { Link } from 'gatsby';
+import { useTranslation } from 'react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
+import { 
+  Eye, Save, FileText, Heading, AlignLeft, Folder, Edit3, 
+  Tags, Image, Globe, Star, Info, Lightbulb, Upload, 
+  Rocket, HelpCircle, Check, PenTool, Camera, AlertTriangle 
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
+import '../../styles/NewBlog-rtl.css';
 
 const NewBlog = () => {
   const { user, token } = useAuth();
+  const { t } = useTranslation('NewBlog');
+  const { language: currentLanguage } = useI18next();
   const [formData, setFormData] = useState({
     title: '',
     titleAr: '',
@@ -26,11 +37,11 @@ const NewBlog = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
 
   const categories = [
-    { value: 'news', label: 'News' },
-    { value: 'events', label: 'Events' },
-    { value: 'updates', label: 'Updates' },
-    { value: 'stories', label: 'Stories' },
-    { value: 'announcements', label: 'Announcements' }
+    { value: 'news', label: t('categories.news') },
+    { value: 'events', label: t('categories.events') },
+    { value: 'updates', label: t('categories.updates') },
+    { value: 'stories', label: t('categories.stories') },
+    { value: 'announcements', label: t('categories.announcements') }
   ];
 
   const handleChange = (e) => {
@@ -57,12 +68,12 @@ const NewBlog = () => {
     e.preventDefault();
 
     if (!formData.title || !formData.content || !formData.excerpt) {
-      setMessage({ type: 'danger', text: 'Please fill in all required English fields.' });
+      setMessage({ type: 'danger', text: t('validation.requiredFields') });
       return;
     }
 
     if (!image) {
-      setMessage({ type: 'danger', text: 'Please select an image for the blog post.' });
+      setMessage({ type: 'danger', text: t('validation.imageRequired') });
       return;
     }
 
@@ -79,7 +90,7 @@ const NewBlog = () => {
 
       await blogAPI.createBlog(blogData, token);
 
-      setMessage({ type: 'success', text: 'Blog post created successfully!' });
+      setMessage({ type: 'success', text: t('messages.createSuccess') });
 
       // Reset form
       setFormData({
@@ -99,234 +110,195 @@ const NewBlog = () => {
       setImagePreview(null);
 
     } catch (error) {
-      setMessage({ type: 'danger', text: error.message || 'Failed to create blog post.' });
+      setMessage({ type: 'danger', text: error.message || t('messages.createError') });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="modern-admin-container">
-      <div className="admin-header mb-4">
-        <div className="d-flex align-items-center justify-content-between">
-          <div>
-            <h2 className="admin-title mb-1">Create New Blog Post</h2>
-            <p className="admin-subtitle text-muted mb-0">Share your stories and updates with the world</p>
+    <div className={`min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4 md:p-8 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      {/* Header */}
+      <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+        <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
+          <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              {t('title')}
+            </h1>
+            <p className="text-gray-600 text-lg">
+              {t('description')}
+            </p>
           </div>
-          <div className="admin-actions">
-            <Button variant="outline-secondary" className="me-2">
-              <i className="fas fa-eye me-2"></i>Preview
-            </Button>
-            <Button variant="outline-primary">
-              <i className="fas fa-save me-2"></i>Save Draft
-            </Button>
+          <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <button className={`flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <Eye className="h-4 w-4" />
+              {t('buttons.preview')}
+            </button>
+            <button className={`flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <Save className="h-4 w-4" />
+              {t('buttons.saveDraft')}
+            </button>
           </div>
         </div>
       </div>
 
-      <Row className="g-4">
-        <Col lg={8}>
-          <Card className="modern-card border-0 shadow-sm">
-            <Card.Body className="p-4">
-              {message.text && (
-                <Alert
-                  variant={message.type}
-                  onClose={() => setMessage({ type: '', text: '' })}
-                  dismissible
-                  className="modern-alert border-0 rounded-3"
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Form */}
+        <div className="lg:col-span-2">
+          <div className="bg-white rounded-2xl shadow-lg p-6">
+            {/* Alert Message */}
+            {message.text && (
+              <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+                message.type === 'success' 
+                  ? 'bg-green-50 border border-green-200 text-green-800' 
+                  : message.type === 'danger' 
+                  ? 'bg-red-50 border border-red-200 text-red-800'
+                  : 'bg-blue-50 border border-blue-200 text-blue-800'
+              } ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+                {message.type === 'success' ? (
+                  <Check className="h-5 w-5 flex-shrink-0" />
+                ) : message.type === 'danger' ? (
+                  <AlertTriangle className="h-5 w-5 flex-shrink-0" />
+                ) : (
+                  <Info className="h-5 w-5 flex-shrink-0" />
+                )}
+                <span>{message.text}</span>
+                <button 
+                  onClick={() => setMessage({ type: '', text: '' })}
+                  className={`${currentLanguage === 'ar' ? 'mr-auto' : 'ml-auto'} text-gray-400 hover:text-gray-600`}
                 >
-                  <div className="d-flex align-items-center">
-                    <i className={`fas ${message.type === 'success' ? 'fa-check-circle' : message.type === 'danger' ? 'fa-exclamation-triangle' : 'fa-info-circle'} me-2`}></i>
-                    {message.text}
+                  ×
+                </button>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Title Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Heading className="h-4 w-4 text-blue-600" />
+                    {t('form.titleEn')} *
+                  </label>
+                  <input
+                    type="text"
+                    name="title"
+                    value={formData.title}
+                    onChange={handleChange}
+                    placeholder={t('form.titleEnPlaceholder')}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    dir="ltr"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Heading className="h-4 w-4 text-blue-600" />
+                    {t('form.titleAr')}
+                  </label>
+                  <input
+                    type="text"
+                    name="titleAr"
+                    value={formData.titleAr}
+                    onChange={handleChange}
+                    placeholder={t('form.titleArPlaceholder')}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    dir="rtl"
+                  />
+                </div>
+              </div>
+
+              {/* Excerpt Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <AlignLeft className="h-4 w-4 text-blue-600" />
+                    {t('form.excerptEn')} *
+                  </label>
+                  <textarea
+                    name="excerpt"
+                    value={formData.excerpt}
+                    onChange={handleChange}
+                    placeholder={t('form.excerptEnPlaceholder')}
+                    rows={3}
+                    maxLength={200}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                    dir="ltr"
+                  />
+                  <div className={`flex justify-between items-center text-sm ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex items-center gap-1 text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <Info className="h-4 w-4" />
+                      {t('form.excerptHelp')}
+                    </div>
+                    <span className={`px-2 py-1 rounded text-xs ${formData.excerpt.length > 180 ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-600'}`}>
+                      {formData.excerpt.length}/200
+                    </span>
                   </div>
-                </Alert>
-              )}
+                </div>
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <AlignLeft className="h-4 w-4 text-blue-600" />
+                    {t('form.excerptAr')}
+                  </label>
+                  <textarea
+                    name="excerptAr"
+                    value={formData.excerptAr}
+                    onChange={handleChange}
+                    placeholder={t('form.excerptArPlaceholder')}
+                    rows={3}
+                    maxLength={200}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                    dir="rtl"
+                  />
+                  <div className={`flex justify-between items-center text-sm ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex items-center gap-1 text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <Info className="h-4 w-4" />
+                      {t('form.excerptHelpAr')}
+                    </div>
+                    <span className={`px-2 py-1 rounded text-xs ${formData.excerptAr.length > 180 ? 'bg-yellow-100 text-yellow-800' : 'bg-gray-100 text-gray-600'}`}>
+                      {formData.excerptAr.length}/200
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-              <Form onSubmit={handleSubmit}>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-heading me-2 text-[#2194D1]"></i>Title (English) *
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        placeholder="Enter an engaging blog title..."
-                        required
-                        className="modern-input border-0 shadow-sm rounded-3 p-3"
-                        style={{ fontSize: '1.1rem', color: formData.title ? '#1f2937' : '#6b7280' }}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-heading me-2 text-[#2194D1]"></i>Title (Arabic)
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="titleAr"
-                        value={formData.titleAr}
-                        onChange={handleChange}
-                        placeholder="أدخل عنوان المقال باللغة العربية..."
-                        className="modern-input border-0 shadow-sm rounded-3 p-3"
-                        style={{ fontSize: '1.1rem', color: formData.titleAr ? '#1f2937' : '#6b7280', direction: 'rtl' }}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
+              {/* Category Field */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Folder className="h-4 w-4 text-blue-600" />
+                    {t('form.category')} *
+                  </label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  >
+                    {categories.map(cat => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
 
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-align-left me-2 text-[#2194D1]"></i>Excerpt (English) *
-                      </Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        name="excerpt"
-                        value={formData.excerpt}
-                        onChange={handleChange}
-                        placeholder="Write a compelling summary that will attract readers..."
-                        style={{ color: formData.excerpt ? '#1f2937' : '#6b7280' }}
-                        maxLength={200}
-                        required
-                        className="modern-textarea border-0 shadow-sm rounded-3 p-3"
-                      />
-                      <div className="d-flex justify-content-between align-items-center mt-2">
-                        <Form.Text className="text-muted">
-                          <i className="fas fa-info-circle me-1"></i>This will appear in blog previews
-                        </Form.Text>
-                        <Badge bg={formData.excerpt.length > 180 ? 'warning' : 'secondary'}>
-                          {formData.excerpt.length}/200
-                        </Badge>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-align-left me-2 text-[#2194D1]"></i>Excerpt (Arabic)
-                      </Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        name="excerptAr"
-                        value={formData.excerptAr}
-                        onChange={handleChange}
-                        placeholder="اكتب ملخصاً جذاباً سيجذب القراء..."
-                        style={{ color: formData.excerptAr ? '#1f2937' : '#6b7280', direction: 'rtl' }}
-                        maxLength={200}
-                        className="modern-textarea border-0 shadow-sm rounded-3 p-3"
-                      />
-                      <div className="d-flex justify-content-between align-items-center mt-2">
-                        <Form.Text className="text-muted">
-                          <i className="fas fa-info-circle me-1"></i>سيظهر في معاينات المقالات
-                        </Form.Text>
-                        <Badge bg={formData.excerptAr.length > 180 ? 'warning' : 'secondary'}>
-                          {formData.excerptAr.length}/200
-                        </Badge>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={4}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-folder me-2 text-[#2194D1]"></i>Category *
-                      </Form.Label>
-                      <Form.Select
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                        required
-                        className="modern-select border-0 shadow-sm rounded-3 p-3"
-                      >
-                        {categories.map(cat => (
-                          <option key={cat.value} value={cat.value}>
-                            {cat.label}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-align-left me-2 text-[#2194D1]"></i>Excerpt (English) *
-                      </Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        name="excerpt"
-                        value={formData.excerpt}
-                        onChange={handleChange}
-                        placeholder="Write a compelling summary that will attract readers..."
-                        style={{ color: formData.excerpt ? '#1f2937' : '#6b7280' }}
-                        maxLength={200}
-                        required
-                        className="modern-textarea border-0 shadow-sm rounded-3 p-3"
-                      />
-                      <div className="d-flex justify-content-between align-items-center mt-2">
-                        <Form.Text className="text-muted">
-                          <i className="fas fa-info-circle me-1"></i>This will appear in blog previews
-                        </Form.Text>
-                        <Badge bg={formData.excerpt.length > 180 ? 'warning' : 'secondary'}>
-                          {formData.excerpt.length}/200
-                        </Badge>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-align-left me-2 text-[#2194D1]"></i>Excerpt (Arabic)
-                      </Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        name="excerptAr"
-                        value={formData.excerptAr}
-                        onChange={handleChange}
-                        placeholder="اكتب ملخصاً جذاباً سيجذب القراء..."
-                        style={{ 
-                          color: formData.excerptAr ? '#1f2937' : '#6b7280',
-                          direction: 'rtl'
-                        }}
-                        maxLength={200}
-                        className="modern-textarea border-0 shadow-sm rounded-3 p-3"
-                      />
-                      <div className="d-flex justify-content-between align-items-center mt-2">
-                        <Form.Text className="text-muted">
-                          <i className="fas fa-info-circle me-1"></i>سيظهر في معاينات المقالات
-                        </Form.Text>
-                        <Badge bg={formData.excerptAr.length > 180 ? 'warning' : 'secondary'}>
-                          {formData.excerptAr.length}/200
-                        </Badge>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Form.Group className="mb-4">
-                  <Form.Label className="modern-label fw-semibold mb-3">
-                    <i className="fas fa-edit me-2 text-[#2194D1]"></i>Content (English) *
-                  </Form.Label>
-                  <div className="modern-editor-container">
+              {/* Content Editors */}
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Edit3 className="h-4 w-4 text-blue-600" />
+                    {t('form.contentEn')} *
+                  </label>
+                  <div className="border border-gray-300 rounded-lg overflow-hidden">
                     <ReactQuill
                       theme="snow"
                       value={formData.content}
                       onChange={(value) => setFormData(prev => ({ ...prev, content: value }))}
-                      placeholder="Tell your story... Use the toolbar above to format your content."
+                      placeholder={t('form.contentEnPlaceholder')}
                       modules={{
                         toolbar: [
                           [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
@@ -340,22 +312,22 @@ const NewBlog = () => {
                           ['clean']
                         ]
                       }}
-                      style={{ height: '350px', marginBottom: '60px' }}
-                      className="modern-editor border-0 shadow-sm rounded-3"
+                      style={{ height: '300px', marginBottom: '50px' }}
                     />
                   </div>
-                </Form.Group>
+                </div>
 
-                <Form.Group className="mb-4">
-                  <Form.Label className="modern-label fw-semibold mb-3">
-                    <i className="fas fa-edit me-2 text-[#2194D1]"></i>Content (Arabic)
-                  </Form.Label>
-                  <div className="modern-editor-container">
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Edit3 className="h-4 w-4 text-blue-600" />
+                    {t('form.contentAr')}
+                  </label>
+                  <div className="border border-gray-300 rounded-lg overflow-hidden">
                     <ReactQuill
                       theme="snow"
                       value={formData.contentAr}
                       onChange={(value) => setFormData(prev => ({ ...prev, contentAr: value }))}
-                      placeholder="احك قصتك... استخدم شريط الأدوات أعلاه لتنسيق المحتوى."
+                      placeholder={t('form.contentArPlaceholder')}
                       modules={{
                         toolbar: [
                           [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
@@ -370,379 +342,303 @@ const NewBlog = () => {
                           ['clean']
                         ]
                       }}
-                      style={{ height: '350px', marginBottom: '60px', direction: 'rtl' }}
-                      className="modern-editor border-0 shadow-sm rounded-3"
+                      style={{ height: '300px', marginBottom: '50px', direction: 'rtl' }}
                     />
-                  </div>
-                </Form.Group>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-tags me-2 text-[#2194D1]"></i>Tags (English)
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="tags"
-                        value={formData.tags}
-                        onChange={handleChange}
-                        placeholder="charity, education, community, impact..."
-                        className="modern-input border-0 shadow-sm rounded-3 p-3"
-                      />
-                      <Form.Text className="text-muted d-flex align-items-center mt-2">
-                        <i className="fas fa-lightbulb me-1"></i>
-                        Use relevant tags to help readers discover your content
-                      </Form.Text>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-tags me-2 text-[#2194D1]"></i>Tags (Arabic)
-                      </Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="tagsAr"
-                        value={formData.tagsAr}
-                        onChange={handleChange}
-                        placeholder="خيرية، تعليم، مجتمع، تأثير..."
-                        className="modern-input border-0 shadow-sm rounded-3 p-3"
-                        style={{ direction: 'rtl' }}
-                      />
-                      <Form.Text className="text-muted d-flex align-items-center mt-2">
-                        <i className="fas fa-lightbulb me-1"></i>
-                        استخدم علامات ذات صلة لمساعدة القراء في اكتشاف المحتوى
-                      </Form.Text>
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Form.Group className="mb-4">
-                  <Form.Label className="modern-label fw-semibold mb-2">
-                    <i className="fas fa-image me-2 text-[#2194D1]"></i>Featured Image *
-                  </Form.Label>
-                  <div className="modern-file-upload">
-                    <Form.Control
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      required
-                      className="modern-file-input border-0 shadow-sm rounded-3 p-3"
-                    />
-                    {imagePreview ? (
-                      <div className="mt-3 text-center">
-                        <div className="image-preview-container position-relative d-inline-block">
-                          <img
-                            src={imagePreview}
-                            alt="Preview"
-                            className="img-fluid rounded-3 shadow-sm"
-                            style={{ maxWidth: '300px', maxHeight: '200px', objectFit: 'cover' }}
-                          />
-                          <Badge bg="success" className="position-absolute top-0 start-0 m-2">
-                            <i className="fas fa-check me-1"></i>Ready
-                          </Badge>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="mt-3 text-center text-muted">
-                        <i className="fas fa-cloud-upload-alt fa-2x mb-2"></i>
-                        <p className="mb-0">Upload a high-quality image (recommended: 800x600px)</p>
-                      </div>
-                    )}
-                  </div>
-                </Form.Group>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <Form.Label className="modern-label fw-semibold mb-2">
-                        <i className="fas fa-globe me-2 text-[#2194D1]"></i>Publication Status
-                      </Form.Label>
-                      <Form.Select
-                        name="status"
-                        value={formData.status}
-                        onChange={handleChange}
-                        className="modern-select border-0 shadow-sm rounded-3 p-3"
-                      >
-                        <option value="draft">📝 Draft - Save for later</option>
-                        <option value="published">🌍 Published - Make it live</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-4">
-                      <div className="modern-checkbox-container p-3 border rounded-3 bg-light">
-                        <Form.Check
-                          type="checkbox"
-                          name="featured"
-                          checked={formData.featured}
-                          onChange={handleChange}
-                          label="⭐ Featured Post"
-                          className="modern-checkbox"
-                        />
-                        <Form.Text className="text-muted d-block mt-1">
-                          Featured posts appear prominently on the homepage
-                        </Form.Text>
-                      </div>
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <div className="modern-form-actions d-flex justify-content-between align-items-center pt-4 border-top">
-                  <div className="d-flex align-items-center text-muted">
-                    <i className="fas fa-info-circle me-2"></i>
-                    <small>Your progress is automatically saved</small>
-                  </div>
-                  <div className="d-flex gap-2">
-                    <Button
-                      variant="outline-secondary"
-                      type="button"
-                      className="modern-btn-secondary px-4 py-2"
-                      disabled={loading}
-                    >
-                      <i className="fas fa-save me-2"></i>Save Draft
-                    </Button>
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      disabled={loading}
-                      className="modern-btn-primary px-4 py-2"
-                    >
-                      {loading ? (
-                        <>
-                          <div className="spinner-border spinner-border-sm me-2" role="status"></div>
-                          Creating...
-                        </>
-                      ) : (
-                        <>
-                          <i className="fas fa-paper-plane me-2"></i>Publish Post
-                        </>
-                      )}
-                    </Button>
                   </div>
                 </div>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
+              </div>
 
-        <Col lg={4}>
-          <div className="sticky-top" style={{ top: '2rem' }}>
-            <Card className="modern-card border-0 shadow-sm mb-4">
-              <Card.Header className="bg-[#ECF2FF] text-white border-0 rounded-top">
-                <h6 className="mb-0 fw-semibold">
-                  <i className="fas fa-lightbulb me-2"></i>Publishing Guidelines
-                </h6>
-              </Card.Header>
-              <Card.Body className="p-4">
-                <div className="guideline-section mb-4">
-                  <div className="d-flex align-items-center mb-3">
-                    <div className="guideline-icon bg-[#ECF2FF] bg-opacity-10 rounded-circle p-2 me-3">
-                      <i className="fas fa-pen-fancy text-[#2194D1]"></i>
-                    </div>
-                    <h6 className="mb-0 fw-semibold">Content Tips</h6>
+              {/* Tags Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Tags className="h-4 w-4 text-blue-600" />
+                    {t('form.tagsEn')}
+                  </label>
+                  <input
+                    type="text"
+                    name="tags"
+                    value={formData.tags}
+                    onChange={handleChange}
+                    placeholder={t('form.tagsEnPlaceholder')}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    dir="ltr"
+                  />
+                  <div className={`flex items-center gap-1 text-sm text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <Lightbulb className="h-4 w-4" />
+                    {t('form.tagsHelp')}
                   </div>
-                  <ul className="modern-list list-unstyled">
-                    <li className="mb-2"><i className="fas fa-check text-success me-2"></i>Write engaging and informative content</li>
-                    <li className="mb-2"><i className="fas fa-check text-success me-2"></i>Use clear and concise language</li>
-                    <li className="mb-2"><i className="fas fa-check text-success me-2"></i>Include relevant images</li>
-                    <li className="mb-2"><i className="fas fa-check text-success me-2"></i>Add appropriate tags for discoverability</li>
+                </div>
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Tags className="h-4 w-4 text-blue-600" />
+                    {t('form.tagsAr')}
+                  </label>
+                  <input
+                    type="text"
+                    name="tagsAr"
+                    value={formData.tagsAr}
+                    onChange={handleChange}
+                    placeholder={t('form.tagsArPlaceholder')}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    dir="rtl"
+                  />
+                  <div className={`flex items-center gap-1 text-sm text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <Lightbulb className="h-4 w-4" />
+                    {t('form.tagsHelpAr')}
+                  </div>
+                </div>
+              </div>
+
+              {/* Featured Image Upload */}
+              <div className="space-y-2">
+                <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <Camera className="h-4 w-4 text-blue-600" />
+                  {t('form.featuredImage')} *
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-400 transition-colors">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    required
+                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                  />
+                  {imagePreview ? (
+                    <div className="mt-4 text-center">
+                      <div className="relative inline-block">
+                        <img
+                          src={imagePreview}
+                          alt="Preview"
+                          className="max-w-xs max-h-48 object-cover rounded-lg shadow-md"
+                        />
+                        <div className={`absolute top-2 ${currentLanguage === 'ar' ? 'right-2' : 'left-2'} bg-green-500 text-white px-2 py-1 rounded-full text-xs flex items-center gap-1`}>
+                          <Check className="h-3 w-3" />
+                          {t('upload.ready')}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={`mt-4 text-center text-gray-500 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      <Upload className="h-12 w-12 mx-auto mb-2 text-gray-400" />
+                      <p className="text-sm">{t('upload.uploadText')}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Publication Settings */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                    <Globe className="h-4 w-4 text-blue-600" />
+                    {t('form.publicationStatus')}
+                  </label>
+                  <select
+                    name="status"
+                    value={formData.status}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                  >
+                    <option value="draft">{t('status.draft')}</option>
+                    <option value="published">{t('status.published')}</option>
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                    <label className={`flex items-center gap-3 cursor-pointer ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <input
+                        type="checkbox"
+                        name="featured"
+                        checked={formData.featured}
+                        onChange={handleChange}
+                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                      <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <div className={`flex items-center gap-2 font-medium text-gray-900 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                          <Star className="h-4 w-4 text-yellow-500" />
+                          {t('form.featuredPost')}
+                        </div>
+                        <p className="text-sm text-gray-500 mt-1">
+                          {t('form.featuredPostHelp')}
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Form Actions */}
+              <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-6 border-t border-gray-200 ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
+                <div className={`flex items-center gap-2 text-gray-500 text-sm ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <Info className="h-4 w-4" />
+                  {t('form.autoSave')}
+                </div>
+                <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <button
+                    type="button"
+                    disabled={loading}
+                    className={`flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+                  >
+                    <Save className="h-4 w-4" />
+                    {t('buttons.saveDraft')}
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className={`flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+                  >
+                    {loading ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                        {t('buttons.creating')}
+                      </>
+                    ) : (
+                      <>
+                        <Rocket className="h-4 w-4" />
+                        {t('buttons.publishPost')}
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="lg:col-span-1">
+          <div className="sticky top-8 space-y-6">
+            {/* Guidelines Card */}
+            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
+                <h3 className={`text-white font-semibold flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+                  <Lightbulb className="h-5 w-5" />
+                  {t('guidelines.title')}
+                </h3>
+              </div>
+              <div className="p-6 space-y-6">
+                {/* Content Tips */}
+                <div>
+                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className="bg-blue-50 p-2 rounded-full">
+                      <PenTool className="h-4 w-4 text-blue-600" />
+                    </div>
+                    <h4 className={`font-semibold text-gray-900 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      {t('guidelines.contentTips')}
+                    </h4>
+                  </div>
+                  <ul className={`space-y-2 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                      {t('guidelines.tips.engaging')}
+                    </li>
+                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                      {t('guidelines.tips.clear')}
+                    </li>
+                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                      {t('guidelines.tips.images')}
+                    </li>
+                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
+                      {t('guidelines.tips.tags')}
+                    </li>
                   </ul>
                 </div>
 
-                <div className="guideline-section mb-4">
-                  <div className="d-flex align-items-center mb-3">
-                    <div className="guideline-icon bg-info bg-opacity-10 rounded-circle p-2 me-3">
-                      <i className="fas fa-image text-info"></i>
+                {/* Image Requirements */}
+                <div>
+                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className="bg-purple-50 p-2 rounded-full">
+                      <Image className="h-4 w-4 text-purple-600" />
                     </div>
-                    <h6 className="mb-0 fw-semibold">Image Requirements</h6>
+                    <h4 className={`font-semibold text-gray-900 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      {t('guidelines.imageRequirements')}
+                    </h4>
                   </div>
-                  <div className="modern-specs">
-                    <div className="spec-item d-flex justify-content-between mb-2">
-                      <span className="text-muted">Size:</span>
-                      <Badge bg="light" text="dark">800x600px</Badge>
+                  <div className="space-y-2">
+                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <span className="text-sm text-gray-600">{t('guidelines.imageSpecs.size')}:</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{t('guidelines.imageSpecs.recommended')}</span>
                     </div>
-                    <div className="spec-item d-flex justify-content-between mb-2">
-                      <span className="text-muted">Format:</span>
-                      <Badge bg="light" text="dark">JPG, PNG, WebP</Badge>
+                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <span className="text-sm text-gray-600">{t('guidelines.imageSpecs.format')}:</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{t('guidelines.imageSpecs.formats')}</span>
                     </div>
-                    <div className="spec-item d-flex justify-content-between">
-                      <span className="text-muted">Max Size:</span>
-                      <Badge bg="light" text="dark">5MB</Badge>
+                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <span className="text-sm text-gray-600">{t('guidelines.imageSpecs.maxSize')}:</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{t('guidelines.imageSpecs.limit')}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="guideline-section">
-                  <div className="d-flex align-items-center mb-3">
-                    <div className="guideline-icon bg-warning bg-opacity-10 rounded-circle p-2 me-3">
-                      <i className="fas fa-globe text-warning"></i>
+                {/* Publication Status */}
+                <div>
+                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className="bg-yellow-50 p-2 rounded-full">
+                      <Globe className="h-4 w-4 text-yellow-600" />
                     </div>
-                    <h6 className="mb-0 fw-semibold">Publication Status</h6>
+                    <h4 className={`font-semibold text-gray-900 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                      {t('guidelines.publicationStatus')}
+                    </h4>
                   </div>
-                  <div className="status-options">
-                    <div className="status-item d-flex align-items-center justify-content-between p-2 rounded mb-2 bg-light">
-                      <div className="d-flex align-items-center">
-                        <Badge bg="secondary" className="me-2">Draft</Badge>
-                        <small className="text-muted">Private & editable</small>
+                  <div className="space-y-2">
+                    <div className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                        <span className="px-2 py-1 bg-gray-500 text-white rounded text-xs">Draft</span>
+                        <span className="text-sm text-gray-600">{t('guidelines.statusInfo.draft')}</span>
                       </div>
-                      <i className="fas fa-eye-slash text-muted"></i>
+                      <Eye className="h-4 w-4 text-gray-400" />
                     </div>
-                    <div className="status-item d-flex align-items-center justify-content-between p-2 rounded bg-light">
-                      <div className="d-flex align-items-center">
-                        <Badge bg="success" className="me-2">Published</Badge>
-                        <small className="text-muted">Live & visible</small>
+                    <div className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                        <span className="px-2 py-1 bg-green-500 text-white rounded text-xs">Published</span>
+                        <span className="text-sm text-gray-600">{t('guidelines.statusInfo.published')}</span>
                       </div>
-                      <i className="fas fa-eye text-success"></i>
+                      <Eye className="h-4 w-4 text-green-500" />
                     </div>
                   </div>
                 </div>
-              </Card.Body>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="modern-card border-0 shadow-sm">
-              <Card.Body className="p-4 text-center">
-                <div className="mb-3">
-                  <i className="fas fa-rocket fa-2x text-[#2194D1] mb-2"></i>
-                  <h6 className="fw-semibold">Ready to Publish?</h6>
-                </div>
-                <p className="text-muted small mb-3">
-                  Your blog post will be reviewed and published within 24 hours.
-                </p>
-                <Button variant="outline-primary" size="sm" className="w-100">
-                  <i className="fas fa-question-circle me-2"></i>Need Help?
-                </Button>
-              </Card.Body>
-            </Card>
+            {/* Ready to Publish Card */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 text-center">
+              <div className="mb-4">
+                <Rocket className="h-12 w-12 text-blue-600 mx-auto mb-3" />
+                <h3 className={`font-semibold text-gray-900 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  {t('readyToPublish.title')}
+                </h3>
+              </div>
+              <p className={`text-gray-600 text-sm mb-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                {t('readyToPublish.description')}
+              </p>
+              <button className={`w-full flex items-center justify-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <HelpCircle className="h-4 w-4" />
+                {t('buttons.needHelp')}
+              </button>
+            </div>
           </div>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </div>
   );
 };
 
-// Add custom styles
-const customStyles = `
-  .modern-admin-container {
-    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
-    min-height: 100vh;
-    padding: 2rem;
-  }
-  
-  .admin-header {
-    background: white;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-  }
-  
-  .admin-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2d3748;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  .admin-subtitle {
-    font-size: 1.1rem;
-  }
-  
-  .modern-card {
-    border-radius: 1rem !important;
-    transition: all 0.3s ease;
-  }
-  
-  .modern-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.12) !important;
-  }
-  
-  .modern-label {
-    color: #4a5568;
-    font-size: 0.95rem;
-  }
-  
-  .modern-input, .modern-select, .modern-textarea {
-    border-radius: 0.75rem !important;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-  }
-  
-  .modern-input:focus, .modern-select:focus, .modern-textarea:focus {
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
-    border-color: #667eea !important;
-  }
-  
-  .modern-editor .ql-toolbar {
-    border-radius: 0.75rem 0.75rem 0 0 !important;
-    border: none !important;
-    background: #f8f9fa;
-  }
-  
-  .modern-editor .ql-container {
-    border-radius: 0 0 0.75rem 0.75rem !important;
-    border: none !important;
-  }
-  
-  .modern-btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    border-radius: 0.75rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-  
-  .modern-btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-  }
-  
-  .modern-btn-secondary {
-    border-radius: 0.75rem;
-    font-weight: 600;
-    transition: all 0.3s ease;
-  }
-  
-  .modern-alert {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-  }
-  
-  .guideline-section {
-    border-bottom: 1px solid #e2e8f0;
-    padding-bottom: 1.5rem;
-  }
-  
-  .guideline-section:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
-  
-  .modern-list li {
-    font-size: 0.9rem;
-    color: #4a5568;
-  }
-  
-  .modern-specs .spec-item {
-    font-size: 0.9rem;
-  }
-  
-  .status-item {
-    transition: all 0.2s ease;
-  }
-  
-  .status-item:hover {
-    background-color: #f1f5f9 !important;
+export default NewBlog;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: {language: {eq: $language}}) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
   }
 `;
-
-// Inject styles
-if (typeof document !== 'undefined') {
-  const styleSheet = document.createElement('style');
-  styleSheet.textContent = customStyles;
-  document.head.appendChild(styleSheet);
-}
-
-export default NewBlog;

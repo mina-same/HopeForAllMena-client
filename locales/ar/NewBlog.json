@@ -1,0 +1,90 @@
+{
+  "title": "إنشاء منشور مدونة جديد",
+  "description": "شارك قصصك وتحديثاتك مع العالم",
+  "form": {
+    "titleEn": "العنوان (الإنجليزية)",
+    "titleAr": "العنوان (العربية)",
+    "titleEnPlaceholder": "أدخل عنوان مقال جذاب...",
+    "titleArPlaceholder": "أدخل عنوان المقال باللغة العربية...",
+    "excerptEn": "المقتطف (الإنجليزية)",
+    "excerptAr": "المقتطف (العربية)",
+    "excerptEnPlaceholder": "اكتب ملخصاً مقنعاً سيجذب القراء...",
+    "excerptArPlaceholder": "اكتب ملخصاً جذاباً سيجذب القراء...",
+    "excerptHelp": "سيظهر في معاينات المدونة",
+    "excerptHelpAr": "سيظهر في معاينات المقالات",
+    "category": "الفئة",
+    "contentEn": "المحتوى (الإنجليزية)",
+    "contentAr": "المحتوى (العربية)",
+    "contentEnPlaceholder": "احك قصتك... استخدم شريط الأدوات أعلاه لتنسيق المحتوى.",
+    "contentArPlaceholder": "احك قصتك... استخدم شريط الأدوات أعلاه لتنسيق المحتوى.",
+    "tagsEn": "العلامات (الإنجليزية)",
+    "tagsAr": "العلامات (العربية)",
+    "tagsEnPlaceholder": "خيرية، تعليم، مجتمع، تأثير...",
+    "tagsArPlaceholder": "خيرية، تعليم، مجتمع، تأثير...",
+    "tagsHelp": "استخدم علامات ذات صلة لمساعدة القراء في اكتشاف المحتوى",
+    "tagsHelpAr": "استخدم علامات ذات صلة لمساعدة القراء في اكتشاف المحتوى",
+    "featuredImage": "الصورة المميزة",
+    "publicationStatus": "حالة النشر",
+    "featuredPost": "منشور مميز",
+    "featuredPostHelp": "المنشورات المميزة تظهر بشكل بارز في الصفحة الرئيسية",
+    "autoSave": "يتم حفظ تقدمك تلقائياً"
+  },
+  "categories": {
+    "news": "أخبار",
+    "events": "فعاليات",
+    "updates": "تحديثات", 
+    "stories": "قصص",
+    "announcements": "إعلانات"
+  },
+  "status": {
+    "draft": "📝 مسودة - احفظ للاحقاً",
+    "published": "🌍 منشور - اجعله مباشراً"
+  },
+  "buttons": {
+    "preview": "معاينة",
+    "saveDraft": "حفظ كمسودة",
+    "publishPost": "نشر المقال",
+    "creating": "جاري الإنشاء...",
+    "needHelp": "تحتاج مساعدة؟"
+  },
+  "guidelines": {
+    "title": "إرشادات النشر",
+    "contentTips": "نصائح المحتوى",
+    "imageRequirements": "متطلبات الصورة",
+    "publicationStatus": "حالة النشر",
+    "tips": {
+      "engaging": "اكتب محتوى جذاب ومفيد",
+      "clear": "استخدم لغة واضحة ومختصرة",
+      "images": "أضف صور ذات صلة",
+      "tags": "أضف علامات مناسبة لسهولة الاكتشاف"
+    },
+    "imageSpecs": {
+      "size": "الحجم",
+      "format": "التنسيق",
+      "maxSize": "الحد الأقصى",
+      "recommended": "800x600px",
+      "formats": "JPG, PNG, WebP",
+      "limit": "5MB"
+    },
+    "statusInfo": {
+      "draft": "خاص وقابل للتعديل",
+      "published": "مباشر ومرئي"
+    }
+  },
+  "upload": {
+    "ready": "جاهز",
+    "uploadText": "ارفع صورة عالية الجودة (موصى به: 800x600px)"
+  },
+  "readyToPublish": {
+    "title": "جاهز للنشر؟",
+    "description": "سيتم مراجعة منشور مدونتك ونشره خلال 24 ساعة."
+  },
+  "validation": {
+    "requiredFields": "يرجى ملء جميع الحقول المطلوبة باللغة الإنجليزية.",
+    "imageRequired": "يرجى اختيار صورة لمنشور المدونة."
+  },
+  "messages": {
+    "createSuccess": "تم إنشاء منشور المدونة بنجاح!",
+    "createError": "فشل في إنشاء منشور المدونة."
+  }
+}

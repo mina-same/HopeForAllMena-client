@@ -1,0 +1,167 @@
+/* NewBlog RTL Styles */
+
+/* Arabic Font Support */
+.rtl {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Form Input RTL Support */
+.rtl input[type="text"],
+.rtl input[type="email"],
+.rtl input[type="password"],
+.rtl textarea,
+.rtl select {
+  text-align: right;
+  direction: rtl;
+}
+
+.rtl input[type="text"]::placeholder,
+.rtl input[type="email"]::placeholder,
+.rtl input[type="password"]::placeholder,
+.rtl textarea::placeholder {
+  text-align: right;
+  direction: rtl;
+}
+
+/* ReactQuill RTL Support */
+.rtl .ql-editor {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl .ql-editor p,
+.rtl .ql-editor h1,
+.rtl .ql-editor h2,
+.rtl .ql-editor h3,
+.rtl .ql-editor h4,
+.rtl .ql-editor h5,
+.rtl .ql-editor h6 {
+  text-align: right;
+  direction: rtl;
+}
+
+.rtl .ql-toolbar {
+  direction: ltr; /* Keep toolbar LTR for better UX */
+}
+
+/* File Upload RTL */
+.rtl input[type="file"] {
+  direction: rtl;
+}
+
+/* Button RTL Spacing */
+.rtl .flex-row-reverse > * + * {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* Icon Positioning for RTL */
+.rtl .absolute.right-2 {
+  right: auto;
+  left: 0.5rem;
+}
+
+.rtl .absolute.left-2 {
+  left: auto;
+  right: 0.5rem;
+}
+
+/* Responsive RTL Adjustments */
+@media (max-width: 768px) {
+  .rtl .grid {
+    direction: rtl;
+  }
+  
+  .rtl .flex {
+    direction: rtl;
+  }
+}
+
+/* Form Validation Messages RTL */
+.rtl .text-red-500,
+.rtl .text-green-500,
+.rtl .text-yellow-500 {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Guidelines Sidebar RTL */
+.rtl .sticky {
+  text-align: right;
+}
+
+.rtl .space-y-6 > * {
+  text-align: right;
+}
+
+/* Alert Messages RTL */
+.rtl .bg-green-50,
+.rtl .bg-red-50,
+.rtl .bg-blue-50 {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Loading Spinner RTL */
+.rtl .animate-spin {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+/* Checkbox and Radio RTL */
+.rtl input[type="checkbox"],
+.rtl input[type="radio"] {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
+
+/* Badge and Tag RTL */
+.rtl .px-2 {
+  text-align: center;
+}
+
+/* Image Preview RTL */
+.rtl .relative .absolute {
+  text-align: center;
+}
+
+/* Progress Bar RTL */
+.rtl .w-full.bg-gray-200 {
+  direction: ltr; /* Keep progress bars LTR */
+}
+
+/* Dropdown Menu RTL */
+.rtl select option {
+  text-align: right;
+  direction: rtl;
+}
+
+/* Focus States RTL */
+.rtl input:focus,
+.rtl textarea:focus,
+.rtl select:focus {
+  outline-offset: 2px;
+}
+
+/* Mobile Responsive RTL */
+@media (max-width: 640px) {
+  .rtl .flex-col {
+    align-items: flex-end;
+  }
+  
+  .rtl .text-left {
+    text-align: right;
+  }
+  
+  .rtl .justify-start {
+    justify-content: flex-end;
+  }
+}
+
+/* Print Styles RTL */
+@media print {
+  .rtl * {
+    direction: rtl !important;
+    text-align: right !important;
+  }
+}
