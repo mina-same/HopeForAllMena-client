@@ -1,7 +1,7 @@
 import React, { useState } from "react";
+import { useStaticQuery, graphql } from "gatsby";
 import ModalVideo from "react-modal-video";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link, useStaticQuery, graphql } from "gatsby";
 import { useTranslation } from "react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
 import videoBg from "../../assets/images/shapes/video-bg-1-1.png";
@@ -12,7 +12,7 @@ const VideoCardTwo = () => {
   const [isOpen, setOpen] = useState(false);
   const { t } = useTranslation('VideoCardTwo');
   const { language: currentLanguage } = useI18next();
-  const data = useStaticQuery(graphql`
+  useStaticQuery(graphql`
     query {
       locales: allLocale {
         edges {
@@ -61,12 +61,12 @@ const VideoCardTwo = () => {
               </div>
             </Col>
             <Col lg={4} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-              <div className="title-section">
-                <h3>{t('title')}</h3>
-                <div className="subtitle">{t('subtitle')}</div>
+              <div className="title-section text-center">
+                <h3 className="mb-0 mb-md-3">{t('title')}</h3>
+                <div className="subtitle mb-0 mb-md-2">{t('subtitle')}</div>
               </div>
             </Col>
-            <Col lg={5} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+            <Col lg={5} className={`${currentLanguage === 'ar' ? 'text-right text-center text-lg-right' : 'text-left text-center text-lg-left'}`}>
               <p>
                 {t('description')}
               </p>

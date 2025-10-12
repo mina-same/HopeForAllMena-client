@@ -10,8 +10,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import contactMessageService from '../../services/contactMessageService';
 import { useTranslation } from 'gatsby-plugin-react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { graphql } from 'gatsby';
-import { Link } from 'gatsby';
 
 
 const ContactMessagesPage = () => {
@@ -103,17 +101,6 @@ const ContactMessagesPage = () => {
       setMessages(prev => prev.filter(message => message.id !== messageId));
     } catch (error) {
       console.error('Failed to delete message:', error);
-    }
-  };
-
-  const handleReply = async (messageId) => {
-    try {
-      await contactMessageService.respondToContactMessage(messageId, replyText);
-      handleStatusChange(messageId, 'replied');
-      setReplyText('');
-      setSelectedMessage(null);
-    } catch (error) {
-      console.error('Failed to send reply:', error);
     }
   };
 
@@ -392,47 +379,6 @@ const ContactMessagesPage = () => {
                               </CardContent>
                             </Card>
 
-                            {/* Reply Section */}
-                            {selectedMessage.status !== 'replied' && (
-                              <Card className="border-dashed">
-                                <CardHeader className="pb-3">
-                                  <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
-                                    <MessageSquare className="h-4 w-4 text-blue-600" />
-                                    <CardTitle className="text-base">{t('viewDialog.sendReply')}</CardTitle>
-                                  </div>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                  <Textarea 
-                                    value={replyText}
-                                    onChange={(e) => setReplyText(e.target.value)}
-                                    placeholder={t('viewDialog.typeReply')}
-                                    className={`min-h-[120px] resize-none ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}
-                                    dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-                                  />
-                                  <div className={`flex ${currentLanguage === 'ar' ? 'justify-start ' : 'justify-end'} gap-3`}>
-                                    <Button 
-                                      variant="outline"
-                                      onClick={() => {
-                                        setReplyText('');
-                                        setSelectedMessage(null);
-                                      }}
-                                      className="px-6"
-                                    >
-                                      {t('viewDialog.cancel')}
-                                    </Button>
-                                    <Button 
-                                      onClick={() => handleReply(selectedMessage.id)}
-                                      disabled={!replyText.trim()}
-                                      className={`bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 px-6 ${currentLanguage === 'ar' ? '' : ''}`}
-                                    >
-                                      <Send className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
-                                      {t('viewDialog.send')}
-                                    </Button>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            )}
-
                             {/* Replied Status */}
                             {selectedMessage.status === 'replied' && (
                               <Card className="bg-gradient-to-r from-green-50 to-emerald-50 border-green-200">
@@ -506,17 +452,3 @@ const ContactMessagesPage = () => {
 };
 
 export default ContactMessagesPage;
-
-export const query = graphql`
-  query($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

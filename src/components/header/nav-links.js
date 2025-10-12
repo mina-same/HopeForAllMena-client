@@ -3,7 +3,7 @@ import { Link, useI18next, useTranslation } from "gatsby-plugin-react-i18next";
 import flag1 from "../../assets/images/resources/flag-1-1.jpg";
 import flagAr from "../../assets/images/resources/flag-1-2.jpg"; // You can add Arabic flag image later
 
-const NavLinks = ({ extraClassName }) => {
+const NavLinks = ({ extraClassName, hideControls = false }) => {
   const { t } = useTranslation();
   const { languages, originalPath, i18n } = useI18next();
 
@@ -74,42 +74,46 @@ const NavLinks = ({ extraClassName }) => {
         <li>
           <Link to="/contact">{t('navigation.contact')}</Link>
         </li>
-        <li className="language-switcher">
-          <div className="language-switcher__inner" style={{ display: "flex", alignItems: "center" }}>
-            <img
-              src={i18n?.resolvedLanguage === 'ar' ? flagAr : flag1}
-              alt=""
-              style={{ borderRadius: "50%", margin: "7px", width: "24px", height: "24px" }}
-            />
-            <label htmlFor="language-switcher-nav" className="sr-only">
-              select language
-            </label>
-            <select
-              className="selectpicker"
-              id="language-switcher-nav"
-              value={i18n?.resolvedLanguage || 'en'}
-              onChange={handleLanguageChange}
-              style={{
-                appearance: "none",
-                border: "none",
-                outline: "none",
-                color: "#7e7e7e",
-                backgroundColor: "transparent",
-                fontSize: "14px",
-                width: "50px"
-              }}
-            >
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
-            </select>
-            <i className="fa fa-angle-down" style={{ marginLeft: "5px" }}></i>
-          </div>
-        </li>
-        <li className="search-btn search-toggler" style={{ marginLeft: "20px", marginRight: "15px" }}>
-          <span>
-            <i className="azino-icon-magnifying-glass"></i>
-          </span>
-        </li>
+        {!hideControls && (
+          <>
+            <li className="language-switcher">
+              <div className="language-switcher__inner" style={{ display: "flex", alignItems: "center" }}>
+                <img
+                  src={i18n?.resolvedLanguage === 'ar' ? flagAr : flag1}
+                  alt=""
+                  style={{ borderRadius: "50%", margin: "7px", width: "24px", height: "24px" }}
+                />
+                <label htmlFor="language-switcher-nav" className="sr-only">
+                  select language
+                </label>
+                <select
+                  className="selectpicker"
+                  id="language-switcher-nav"
+                  value={i18n?.resolvedLanguage || 'en'}
+                  onChange={handleLanguageChange}
+                  style={{
+                    appearance: "none",
+                    border: "none",
+                    outline: "none",
+                    color: "#7e7e7e",
+                    backgroundColor: "transparent",
+                    fontSize: "14px",
+                    width: "50px"
+                  }}
+                >
+                  <option value="en">English</option>
+                  <option value="ar">العربية</option>
+                </select>
+                <i className="fa fa-angle-down" style={{ marginLeft: "5px" }}></i>
+              </div>
+            </li>
+            <li className="search-btn search-toggler" style={{ marginLeft: "20px", marginRight: "15px" }}>
+              <span>
+                <i className="azino-icon-magnifying-glass"></i>
+              </span>
+            </li>
+          </>
+        )}
     </ul>
   );
 };

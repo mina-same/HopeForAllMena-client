@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Book, Calendar, Users, Search, Star, Eye, EyeOff } from 'lucide-react';
+import { Plus, Edit, Trash2, Users, Search, Eye } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent } from '../ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -15,7 +15,6 @@ import ConfirmationModal from '../ui/ConfirmationModal';
 import ImageUpload from '../ui/image-upload';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { graphql } from 'gatsby';
 
 export function AuthorsSection() {
   const { toast } = useToast();
@@ -37,6 +36,10 @@ export function AuthorsSection() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [authorToDelete, setAuthorToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // View author modal state
+  const [showViewModal, setShowViewModal] = useState(false);
+  const [viewingAuthor, setViewingAuthor] = useState(null);
 
   const [authorForm, setAuthorForm] = useState({
     name: '',
@@ -183,6 +186,11 @@ export function AuthorsSection() {
     setIsDialogOpen(true);
   };
 
+  const handleView = (author) => {
+    setViewingAuthor(author);
+    setShowViewModal(true);
+  };
+
   const handleDelete = (author) => {
     setAuthorToDelete(author);
     setShowDeleteModal(true);
@@ -213,24 +221,6 @@ export function AuthorsSection() {
     }
   };
 
-  const handleToggleFeatured = async (author) => {
-    try {
-      await authorsAPI.toggleAuthorFeatured(author._id);
-      const authorName = currentLanguage === 'ar' ? author.nameAr || author.name : author.name;
-      toast({
-        title: author.featured ? t('toast.authorUnfeatured', { name: authorName }) : t('toast.authorFeatured', { name: authorName }),
-        description: author.featured ? t('toast.authorUnfeatured', { name: authorName }) : t('toast.authorFeatured', { name: authorName }),
-      });
-      fetchAuthors();
-    } catch (error) {
-      console.error('Failed to toggle featured status:', error);
-      toast({
-        title: t('toast.errors.validationError'),
-        description: t('toast.errors.toggleFeatured'),
-        variant: "destructive"
-      });
-    }
-  };
 
   const handleStatusChange = async (author, newStatus) => {
     try {
@@ -504,8 +494,17 @@ export function AuthorsSection() {
                     
                     {/* Mobile Action Buttons */}
                     <div className="pt-3 border-t border-gray-100 space-y-3">
-                      {/* Edit and Delete Buttons Row */}
+                      {/* View, Edit and Delete Buttons Row */}
                       <div className="flex items-center justify-center gap-3 flex-row">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleView(author)}
+                          className="h-8 w-8 p-0 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+                          title={t('actions.view')}
+                        >
+                          <Eye className="h-3 w-3" />
+                        </Button>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -524,29 +523,6 @@ export function AuthorsSection() {
                         >
                           <Trash2 className="h-3 w-3" />
                         </Button>
-                      </div>
-                      
-                      {/* Feature Toggle and Status Selection Row */}
-                      <div className="flex items-center gap-2 flex-row">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleToggleFeatured(author)}
-                          className="h-8 px-3 text-xs hover:bg-gray-100 rounded-lg flex-1"
-                          title={author.featured ? t('actions.unfeature') : t('actions.feature')}
-                        >
-                          {author.featured ? <EyeOff className="h-3 w-3 mr-1" /> : <Eye className="h-3 w-3 mr-1" />}
-                          <span className="truncate">{author.featured ? t('actions.unfeature') : t('actions.feature')}</span>
-                        </Button>
-                        <Select value={author.status} onValueChange={(value) => handleStatusChange(author, value)}>
-                          <SelectTrigger className="w-24 h-8 text-xs border-gray-300 rounded-lg">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="active">{t('status.active')}</SelectItem>
-                            <SelectItem value="inactive">{t('status.inactive')}</SelectItem>
-                          </SelectContent>
-                        </Select>
                       </div>
                     </div>
                   </div>
@@ -598,11 +574,11 @@ export function AuthorsSection() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              onClick={() => handleToggleFeatured(author)}
-                              className="h-9 w-9 p-0 hover:bg-gray-100 rounded-lg"
-                              title={author.featured ? t('actions.unfeature') : t('actions.feature')}
+                              onClick={() => handleView(author)}
+                              className="h-9 w-9 p-0 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+                              title={t('actions.view')}
                             >
-                              {author.featured ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                              <Eye className="h-4 w-4" />
                             </Button>
                             <Select value={author.status} onValueChange={(value) => handleStatusChange(author, value)}>
                               <SelectTrigger className="w-24 h-9 text-xs border-gray-300 rounded-lg">
@@ -678,6 +654,119 @@ export function AuthorsSection() {
         </div>
       </div>
 
+      {/* View Author Modal */}
+      <Dialog open={showViewModal} onOpenChange={setShowViewModal}>
+        <DialogContent 
+          className={`max-w-2xl max-h-[90vh] overflow-y-auto ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`}
+          dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+        >
+          <DialogHeader>
+            <DialogTitle className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+              {t('viewModal.title')}
+            </DialogTitle>
+          </DialogHeader>
+          {viewingAuthor && (
+            <div className="space-y-6">
+              {/* Author Avatar and Basic Info */}
+              <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <Avatar className="h-20 w-20 border-2 border-gray-100 shadow-sm">
+                  <AvatarImage src={viewingAuthor.avatarUrl} alt={currentLanguage === 'ar' ? viewingAuthor.nameAr || viewingAuthor.name : viewingAuthor.name} />
+                  <AvatarFallback className="font-semibold text-lg">
+                    {(currentLanguage === 'ar' ? viewingAuthor.nameAr || viewingAuthor.name : viewingAuthor.name).split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+                <div className={`flex-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  <h3 className="text-xl font-semibold text-gray-900">
+                    {currentLanguage === 'ar' ? viewingAuthor.nameAr || viewingAuthor.name : viewingAuthor.name}
+                  </h3>
+                  <div className="flex items-center gap-2 mt-2">
+                    {viewingAuthor.featured && (
+                      <Badge className="bg-amber-50 text-amber-700 border-amber-200">
+                        {t('table.featured')}
+                      </Badge>
+                    )}
+                    <Badge className={viewingAuthor.status === 'active' ? 'bg-green-300 text-green-700 border-green-200' : 'bg-gray-50 text-gray-700 border-gray-200'}>
+                      {t(`status.${viewingAuthor.status}`)}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+
+              {/* Author Details */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className={`font-semibold ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    {t('form.fields.name.label')}
+                  </Label>
+                  <p className={`text-gray-700 p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    {viewingAuthor.name}
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <Label className={`font-semibold ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    {t('form.fields.nameAr.label')}
+                  </Label>
+                  <p className="text-gray-700 p-3 bg-gray-50 rounded-lg text-right" dir="rtl">
+                    {viewingAuthor.nameAr || '-'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label className={`font-semibold ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    {t('form.fields.biography.label')}
+                  </Label>
+                  <div className={`text-gray-700 p-3 bg-gray-50 rounded-lg min-h-[100px] ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    {viewingAuthor.biography}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className={`font-semibold ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                    {t('form.fields.biographyAr.label')}
+                  </Label>
+                  <div className="text-gray-700 p-3 bg-gray-50 rounded-lg min-h-[100px] text-right" dir="rtl">
+                    {viewingAuthor.biographyAr || '-'}
+                  </div>
+                </div>
+              </div>
+
+              {/* Statistics */}
+              <div className="grid grid-cols-2 gap-4 p-4 bg-blue-50 rounded-lg">
+                <div className={`text-center ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  <div className="text-2xl font-bold text-blue-600">{viewingAuthor.booksCount || 0}</div>
+                  <div className="text-sm text-gray-600">{t('table.booksCount', { count: viewingAuthor.booksCount || 0 })}</div>
+                </div>
+                <div className={`text-center ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                  <div className="text-2xl font-bold text-blue-600">{formatDate(viewingAuthor.createdAt)}</div>
+                  <div className="text-sm text-gray-600">{t('viewModal.joinedDate')}</div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className={`flex gap-3 pt-4 border-t ${currentLanguage === 'ar' ? 'justify-start' : 'justify-end'}`}>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowViewModal(false)}
+                >
+                  {t('viewModal.close')}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowViewModal(false);
+                    handleEdit(viewingAuthor);
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  <Edit className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+                  {t('actions.edit')}
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Delete Confirmation Modal */}
       <ConfirmationModal
         isOpen={showDeleteModal}
@@ -709,16 +798,3 @@ export function AuthorsSection() {
 }
 
 // GraphQL query for i18n support
-export const query = graphql`
-  query($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

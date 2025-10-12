@@ -1,6 +1,6 @@
 import React from "react";
+import { Link } from "gatsby";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link, graphql, useStaticQuery } from "gatsby";
 import { useTranslation } from "react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
 import bgImage from "../../assets/images/shapes/testimonials-map-1-1.png";
@@ -14,16 +14,6 @@ const TestimonialsOne = () => {
   const { t } = useTranslation('TestimonialsOne');
   const { language: currentLanguage } = useI18next();
   
-  // GraphQL query for i18n support
-  const data = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `);
 
   // Get testimonials from translation files
   const testimonials = t('testimonials', { returnObjects: true });

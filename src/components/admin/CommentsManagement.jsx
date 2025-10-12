@@ -12,7 +12,7 @@ import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { Link, graphql } from 'gatsby';
+import { Link } from 'gatsby';
 
 const CommentsManagement = () => {
   const { user, token } = useAuth();
@@ -725,16 +725,3 @@ const CommentsManagement = () => {
 
 export default CommentsManagement;
 
-export const query = graphql`
-  query($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

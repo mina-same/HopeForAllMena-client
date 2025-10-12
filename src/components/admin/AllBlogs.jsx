@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, Filter, Edit3, Eye, Trash2, Plus, MoreVertical, Calendar, User, Tag, BookOpen, FileText, Users, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Search, Edit3, Eye, Trash2, Plus, FileText, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -8,10 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Alert, AlertDescription } from '../ui/alert';
-import { Link } from 'gatsby';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { graphql } from 'gatsby';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
 
@@ -36,11 +34,7 @@ const AllBlogs = () => {
     totalPages: 0
   });
 
-  useEffect(() => {
-    fetchBlogs();
-  }, [filters, pagination.page, currentLanguage]);
-
-  const fetchBlogs = async () => {
+  const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
       const queryParams = {
@@ -63,7 +57,11 @@ const AllBlogs = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters, pagination.page, pagination.limit, currentLanguage, token, t]);
+
+  useEffect(() => {
+    fetchBlogs();
+  }, [fetchBlogs]);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -99,16 +97,6 @@ const AllBlogs = () => {
     }
   };
 
-  const handleStatusUpdate = async (blogId, newStatus) => {
-    try {
-      await blogAPI.updateBlog(blogId, { status: newStatus }, token);
-      setMessage({ type: 'success', text: t('messages.statusUpdateSuccess') });
-      fetchBlogs();
-    } catch (error) {
-      console.error('Error updating blog status:', error);
-      setMessage({ type: 'danger', text: t('messages.statusUpdateError') });
-    }
-  };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US');
@@ -503,17 +491,3 @@ const AllBlogs = () => {
 };
 
 export default AllBlogs;
-
-export const query = graphql`
-  query ($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

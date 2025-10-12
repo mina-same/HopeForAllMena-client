@@ -1,8 +1,8 @@
 import React from "react";
+import { Link } from "gatsby";
 import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
-import { Link, graphql, useStaticQuery } from "gatsby";
 import { useTranslation } from "react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
 
@@ -17,19 +17,6 @@ const MainSlider = () => {
   const { t } = useTranslation('MainSlider');
   const { language: currentLanguage } = useI18next();
   
-  const data = useStaticQuery(graphql`
-    query {
-      locales: allLocale {
-        edges {
-          node {
-            ns
-            data
-            language
-          }
-        }
-      }
-    }
-  `);
 
   const mainSlideOptions = {
     slidesPerView: 1,

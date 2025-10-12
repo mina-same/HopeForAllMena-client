@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, graphql, useStaticQuery } from "gatsby";
+import { Link } from "gatsby";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
@@ -11,19 +11,6 @@ const CallToActionTwo = () => {
   const { t } = useTranslation('CallToActionTwo');
   const { language: currentLanguage } = useI18next();
   
-  const data = useStaticQuery(graphql`
-    query {
-      locales: allLocale {
-        edges {
-          node {
-            ns
-            data
-            language
-          }
-        }
-      }
-    }
-  `);
   return (
     <section className={`call-to-action-two ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <div

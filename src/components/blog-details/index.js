@@ -9,7 +9,7 @@ import { useTranslation } from "gatsby-plugin-react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
 
 const BlogDetails = ({ slug }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('Blog');
   const { language: currentLanguage } = useI18next();
   const [blog, setBlog] = useState(null);
   const [comments, setComments] = useState([]);
@@ -57,7 +57,7 @@ const BlogDetails = ({ slug }) => {
         <Container>
           <div className="text-center">
             <div className="spinner-border" role="status">
-              <span className="sr-only">{t('blog:details.loading')}</span>
+              <span className="sr-only">{t('details.loading')}</span>
             </div>
           </div>
         </Container>
@@ -70,8 +70,8 @@ const BlogDetails = ({ slug }) => {
       <section className={`blog-details pt-120 pb-40 ${currentLanguage === 'ar' ? 'rtl-layout' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <Container>
           <div className="text-center">
-            <h3>{t('blog:details.notFound')}</h3>
-            <p>{t('blog:details.notFoundMessage')}</p>
+            <h3>{t('details.notFound')}</h3>
+            <p>{t('details.notFoundMessage')}</p>
           </div>
         </Container>
       </section>

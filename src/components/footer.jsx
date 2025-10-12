@@ -85,10 +85,8 @@ const Footer = () => {
                     <a href="tel:+20128141662" title="Cairo Office">+20 128 141 6629 <small>(Cairo)</small></a><br />
                   </li>
                   <li>
-                    <a href="#none">
-                      <i className="azino-icon-email" style={{ color: "white" }}></i>
-                      <a href="mailto:hope4allmena@gmail.com">hope4allmena@gmail.com</a>
-                    </a>
+                    <i className="azino-icon-email" style={{ color: "white" }}></i>
+                    <a href="mailto:hope4allmena@gmail.com">hope4allmena@gmail.com</a>
                   </li>
                 </ul>
               </div>

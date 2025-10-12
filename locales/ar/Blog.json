@@ -44,6 +44,7 @@
     "invalidEmail": "يرجى إدخال عنوان بريد إلكتروني صحيح"
   },
   "sidebar": {
+    "latestPosts": "أحدث المقالات",
     "recentPosts": "المقالات الحديثة",
     "categories": "الفئات",
     "tags": "العلامات الشائعة",
@@ -53,7 +54,8 @@
     "newsletterTitle": "اشترك في نشرتنا الإخبارية",
     "newsletterDescription": "احصل على آخر التحديثات والأخبار في صندوق بريدك.",
     "emailPlaceholder": "أدخل بريدك الإلكتروني",
-    "subscribe": "اشترك"
+    "subscribe": "اشترك",
+    "loading": "جاري التحميل..."
   },
   "categories": {
     "news": "الأخبار",

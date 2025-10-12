@@ -11,11 +11,11 @@ import { useI18next } from "gatsby-plugin-react-i18next";
 import { graphql } from "gatsby";
 
 const NewsDetails = ({ location, pageContext }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('Blog');
   const { language: currentLanguage } = useI18next();
   // Extract slug from URL path
   const slug = location?.pathname?.split('/news-details/')[1]?.replace('/', '') || pageContext?.slug;
-  const [blogTitle, setBlogTitle] = useState(t('blog:details.loading'));
+  const [blogTitle, setBlogTitle] = useState(t('details.loading'));
   
   useEffect(() => {
     const fetchBlogTitle = async () => {
@@ -23,10 +23,10 @@ const NewsDetails = ({ location, pageContext }) => {
         try {
           const blog = await blogAPI.getBlogBySlug(slug);
           const title = currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title;
-          setBlogTitle(title || t('blog:details.loading'));
+          setBlogTitle(title || t('details.loading'));
         } catch (error) {
           console.error('Error fetching blog title:', error);
-          setBlogTitle(t('blog:details.notFound'));
+          setBlogTitle(t('details.notFound'));
         }
       }
     };
@@ -38,7 +38,7 @@ const NewsDetails = ({ location, pageContext }) => {
     <Layout pageTitle={blogTitle}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title={blogTitle} crumbTitle={t('blog:home.tagLine')} />
+      <PageHeader title={blogTitle} crumbTitle={t('home.tagLine')} />
       <BlogDetails slug={slug} />
       <Footer />
     </Layout>

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import QuillEditor from '../ui/QuillEditor';
-import { Link } from 'gatsby';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { graphql } from 'gatsby';
 import { 
   Eye, Save, FileText, Heading, AlignLeft, Folder, Edit3, 
   Tags, Image, Globe, Star, Info, Lightbulb, Upload, 
@@ -119,7 +117,7 @@ const NewBlog = () => {
     <div className={`min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 p-4 md:p-8 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-        <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
+        <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${currentLanguage === 'ar' ? 'sm:flex-row' : ''}`}>
           <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               {t('title')}
@@ -128,12 +126,12 @@ const NewBlog = () => {
               {t('description')}
             </p>
           </div>
-          <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-            <button className={`flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+            <button className={`flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
               <Eye className="h-4 w-4" />
               {t('buttons.preview')}
             </button>
-            <button className={`flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <button className={`flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
               <Save className="h-4 w-4" />
               {t('buttons.saveDraft')}
             </button>
@@ -153,7 +151,7 @@ const NewBlog = () => {
                   : message.type === 'danger' 
                   ? 'bg-red-50 border border-red-200 text-red-800'
                   : 'bg-blue-50 border border-blue-200 text-blue-800'
-              } ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+              } ${currentLanguage === 'ar' ? 'flex-row text-right' : 'text-left'}`}>
                 {message.type === 'success' ? (
                   <Check className="h-5 w-5 flex-shrink-0" />
                 ) : message.type === 'danger' ? (
@@ -175,7 +173,7 @@ const NewBlog = () => {
               {/* Title Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <Heading className="h-4 w-4 text-blue-600" />
                     {t('form.titleEn')} *
                   </label>
@@ -186,12 +184,12 @@ const NewBlog = () => {
                     onChange={handleChange}
                     placeholder={t('form.titleEnPlaceholder')}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400"
                     dir="ltr"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <Heading className="h-4 w-4 text-blue-600" />
                     {t('form.titleAr')}
                   </label>
@@ -210,7 +208,7 @@ const NewBlog = () => {
               {/* Excerpt Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <AlignLeft className="h-4 w-4 text-blue-600" />
                     {t('form.excerptEn')} *
                   </label>
@@ -225,8 +223,8 @@ const NewBlog = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
                     dir="ltr"
                   />
-                  <div className={`flex justify-between items-center text-sm ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                    <div className={`flex items-center gap-1 text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex justify-between items-center text-sm ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+                    <div className={`flex items-center gap-1 text-gray-500 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <Info className="h-4 w-4" />
                       {t('form.excerptHelp')}
                     </div>
@@ -236,7 +234,7 @@ const NewBlog = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <AlignLeft className="h-4 w-4 text-blue-600" />
                     {t('form.excerptAr')}
                   </label>
@@ -250,8 +248,8 @@ const NewBlog = () => {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
                     dir="rtl"
                   />
-                  <div className={`flex justify-between items-center text-sm ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                    <div className={`flex items-center gap-1 text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex justify-between items-center text-sm ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+                    <div className={`flex items-center gap-1 text-gray-500 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <Info className="h-4 w-4" />
                       {t('form.excerptHelpAr')}
                     </div>
@@ -265,7 +263,7 @@ const NewBlog = () => {
               {/* Category Field */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <Folder className="h-4 w-4 text-blue-600" />
                     {t('form.category')} *
                   </label>
@@ -288,7 +286,7 @@ const NewBlog = () => {
               {/* Content Editors */}
               <div className="space-y-6">
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <Edit3 className="h-4 w-4 text-blue-600" />
                     {t('form.contentEn')} *
                   </label>
@@ -303,7 +301,7 @@ const NewBlog = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <Edit3 className="h-4 w-4 text-blue-600" />
                     {t('form.contentAr')}
                   </label>
@@ -321,7 +319,7 @@ const NewBlog = () => {
               {/* Tags Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <Tags className="h-4 w-4 text-blue-600" />
                     {t('form.tagsEn')}
                   </label>
@@ -331,16 +329,16 @@ const NewBlog = () => {
                     value={formData.tags}
                     onChange={handleChange}
                     placeholder={t('form.tagsEnPlaceholder')}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400"
                     dir="ltr"
                   />
-                  <div className={`flex items-center gap-1 text-sm text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-1 text-sm text-gray-500 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                     <Lightbulb className="h-4 w-4" />
                     {t('form.tagsHelp')}
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <Tags className="h-4 w-4 text-blue-600" />
                     {t('form.tagsAr')}
                   </label>
@@ -350,10 +348,10 @@ const NewBlog = () => {
                     value={formData.tagsAr}
                     onChange={handleChange}
                     placeholder={t('form.tagsArPlaceholder')}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400"
                     dir="rtl"
                   />
-                  <div className={`flex items-center gap-1 text-sm text-gray-500 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-1 text-sm text-gray-500 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                     <Lightbulb className="h-4 w-4" />
                     {t('form.tagsHelpAr')}
                   </div>
@@ -362,7 +360,7 @@ const NewBlog = () => {
 
               {/* Featured Image Upload */}
               <div className="space-y-2">
-                <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                   <Camera className="h-4 w-4 text-blue-600" />
                   {t('form.featuredImage')} *
                 </label>
@@ -400,7 +398,7 @@ const NewBlog = () => {
               {/* Publication Settings */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row-reverse justify-end' : ''}`}>
+                  <label className={`flex items-center gap-2 text-sm font-medium text-gray-700 ${currentLanguage === 'ar' ? 'flex-row justify-end' : ''}`}>
                     <Globe className="h-4 w-4 text-blue-600" />
                     {t('form.publicationStatus')}
                   </label>
@@ -416,7 +414,7 @@ const NewBlog = () => {
                 </div>
                 <div className="space-y-2">
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <label className={`flex items-center gap-3 cursor-pointer ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <label className={`flex items-center gap-3 cursor-pointer ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <input
                         type="checkbox"
                         name="featured"
@@ -425,7 +423,7 @@ const NewBlog = () => {
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                       />
                       <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                        <div className={`flex items-center gap-2 font-medium text-gray-900 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                        <div className={`flex items-center gap-2 font-medium text-gray-900 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                           <Star className="h-4 w-4 text-yellow-500" />
                           {t('form.featuredPost')}
                         </div>
@@ -439,16 +437,16 @@ const NewBlog = () => {
               </div>
 
               {/* Form Actions */}
-              <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-6 border-t border-gray-200 ${currentLanguage === 'ar' ? 'sm:flex-row-reverse' : ''}`}>
-                <div className={`flex items-center gap-2 text-gray-500 text-sm ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-6 border-t border-gray-200 ${currentLanguage === 'ar' ? 'sm:flex-row' : ''}`}>
+                <div className={`flex items-center gap-2 text-gray-500 text-sm ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                   <Info className="h-4 w-4" />
                   {t('form.autoSave')}
                 </div>
-                <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                   <button
                     type="button"
                     disabled={loading}
-                    className={`flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+                    className={`flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}
                   >
                     <Save className="h-4 w-4" />
                     {t('buttons.saveDraft')}
@@ -456,7 +454,7 @@ const NewBlog = () => {
                   <button
                     type="submit"
                     disabled={loading}
-                    className={`flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+                    className={`flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}
                   >
                     {loading ? (
                       <>
@@ -482,7 +480,7 @@ const NewBlog = () => {
             {/* Guidelines Card */}
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
               <div className="bg-gradient-to-r from-blue-500 to-blue-600 px-6 py-4">
-                <h3 className={`text-white font-semibold flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+                <h3 className={`text-white font-semibold flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row text-right' : 'text-left'}`}>
                   <Lightbulb className="h-5 w-5" />
                   {t('guidelines.title')}
                 </h3>
@@ -490,7 +488,7 @@ const NewBlog = () => {
               <div className="p-6 space-y-6">
                 {/* Content Tips */}
                 <div>
-                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                     <div className="bg-blue-50 p-2 rounded-full">
                       <PenTool className="h-4 w-4 text-blue-600" />
                     </div>
@@ -499,19 +497,19 @@ const NewBlog = () => {
                     </h4>
                   </div>
                   <ul className={`space-y-2 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
                       {t('guidelines.tips.engaging')}
                     </li>
-                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
                       {t('guidelines.tips.clear')}
                     </li>
-                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
                       {t('guidelines.tips.images')}
                     </li>
-                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <li className={`flex items-center gap-2 text-sm text-gray-600 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
                       {t('guidelines.tips.tags')}
                     </li>
@@ -520,7 +518,7 @@ const NewBlog = () => {
 
                 {/* Image Requirements */}
                 <div>
-                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                     <div className="bg-purple-50 p-2 rounded-full">
                       <Image className="h-4 w-4 text-purple-600" />
                     </div>
@@ -529,15 +527,15 @@ const NewBlog = () => {
                     </h4>
                   </div>
                   <div className="space-y-2">
-                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <span className="text-sm text-gray-600">{t('guidelines.imageSpecs.size')}:</span>
                       <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{t('guidelines.imageSpecs.recommended')}</span>
                     </div>
-                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <span className="text-sm text-gray-600">{t('guidelines.imageSpecs.format')}:</span>
                       <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{t('guidelines.imageSpecs.formats')}</span>
                     </div>
-                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex justify-between items-center ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <span className="text-sm text-gray-600">{t('guidelines.imageSpecs.maxSize')}:</span>
                       <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">{t('guidelines.imageSpecs.limit')}</span>
                     </div>
@@ -546,7 +544,7 @@ const NewBlog = () => {
 
                 {/* Publication Status */}
                 <div>
-                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-3 mb-4 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                     <div className="bg-yellow-50 p-2 rounded-full">
                       <Globe className="h-4 w-4 text-yellow-600" />
                     </div>
@@ -555,15 +553,15 @@ const NewBlog = () => {
                     </h4>
                   </div>
                   <div className="space-y-2">
-                    <div className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                         <span className="px-2 py-1 bg-gray-500 text-white rounded text-xs">Draft</span>
                         <span className="text-sm text-gray-600">{t('guidelines.statusInfo.draft')}</span>
                       </div>
                       <Eye className="h-4 w-4 text-gray-400" />
                     </div>
-                    <div className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                         <span className="px-2 py-1 bg-green-500 text-white rounded text-xs">Published</span>
                         <span className="text-sm text-gray-600">{t('guidelines.statusInfo.published')}</span>
                       </div>
@@ -572,23 +570,6 @@ const NewBlog = () => {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Ready to Publish Card */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 text-center">
-              <div className="mb-4">
-                <Rocket className="h-12 w-12 text-blue-600 mx-auto mb-3" />
-                <h3 className={`font-semibold text-gray-900 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                  {t('readyToPublish.title')}
-                </h3>
-              </div>
-              <p className={`text-gray-600 text-sm mb-4 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                {t('readyToPublish.description')}
-              </p>
-              <button className={`w-full flex items-center justify-center gap-2 px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                <HelpCircle className="h-4 w-4" />
-                {t('buttons.needHelp')}
-              </button>
             </div>
           </div>
         </div>
@@ -599,16 +580,3 @@ const NewBlog = () => {
 
 export default NewBlog;
 
-export const query = graphql`
-  query ($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

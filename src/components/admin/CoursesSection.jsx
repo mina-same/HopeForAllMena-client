@@ -13,7 +13,6 @@ import { useCourses } from '../../context/CourseContext';
 import { useToast } from '../../hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { Link, graphql } from 'gatsby';
 // Course type removed - using JavaScript
 
 export const CoursesSection = () => {
@@ -555,17 +554,3 @@ export const CoursesSection = () => {
     </div>
   );
 };
-
-export const query = graphql`
-  query($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

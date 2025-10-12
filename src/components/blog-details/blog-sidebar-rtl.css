@@ -1,0 +1,55 @@
+/* RTL Support for Blog Sidebar */
+.rtl-sidebar {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl-sidebar li {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.rtl-sidebar img {
+  margin-left: 0;
+  margin-right: 15px;
+  width: 68px !important;
+  height: 70px !important;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.rtl-sidebar h3 {
+  text-align: right;
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.rtl-sidebar h3 a {
+  text-align: right;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Arabic font support */
+.rtl-sidebar[dir="rtl"] {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+/* Loading state RTL */
+.rtl-sidebar .loading-item {
+  opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+/* Hover effects for RTL */
+.rtl-sidebar a:hover {
+  color: #2194D1;
+  transition: color 0.3s ease;
+}

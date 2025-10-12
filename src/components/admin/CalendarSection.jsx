@@ -5,7 +5,7 @@ import Breadcrumb from '../Calendar/Breadcrumb';
 
 const CalendarSection = () => {
     return (
-        <div className='m-5 mt-0'>
+        <div className=''>
             <Helmet>
                 <title>Calendar - Hope For All Mena</title>
                 <meta name="description" content="Manage your events and schedule with our interactive calendar" />

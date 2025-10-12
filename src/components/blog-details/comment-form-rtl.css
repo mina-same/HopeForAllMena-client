@@ -1,0 +1,51 @@
+/* RTL Support for Comment Form */
+.rtl-comment-form {
+  direction: rtl;
+  text-align: right;
+}
+
+.rtl-comment-form .blog-details__title {
+  text-align: right;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+.rtl-comment-form .form-control input,
+.rtl-comment-form .form-control textarea {
+  text-align: right;
+  direction: rtl;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+.rtl-comment-form .form-control input::placeholder,
+.rtl-comment-form .form-control textarea::placeholder {
+  text-align: right;
+  direction: rtl;
+}
+
+.rtl-comment-form .thm-btn {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+.rtl-comment-form .result {
+  text-align: right;
+  direction: rtl;
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', Arial, sans-serif;
+}
+
+/* Success and error message styling */
+.rtl-comment-form .text-success {
+  color: #28a745;
+}
+
+.rtl-comment-form .text-danger {
+  color: #dc3545;
+}
+
+/* Form layout adjustments for RTL */
+.rtl-comment-form .form-group {
+  direction: rtl;
+}
+
+.rtl-comment-form .form-control-full {
+  text-align: right;
+}

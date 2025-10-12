@@ -44,6 +44,7 @@
     "invalidEmail": "Please enter a valid email address"
   },
   "sidebar": {
+    "latestPosts": "Latest Posts",
     "recentPosts": "Recent Posts",
     "categories": "Categories",
     "tags": "Popular Tags",
@@ -53,7 +54,8 @@
     "newsletterTitle": "Subscribe to our Newsletter",
     "newsletterDescription": "Get the latest updates and news delivered to your inbox.",
     "emailPlaceholder": "Enter your email",
-    "subscribe": "Subscribe"
+    "subscribe": "Subscribe",
+    "loading": "Loading..."
   },
   "categories": {
     "news": "News",

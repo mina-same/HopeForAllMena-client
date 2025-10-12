@@ -12,8 +12,6 @@ import { cn } from '../../lib/utils';
 import { useCalendar } from '../../context/CalendarContext';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { Link } from 'gatsby';
-import { graphql } from 'gatsby';
 import '../../styles/TrainingRequestsManagement-rtl.css';
 
 
@@ -664,17 +662,3 @@ const TrainingRequestsSection = () => {
 };
 
 export default TrainingRequestsSection;
-
-export const query = graphql`
-  query($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

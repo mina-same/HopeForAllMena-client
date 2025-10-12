@@ -72,6 +72,7 @@
     }
   },
   "actions": {
+    "view": "عرض",
     "edit": "تعديل",
     "delete": "حذف",
     "feature": "تمييز",
@@ -81,6 +82,11 @@
   "status": {
     "active": "نشط",
     "inactive": "غير نشط"
+  },
+  "viewModal": {
+    "title": "تفاصيل المؤلف",
+    "close": "إغلاق",
+    "joinedDate": "تاريخ الانضمام"
   },
   "deleteModal": {
     "title": "حذف المؤلف",

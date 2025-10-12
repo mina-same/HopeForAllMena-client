@@ -2,7 +2,6 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import { useTranslation } from "gatsby-plugin-react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
-import { graphql } from "gatsby";
 
 import PostPaginations from "../post-paginations";
 import BlogCard from "./blog-card";
@@ -106,16 +105,3 @@ const BlogPage = () => {
 
 export default BlogPage;
 
-export const query = graphql`
-  query ($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

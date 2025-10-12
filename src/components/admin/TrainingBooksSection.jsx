@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, BookOpen, Upload, Calendar, Search, Filter } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { Link, graphql } from 'gatsby';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
@@ -567,19 +566,6 @@ const TrainingBooksSection = () => {
   );
 };
 
-export const query = graphql`
-  query {
-    locales: allLocale {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;
 
 export { TrainingBooksSection };
 export default TrainingBooksSection;

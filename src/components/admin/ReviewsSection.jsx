@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Star, Search, CheckCircle, XCircle, Clock, ThumbsUp, ThumbsDown, MessageSquare, Check, Trash2 } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Star, Search, CheckCircle, XCircle, Clock, MessageSquare } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -10,7 +10,7 @@ import { reviewsAPI } from '../../services/api';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { Link, graphql } from 'gatsby';
+import { Link } from 'gatsby';
 import '../../styles/ReviewsManagement-rtl.css';
 
 export function ReviewsSection() {
@@ -34,7 +34,7 @@ export function ReviewsSection() {
   const [isModerating, setIsModerating] = useState(false);
 
   // Fetch reviews
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async () => {
     try {
       setLoading(true);
       const params = {
@@ -64,54 +64,14 @@ export function ReviewsSection() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm, statusFilter, ratingFilter, currentLanguage, toast, t]);
 
   useEffect(() => {
     fetchReviews();
-  }, [currentPage, searchTerm, statusFilter, ratingFilter, currentLanguage]);
+  }, [currentPage, searchTerm, statusFilter, ratingFilter, currentLanguage, fetchReviews]);
 
-  const handleModerate = (review) => {
-    setReviewToModerate(review);
-    setModerationStatus('');
-    setModerationNotes('');
-    setShowModerateModal(true);
-  };
 
-  const handleQuickApprove = async (review) => {
-    try {
-      await reviewsAPI.moderateReview(review._id, { status: 'approved', notes: '' });
-      toast({
-        title: t('toast.reviewApproved'),
-        description: t('toast.reviewApprovedDesc'),
-      });
-      fetchReviews();
-    } catch (error) {
-      console.error('Failed to approve review:', error);
-      toast({
-        title: t('toast.error'),
-        description: t('toast.approveError'),
-        variant: "destructive"
-      });
-    }
-  };
 
-  const handleQuickReject = async (review) => {
-    try {
-      await reviewsAPI.moderateReview(review._id, { status: 'rejected', notes: 'Rejected by admin' });
-      toast({
-        title: t('toast.reviewRejected'),
-        description: t('toast.reviewRejectedDesc'),
-      });
-      fetchReviews();
-    } catch (error) {
-      console.error('Failed to reject review:', error);
-      toast({
-        title: t('toast.error'),
-        description: t('toast.rejectError'),
-        variant: "destructive"
-      });
-    }
-  };
 
   const confirmModeration = async () => {
     if (!reviewToModerate || !moderationStatus) return;
@@ -138,41 +98,6 @@ export function ReviewsSection() {
     }
   };
 
-  const handleMarkHelpful = async (review) => {
-    try {
-      await reviewsAPI.markHelpful(review._id);
-      toast({
-        title: t('toast.reviewUpdated'),
-        description: t('toast.markedHelpful'),
-      });
-      fetchReviews();
-    } catch (error) {
-      console.error('Failed to mark helpful:', error);
-      toast({
-        title: t('toast.error'),
-        description: t('toast.updateError'),
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleMarkNotHelpful = async (review) => {
-    try {
-      await reviewsAPI.markNotHelpful(review._id);
-      toast({
-        title: t('toast.reviewUpdated'),
-        description: t('toast.markedNotHelpful'),
-      });
-      fetchReviews();
-    } catch (error) {
-      console.error('Failed to mark not helpful:', error);
-      toast({
-        title: t('toast.error'),
-        description: t('toast.updateError'),
-        variant: "destructive"
-      });
-    }
-  };
 
   const formatDate = (dateString) => {
     const locale = currentLanguage === 'ar' ? 'ar-EG' : 'en-US';
@@ -471,16 +396,3 @@ export function ReviewsSection() {
   );
 }
 
-export const query = graphql`
-  query {
-    locales: allLocale {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

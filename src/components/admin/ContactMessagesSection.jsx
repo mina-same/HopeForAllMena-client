@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { graphql, Link } from 'gatsby';
 import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { Mail, Search, Clock, CheckCircle, XCircle, MessageSquare, Book, User, Phone, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -460,16 +459,3 @@ export function ContactMessagesSection() {
   );
 }
 
-export const query = graphql`
-  query ($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

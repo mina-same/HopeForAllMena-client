@@ -80,6 +80,7 @@ const TestimonialsTwo = () => {
                       <img 
                         src={testimonial.image} 
                         alt={testimonial.name}
+                        style={{ height: '120px', objectFit: 'cover' }}
                       />
                     </SwiperSlide>
                   ))}
@@ -102,7 +103,7 @@ const TestimonialsTwo = () => {
                         </p>
                         <div className="testimonials-two__meta">
                           <h3 className="testimonials-two__title">{testimonial.name}</h3>
-                          <p className="testimonials-two__designation">{testimonial.designation}</p>
+                          <p className="testimonials-two__designation" style={{ marginTop: '5px', marginBottom: '0' }}>{testimonial.designation}</p>
                         </div>
                       </div>
                     </SwiperSlide>

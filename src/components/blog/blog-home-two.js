@@ -3,7 +3,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useTranslation } from "gatsby-plugin-react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
-import { graphql } from "gatsby";
 import BlockTitle from "../block-title";
 import BlogCard from "./blog-card";
 import blogImage1 from "../../assets/images/blog/blog-1-1.jpg";
@@ -134,16 +133,3 @@ const BlogHomeTwo = () => {
 
 export default BlogHomeTwo;
 
-export const query = graphql`
-  query ($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

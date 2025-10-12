@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -12,11 +12,10 @@ import {
   ArcElement,
 } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
-import { Container, Row, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
-import { format, subMonths, startOfMonth } from 'date-fns';
+import { Container, Row, Col } from 'react-bootstrap';
+import { format, subMonths } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { Link, graphql } from 'gatsby';
 import { useAuth } from '../../context/AuthContext';
 import factCounterService from '../../services/factCounterService';
 import './AnalyticsManagement.css';
@@ -91,29 +90,29 @@ const AnalyticsManagement = () => {
   const [error, setError] = useState(null);
 
   // Fetch current stats from backend
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-        const response = await factCounterService.getStats();
-        setCurrentStats(response.data);
-        setEditForm({
-          members: response.data.members.toString(),
-          leadersTraining: response.data.leadersTraining.toString(),
-          publishedBooks: response.data.publishedBooks.toString(),
-          givenMagazines: response.data.givenMagazines.toString()
-        });
-        setError(null);
-      } catch (err) {
-        setError(t('errors.loadStats'));
-        console.error('Error fetching stats:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchStats = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await factCounterService.getStats();
+      setCurrentStats(response.data);
+      setEditForm({
+        members: response.data.members.toString(),
+        leadersTraining: response.data.leadersTraining.toString(),
+        publishedBooks: response.data.publishedBooks.toString(),
+        givenMagazines: response.data.givenMagazines.toString()
+      });
+      setError(null);
+    } catch (err) {
+      setError(t('errors.loadStats'));
+      console.error('Error fetching stats:', err);
+    } finally {
+      setLoading(false);
+    }
+  }, [t]);
 
+  useEffect(() => {
     fetchStats();
-  }, []);
+  }, [fetchStats]);
 
   // Generate monthly data based on current stats and time range
   useEffect(() => {
@@ -338,8 +337,6 @@ const AnalyticsManagement = () => {
   };
 
   // Current totals for summary cards
-  const currentData = monthlyData.length > 0 ? monthlyData[monthlyData.length - 1] : null;
-  const previousData = monthlyData.length > 1 ? monthlyData[monthlyData.length - 2] : null;
 
   const calculateGrowthRate = (current, previous) => {
     if (!previous || previous === 0) return 0;
@@ -550,7 +547,6 @@ const AnalyticsManagement = () => {
           ) : (
             FACT_COUNTER_DATA.map((item, index) => {
               const currentValue = currentStats ? currentStats[Object.keys(currentStats)[index]] : item.count;
-              const currentData = monthlyData.length > 0 ? monthlyData[monthlyData.length - 1] : null;
               const previousData = monthlyData.length > 1 ? monthlyData[monthlyData.length - 2] : null;
               const previousValue = previousData ? Object.values(previousData)[index + 1] : 0;
               const growthRate = calculateGrowthRate(currentValue, previousValue);
@@ -714,101 +710,9 @@ const AnalyticsManagement = () => {
             </div>
           </Col>
         </Row>
-
-        {/* Modern Growth Rate Table */}
-        <div className="analytics-table slide-up" style={{ animationDelay: '0.4s' }}>
-          <div className="card-header">
-            <div className={`d-flex justify-content-between align-items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-              <h5 className={currentLanguage === 'ar' ? '' : 'text-left'}>{t('icons.trends')} {t('charts.growthAnalysis')}</h5>
-              <div className={`d-flex align-items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`} style={{ color: '#64748b', fontSize: '0.875rem' }}>
-                <span>{t('charts.lastSixMonths')}</span>
-              </div>
-            </div>
-          </div>
-          <div className="card-body p-0">
-            <div className="table-responsive">
-              <table className="table">
-                <thead>
-                  <tr className={currentLanguage === 'ar' ? '' : 'text-left'}>
-                    <th>{t('table.month')}</th>
-                    <th>{t('icons.members')} {t('table.members')}</th>
-                    <th>{t('icons.leadersTraining')} {t('table.leadersTraining')}</th>
-                    <th>{t('icons.publishedBooks')} {t('table.publishedBooks')}</th>
-                    <th>{t('icons.givenMagazines')} {t('table.givenMagazines')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {monthlyData.slice(-6).map((data, index) => {
-                    const prevData = index > 0 ? monthlyData[monthlyData.length - 6 + index - 1] : null;
-                    return (
-                      <tr key={data.month} className={currentLanguage === 'ar' ? '' : 'text-left'}>
-                        <td><strong>{data.month}</strong></td>
-                        <td>
-                          <div className="d-flex flex-column">
-                            <span className="fw-semibold">{data.members.toLocaleString()}</span>
-                            {prevData && (
-                              <span className={`growth-indicator ${calculateGrowthRate(data.members, prevData.members) >= 0 ? 'positive' : 'negative'}`}>
-                                {calculateGrowthRate(data.members, prevData.members) >= 0 ? '↗' : '↘'} {Math.abs(calculateGrowthRate(data.members, prevData.members))}%
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td>
-                          <div className="d-flex flex-column">
-                            <span className="fw-semibold">{data.leadersTraining.toLocaleString()}</span>
-                            {prevData && (
-                              <span className={`growth-indicator ${calculateGrowthRate(data.leadersTraining, prevData.leadersTraining) >= 0 ? 'positive' : 'negative'}`}>
-                                {calculateGrowthRate(data.leadersTraining, prevData.leadersTraining) >= 0 ? '↗' : '↘'} {Math.abs(calculateGrowthRate(data.leadersTraining, prevData.leadersTraining))}%
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td>
-                          <div className="d-flex flex-column">
-                            <span className="fw-semibold">{data.publishedBooks.toLocaleString()}</span>
-                            {prevData && (
-                              <span className={`growth-indicator ${calculateGrowthRate(data.publishedBooks, prevData.publishedBooks) >= 0 ? 'positive' : 'negative'}`}>
-                                {calculateGrowthRate(data.publishedBooks, prevData.publishedBooks) >= 0 ? '↗' : '↘'} {Math.abs(calculateGrowthRate(data.publishedBooks, prevData.publishedBooks))}%
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                        <td>
-                          <div className="d-flex flex-column">
-                            <span className="fw-semibold">{data.givenMagazines.toLocaleString()}</span>
-                            {prevData && (
-                              <span className={`growth-indicator ${calculateGrowthRate(data.givenMagazines, prevData.givenMagazines) >= 0 ? 'positive' : 'negative'}`}>
-                                {calculateGrowthRate(data.givenMagazines, prevData.givenMagazines) >= 0 ? '↗' : '↘'} {Math.abs(calculateGrowthRate(data.givenMagazines, prevData.givenMagazines))}%
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
       </Container>
     </div>
   );
 };
 
 export default AnalyticsManagement;
-
-// GraphQL query for i18n support
-export const query = graphql`
-  query($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

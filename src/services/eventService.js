@@ -8,7 +8,7 @@ class EventService {
   // Get authentication token from localStorage
   getAuthToken() {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('token');
+      return localStorage.getItem('authToken');
     }
     return null;
   }
@@ -195,18 +195,31 @@ class EventService {
 
   // Transform calendar event data to API format
   transformEventForAPI(calendarEvent) {
+    // Ensure dates are proper Date objects
+    const startDate = calendarEvent.start instanceof Date ? calendarEvent.start : new Date(calendarEvent.start);
+    const endDate = calendarEvent.end instanceof Date ? calendarEvent.end : new Date(calendarEvent.end);
+    
+    // Validate dates
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      throw new Error('Invalid date provided');
+    }
+    
+    if (startDate >= endDate) {
+      throw new Error('End date must be after start date');
+    }
+    
     return {
-      title: calendarEvent.title,
-      description: calendarEvent.description || '',
-      start: calendarEvent.start.toISOString(),
-      end: calendarEvent.end.toISOString(),
+      title: calendarEvent.title?.trim() || '',
+      description: calendarEvent.description?.trim() || '',
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
       color: calendarEvent.color || 'default',
-      location: calendarEvent.location || '',
-      organizer: calendarEvent.organizer || '',
-      participants: calendarEvent.participants || 0,
+      location: calendarEvent.location?.trim() || '',
+      organizer: calendarEvent.organizer?.trim() || '',
+      participants: parseInt(calendarEvent.participants) || 0,
       status: calendarEvent.status || 'scheduled',
       category: calendarEvent.category || 'other',
-      isAllDay: calendarEvent.isAllDay || false,
+      isAllDay: Boolean(calendarEvent.isAllDay),
     };
   }
 }

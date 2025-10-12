@@ -17,7 +17,6 @@ import { formatValidationError, getFieldError, getFieldSuggestion, hasFieldError
 import ConfirmationModal from '../ui/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { graphql } from 'gatsby';
 import './UserManagement-rtl.css';
 
 const availablePermissions = [
@@ -950,16 +949,3 @@ export function UserManagementSection() {
 export default UserManagementSection;
 
 // GraphQL query for i18n support
-export const query = graphql`
-  query($language: String!) {
-    locales: allLocale(filter: {language: {eq: $language}}) {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

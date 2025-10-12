@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from '@reach/router';
 import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
 import {
@@ -48,6 +48,8 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   const [magazinesOpen, setMagazinesOpen] = useState(true);
   const [trainingOpen, setTrainingOpen] = useState(true);
   const [blogOpen, setBlogOpen] = useState(true);
+  const [pendingReviews, setPendingReviews] = useState(0);
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const { user, hasPermission, hasAnyPermission } = useAuth();
   const { t } = useTranslation('Admin');
   const { i18n } = useI18next();
@@ -85,6 +87,56 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
     const requiredPermissions = sectionPermissions[sectionId] || [];
     return hasAnyPermission(requiredPermissions);
   };
+
+  // Fetch notification counts
+  useEffect(() => {
+    const fetchNotificationCounts = async () => {
+      try {
+        // Get auth token
+        const token = localStorage.getItem('authToken');
+        const headers = {
+          'Content-Type': 'application/json',
+        };
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
+        // Fetch pending reviews count
+        if (hasSectionPermission('reviews')) {
+          const reviewsResponse = await fetch('/api/reviews?status=pending&limit=1', {
+            headers
+          });
+          if (reviewsResponse.ok) {
+            const reviewsData = await reviewsResponse.json();
+            setPendingReviews(reviewsData.totalCount || 0);
+          }
+        }
+
+        // Fetch unread contact messages count
+        if (hasSectionPermission('contact-messages')) {
+          const messagesResponse = await fetch('/api/contact-messages?status=unread', {
+            headers
+          });
+          if (messagesResponse.ok) {
+            const messagesData = await messagesResponse.json();
+            setUnreadMessages(messagesData.totalCount || 0);
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch notification counts:', error);
+        // Set to 0 on error to avoid showing incorrect counts
+        setPendingReviews(0);
+        setUnreadMessages(0);
+      }
+    };
+
+    if (user) {
+      fetchNotificationCounts();
+      // Refresh counts every 30 seconds
+      const interval = setInterval(fetchNotificationCounts, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [user, hasSectionPermission]);
 
   // Filter main items based on permissions
   const mainItems = [
@@ -140,13 +192,13 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
       title: t('items.reviews'),
       icon: Star,
       id: 'reviews',
-      unseenCount: 12
+      unseenCount: pendingReviews
     },
     {
       title: t('items.contactMessages'),
       icon: MessageSquare,
       id: 'contact-messages',
-      unseenCount: 5
+      unseenCount: unreadMessages
     }
   ].filter(item => hasSectionPermission(item.id));
 

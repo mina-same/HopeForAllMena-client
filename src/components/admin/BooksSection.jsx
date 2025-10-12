@@ -12,10 +12,8 @@ import { useToast } from '../../hooks/use-toast';
 import { booksAPI, authorsAPI, categoriesAPI } from '../../services/publishingAPI';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import ImageUpload from '../ui/image-upload';
-import { Link } from 'gatsby';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { graphql } from 'gatsby';
 
 export function BooksSection() {
   const { toast } = useToast();
@@ -1048,16 +1046,3 @@ export function BooksSection() {
 }
 
 // GraphQL query for i18n support
-export const query = graphql`
-  query {
-    locales: allLocale {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

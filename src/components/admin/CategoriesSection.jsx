@@ -11,10 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useToast } from '../../hooks/use-toast';
 import { categoriesAPI } from '../../services/publishingAPI';
 import ConfirmationModal from '../ui/ConfirmationModal';
-import { Link } from 'gatsby';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { graphql } from 'gatsby';
 
 const categoryIcons = [
   'FolderOpen', 'Book', 'Tag', 'Code', 'Database', 'Shield', 'Cloud', 'Brain', 'Heart', 'Star', 'Rocket', 'Search'
@@ -691,16 +689,3 @@ export function CategoriesSection() {
 }
 
 // GraphQL query for i18n support
-export const query = graphql`
-  query {
-    locales: allLocale {
-      edges {
-        node {
-          ns
-          data
-          language
-        }
-      }
-    }
-  }
-`;

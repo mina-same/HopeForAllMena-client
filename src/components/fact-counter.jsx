@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import CountUp from "react-countup";
-import VisibilitySensor from "react-visibility-sensor";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import factCounterService from "../services/factCounterService";
@@ -34,6 +33,7 @@ const FactCounter = () => {
   });
   const [factCounterData, setFactCounterData] = useState(DEFAULT_FACT_COUNTER_DATA);
   const [loading, setLoading] = useState(true);
+  const sectionRef = useRef(null);
 
   // Fetch data from backend on component mount
   useEffect(() => {
@@ -74,11 +74,30 @@ const FactCounter = () => {
     fetchFactCounterData();
   }, []);
 
-  const onVisibilityChange = (isVisible) => {
-    if (isVisible) {
-      setCounter({ startCounter: true });
+  // Intersection Observer for visibility detection
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !counter.startCounter) {
+          setCounter({ startCounter: true });
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '10px'
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
-  };
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, [counter.startCounter]);
   return (
     <>
       {/* RTL-specific styles for Arabic */}
@@ -90,7 +109,11 @@ const FactCounter = () => {
           }
         `}</style>
       )}
-      <section className="fact-counter" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      <section 
+        ref={sectionRef}
+        className="fact-counter" 
+        dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+      >
         <Container>
           <Row>
             {factCounterData.map(({ count, textKey }, index) => (
@@ -101,20 +124,14 @@ const FactCounter = () => {
                 key={`fact-counter-key-${index}`}
               >
                 <h3>
-                  <VisibilitySensor
-                    onChange={onVisibilityChange}
-                    offset={{ top: 10 }}
-                    delayedCall
-                  >
-                    <CountUp 
-                      end={counter.startCounter ? count : 0} 
-                      duration={2.5}
-                      separator=","
-                    />
-                  </VisibilitySensor>
+                  <CountUp 
+                    end={counter.startCounter ? count : 0} 
+                    duration={2.5}
+                    separator=","
+                  />
                 </h3>
                 <p>{t(textKey)}</p>
-                <a href="#none">+</a>
+                <span>+</span>
               </Col>
             ))}
           </Row>
