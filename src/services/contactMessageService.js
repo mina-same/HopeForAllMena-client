@@ -5,10 +5,11 @@ class ContactMessageService {
     this.baseURL = `${API_BASE_URL}/contact-messages`;
   }
 
-  // Get authentication token from localStorage
+  // Get authentication token from storage
   getAuthToken() {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('authToken');
+      const { authStorage } = require('../utils/storage');
+      return authStorage.getToken();
     }
     return null;
   }
@@ -192,4 +193,5 @@ class ContactMessageService {
   }
 }
 
-export default new ContactMessageService();
+const contactMessageService = new ContactMessageService();
+export default contactMessageService;

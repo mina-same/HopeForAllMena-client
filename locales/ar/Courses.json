@@ -1,0 +1,54 @@
+{
+  "pageTitle": "الدورات",
+  "hero": {
+    "badge": "حوّل رحلتك الإيمانية",
+    "title": "إتقان اللاهوت",
+    "titleHighlight": "ودراسات الألوهية",
+    "subtitle": "انضم إلى آلاف الطلاب حول العالم في التعليم اللاهوتي الشامل.",
+    "subtitleBold": "ابدأ رحلتك الأكاديمية الروحية اليوم.",
+    "primaryButton": "ابدأ التعلم الآن",
+    "secondaryButton": "تصفح الدورات",
+    "stats": {
+      "courses": "دورة",
+      "instructors": "مدرب خبير",
+      "institutions": "مؤسسة"
+    }
+  },
+  "filters": {
+    "title": "تصفية الدورات",
+    "button": "التصفيات"
+  },
+  "content": {
+    "title": "الدورات المتاحة",
+    "coursesFound": "دورة",
+    "coursesFoundPlural": "دورات",
+    "found": "تم العثور عليها"
+  },
+  "courseCard": {
+    "instructor": "المدرب",
+    "institution": "المؤسسة",
+    "location": "الموقع",
+    "duration": "المدة",
+    "starts": "يبدأ",
+    "rating": "التقييم",
+    "enrolled": "مسجل",
+    "seatsLeft": "مقعد متبقي",
+    "price": {
+      "free": "مجاني"
+    },
+    "status": {
+      "full": "ممتلئ",
+      "enrollNow": "سجل الآن"
+    },
+    "levels": {
+      "beginner": "مبتدئ",
+      "intermediate": "متوسط",
+      "advanced": "متقدم"
+    }
+  },
+  "empty": {
+    "title": "لم يتم العثور على دورات",
+    "description": "جرب تعديل التصفيات أو مصطلحات البحث للعثور على المزيد من الدورات."
+  }
+}
+

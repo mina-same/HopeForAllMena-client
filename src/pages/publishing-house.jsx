@@ -1,4 +1,5 @@
 import React from "react";
+import { graphql } from "gatsby";
 import { Container, Row, Col } from "react-bootstrap";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
@@ -7,86 +8,92 @@ import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
 import CallToAction from "../components/call-to-action/call-to-action";
 import BrandCarousel from "../components/brand-carousel";
+import { useTranslation } from "gatsby-plugin-react-i18next";
+import { useI18next } from "gatsby-plugin-react-i18next";
 
 import serviceBg from "../assets/images/backgrounds/service-hand-bg-1-1.png";
 import publishingHouseWhite from "../assets/images/publishing-house-white.png";
+import "../assets/css/publishing-house-rtl.css";
 
 const PublishingHouse = () => {
+  const { t } = useTranslation("PublishingHouse");
+  const { language: currentLanguage } = useI18next();
+  const isRTL = currentLanguage === "ar";
+
   return (
-    <Layout pageTitle="Publishing and Distribution House || Hope For All Mena Ministry">
+    <Layout pageTitle={`${t("pageTitle")} || Hope For All Mena Ministry`}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title="Publishing and Distribution House" crumbTitle="Services" />
-      <>
-        <section className="service-details pt-120 pb-90" style={{ backgroundImage: `url(${serviceBg})` }}>
+      <PageHeader title={t("pageTitle")} crumbTitle={t("crumbTitle")} />
+      <div dir={isRTL ? "rtl" : "ltr"}>
+        {/* Hero Section */}
+        <section 
+          className="service-details pt-120 pb-90" 
+          style={{ backgroundImage: `url(${serviceBg})` }}
+        >
           <Container>
-            <Row>
+            <Row className={isRTL ? "flex-row-reverse" : ""}>
               <Col md={12} lg={6}>
-                <div className="service-details__content">
-                  <h3>Publishing and Distribution House</h3>
-                  <p>
-                    Our Publishing and Distribution House is dedicated to amplifying voices and sharing 
-                    stories that inspire, educate, and transform lives. We believe in the power of 
-                    written words to create lasting impact and bring positive change to communities.
+                <div className={`service-details__content ${isRTL ? "text-right" : ""}`}>
+                  <h3 className={isRTL ? "font-arabic" : ""}>{t("hero.title")}</h3>
+                  <p className={isRTL ? "text-right" : ""}>
+                    {t("hero.intro")}
                   </p>
-                  <p>
-                    We support young writers and emerging authors by providing them with the resources, 
-                    guidance, and platform they need to share their messages with the world. Our 
-                    publishing services include editorial support, design assistance, and distribution 
-                    channels that ensure their work reaches the right audience.
+                  <p className={isRTL ? "text-right" : ""}>
+                    {t("hero.mission")}
                   </p>
-                  <p>
-                    Through strategic partnerships with bookstores, libraries, and educational institutions, 
-                    we ensure that valuable content is accessible to readers everywhere, fostering a 
-                    culture of learning and growth.
+                  <p className={isRTL ? "text-right" : ""}>
+                    {t("hero.approach")}
                   </p>
                 </div>
               </Col>
               <Col md={12} lg={6}>
                 <div className="service-details__image">
-                  <img src={publishingHouseWhite} alt="Publishing and Distribution House" className="img-fluid" />
+                  <img 
+                    src={publishingHouseWhite} 
+                    alt={t("pageTitle")} 
+                    className="img-fluid" 
+                  />
                 </div>
               </Col>
             </Row>
           </Container>
         </section>
 
+        {/* Features Section */}
         <div className="service-features pt-20 pb-90">
           <Container>
             <Row>
               <Col md={12} lg={4} className="mb-30">
-                <div className="service-features__single background-special">
-                  <div className="service-features__icon">
+                <div className={`service-features__single background-special ${isRTL ? "text-right" : ""}`}>
+                  <div className={`service-features__icon ${isRTL ? "ml-auto mr-0" : ""}`}>
                     <i className="azino-icon-reading-book"></i>
                   </div>
-                  <h4>Author Support</h4>
-                  <p>
-                    Comprehensive support for writers including manuscript review, 
-                    editing, design, and publishing guidance to bring their vision to life.
+                  <h4 className={isRTL ? "font-arabic" : ""}>{t("features.authorSupport.title")}</h4>
+                  <p className={isRTL ? "text-right" : ""}>
+                    {t("features.authorSupport.description")}
                   </p>
                 </div>
               </Col>
               <Col md={12} lg={4} className="mb-30">
-                <div className="service-features__single background-secondary">
-                  <div className="service-features__icon">
+                <div className={`service-features__single background-secondary ${isRTL ? "text-right" : ""}`}>
+                  <div className={`service-features__icon ${isRTL ? "ml-auto mr-0" : ""}`}>
                     <i className="azino-icon-dove"></i>
                   </div>
-                  <h4>Quality Publishing</h4>
-                  <p>
-                    Professional publishing services that ensure high-quality books, 
-                    articles, and educational materials that meet industry standards.
+                  <h4 className={isRTL ? "font-arabic" : ""}>{t("features.qualityPublishing.title")}</h4>
+                  <p className={isRTL ? "text-right" : ""}>
+                    {t("features.qualityPublishing.description")}
                   </p>
                 </div>
               </Col>
               <Col md={12} lg={4} className="mb-30">
-                <div className="service-features__single background-base">
-                  <div className="service-features__icon">
+                <div className={`service-features__single background-base ${isRTL ? "text-right" : ""}`}>
+                  <div className={`service-features__icon ${isRTL ? "ml-auto mr-0" : ""}`}>
                     <i className="azino-icon-charity"></i>
                   </div>
-                  <h4>Wide Distribution</h4>
-                  <p>
-                    Extensive distribution networks that make published works available 
-                    through multiple channels including online platforms and physical locations.
+                  <h4 className={isRTL ? "font-arabic" : ""}>{t("features.wideDistribution.title")}</h4>
+                  <p className={isRTL ? "text-right" : ""}>
+                    {t("features.wideDistribution.description")}
                   </p>
                 </div>
               </Col>
@@ -94,26 +101,27 @@ const PublishingHouse = () => {
           </Container>
         </div>
 
+        {/* Impact Section */}
         <section className="service-impact pt-20 pb-90">
           <Container>
             <Row>
               <Col md={12}>
-                <div className="block-title text-center">
-                  <h3>Our Impact</h3>
-                  <p>Amplifying voices and sharing stories that change lives</p>
+                <div className={`block-title text-center ${isRTL ? "rtl-block-title" : ""}`}>
+                  <h3 className={isRTL ? "font-arabic" : ""}>{t("impact.title")}</h3>
+                  <p>{t("impact.subtitle")}</p>
                 </div>
               </Col>
             </Row>
-            <Row>
+            <Row className={isRTL ? "flex-row-reverse" : ""}>
               <Col md={12} lg={6}>
-                <div className="service-impact__content">
-                  <h4>What We've Achieved</h4>
-                  <ul className="service-impact__list">
-                    <li>Published over 100 books and educational materials</li>
-                    <li>Supported 50+ young and emerging authors</li>
-                    <li>Distributed content to 30+ countries worldwide</li>
-                    <li>Established partnerships with major distribution networks</li>
-                    <li>Created digital and print publishing platforms</li>
+                <div className={`service-impact__content ${isRTL ? "text-right" : ""}`}>
+                  <h4 className={isRTL ? "font-arabic" : ""}>{t("impact.achievementsTitle")}</h4>
+                  <ul className={`service-impact__list ${isRTL ? "rtl-list" : ""}`}>
+                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.booksPublished")}</li>
+                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.authorsSupported")}</li>
+                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.countriesReached")}</li>
+                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.partnerships")}</li>
+                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.platforms")}</li>
                   </ul>
                 </div>
               </Col>
@@ -121,27 +129,27 @@ const PublishingHouse = () => {
                 <div className="service-impact__stats">
                   <div className="row">
                     <div className="col-6">
-                      <div className="impact-stat">
+                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
                         <h3>100+</h3>
-                        <p>Books Published</p>
+                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.books")}</p>
                       </div>
                     </div>
                     <div className="col-6">
-                      <div className="impact-stat">
+                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
                         <h3>50+</h3>
-                        <p>Authors Supported</p>
+                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.authors")}</p>
                       </div>
                     </div>
                     <div className="col-6">
-                      <div className="impact-stat">
+                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
                         <h3>30+</h3>
-                        <p>Countries Reached</p>
+                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.countries")}</p>
                       </div>
                     </div>
                     <div className="col-6">
-                      <div className="impact-stat">
+                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
                         <h3>1000+</h3>
-                        <p>Copies Distributed</p>
+                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.copies")}</p>
                       </div>
                     </div>
                   </div>
@@ -153,10 +161,24 @@ const PublishingHouse = () => {
 
         <CallToAction />
         <BrandCarousel extraClass="client-carousel__has-border-top" />
-      </>
+      </div>
       <Footer />
     </Layout>
   );
 };
 
 export default PublishingHouse;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

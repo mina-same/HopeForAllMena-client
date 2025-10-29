@@ -1,4 +1,5 @@
 import api from './api';
+import { authStorage } from '../utils/storage';
 
 // Authors API
 export const authorsAPI = {
@@ -19,7 +20,7 @@ export const authorsAPI = {
   // Create new author
   createAuthor: (authorData) => {
     console.log('API: Creating author with data:', authorData);
-    console.log('API: Auth token exists:', !!localStorage.getItem('authToken'));
+    console.log('API: Auth token exists:', !!authStorage.getToken());
     return api.post('/authors', authorData);
   },
 
@@ -50,7 +51,7 @@ export const categoriesAPI = {
   // Get all categories with pagination and filtering
   getCategories: (params = {}) => {
     console.log('API: Fetching categories with params:', params);
-    console.log('API: Auth token exists:', !!localStorage.getItem('authToken'));
+    console.log('API: Auth token exists:', !!authStorage.getToken());
     const queryParams = new URLSearchParams();
     Object.keys(params).forEach(key => {
       if (params[key] !== undefined && params[key] !== '') {
@@ -69,7 +70,7 @@ export const categoriesAPI = {
   // Create new category
   createCategory: (categoryData) => {
     console.log('API: Creating category with data:', categoryData);
-    console.log('API: Auth token exists:', !!localStorage.getItem('authToken'));
+    console.log('API: Auth token exists:', !!authStorage.getToken());
     return api.post('/categories', categoryData);
   },
 
@@ -261,10 +262,12 @@ export const contactMessagesAPI = {
   getContactMessageStats: () => api.get('/contact-messages/stats')
 };
 
-export default {
+const publishingAPI = {
   authors: authorsAPI,
   categories: categoriesAPI,
   books: booksAPI,
   reviews: reviewsAPI,
   contactMessages: contactMessagesAPI
 };
+
+export default publishingAPI;

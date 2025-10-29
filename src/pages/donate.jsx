@@ -97,30 +97,6 @@ const DonationCard = () => {
 
                     {/* Donation Options */}
                     <div className="space-y-6">
-                        <Card className="p-6 shadow-secondary">
-                            <CardContent className="space-y-6">
-                                <h3 className="text-xl font-semibold">{t('donationOptions.title')}</h3>
-
-                                <div className="grid grid-cols-2 gap-3">
-                                    {donationAmounts.map((amount) => (
-                                        <Button
-                                            key={amount}
-                                            variant="outline"
-                                            className="h-12 text-lg font-semibold hover:bg-gradient-soft hover:border-primary transition-all"
-                                        >
-                                            ${amount}
-                                        </Button>
-                                    ))}
-                                </div>
-
-                                <div className="pt-4 border-t">
-                                    <Button className="w-full h-12 text-lg font-semibold bg-gradient-primary hover:opacity-90 transition-opacity">
-                                        {t('donationOptions.customAmount')}
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-
                         {/* Trust Indicators */}
                         <Card className="p-6 bg-gradient-soft">
                             <CardContent className="space-y-4">

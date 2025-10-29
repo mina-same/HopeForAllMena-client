@@ -271,6 +271,9 @@ const Footer = () => {
             <a href="https://www.facebook.com/profile.php?id=100083974131611" aria-label="facebook">
               <i className="fab fa-facebook-square"></i>
             </a>
+            <a href="https://www.facebook.com/profile.php?id=100054468594764" aria-label="facebook">
+              <i className="fab fa-facebook-square"></i>
+            </a>
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, FolderOpen, Book, Search, Star, Eye, EyeOff, X } from 'lucide-react';
+import { Plus, Edit, Trash2, FolderOpen, Book, Search, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
@@ -73,8 +73,9 @@ export function CategoriesSection() {
       };
 
       console.log('Frontend: Fetching categories with params:', params);
-      console.log('Frontend: Auth token exists:', !!localStorage.getItem('authToken'));
-      console.log('Frontend: User logged in:', !!localStorage.getItem('user'));
+      const { authStorage } = require('../../utils/storage');
+      console.log('Frontend: Auth token exists:', !!authStorage.getToken());
+      console.log('Frontend: User logged in:', !!authStorage.getUser());
       const response = await categoriesAPI.getCategories(params);
       console.log('Frontend: Categories response:', response.data);
       console.log('Frontend: Categories data:', response.data.data.categories);
@@ -110,7 +111,7 @@ export function CategoriesSection() {
 
   useEffect(() => {
     fetchCategories();
-  }, [currentPage, searchTerm, statusFilter]);
+  }, [currentPage, searchTerm, statusFilter, fetchCategories]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -624,7 +625,7 @@ export function CategoriesSection() {
 
               {/* Pagination */}
               {totalPages > 1 && (
-                <div className={`flex flex-col xs:flex-row justify-center items-center gap-2 xs:gap-3 mt-4 xs:mt-6 flex-row ${currentLanguage === 'ar' ? '' : ''}`}>
+                <div className={`flex flex-col xs:flex-row justify-center items-center gap-2 xs:gap-3 mt-4 xs:mt-6 ${currentLanguage === 'ar' ? '' : ''}`}>
                   <Button
                     variant="outline"
                     size="sm"

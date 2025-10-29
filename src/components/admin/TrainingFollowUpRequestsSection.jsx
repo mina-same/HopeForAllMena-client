@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, CheckCircle, Shirt, Download, Trash2, AlertTriangle, Package, Truck, XCircle, Search } from 'lucide-react';
+import { Eye, CheckCircle, Shirt, Download, Trash2, AlertTriangle, Package, XCircle, Search } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
@@ -27,10 +27,11 @@ const TrainingFollowUpRequestsSection = () => {
 
   useEffect(() => {
     // Debug authentication state
-    const token = localStorage.getItem('token');
-    const authToken = localStorage.getItem('authToken');
-    const accessToken = localStorage.getItem('accessToken');
-    const user = localStorage.getItem('user');
+    const { authStorage } = require('../../utils/storage');
+    const token = authStorage.getToken();
+    const authToken = authStorage.getToken();
+    const accessToken = authStorage.getToken();
+    const user = authStorage.getUser();
     
     console.log('=== Authentication Debug ===');
     console.log('token:', !!token);
@@ -51,14 +52,15 @@ const TrainingFollowUpRequestsSection = () => {
     }
     
     fetchFollowUpRequests();
-  }, []);
+  }, [fetchFollowUpRequests, t, toast]);
 
   const fetchFollowUpRequests = async () => {
     try {
       console.log('Fetching follow-up requests...');
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken');
+      const { authStorage } = require('../../utils/storage');
+      const token = authStorage.getToken();
       console.log('Token exists:', !!token);
-      console.log('Using token from:', token === localStorage.getItem('token') ? 'token' : token === localStorage.getItem('authToken') ? 'authToken' : 'accessToken');
+      console.log('Using token from: authStorage');
       
       const response = await fetch('http://localhost:5001/api/training-follow-ups', {
         headers: {
@@ -109,7 +111,8 @@ const TrainingFollowUpRequestsSection = () => {
       console.log('New Status:', newStatus);
       console.log('Request ID type:', typeof requestId);
       
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken');
+      const { authStorage } = require('../../utils/storage');
+      const token = authStorage.getToken();
       console.log('Token exists:', !!token);
       console.log('Token preview:', token ? token.substring(0, 20) + '...' : 'No token');
       
@@ -172,7 +175,8 @@ const TrainingFollowUpRequestsSection = () => {
 
   const downloadFile = async (requestId, filename) => {
     try {
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken');
+      const { authStorage } = require('../../utils/storage');
+      const token = authStorage.getToken();
       const response = await fetch(`http://localhost:5001/api/training-follow-ups/${requestId}/download`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -204,7 +208,8 @@ const TrainingFollowUpRequestsSection = () => {
 
   const deleteRequest = async (requestId) => {
     try {
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken');
+      const { authStorage } = require('../../utils/storage');
+      const token = authStorage.getToken();
       const response = await fetch(`http://localhost:5001/api/training-follow-ups/${requestId}`, {
         method: 'DELETE',
         headers: {

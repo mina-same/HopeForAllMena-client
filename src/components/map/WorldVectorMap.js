@@ -69,7 +69,6 @@ const WorldVectorMap = () => {
           regions: [{
             values: {
               EG: '#ff6b6b', // Egypt
-              SA: '#4ecdc4', // Saudi Arabia
               AE: '#45b7d1', // UAE
               JO: '#96ceb4', // Jordan
               LB: '#ffeaa7', // Lebanon
@@ -86,7 +85,16 @@ const WorldVectorMap = () => {
               LY: '#00b894', // Libya
               SD: '#ff7675', // Sudan
               TD: '#74b9ff', // Chad
-              SS: '#55a3ff'  // South Sudan
+              SS: '#55a3ff', // South Sudan
+              IN: '#ff6b9d', // India
+              PA: '#4ecdc4', // Panama
+              US: '#95e1d3', // USA
+              CA: '#f38181', // Canada
+              KR: '#aa96da', // South Korea
+              FJ: '#fcbad3', // Fiji
+              ZA: '#a8e6cf', // South Africa
+              ML: '#ffd3b6', // Mali
+              NG: '#ffaaa5'  // Nigeria
             },
             attribute: 'fill'
           }]
@@ -94,7 +102,6 @@ const WorldVectorMap = () => {
         onRegionClick={(e, code) => {
           const countryNames = {
             EG: 'Egypt',
-            SA: 'Saudi Arabia',
             AE: 'United Arab Emirates',
             JO: 'Jordan',
             LB: 'Lebanon',
@@ -111,7 +118,16 @@ const WorldVectorMap = () => {
             LY: 'Libya',
             SD: 'Sudan',
             TD: 'Chad',
-            SS: 'South Sudan'
+            SS: 'South Sudan',
+            IN: 'India',
+            PA: 'Panama',
+            US: 'United States',
+            CA: 'Canada',
+            KR: 'South Korea',
+            FJ: 'Fiji',
+            ZA: 'South Africa',
+            ML: 'Mali',
+            NG: 'Nigeria'
           };
           
           if (countryNames[code]) {

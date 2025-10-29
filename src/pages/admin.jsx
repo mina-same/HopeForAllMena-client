@@ -1,38 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { navigate, graphql } from 'gatsby';
-import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
+import { useTranslation } from 'gatsby-plugin-react-i18next';
 import {
-  BarChart3,
-  Book,
-  Calendar,
-  ChevronRight,
-  CreditCard,
-  FileText,
-  FolderOpen,
-  GraduationCap,
-  Home,
   LogOut,
-  Menu,
-  MessageCircle,
-  MessageSquare,
-  Plus,
-  Settings,
-  Star,
-  Users,
-  UserCheck,
-  BookOpen,
-  ShieldCheck,
-  Edit3,
-  LibraryBig
+  Menu
 } from 'lucide-react';
 import { reviewsAPI } from '../services/api';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
-import { Badge } from '../components/ui/badge';
+import { Card, CardContent } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { SidebarProvider, SidebarTrigger, SidebarInset, Sidebar, SidebarHeader, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem } from '../components/ui/sidebar';
+import { Badge } from '../components/ui/badge';
+import { SidebarProvider } from '../components/ui/sidebar';
 import { Sheet, SheetContent } from '../components/ui/sheet';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../components/ui/collapsible';
 import { AuthorsSection } from '../components/admin/AuthorsSection';
 import { CategoriesSection } from '../components/admin/CategoriesSection';
 import { BooksSection } from '../components/admin/BooksSection';
@@ -44,6 +22,7 @@ import { ContactMessagesSection } from '../components/admin/ContactMessagesSecti
 import ContactMessagesPage from '../components/admin/ContactMessagesPage';
 import TrainingBooksSection from '../components/admin/TrainingBooksSection';
 import TrainingRequestsSection from '../components/admin/TrainingRequestsSection';
+import DashboardOverview from '../components/admin/DashboardOverview';
 import TrainingFollowUpRequestsSection from '../components/admin/TrainingFollowUpRequestsSection';
 import CalendarSection from '../components/admin/CalendarSection';
 import { UserManagementSection } from '../components/admin/UserManagementSection';
@@ -71,7 +50,7 @@ const AdminDashboardInner = () => {
   const { t, i18n } = useTranslation('Admin');
   const currentLanguage = i18n.language;
   // Use the sidebar context for proper mobile handling
-  const { toggleSidebar, openMobile, setOpenMobile, isMobile } = useSidebar();
+  const { openMobile, setOpenMobile, isMobile } = useSidebar();
   // Hide sidebar by default on mobile/tablet, show on desktop
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -85,16 +64,43 @@ const AdminDashboardInner = () => {
   const [editBlogId, setEditBlogId] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const {
-    books,
-    reviews,
-    contacts,
-    deleteReview
-  } = useBookstore();
+  useBookstore();
   const { user, logout, hasAnyPermission } = useAuth();
   const { toast } = useToast();
-  const [unreadMessagesCount, setUnreadMessagesCount] = useState(0);
-  const [pendingReviewsCount, setPendingReviewsCount] = useState(0);
+  const [, setUnreadMessagesCount] = useState(0);
+  const [, setPendingReviewsCount] = useState(0);
+
+  // Define permission mappings for each section
+  const sectionPermissions = {
+    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids', 'blogs'],
+    analytics: ['analytics'],
+    messages: ['contact-messages'],
+    calendar: ['calendar'],
+    'user-management': ['users', 'user-management'],
+    authors: ['authors'],
+    categories: ['categories'],
+    books: ['books'],
+    reviews: ['reviews'],
+    'contact-messages': ['contact-messages'],
+    courses: ['courses'],
+    enrollments: ['enrollments'],
+    magazines: ['magazines'],
+    'training-books': ['training-books'],
+    'training-requests': ['training-requests'],
+    'training-followup-requests': ['training-followup-requests'],
+    'generate-ids': ['generate-ids'],
+    'new-blog': ['blogs'],
+    'all-blogs': ['blogs'],
+    'edit-blog': ['blogs'],
+    'blog-comments': ['blogs'],
+    'tutorial-videos': ['blogs']
+  };
+
+  // Check if user has permission for a specific section
+  const hasSectionPermission = useCallback((sectionId) => {
+    const requiredPermissions = sectionPermissions[sectionId] || [];
+    return hasAnyPermission(requiredPermissions);
+  }, [hasAnyPermission, sectionPermissions]);
 
   // Fetch unread messages and pending reviews count
   useEffect(() => {
@@ -136,49 +142,8 @@ const AdminDashboardInner = () => {
     // Refresh counts every 30 seconds
     const interval = setInterval(fetchCounts, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [hasSectionPermission]);
 
-  // Define permission mappings for each section
-  const sectionPermissions = {
-    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids', 'blogs'],
-    analytics: ['analytics'],
-    messages: ['contact-messages'],
-    calendar: ['calendar'],
-    'user-management': ['users', 'user-management'],
-    settings: ['settings'],
-    authors: ['authors'],
-    categories: ['categories'],
-    books: ['books'],
-    reviews: ['reviews'],
-    'contact-messages': ['contact-messages'],
-    courses: ['courses'],
-    enrollments: ['enrollments'],
-    magazines: ['magazines'],
-    'training-books': ['training-books'],
-    'training-requests': ['training-requests'],
-    'training-followup-requests': ['training-followup-requests'],
-    'generate-ids': ['generate-ids'],
-    'new-blog': ['blogs'],
-    'all-blogs': ['blogs'],
-    'edit-blog': ['blogs'],
-    'blog-comments': ['blogs']
-  };
-
-  // Check if user has permission for a specific section
-  const hasSectionPermission = (sectionId) => {
-    const requiredPermissions = sectionPermissions[sectionId] || [];
-    return hasAnyPermission(requiredPermissions);
-  };
-
-  const handleDeleteReview = (reviewId) => {
-    if (window.confirm('Are you sure you want to delete this review?')) {
-      deleteReview(reviewId);
-      toast({
-        title: "Review Deleted",
-        description: "The review has been removed.",
-      });
-    }
-  };
 
   const handleLogout = () => {
     setShowLogoutModal(true);
@@ -295,8 +260,6 @@ const AdminDashboardInner = () => {
         return <IDCardGenerator />;
       case 'analytics':
         return renderAnalytics();
-      case 'settings':
-        return renderSettings();
       case 'new-blog':
         return <NewBlog />;
       case 'all-blogs':
@@ -305,167 +268,198 @@ const AdminDashboardInner = () => {
         return editBlogId ? <EditBlog blogId={editBlogId} onBack={handleBackToBlogs} /> : <AllBlogs />;
       case 'blog-comments':
         return <CommentsManagement />;
+      case 'tutorial-videos':
+        return renderTutorialVideos();
       default:
         return renderMainDashboard();
     }
   };
 
-  const renderMainDashboard = () => (
-    <div className="space-y-6" dir={i18n?.resolvedLanguage === 'ar' ? 'rtl' : 'ltr'}>
-      <div>
-        <h2 className={`text-2xl font-bold text-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.title')}</h2>
-        <p className={`text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.subtitle')}</p>
-      </div>
+  const renderMainDashboard = () => <DashboardOverview />;
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {hasSectionPermission('books') && (
-          <Card className="border-0 shadow-modern">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className={`text-sm font-medium text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.totalBooks')}</p>
-                  <p className="text-2xl font-bold">{books.length}</p>
-                </div>
-                <Book className="h-8 w-8 text-[#2194D1]" />
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {hasSectionPermission('reviews') && (
-          <Card className="border-0 shadow-modern">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className={`text-sm font-medium text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.reviews')}</p>
-                  <p className="text-2xl font-bold">{reviews.length}</p>
-                </div>
-                <Star className="h-8 w-8 text-yellow-500" />
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {hasSectionPermission('contact-messages') && (
-          <Card className="border-0 shadow-modern">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className={`text-sm font-medium text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.messages')}</p>
-                  <p className="text-2xl font-bold">{contacts.length}</p>
-                </div>
-                <MessageSquare className="h-8 w-8 text-green-500" />
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        <Card className="border-0 shadow-modern">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className={`text-sm font-medium text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.user')}</p>
-                <p className="text-2xl font-bold">{user?.name || user?.username || 'Admin'}</p>
-              </div>
-              <Users className="h-8 w-8 text-purple-500" />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recent Activity */}
-      {hasSectionPermission('contact-messages') && contacts.length > 0 && (
-        <Card className="border-0 shadow-modern">
-          <CardHeader>
-            <CardTitle className={i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('dashboard.recentMessages')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {contacts.slice(0, 3).map((contact, index) => (
-                <div key={index} className="flex items-start space-x-4 p-4 rounded-lg bg-muted/50">
-                  <div className="flex-1 space-y-1">
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-medium leading-none">{contact.name}</p>
-                      <p className="text-sm text-muted-foreground">{contact.date}</p>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{contact.message}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-    </div>
-  );
-
-  const renderContactMessages = () => {
-    if (!hasSectionPermission('contact-messages')) {
-      return (
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-2xl font-bold text-foreground">Messages</h2>
-            <p className="text-muted-foreground">Access denied</p>
-          </div>
-          <Card className="border-0 shadow-modern">
-            <CardContent className="text-center py-12">
-              <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">You don't have permission to view messages.</p>
-            </CardContent>
-          </Card>
-        </div>
-      );
-    }
-
-    return (
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Contact Messages</h2>
-          <p className="text-muted-foreground">Manage incoming messages from visitors</p>
-        </div>
-        {contacts.map((contact, index) => (
-          <Card key={index} className="border-0 shadow-modern">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="font-semibold">{contact.name}</h3>
-                  <p className="text-sm text-muted-foreground">{contact.email}</p>
-                </div>
-                {contact.bookTitle && (
-                  <Badge variant="secondary" className="ml-2">
-                    Book: {contact.bookTitle}
-                  </Badge>
-                )}
-              </div>
-              <p className="text-muted-foreground">{contact.message}</p>
-              <div className="mt-4 text-sm text-muted-foreground">{contact.date}</div>
-            </CardContent>
-          </Card>
-        ))}
-        {contacts.length === 0 && (
-          <Card className="border-0 shadow-modern">
-            <CardContent className="text-center py-12">
-              <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <p className="text-muted-foreground">No contact messages yet.</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    );
-  };
 
   const renderAnalytics = () => <AnalyticsManagement />;
 
-  const renderSettings = () => (
-    <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-foreground">Settings</h2>
-        <p className="text-muted-foreground">Manage your publishing house preferences</p>
+
+  const renderTutorialVideos = () => (
+    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
+      {/* Header */}
+      <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+        <h1 className="text-3xl font-bold text-foreground mb-2">
+          {t('dashboard.tutorialVideos')}
+        </h1>
+        <p className="text-muted-foreground text-lg">
+          {t('dashboard.tutorialVideosSubtitle')}
+        </p>
       </div>
-      <Card className="border-0 shadow-modern">
+
+      {/* Video Categories */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <CardContent className="p-6">
+            <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className="p-3 rounded-xl bg-red-50">
+                <svg className="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  {t('dashboard.gettingStarted')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.gettingStartedDesc')}
+                </p>
+                <Badge variant="outline" className="mt-2">
+                  0 {t('dashboard.videos')}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <CardContent className="p-6">
+            <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className="p-3 rounded-xl bg-blue-50">
+                <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  {t('dashboard.contentManagement')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.contentManagementDesc')}
+                </p>
+                <Badge variant="outline" className="mt-2">
+                  0 {t('dashboard.videos')}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <CardContent className="p-6">
+            <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className="p-3 rounded-xl bg-green-50">
+                <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  {t('dashboard.analytics')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.analyticsDesc')}
+                </p>
+                <Badge variant="outline" className="mt-2">
+                  0 {t('dashboard.videos')}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <CardContent className="p-6">
+            <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className="p-3 rounded-xl bg-purple-50">
+                <svg className="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                </svg>
+              </div>
+              <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  {t('dashboard.userManagement')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.userManagementDesc')}
+                </p>
+                <Badge variant="outline" className="mt-2">
+                  0 {t('dashboard.videos')}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <CardContent className="p-6">
+            <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className="p-3 rounded-xl bg-orange-50">
+                <svg className="h-8 w-8 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  {t('dashboard.training')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.trainingDesc')}
+                </p>
+                <Badge variant="outline" className="mt-2">
+                  0 {t('dashboard.videos')}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+          <CardContent className="p-6">
+            <div className={`flex items-center gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className="p-3 rounded-xl bg-indigo-50">
+                <svg className="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
+                <h3 className="text-lg font-semibold text-foreground mb-1">
+                  {t('dashboard.advancedFeatures')}
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  {t('dashboard.advancedFeaturesDesc')}
+                </p>
+                <Badge variant="outline" className="mt-2">
+                  0 {t('dashboard.videos')}
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Coming Soon Notice */}
+      <Card className="border border-gray-200 shadow-sm">
         <CardContent className="text-center py-12">
-          <p className="text-muted-foreground">Settings panel coming soon...</p>
+          <div className="p-4 rounded-full bg-red-50 w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+            <svg className="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">
+            {t('dashboard.tutorialVideosComingSoon')}
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            {t('dashboard.tutorialVideosComingSoonDesc')}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+              {t('dashboard.videoCategories')}: 6
+            </Badge>
+            <Badge variant="secondary" className="bg-green-100 text-green-800">
+              {t('dashboard.totalVideos')}: 0
+            </Badge>
+            <Badge variant="secondary" className="bg-purple-100 text-purple-800">
+              {t('dashboard.estimatedDuration')}: 0 {t('dashboard.minutes')}
+            </Badge>
+          </div>
         </CardContent>
       </Card>
     </div>

@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'gatsby';
+import { Link, graphql } from 'gatsby';
 import Layout from '../components/layout';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
 import Footer from '../components/footer';
+import { useTranslation } from 'gatsby-plugin-react-i18next';
+import { useI18next } from 'gatsby-plugin-react-i18next';
+import '../assets/css/404-rtl.css';
 
 const NotFoundPage = () => {
+  const { t } = useTranslation('NotFound');
+  const { language: currentLanguage } = useI18next();
+  const isRTL = currentLanguage === 'ar';
+  
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const brandPrimary = '#2194D1';
@@ -26,16 +33,18 @@ const NotFoundPage = () => {
   };
 
   return (
-    <Layout pageTitle="Page Not Found || Hope for All Mena || Charity React Next Template">
+    <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena`}>
       <HeaderTwo />
       <StickyHeader />
       
       {/* Background decorative elements */}
       <div 
+        className={isRTL ? 'decorative-right' : ''}
         style={{
           position: 'absolute',
           top: '10%',
-          left: '5%',
+          left: isRTL ? 'auto' : '5%',
+          right: isRTL ? '5%' : 'auto',
           width: '200px',
           height: '200px',
           background: `radial-gradient(circle, ${brandPrimary}20 0%, transparent 70%)`,
@@ -45,10 +54,12 @@ const NotFoundPage = () => {
         }}
       />
       <div 
+        className={isRTL ? 'decorative-left' : ''}
         style={{
           position: 'absolute',
           bottom: '20%',
-          right: '10%',
+          right: isRTL ? 'auto' : '10%',
+          left: isRTL ? '10%' : 'auto',
           width: '150px',
           height: '150px',
           background: `radial-gradient(circle, ${brandPrimary}15 0%, transparent 70%)`,
@@ -64,13 +75,14 @@ const NotFoundPage = () => {
           background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
           overflow: 'hidden'
         }}
+        dir={isRTL ? 'rtl' : 'ltr'}
       >
         <Container className="py-5 position-relative" style={{ zIndex: 1 }}>
           <Row className="justify-content-center text-center">
             <Col lg={8} md={10}>
               {/* Main 404 Content */}
               <div 
-                className={`mb-5 ${isVisible ? 'fade-in' : 'opacity-0'}`}
+                className={`mb-5 ${isVisible ? 'fade-in' : 'opacity-0'} ${isRTL ? 'rtl-layout' : ''}`}
                 style={{
                   transition: 'all 0.8s ease-out',
                   transform: isVisible ? 'translateY(0)' : 'translateY(30px)'
@@ -79,7 +91,7 @@ const NotFoundPage = () => {
                 {/* Animated 404 Number */}
                 <div className="position-relative mb-4">
                   <h1 
-                    className="display-1 fw-bold mb-0" 
+                    className="display-1 fw-bold mb-0 number-display" 
                     style={{ 
                       color: brandPrimary,
                       fontSize: 'clamp(6rem, 20vw, 15rem)',
@@ -89,34 +101,35 @@ const NotFoundPage = () => {
                       fontWeight: 900,
                       animation: isVisible ? 'bounceIn 1s ease-out' : 'none'
                     }}
+                    dir="ltr"
                   >
-                    404
+                    {t('errorCode')}
                   </h1>
                 </div>
 
                 {/* Error Message */}
                 <h2 
-                  className="h2 fw-bold mb-3" 
+                  className={`h2 fw-bold mb-3 ${isRTL ? 'font-arabic' : ''}`}
                   style={{ 
                     color: '#211F2D',
                     fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-                    fontFamily: 'Jost, sans-serif',
+                    fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'Jost, sans-serif',
                     animation: isVisible ? 'slideInUp 0.8s ease-out 0.3s both' : 'none'
                   }}
                 >
-                  Oops! Page Not Found
+                  {t('title')}
                 </h2>
                 
                 <p 
-                  className="lead text-muted mb-4"
+                  className={`lead text-muted mb-4 ${isRTL ? 'font-arabic' : ''}`}
                   style={{
                     fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
                     lineHeight: 1.6,
-                    animation: isVisible ? 'slideInUp 0.8s ease-out 0.5s both' : 'none'
+                    animation: isVisible ? 'slideInUp 0.8s ease-out 0.5s both' : 'none',
+                    fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
                   }}
                 >
-                  The page you're looking for seems to have wandered off into the digital wilderness. 
-                  Don't worry, we'll help you find your way back!
+                  {t('description')}
                 </p>
 
                 {/* Fun illustration */}
@@ -128,6 +141,121 @@ const NotFoundPage = () => {
                   }}
                 >
                   🗺️
+                </div>
+
+                {/* Action Buttons */}
+                <div 
+                  className={`d-flex flex-column flex-sm-row gap-3 justify-content-center mb-5 ${isRTL ? 'rtl-button-group' : ''}`}
+                  style={{
+                    animation: isVisible ? 'fadeIn 1s ease-out 0.9s both' : 'none'
+                  }}
+                >
+                  <Link to="/">
+                    <Button
+                      variant="primary"
+                      size="lg"
+                      onClick={handleButtonClick}
+                      className={`px-5 py-3 ${isAnimating ? 'scale-95' : ''} ${isRTL ? 'font-arabic' : ''}`}
+                      style={{
+                        backgroundColor: brandPrimary,
+                        borderColor: brandPrimary,
+                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'Jost, sans-serif',
+                        fontWeight: 600,
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 15px rgba(33, 148, 209, 0.3)'
+                      }}
+                    >
+                      {t('homeButton')}
+                    </Button>
+                  </Link>
+                  <Link to="/contact">
+                    <Button
+                      variant="outline-primary"
+                      size="lg"
+                      onClick={handleButtonClick}
+                      className={`px-5 py-3 ${isAnimating ? 'scale-95' : ''} ${isRTL ? 'font-arabic' : ''}`}
+                      style={{
+                        borderColor: brandPrimary,
+                        color: brandPrimary,
+                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'Jost, sans-serif',
+                        fontWeight: 600,
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      {t('contactButton')}
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Helpful Links */}
+                <div 
+                  className={`mt-5 pt-4 border-top ${isRTL ? 'rtl-links' : ''}`}
+                  style={{
+                    animation: isVisible ? 'fadeIn 1s ease-out 1.1s both' : 'none'
+                  }}
+                >
+                  <h5 
+                    className={`mb-3 ${isRTL ? 'font-arabic' : ''}`}
+                    style={{
+                      color: '#211F2D',
+                      fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'Jost, sans-serif'
+                    }}
+                  >
+                    {t('helpfulLinks')}
+                  </h5>
+                  <div className={`d-flex flex-wrap gap-3 justify-content-center ${isRTL ? 'rtl-grid' : ''}`}>
+                    <Link 
+                      to="/" 
+                      className={isRTL ? 'font-arabic' : ''}
+                      style={{ 
+                        color: brandPrimary, 
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
+                      }}
+                    >
+                      {t('links.home')}
+                    </Link>
+                    <span style={{ color: '#dee2e6' }}>•</span>
+                    <Link 
+                      to="/about-us" 
+                      className={isRTL ? 'font-arabic' : ''}
+                      style={{ 
+                        color: brandPrimary, 
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
+                      }}
+                    >
+                      {t('links.about')}
+                    </Link>
+                    <span style={{ color: '#dee2e6' }}>•</span>
+                    <Link 
+                      to="/evangelism-discipleship" 
+                      className={isRTL ? 'font-arabic' : ''}
+                      style={{ 
+                        color: brandPrimary, 
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
+                      }}
+                    >
+                      {t('links.ministries')}
+                    </Link>
+                    <span style={{ color: '#dee2e6' }}>•</span>
+                    <Link 
+                      to="/contact" 
+                      className={isRTL ? 'font-arabic' : ''}
+                      style={{ 
+                        color: brandPrimary, 
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
+                      }}
+                    >
+                      {t('links.contact')}
+                    </Link>
+                  </div>
                 </div>
               </div>
             </Col>
@@ -197,6 +325,20 @@ const NotFoundPage = () => {
 };
 
 export default NotFoundPage;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
 
 export const Head = () => (
   <>

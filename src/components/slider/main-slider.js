@@ -8,7 +8,7 @@ import { useI18next } from "gatsby-plugin-react-i18next";
 
 import banner1 from "../../assets/images/main-slider/slider-1-1.jpg";
 import banner2 from "../../assets/images/main-slider/dev.png";
-import banner3 from "../../assets/images/main-slider/slider-2-1.jpg";
+import banner3 from "../../assets/images/main-slider/study.jpg";
 import banner4 from "../../assets/images/main-slider/allBooks.png";
 import "./main-slider-rtl.css";
 // Swiper v11 uses modules via props

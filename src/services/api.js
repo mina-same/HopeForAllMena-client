@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { authStorage } from '../utils/storage';
 
 // API Configuration
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api';
@@ -23,7 +24,7 @@ api.interceptors.request.use(
       config.url?.includes('/enrollments') ||
       (config.url?.includes('/reviews') && config.method === 'post');
 
-    const token = localStorage.getItem('authToken');
+    const token = authStorage.getToken();
     if (token && !isPublicEndpoint) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -52,8 +53,7 @@ api.interceptors.response.use(
 
       if (currentPath !== '/login' && !isLoginAttempt && !isPublicEndpoint) {
         // Token expired or invalid - redirect to login
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('user');
+        authStorage.clearAuth();
         window.location.href = '/login';
       }
     }
@@ -70,8 +70,7 @@ export const authAPI = {
 
   logout: async () => {
     const response = await api.post('/auth/logout');
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('user');
+    authStorage.clearAuth();
     return response.data;
   },
 

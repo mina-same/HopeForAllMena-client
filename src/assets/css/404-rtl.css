@@ -1,0 +1,115 @@
+/* RTL Styling for 404 Page */
+
+/* Arabic Font Support */
+.font-arabic {
+  font-family: 'Cairo', 'Noto Sans Arabic', 'Arial', sans-serif !important;
+  font-weight: 600;
+}
+
+/* RTL Layout */
+.rtl-layout {
+  direction: rtl;
+  text-align: right;
+}
+
+/* RTL Text Alignment */
+.text-right {
+  text-align: right !important;
+}
+
+/* RTL Button Groups */
+.rtl-button-group {
+  flex-direction: row-reverse;
+}
+
+.rtl-button-group .btn:first-child {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+/* RTL Links */
+.rtl-links {
+  text-align: right;
+}
+
+.rtl-links a {
+  text-align: right;
+  display: block;
+}
+
+/* RTL Icon Positioning */
+[dir="rtl"] .icon-left {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .icon-right {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+/* RTL Animations - maintain proper flow */
+[dir="rtl"] .fade-in {
+  animation: fadeInRTL 0.8s ease-out;
+}
+
+@keyframes fadeInRTL {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* RTL Decorative Elements */
+[dir="rtl"] .decorative-left {
+  left: auto;
+  right: 5%;
+}
+
+[dir="rtl"] .decorative-right {
+  right: auto;
+  left: 10%;
+}
+
+/* Number Display (keep LTR for numbers) */
+.number-display {
+  direction: ltr !important;
+  display: inline-block;
+}
+
+/* RTL Button Styling */
+[dir="rtl"] .btn {
+  text-align: center;
+}
+
+/* RTL Grid for Links */
+.rtl-grid {
+  text-align: right;
+}
+
+/* Responsive RTL */
+@media (max-width: 768px) {
+  [dir="rtl"] .rtl-button-group {
+    flex-direction: column-reverse;
+  }
+  
+  [dir="rtl"] .rtl-button-group .btn {
+    margin-left: 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Arabic Text Smoothing */
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] p {
+  font-family: 'Cairo', 'Noto Sans Arabic', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+

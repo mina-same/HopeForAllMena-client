@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from '@reach/router';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
+import { authStorage } from '../../utils/storage';
 import {
   Book,
   Users,
   FolderOpen,
   LibraryBig,
-  ChevronDown,
   ChevronRight,
   ChevronLeft,
   Home,
-  Settings,
   MessageSquare,
   BarChart3,
   GraduationCap,
@@ -22,7 +20,8 @@ import {
   CreditCard,
   FileText,
   Edit3,
-  MessageCircle
+  MessageCircle,
+  PlayCircle
 } from 'lucide-react';
 import {
   Sidebar,
@@ -50,7 +49,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   const [blogOpen, setBlogOpen] = useState(true);
   const [pendingReviews, setPendingReviews] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState(0);
-  const { user, hasPermission, hasAnyPermission } = useAuth();
+  const { user, hasAnyPermission } = useAuth();
   const { t } = useTranslation('Admin');
   const { i18n } = useI18next();
 
@@ -59,12 +58,11 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
   // Define permission mappings for each section - using actual permission names from seed data
   const sectionPermissions = {
-    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids', 'blogs'],
+    dashboard: ['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids', 'blogs'],
     analytics: ['analytics'],
     messages: ['contact-messages'],
     calendar: ['calendar'],
     'user-management': ['users', 'user-management'],
-    settings: ['settings'],
     authors: ['authors'],
     categories: ['categories'],
     books: ['books'],
@@ -79,21 +77,22 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
     'generate-ids': ['generate-ids'],
     'new-blog': ['blogs'],
     'all-blogs': ['blogs'],
-    'blog-comments': ['blogs']
+    'blog-comments': ['blogs'],
+    'tutorial-videos': ['blogs']
   };
 
   // Check if user has permission for a specific section
-  const hasSectionPermission = (sectionId) => {
+  const hasSectionPermission = useCallback((sectionId) => {
     const requiredPermissions = sectionPermissions[sectionId] || [];
     return hasAnyPermission(requiredPermissions);
-  };
+  }, [hasAnyPermission, sectionPermissions]);
 
   // Fetch notification counts
   useEffect(() => {
     const fetchNotificationCounts = async () => {
       try {
         // Get auth token
-        const token = localStorage.getItem('authToken');
+        const token = authStorage.getToken();
         const headers = {
           'Content-Type': 'application/json',
         };
@@ -103,7 +102,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
         // Fetch pending reviews count
         if (hasSectionPermission('reviews')) {
-          const reviewsResponse = await fetch('/api/reviews?status=pending&limit=1', {
+          const reviewsResponse = await fetch(`${process.env.GATSBY_API_URL || 'http://localhost:5001/api'}/reviews?status=pending&limit=1`, {
             headers
           });
           if (reviewsResponse.ok) {
@@ -114,7 +113,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
 
         // Fetch unread contact messages count
         if (hasSectionPermission('contact-messages')) {
-          const messagesResponse = await fetch('/api/contact-messages?status=unread', {
+          const messagesResponse = await fetch(`${process.env.GATSBY_API_URL || 'http://localhost:5001/api'}/contact-messages?status=unread`, {
             headers
           });
           if (messagesResponse.ok) {
@@ -166,9 +165,9 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
       id: 'user-management'
     },
     {
-      title: t('navigation.settings'),
-      icon: Settings,
-      id: 'settings'
+      title: t('navigation.tutorialVideos'),
+      icon: PlayCircle,
+      id: 'tutorial-videos'
     }
   ].filter(item => hasSectionPermission(item.id));
 

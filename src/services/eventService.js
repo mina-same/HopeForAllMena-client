@@ -5,10 +5,11 @@ class EventService {
     this.baseURL = `${API_BASE_URL}/events`;
   }
 
-  // Get authentication token from localStorage
+  // Get authentication token from storage
   getAuthToken() {
     if (typeof window !== 'undefined') {
-      return localStorage.getItem('authToken');
+      const { authStorage } = require('../utils/storage');
+      return authStorage.getToken();
     }
     return null;
   }
@@ -224,4 +225,5 @@ class EventService {
   }
 }
 
-export default new EventService();
+const eventService = new EventService();
+export default eventService;

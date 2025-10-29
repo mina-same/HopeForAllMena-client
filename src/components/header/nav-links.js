@@ -5,7 +5,7 @@ import flagAr from "../../assets/images/resources/flag-1-2.jpg"; // You can add 
 
 const NavLinks = ({ extraClassName, hideControls = false }) => {
   const { t } = useTranslation();
-  const { languages, originalPath, i18n } = useI18next();
+  const { i18n } = useI18next();
 
   const handleDropdownStatus = (e) => {
     let clickedItem = e.currentTarget.parentNode;

@@ -1,0 +1,113 @@
+/* RTL Styles for Courses Page */
+
+/* Arabic Font Support */
+.font-arabic {
+  font-family: "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  font-weight: 600;
+}
+
+/* RTL Direction */
+[dir="rtl"] {
+  text-align: right;
+}
+
+/* Flex and Grid RTL */
+[dir="rtl"] .flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .text-right {
+  text-align: right;
+}
+
+/* Course Card RTL */
+[dir="rtl"] .line-clamp-2,
+[dir="rtl"] .line-clamp-3 {
+  text-align: right;
+}
+
+/* Numbers should be LTR */
+[dir="rtl"] .text-4xl,
+[dir="rtl"] .text-5xl,
+[dir="rtl"] span[dir="ltr"] {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* Card content alignment */
+[dir="rtl"] .truncate {
+  text-align: right;
+}
+
+
+/* Hero section RTL */
+[dir="rtl"] .leading-tight,
+[dir="rtl"] .leading-relaxed {
+  text-align: right;
+}
+
+/* Button groups RTL */
+[dir="rtl"] .sm\:flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+@media (min-width: 640px) {
+  [dir="rtl"] .sm\:flex-row-reverse {
+    flex-direction: row-reverse;
+  }
+}
+
+@media (min-width: 1024px) {
+  [dir="rtl"] .lg\:flex-row-reverse {
+    flex-direction: row-reverse;
+  }
+}
+
+/* Course card info icons RTL */
+[dir="rtl"] .flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* Decorative corner position */
+[dir="rtl"] .top-3.right-3 {
+  right: auto;
+  left: 0.75rem;
+}
+
+/* Sheet/Drawer position for filters */
+[dir="rtl"] .sheet-content-right {
+  right: auto;
+  left: 0;
+}
+
+/* Ensure proper text overflow */
+[dir="rtl"] .text-ellipsis {
+  text-overflow: ellipsis;
+}
+
+/* Price and enrollment info */
+[dir="rtl"] .justify-between {
+  justify-content: space-between;
+}
+
+/* Gradient text remains same */
+[dir="rtl"] .bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Animation delays should work the same */
+[dir="rtl"] .animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

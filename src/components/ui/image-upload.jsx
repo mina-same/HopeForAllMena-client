@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { X, Image as ImageIcon, Loader2 } from 'lucide-react';
 
 const ImageUpload = ({ 
   onImageUpload, 
@@ -41,9 +41,8 @@ const ImageUpload = ({
       formData.append('image', file);
 
       // Check for authentication token
-      const token = localStorage.getItem('token') || 
-                   localStorage.getItem('authToken') || 
-                   localStorage.getItem('accessToken');
+      const { authStorage } = require('../../utils/storage');
+      const token = authStorage.getToken();
 
       if (!token) {
         throw new Error('Authentication required. Please login first.');
@@ -168,6 +167,15 @@ const ImageUpload = ({
         onDragOver={handleDrag}
         onDrop={handleDrop}
         onClick={openFileDialog}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openFileDialog();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-label="Upload image"
       >
         <input
           ref={fileInputRef}

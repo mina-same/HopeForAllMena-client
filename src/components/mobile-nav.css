@@ -1,0 +1,160 @@
+/* Mobile Navigation Styles */
+
+/* RTL-specific styles for Arabic */
+.mobile-nav__wrapper.rtl {
+  direction: rtl;
+}
+
+.mobile-nav__content.rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.mobile-nav__content.rtl .main-menu__list {
+  direction: rtl;
+}
+
+.mobile-nav__content.rtl .main-menu__list li {
+  text-align: right;
+}
+
+.mobile-nav__content.rtl .main-menu__list li a {
+  text-align: right;
+}
+
+.mobile-nav__close.rtl {
+  left: 20px;
+  right: auto;
+}
+
+.mobile-nav__social.rtl {
+  direction: rtl;
+}
+
+.mobile-nav__contact.rtl {
+  direction: rtl;
+  text-align: right;
+  padding: 0px;
+}
+
+.mobile-nav__contact.rtl li {
+  direction: rtl;
+  text-align: right;
+}
+
+.logo-box.rtl {
+  direction: rtl;
+  text-align: center;
+}
+
+.mobile-nav__container.rtl {
+  direction: rtl;
+}
+
+/* Styles for language and search in same line */
+.mobile-nav__controls {
+  padding: 15px 20px;
+  border-bottom: 1px solid #333;
+}
+
+.mobile-nav__language-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobile-nav__language-search.rtl {
+  flex-direction: row-reverse;
+}
+
+.mobile-nav__language-selector {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-nav__language-selector.rtl {
+  flex-direction: row-reverse;
+}
+
+.mobile-nav__language-selector select {
+  margin: 0 5px;
+}
+
+.mobile-nav__language-selector img {
+  margin-right: 7px;
+  margin-left: 0;
+}
+
+.mobile-nav__language-selector.rtl img {
+  margin-left: 7px;
+  margin-right: 0;
+}
+
+.mobile-nav__search-btn {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.mobile-nav__search-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav__search-btn i {
+  font-size: 18px;
+  color: #7e7e7e;
+}
+
+/* Dropdown button positioning */
+.mobile-nav__content .main-menu__list li button {
+  width: 30px;
+  height: 30px;
+  background-color: var(--thm-base);
+  border: none;
+  outline: none;
+  color: #fff;
+  transform: rotate(-90deg);
+  transition: transform 500ms ease;
+  position: absolute;
+  top: 8px;
+  right: 0px;
+  left: auto;
+}
+
+.mobile-nav__content .main-menu__list li button.rtl {
+  left: 0px;
+  right: auto;
+}
+
+/* Contact section styles */
+.mobile-nav__contact li > i {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--thm-base);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 14px;
+  margin-right: 10px;
+  margin-left: 0;
+  color: #fff;
+}
+
+.mobile-nav__contact.rtl li > i {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+/* Social media link margins */
+.mobile-nav__social a + a {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.mobile-nav__social.rtl a + a {
+  margin-right: 10px;
+  margin-left: 0;
+}

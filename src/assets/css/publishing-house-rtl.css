@@ -1,0 +1,109 @@
+/* RTL Styles for Publishing House Page */
+
+/* RTL List Styling */
+.rtl-list {
+  padding-right: 0;
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+.rtl-list li {
+  text-align: right;
+  direction: rtl;
+}
+
+.rtl-list li::marker {
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+  text-transform: none;
+  text-indent: 0 !important;
+  text-align: right !important;
+  text-align-last: right !important;
+}
+
+/* RTL Block Title */
+.rtl-block-title h3,
+.rtl-block-title p {
+  text-align: center;
+}
+
+/* Service Features RTL */
+[dir="rtl"] .service-features__single {
+  text-align: right;
+}
+
+[dir="rtl"] .service-features__icon {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+/* Service Details Content RTL */
+[dir="rtl"] .service-details__content h3 {
+  text-align: right;
+}
+
+/* Impact Stats RTL */
+[dir="rtl"] .impact-stat {
+  text-align: center;
+}
+
+[dir="rtl"] .impact-stat h3 {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* Arabic Font Support */
+.font-arabic {
+  font-family: "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  font-weight: 600;
+}
+
+/* Service Impact List RTL */
+[dir="rtl"] .service-impact__list {
+  padding-right: 20px;
+  padding-left: 0;
+}
+
+[dir="rtl"] .service-impact__list li {
+  text-align: right;
+  list-style-position: inside;
+}
+
+/* Ensure proper spacing for RTL */
+[dir="rtl"] .service-impact__content h4 {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+/* Bootstrap Col RTL adjustments */
+[dir="rtl"] .row {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* Service Features Single RTL padding */
+[dir="rtl"] .service-features__single {
+  padding: 30px 20px;
+}
+
+[dir="rtl"] .service-features__single h4 {
+  margin-bottom: 15px;
+}
+
+/* Impact Section RTL */
+[dir="rtl"] .service-impact__stats {
+  direction: ltr;
+}
+
+[dir="rtl"] .service-impact__stats .impact-stat p {
+  direction: rtl;
+}
+
+/* Ensure numbers display correctly in Arabic */
+[dir="rtl"] .impact-stat h3,
+[dir="rtl"] .text-3xl {
+  direction: ltr;
+  display: inline-block;
+  unicode-bidi: embed;
+}
+

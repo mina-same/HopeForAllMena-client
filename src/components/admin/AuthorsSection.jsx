@@ -82,7 +82,7 @@ export function AuthorsSection() {
 
   useEffect(() => {
     fetchAuthors();
-  }, [currentPage, searchTerm, statusFilter, featuredFilter, currentLanguage]);
+  }, [currentPage, searchTerm, statusFilter, featuredFilter, currentLanguage, fetchAuthors]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -134,7 +134,8 @@ export function AuthorsSection() {
 
     // Debug: Log form data and auth token
     console.log('Form data being sent:', authorForm);
-    console.log('Auth token:', localStorage.getItem('authToken'));
+    const { authStorage } = require('../../utils/storage');
+    console.log('Auth token:', authStorage.getToken());
 
     try {
       if (editingAuthor) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, CheckCircle, XCircle, Calendar, Church, Users, Phone, Search } from 'lucide-react';
+import { Eye, CheckCircle, XCircle, Calendar, Church, Users, Search } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
@@ -28,12 +28,13 @@ const TrainingRequestsSection = () => {
 
   useEffect(() => {
     fetchRequests();
-  }, []);
+  }, [fetchRequests]);
 
   const fetchRequests = async () => {
     try {
       // Check multiple token storage keys for authentication
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken');
+      const { authStorage } = require('../../utils/storage');
+      const token = authStorage.getToken();
       
       if (!token) {
         console.log('No authentication token found');
@@ -71,7 +72,8 @@ const TrainingRequestsSection = () => {
 
   const updateRequestStatus = async (requestId, newStatus) => {
     try {
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken');
+      const { authStorage } = require('../../utils/storage');
+      const token = authStorage.getToken();
       
       const response = await fetch(`http://localhost:5001/api/training-requests/${requestId}/status`, {
         method: 'PATCH',

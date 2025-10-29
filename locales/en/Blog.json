@@ -1,4 +1,10 @@
 {
+  "page": {
+    "title": "Latest News & Updates",
+    "header": "News & Articles",
+    "crumb": "News",
+    "description": "Stay informed with the latest news, updates, and stories from Hope For All MENA. Discover how we're making a difference in communities across the region."
+  },
   "home": {
     "title": "Latest news & articles \n directly from the blog.",
     "tagLine": "Blog Posts",
@@ -58,11 +64,29 @@
     "loading": "Loading..."
   },
   "categories": {
+    "all": "All",
     "news": "News",
     "events": "Events", 
     "updates": "Updates",
     "stories": "Stories",
     "announcements": "Announcements"
+  },
+  "search": {
+    "placeholder": "Search blogs..."
+  },
+  "loading": {
+    "blogs": "Loading blogs..."
+  },
+  "error": {
+    "title": "Error Loading Blogs",
+    "retry": "Try Again"
+  },
+  "noResults": {
+    "title": "No Blogs Found",
+    "message": "Try adjusting your search or filter criteria."
+  },
+  "results": {
+    "summary": "Showing {{count}} blogs"
   },
   "navigation": {
     "previous": "Previous Post",

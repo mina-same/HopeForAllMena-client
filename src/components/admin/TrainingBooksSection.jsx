@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, BookOpen, Upload, Calendar, Search, Filter } from 'lucide-react';
+import { Plus, Edit2, Trash2, BookOpen, Calendar, Search, Filter } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent } from '../ui/card';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Badge } from '../ui/badge';
 import { useToast } from '../../hooks/use-toast';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import ImageUpload from '../ui/image-upload';
+import { authStorage } from '../../utils/storage';
 
 const TrainingBooksSection = () => {
   const { t } = useTranslation('TrainingBooksManagement');
@@ -37,14 +37,14 @@ const TrainingBooksSection = () => {
 
   useEffect(() => {
     fetchTrainingBooks();
-  }, []);
+  }, [fetchTrainingBooks]);
 
   // Re-fetch data when language changes
   useEffect(() => {
     if (trainingBooks.length > 0) {
       fetchTrainingBooks();
     }
-  }, [currentLanguage]);
+  }, [currentLanguage, fetchTrainingBooks, trainingBooks.length]);
 
   // Filter books based on search term and status filter
   const filteredBooks = trainingBooks.filter(book => {
@@ -62,7 +62,7 @@ const TrainingBooksSection = () => {
   const fetchTrainingBooks = async () => {
     try {
       // Get auth token for admin requests to fetch all books (including inactive)
-      const token = localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken');
+      const token = authStorage.getToken();
       const headers = { 'Content-Type': 'application/json' };
       if (token) {
         headers.Authorization = `Bearer ${token}`;
@@ -102,7 +102,7 @@ const TrainingBooksSection = () => {
         method,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken')}`
+          'Authorization': `Bearer ${authStorage.getToken()}`
         },
         body: JSON.stringify(formData),
       });
@@ -150,7 +150,7 @@ const TrainingBooksSection = () => {
       const response = await fetch(`http://localhost:5001/api/training-books/${bookId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token') || localStorage.getItem('authToken') || localStorage.getItem('accessToken')}`
+          'Authorization': `Bearer ${authStorage.getToken()}`
         },
       });
 

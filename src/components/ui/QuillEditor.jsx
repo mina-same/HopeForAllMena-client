@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 
-const QuillEditor = ({ value, onChange, placeholder, className, style, ...props }) => {
+const QuillEditor = forwardRef(({ value, onChange, placeholder, className, style, ...props }, ref) => {
   const [isClient, setIsClient] = useState(false);
   const [ReactQuill, setReactQuill] = useState(null);
 
@@ -66,6 +66,7 @@ const QuillEditor = ({ value, onChange, placeholder, className, style, ...props 
 
   return (
     <ReactQuill
+      ref={ref}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
@@ -76,6 +77,6 @@ const QuillEditor = ({ value, onChange, placeholder, className, style, ...props 
       {...props}
     />
   );
-};
+});
 
 export default QuillEditor;

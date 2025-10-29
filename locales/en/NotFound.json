@@ -1,0 +1,17 @@
+{
+  "pageTitle": "Page Not Found",
+  "errorCode": "404",
+  "title": "Oops! Page Not Found",
+  "description": "The page you're looking for seems to have wandered off into the digital wilderness. Don't worry, we'll help you find your way back!",
+  "homeButton": "Back to Home",
+  "contactButton": "Contact Us",
+  "searchPlaceholder": "Search our website...",
+  "helpfulLinks": "Helpful Links",
+  "links": {
+    "home": "Home",
+    "about": "About Us",
+    "ministries": "Ministries",
+    "contact": "Contact"
+  }
+}
+

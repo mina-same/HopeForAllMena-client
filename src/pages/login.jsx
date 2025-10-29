@@ -120,17 +120,32 @@ const LoginPage = () => {
                             flex-direction: column-reverse !important;
                         }
                     }
+                    
+                    /* Responsive styles for login page */
+                    @media (min-width: 768px) {
+                        .login-container {
+                            margin: 20px !important;
+                            border-radius: 24px !important;
+                        }
+                        
+                        .login-card {
+                            border-radius: 24px !important;
+                        }
+                    }
+                    
+                    @media (min-width: 992px) {
+                        .login-illustration {
+                            max-width: 520px !important;
+                            max-height: none !important;
+                        }
+                    }
                 `}</style>
             )}
             <div className="d-flex align-items-center" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-                <div className="w-100 py-3 py-md-5" style={{ 
+                <div className="w-100 py-3 py-md-5 login-container" style={{ 
                     background: "#F1F1F1", 
                     margin: "10px", 
-                    borderRadius: "16px",
-                    '@media (min-width: 768px)': {
-                        margin: "20px",
-                        borderRadius: "24px"
-                    }
+                    borderRadius: "16px"
                 }}>
                     <Container className="py-3 py-md-5">
                         <Row className="align-items-center justify-content-center g-4">
@@ -139,16 +154,12 @@ const LoginPage = () => {
                                     <img 
                                         src={lotiAuth} 
                                         alt="Auth Illustration" 
-                                        className="img-fluid" 
+                                        className="img-fluid login-illustration" 
                                         style={{ 
                                             maxWidth: '100%', 
                                             height: 'auto',
                                             maxHeight: '300px',
-                                            filter: 'saturate(1.05)',
-                                            '@media (min-width: 992px)': {
-                                                maxWidth: '520px',
-                                                maxHeight: 'none'
-                                            }
+                                            filter: 'saturate(1.05)'
                                         }} 
                                     />
                                     <div className="mt-3 mt-md-4">
@@ -158,12 +169,9 @@ const LoginPage = () => {
                                 </div>
                             </Col>
                             <Col lg={6} md={10} className="order-2 order-lg-2">
-                                <Card className="shadow-sm border-0" style={{ 
+                                <Card className="shadow-sm border-0 login-card" style={{ 
                                     borderRadius: '16px', 
-                                    transition: 'box-shadow 0.2s ease, transform 0.2s ease',
-                                    '@media (min-width: 768px)': {
-                                        borderRadius: '24px'
-                                    }
+                                    transition: 'box-shadow 0.2s ease, transform 0.2s ease'
                                 }}
                                     onMouseEnter={(e) => { 
                                         if (window.innerWidth > 768) {

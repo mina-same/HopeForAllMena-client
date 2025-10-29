@@ -1,0 +1,118 @@
+{
+  "pageTitle": "Evangelism & Discipleship",
+  "hero": {
+    "title": "Evangelism & Discipleship",
+    "subtitle": "Transforming Lives Through Faith"
+  },
+  "heroSection": {
+    "badge": "Transforming Lives Through Faith",
+    "title": "Evangelism &",
+    "titleHighlight": "Discipleship",
+    "description": "Equipping believers to share the Gospel effectively, fostering spiritual growth and igniting passion for God's purpose across communities and nations.",
+    "button": "Explore Ministry",
+    "imageAlt": "Ministry and Discipleship",
+    "stats": {
+      "livesCount": "500+",
+      "livesLabel": "Lives Transformed",
+      "groupsCount": "50+",
+      "groupsLabel": "Discipleship Groups",
+      "communitiesCount": "25+",
+      "communitiesLabel": "Communities Reached"
+    }
+  },
+  "impactSection": {
+    "publications": {
+      "badge": "Hope Publications",
+      "title": "Spreading",
+      "titleHighlight": "Hope & Faith",
+      "description": "Through Hope Publications, we distribute free magazines and books to children and adults, spreading messages of hope and faith across communities worldwide.",
+      "button": "Explore Evangelism",
+      "imageAlt": "Hope Publications",
+      "stats": {
+        "booksCount": "100+",
+        "booksLabel": "Books Published",
+        "magazinesCount": "50+",
+        "magazinesLabel": "Magazine Issues",
+        "copiesCount": "1K+",
+        "copiesLabel": "Copies Distributed"
+      }
+    },
+    "discipleship": {
+      "badge": "Discipleship Training",
+      "title": "Building",
+      "titleHighlight": "Strong Leaders",
+      "description": "Equipping churches for impactful leadership and preparing courageous leaders through intentional discipleship and spiritual maturity programs.",
+      "button": "Join Discipleship",
+      "imageAlt": "Discipleship Training",
+      "features": {
+        "leadership": {
+          "title": "Leadership Development",
+          "description": "Comprehensive training for emerging leaders"
+        },
+        "spiritual": {
+          "title": "Spiritual Maturity",
+          "description": "Guided growth through intentional discipleship"
+        }
+      }
+    }
+  },
+  "ministryFocus": {
+    "title": "Our Ministry",
+    "titleHighlight": "Focus Areas",
+    "subtitle": "Transforming lives through evangelism, discipleship, and community engagement across the MENA region and beyond.",
+    "evangelism": {
+      "title": "Evangelism & Personal Ministry",
+      "description": "Equipping and educating a new generation of believers is the key to transformative change, not only in their lives but across the world.",
+      "features": {
+        "gospel": "Transformative Gospel sharing",
+        "training": "Personal ministry training",
+        "outreach": "Community outreach programs",
+        "crossCultural": "Cross-cultural evangelism"
+      },
+      "button": "Explore Evangelism"
+    },
+    "discipleship": {
+      "title": "Spiritual Discipleship",
+      "description": "Through personal ministry and heartfelt discipleship, we guide believers toward spiritual maturity and effective leadership.",
+      "features": {
+        "leadership": "Leadership development",
+        "spiritual": "Spiritual growth guidance",
+        "mentorship": "Mentorship programs",
+        "church": "Church equipping"
+      },
+      "button": "Join Discipleship"
+    }
+  },
+  "communityEngagement": {
+    "badge": "Community Engagement",
+    "title": "Festivals &",
+    "titleHighlight": "Celebrations",
+    "subtitle": "We actively participate in Christian festivals and celebrations, seizing vibrant opportunities to proclaim Jesus Christ as the hope of the world.",
+    "engagement": {
+      "title": "Community Engagement",
+      "description": "Building meaningful connections with communities during celebrations and fostering lasting relationships."
+    },
+    "proclamation": {
+      "title": "Gospel Proclamation",
+      "description": "Sharing the life-giving message of the Gospel at every opportunity through festivals and events."
+    },
+    "unity": {
+      "title": "Unity Building",
+      "description": "Fostering unity and love within the global Christian community through shared celebrations."
+    }
+  },
+  "callToAction": {
+    "title": "Ready to",
+    "titleHighlight": "Transform Lives?",
+    "subtitle": "Join us in spreading hope, building faith, and transforming communities through the power of the Gospel. Your journey of impact starts here.",
+    "primaryButton": "Get Involved Today",
+    "secondaryButton": "Contact Our Team",
+    "stats": {
+      "lives": "Lives Transformed",
+      "programs": "Active Programs",
+      "communities": "Communities",
+      "publications": "Publications"
+    }
+  }
+}
+

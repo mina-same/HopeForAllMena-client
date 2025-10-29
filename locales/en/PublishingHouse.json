@@ -1,0 +1,43 @@
+{
+  "pageTitle": "Publishing and Distribution House",
+  "crumbTitle": "Services",
+  "hero": {
+    "title": "Publishing and Distribution House",
+    "intro": "Our Publishing and Distribution House is dedicated to amplifying voices and sharing stories that inspire, educate, and transform lives. We believe in the power of written words to create lasting impact and bring positive change to communities.",
+    "mission": "We support young writers and emerging authors by providing them with the resources, guidance, and platform they need to share their messages with the world. Our publishing services include editorial support, design assistance, and distribution channels that ensure their work reaches the right audience.",
+    "approach": "Through strategic partnerships with bookstores, libraries, and educational institutions, we ensure that valuable content is accessible to readers everywhere, fostering a culture of learning and growth."
+  },
+  "features": {
+    "authorSupport": {
+      "title": "Author Support",
+      "description": "Comprehensive support for writers including manuscript review, editing, design, and publishing guidance to bring their vision to life."
+    },
+    "qualityPublishing": {
+      "title": "Quality Publishing",
+      "description": "Professional publishing services that ensure high-quality books, articles, and educational materials that meet industry standards."
+    },
+    "wideDistribution": {
+      "title": "Wide Distribution",
+      "description": "Extensive distribution networks that make published works available through multiple channels including online platforms and physical locations."
+    }
+  },
+  "impact": {
+    "title": "Our Impact",
+    "subtitle": "Amplifying voices and sharing stories that change lives",
+    "achievementsTitle": "What We've Achieved",
+    "achievements": {
+      "booksPublished": "Published over 100 books and educational materials",
+      "authorsSupported": "Supported 50+ young and emerging authors",
+      "countriesReached": "Distributed content to 30+ countries worldwide",
+      "partnerships": "Established partnerships with major distribution networks",
+      "platforms": "Created digital and print publishing platforms"
+    },
+    "stats": {
+      "books": "Books Published",
+      "authors": "Authors Supported",
+      "countries": "Countries Reached",
+      "copies": "Copies Distributed"
+    }
+  }
+}
+

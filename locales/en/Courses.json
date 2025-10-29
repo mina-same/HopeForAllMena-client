@@ -1,0 +1,54 @@
+{
+  "pageTitle": "Courses",
+  "hero": {
+    "badge": "Transform Your Faith Journey",
+    "title": "Master Theology &",
+    "titleHighlight": "Divinity Studies",
+    "subtitle": "Join thousands of students worldwide in comprehensive theological education.",
+    "subtitleBold": "Start your spiritual academic journey today.",
+    "primaryButton": "Start Learning Now",
+    "secondaryButton": "Browse Courses",
+    "stats": {
+      "courses": "Courses",
+      "instructors": "Expert Instructors",
+      "institutions": "Institutions"
+    }
+  },
+  "filters": {
+    "title": "Filter Courses",
+    "button": "Filters"
+  },
+  "content": {
+    "title": "Available Courses",
+    "coursesFound": "course",
+    "coursesFoundPlural": "courses",
+    "found": "found"
+  },
+  "courseCard": {
+    "instructor": "Instructor",
+    "institution": "Institution",
+    "location": "Location",
+    "duration": "Duration",
+    "starts": "Starts",
+    "rating": "Rating",
+    "enrolled": "enrolled",
+    "seatsLeft": "seats left",
+    "price": {
+      "free": "Free"
+    },
+    "status": {
+      "full": "Full",
+      "enrollNow": "Enroll Now"
+    },
+    "levels": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    }
+  },
+  "empty": {
+    "title": "No courses found",
+    "description": "Try adjusting your filters or search terms to find more courses."
+  }
+}
+

@@ -17,7 +17,7 @@ const getServiceTwoData = (t) => [
     hoverImage: hoverImage1,
     titleKey: "serviceTwo.items.teaching.title",
     textKey: "serviceTwo.items.teaching.text",
-    link: "#"
+    link: "/evangelism-discipleship"
   },
   {
     extraClassName: "background-secondary",
@@ -25,7 +25,7 @@ const getServiceTwoData = (t) => [
     hoverImage: hoverImage2,
     titleKey: "serviceTwo.items.preaching.title",
     textKey: "serviceTwo.items.preaching.text",
-    link: "#"
+    link: "/studies-education"
   },
   {
     extraClassName: "background-base",
@@ -33,7 +33,7 @@ const getServiceTwoData = (t) => [
     hoverImage: hoverImage3,
     titleKey: "serviceTwo.items.healing.title",
     textKey: "serviceTwo.items.healing.text",
-    link: "#"
+    link: "/development-department"
   }
 ];
 
@@ -105,8 +105,7 @@ const ServiceTwo = () => {
                     tabIndex="0"
                   >
                     <div className="service-two__box-inner">
-                      <i className="fas fa-heart" style={{color: "#FFD701"}}></i>
-                      <p>{t(textKey)}</p>
+                      <i className="fas fa-heart" style={{color: "#FFD701", paddingBottom: "10px"}}></i>
                       <h3>
                         <Link to={link} style={{ ':hover': { color: '#ffffff' } }}>{t(titleKey)}</Link>
                       </h3>

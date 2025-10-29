@@ -1,0 +1,91 @@
+{
+  "pageTitle": "Studies and Education",
+  "crumbTitle": "Services",
+  "hero": {
+    "title": "Studies and Education",
+    "intro": "Our Studies and Education program is dedicated to fostering intellectual growth and spiritual development through comprehensive educational initiatives. We believe that education is a powerful tool for transformation and empowerment.",
+    "mission": "Our goal is to cultivate the mindset of pioneers - individuals who think critically, act compassionately, and lead with wisdom. We provide access to quality education, theological training, and leadership development programs that equip people to make positive changes in their communities and beyond.",
+    "approach": "Through partnerships with educational institutions, scholarship programs, and innovative learning approaches, we ensure that education is accessible to all, regardless of their background or circumstances."
+  },
+  "background": {
+    "title": "Background",
+    "content": "In a world where the foundations of faith are being shaken from childhood, children's ministry has become an urgent necessity. Given our service's constant focus on the new generation, we believe that empowering Sunday school leaders and children's ministry leaders with the right tools and necessary knowledge is the way to raise children who grow in firm faith and healthy spiritual life."
+  },
+  "exploreCourses": {
+    "title": "Explore Our Courses",
+    "subtitle": "Discover comprehensive training programs designed to equip and empower leaders",
+    "button": "View All Courses"
+  },
+  "academy": {
+    "badge": "Kingdom Children's Servants Academy",
+    "title": "Empowering a New Generation",
+    "subtitle": "A Christian academy for children's ministry leaders in collaboration with the Spiritual Center for Training and Studies"
+  },
+  "goal": {
+    "title": "The Goal",
+    "subtitle": "Empowering the New Generation",
+    "content": "Launch a one-year diploma program targeting leaders aged 18 to 40, providing them with comprehensive training in the theological and spiritual foundation of ministry, principles of child-rearing, child psychology, impactful leadership, and the use of creative methods in teaching."
+  },
+  "vision": {
+    "title": "The Vision",
+    "content": "Establish a Christian academy that provides spiritual, practical, and skill-based training for leaders who serve children within the church, and empowers them to teach and serve in effective, innovative, and biblically fruitful ways."
+  },
+  "addresses": {
+    "title": "Our Locations",
+    "alexandria": {
+      "city": "Alexandria",
+      "address": "Hope For All Office – 37 Sidi El-Metwally Street, Attarin"
+    },
+    "cairo": {
+      "city": "Cairo",
+      "address": "Hope For All Office – 11 El-Masoud Street, Abbasiya"
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Have questions or want to learn more? We're here to help.",
+    "button": "Contact Us"
+  },
+  "features": {
+    "badge": "Our Core Programs",
+    "sectionTitle": "Transformative Learning Experiences",
+    "sectionSubtitle": "Empowering individuals through comprehensive education, theological depth, and visionary leadership",
+    "academic": {
+      "title": "Academic Excellence",
+      "description": "High-quality educational programs that promote critical thinking, creativity, and a love for learning across all age groups and subjects."
+    },
+    "theological": {
+      "title": "Theological Training",
+      "description": "Comprehensive biblical studies and theological education that deepens understanding of faith and prepares leaders for ministry and service."
+    },
+    "leadership": {
+      "title": "Leadership Development",
+      "description": "Programs designed to develop leadership skills, character, and vision in emerging leaders who will pioneer positive change in their communities."
+    },
+    "statistics": {
+      "yearsExperience": "Years Experience",
+      "graduates": "Graduates",
+      "programs": "Programs",
+      "successRate": "Success Rate"
+    }
+  },
+  "impact": {
+    "title": "Our Impact",
+    "subtitle": "Empowering minds and shaping futures through education",
+    "achievementsTitle": "What We've Achieved",
+    "achievements": {
+      "scholarships": "Provided scholarships to hundreds of students",
+      "centers": "Established educational centers in underserved communities",
+      "teachers": "Trained teachers and educational leaders",
+      "curriculum": "Developed innovative curriculum and learning materials",
+      "mentorship": "Created mentorship and tutoring programs"
+    },
+    "stats": {
+      "students": "Students Supported",
+      "centers": "Educational Centers",
+      "teachers": "Teachers Trained",
+      "scholarships": "Scholarships Awarded"
+    }
+  }
+}
+

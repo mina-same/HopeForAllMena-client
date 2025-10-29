@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "gatsby";
 import { useI18next } from "gatsby-plugin-react-i18next";
 import NavLinks from "./header/nav-links";
+import './mobile-nav.css';
 
 import logoLight from "../assets/images/logos/hope4AllMena.png";
 import flag1 from "../assets/images/resources/flag-1-1.jpg";
@@ -65,117 +66,15 @@ const MobileNav = () => {
 
   return (
     <>
-      {/* RTL-specific styles for Arabic */}
-      {currentLanguage === 'ar' && (
-        <style jsx>{`
-          .mobile-nav__wrapper {
-            direction: rtl;
-          }
-          .mobile-nav__content {
-            direction: rtl;
-            text-align: right;
-          }
-          .mobile-nav__contact {
-            direction: rtl;
-            text-align: right;
-          }
-          .mobile-nav__contact li {
-            direction: rtl;
-            text-align: right;
-          }
-          .mobile-nav__social {
-            direction: rtl;
-          }
-          .logo-box {
-            direction: rtl;
-            text-align: center;
-          }
-          .mobile-nav__container {
-            direction: rtl;
-          }
-          .mobile-nav__close {
-            ${currentLanguage === 'ar' ? 'left: 20px; right: auto;' : 'right: 20px; left: auto;'}
-          }
-        `}</style>
-      )}
       
-      {/* Styles for language and search in same line */}
-      <style jsx>{`
-        .mobile-nav__controls {
-          padding: 15px 20px;
-          border-bottom: 1px solid #333;
-        }
-        .mobile-nav__language-search {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          ${currentLanguage === 'ar' ? 'flex-direction: row-reverse;' : 'flex-direction: row;'}
-        }
-        .mobile-nav__language-selector {
-          display: flex;
-          align-items: center;
-          ${currentLanguage === 'ar' ? 'flex-direction: row-reverse;' : 'flex-direction: row;'}
-        }
-        .mobile-nav__search-btn {
-          cursor: pointer;
-          padding: 8px;
-          border-radius: 4px;
-          transition: background-color 0.3s ease;
-        }
-        .mobile-nav__search-btn:hover {
-          background-color: rgba(255, 255, 255, 0.1);
-        }
-        .mobile-nav__search-btn i {
-          font-size: 18px;
-          color: #7e7e7e;
-        }
-        .mobile-nav__language-selector select {
-          margin: 0 5px;
-        }
-        .mobile-nav__language-selector img {
-          ${currentLanguage === 'ar' ? 'margin-left: 7px; margin-right: 0;' : 'margin-right: 7px; margin-left: 0;'}
-        }
-        .mobile-nav__content .main-menu__list li button {
-          width: 30px;
-          height: 30px;
-          background-color: var(--thm-base);
-          border: none;
-          outline: none;
-          color: #fff;
-          transform: rotate(-90deg);
-          transition: transform 500ms ease;
-          position: absolute;
-          top: 8px;
-          ${currentLanguage === 'ar' ? 'left: 0px; right: auto;' : 'right: 0px; left: auto;'}
-        }
-        .mobile-nav__contact {
-          ${currentLanguage === 'ar' ? 'padding: 0px;' : ''}
-        }
-        .mobile-nav__contact li > i {
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          background-color: var(--thm-base);
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          font-size: 14px;
-          ${currentLanguage === 'ar' ? 'margin-left: 10px; margin-right: 0;' : 'margin-right: 10px; margin-left: 0;'}
-          color: #fff;
-        }
-        .mobile-nav__social a + a {
-          ${currentLanguage === 'ar' ? 'margin-right: 10px; margin-left: 0;' : 'margin-left: 10px; margin-right: 0;'}
-        }
-      `}</style>
       <div className={`mobile-nav__wrapper ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
         <div className="mobile-nav__overlay side-menu__toggler side-menu__block-overlay"></div>
-        <div className="mobile-nav__content">
-        <span className="mobile-nav__close side-menu__toggler  side-menu__close-btn">
+        <div className={`mobile-nav__content ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`}>
+        <span className={`mobile-nav__close side-menu__toggler side-menu__close-btn ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`}>
           <i className="far fa-times"></i>
         </span>
 
-        <div className="logo-box">
+        <div className={`logo-box ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`}>
           <Link to="/">
             <img src={logoLight} width="101" alt="" />
           </Link>
@@ -263,6 +162,9 @@ const MobileNav = () => {
               <i className="fab fa-facebook-square"></i>
             </a>
             <a href="https://www.facebook.com/profile.php?id=100083974131611" aria-label={currentLanguage === 'ar' ? 'فيسبوك' : 'facebook'} target="_blank" rel="noopener noreferrer">
+              <i className="fab fa-facebook-square"></i>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=100054468594764" aria-label={currentLanguage === 'ar' ? 'فيسبوك' : 'facebook'} target="_blank" rel="noopener noreferrer">
               <i className="fab fa-facebook-square"></i>
             </a>
           </div>

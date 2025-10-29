@@ -13,8 +13,26 @@ import { graphql } from "gatsby";
 const NewsDetails = ({ location, pageContext }) => {
   const { t } = useTranslation('Blog');
   const { language: currentLanguage } = useI18next();
-  // Extract slug from URL path
-  const slug = location?.pathname?.split('/news-details/')[1]?.replace('/', '') || pageContext?.slug;
+  
+  // Extract slug from URL - support both path and query parameter formats
+  let slug;
+  
+  // Try path-based URL: /news-details/slug-here
+  if (location?.pathname?.includes('/news-details/')) {
+    slug = location.pathname.split('/news-details/')[1]?.replace('/', '');
+  }
+  
+  // Try query parameter: /news-details?slug=slug-here
+  if (!slug && location?.search) {
+    const params = new URLSearchParams(location.search);
+    slug = params.get('slug');
+  }
+  
+  // Fallback to pageContext
+  if (!slug) {
+    slug = pageContext?.slug;
+  }
+  
   const [blogTitle, setBlogTitle] = useState(t('details.loading'));
   
   useEffect(() => {

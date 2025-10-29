@@ -3,16 +3,16 @@ import QuillEditor from '../ui/QuillEditor';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
 import { 
-  Eye, Save, FileText, Heading, AlignLeft, Folder, Edit3, 
+  Eye, Save, Heading, AlignLeft, Folder, Edit3, 
   Tags, Image, Globe, Star, Info, Lightbulb, Upload, 
-  Rocket, HelpCircle, Check, PenTool, Camera, AlertTriangle 
+  Rocket, Check, PenTool, Camera, AlertTriangle 
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
 import '../../styles/NewBlog-rtl.css';
 
 const NewBlog = () => {
-  const { user, token } = useAuth();
+  const { token } = useAuth();
   const { t } = useTranslation('NewBlog');
   const { language: currentLanguage } = useI18next();
   const [formData, setFormData] = useState({
@@ -199,7 +199,7 @@ const NewBlog = () => {
                     value={formData.titleAr}
                     onChange={handleChange}
                     placeholder={t('form.titleArPlaceholder')}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400"
                     dir="rtl"
                   />
                 </div>
@@ -220,7 +220,7 @@ const NewBlog = () => {
                     rows={3}
                     maxLength={200}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none placeholder-gray-400"
                     dir="ltr"
                   />
                   <div className={`flex justify-between items-center text-sm ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
@@ -245,7 +245,7 @@ const NewBlog = () => {
                     placeholder={t('form.excerptArPlaceholder')}
                     rows={3}
                     maxLength={200}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors resize-none placeholder-gray-400"
                     dir="rtl"
                   />
                   <div className={`flex justify-between items-center text-sm ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
@@ -272,7 +272,7 @@ const NewBlog = () => {
                     value={formData.category}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400"
                   >
                     {categories.map(cat => (
                       <option key={cat.value} value={cat.value}>
@@ -406,7 +406,7 @@ const NewBlog = () => {
                     name="status"
                     value={formData.status}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors placeholder-gray-400"
                   >
                     <option value="draft">{t('status.draft')}</option>
                     <option value="published">{t('status.published')}</option>
@@ -414,8 +414,9 @@ const NewBlog = () => {
                 </div>
                 <div className="space-y-2">
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                    <label className={`flex items-center gap-3 cursor-pointer ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+                    <label htmlFor="featured-checkbox" className={`flex items-center gap-3 cursor-pointer ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <input
+                        id="featured-checkbox"
                         type="checkbox"
                         name="featured"
                         checked={formData.featured}

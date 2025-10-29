@@ -79,6 +79,8 @@ class BlogAPI {
         formData.append('image', blogData[key]);
       } else if (key === 'tags' && Array.isArray(blogData[key])) {
         formData.append('tags', blogData[key].join(','));
+      } else if (key === 'tagsAr' && Array.isArray(blogData[key])) {
+        formData.append('tagsAr', blogData[key].join(','));
       } else {
         formData.append(key, blogData[key]);
       }
@@ -103,6 +105,8 @@ class BlogAPI {
         formData.append('image', blogData[key]);
       } else if (key === 'tags' && Array.isArray(blogData[key])) {
         formData.append('tags', blogData[key].join(','));
+      } else if (key === 'tagsAr' && Array.isArray(blogData[key])) {
+        formData.append('tagsAr', blogData[key].join(','));
       } else {
         formData.append(key, blogData[key]);
       }
