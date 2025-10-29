@@ -38,6 +38,99 @@
       "countries": "Countries Reached",
       "copies": "Copies Distributed"
     }
+  },
+  "browseBooks": {
+    "title": "Explore Our Book Collection",
+    "description": "Discover a wide range of books and educational materials published through our ministry. From theological resources to inspirational stories, find content that enriches faith and knowledge.",
+    "buttonText": "Browse All Books"
+  },
+  "orderPage": {
+    "pageTitle": "Order Books",
+    "crumbTitle": "Order",
+    "hero": {
+      "title": "Order Books",
+      "subtitle": "Get your books from our physical locations or contact us for delivery!"
+    },
+    "locations": {
+      "title": "Visit Our Book Locations",
+      "phone": "Phone",
+      "open": "Open",
+      "cairo": {
+        "title": "Cairo Office",
+        "address1": "15 Tahrir Square",
+        "address2": "Downtown Cairo, Egypt",
+        "phone": "+20 2 2792 1234",
+        "hours": "Sun-Thu 9AM-6PM"
+      },
+      "alexandria": {
+        "title": "Alexandria Branch",
+        "address1": "45 Corniche Road",
+        "address2": "Alexandria, Egypt",
+        "phone": "+20 3 487 5678",
+        "hours": "Sun-Thu 10AM-7PM"
+      },
+      "assiut": {
+        "title": "Assiut Center",
+        "address1": "28 University Street",
+        "address2": "Assiut, Egypt",
+        "phone": "+20 88 231 9012",
+        "hours": "Sun-Thu 9AM-5PM"
+      }
+    },
+    "form": {
+      "title": "Send us a Message",
+      "name": "Your Name",
+      "namePlaceholder": "Enter your full name",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
+      "subject": "Subject",
+      "subjectPlaceholder": "What is this regarding?",
+      "message": "Message",
+      "messagePlaceholder": "Tell us how we can help you...",
+      "sendButton": "Send Message",
+      "sending": "Sending...",
+      "bookOrderPrefix": "Book Order",
+      "defaultMessage": "I would like to order the book",
+      "by": "by",
+      "availabilityRequest": "Please let me know about availability and pricing."
+    },
+    "validation": {
+      "fillAllFields": "Please fill all fields",
+      "allFieldsRequired": "Name, email, message, and subject are required.",
+      "invalidEmail": "Invalid email",
+      "validEmailRequired": "Please enter a valid email address."
+    },
+    "success": {
+      "title": "Message Sent!",
+      "description": "Thank you for contacting us. We'll get back to you within 24 hours."
+    },
+    "error": {
+      "title": "Error sending message",
+      "description": "There was a problem sending your message. Please try again."
+    },
+    "contactInfo": {
+      "title": "Contact Information",
+      "email": {
+        "label": "Email",
+        "address": "info@hopeforallmena.org",
+        "note": "We reply within 24 hours"
+      },
+      "phone": {
+        "label": "Phone",
+        "number": "+20 2 2792 1234",
+        "hours": "Sun-Thu, 9AM-6PM Cairo Time"
+      }
+    },
+    "whyChoose": {
+      "title": "Why Choose Hope For All MENA?",
+      "reasons": [
+        "Educational books promoting hope and positive change",
+        "Available at multiple locations across Egypt",
+        "Supporting community development in MENA region",
+        "Affordable pricing for educational materials",
+        "Dedicated customer service in Arabic and English"
+      ]
+    }
   }
 }
 

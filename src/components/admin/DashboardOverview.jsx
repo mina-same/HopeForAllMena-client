@@ -5,6 +5,7 @@ import { useBookstore } from '../../context/BookstoreContext';
 import { reviewsAPI, usersAPI } from '../../services/api';
 import blogAPI from '../../services/blogAPI';
 import { categoriesAPI, contactMessagesAPI } from '../../services/publishingAPI';
+import factCounterService from '../../services/factCounterService';
 import { 
   Book, 
   Star, 
@@ -17,7 +18,10 @@ import {
   CheckCircle,
   AlertCircle,
   BarChart3,
-  Activity
+  Activity,
+  Globe,
+  GraduationCap,
+  BookMarked
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
@@ -33,13 +37,17 @@ const DashboardOverview = () => {
     totalBooks: 0,
     totalReviews: 0,
     totalMessages: 0,
-    totalUsers: 0,
+    totalCountries: 0,
     totalBlogs: 0,
-    totalCategories: 0,
+    totalCourses: 0,
+    totalEnrollments: 0,
     pendingReviews: 0,
     unreadMessages: 0,
     publishedBlogs: 0,
-    draftBlogs: 0
+    draftBlogs: 0,
+    acceptedTraining: 0,
+    publishedBooks: 0,
+    givenMagazines: 0
   });
   
   const [loading, setLoading] = useState(true);
@@ -50,54 +58,120 @@ const DashboardOverview = () => {
       try {
         setLoading(true);
         
-        // Fetch all statistics in parallel with better error handling
+        // Fetch all statistics in parallel using optimized stats endpoints
+        const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+        const headers = { 
+          'Content-Type': 'application/json',
+          ...(token && { Authorization: `Bearer ${token}` })
+        };
+
         const [
           blogsResponse,
-          categoriesResponse,
-          reviewsResponse,
-          messagesResponse,
-          usersResponse
+          coursesStatsResponse,
+          enrollmentsStatsResponse,
+          reviewsStatsResponse,
+          recentReviewsResponse,
+          recentMessagesResponse,
+          contactStatsResponse,
+          trainingStatsResponse,
+          magazineStatsResponse,
+          booksResponse,
+          factCounterResponse
         ] = await Promise.allSettled([
-          blogAPI.getAllBlogs({ limit: 100 }, token).catch(err => {
+          blogAPI.getAllBlogs({ limit: 1000 }, token).catch(err => {
             console.warn('Failed to fetch blogs:', err);
             return { blogs: [] };
           }),
-          categoriesAPI.getCategories({ limit: 100 }).catch(err => {
-            console.warn('Failed to fetch categories:', err);
-            return { data: { categories: [] } };
+          fetch(`${API_URL}/courses/stats`, { headers }).then(r => r.json()).catch(err => {
+            console.warn('Failed to fetch courses stats:', err);
+            return { data: { stats: { total: 0, published: 0, draft: 0 } } };
           }),
-          reviewsAPI.getReviews({ limit: 100 }).catch(err => {
-            console.warn('Failed to fetch reviews:', err);
+          fetch(`${API_URL}/enrollments/stats`, { headers }).then(r => r.json()).catch(err => {
+            console.warn('Failed to fetch enrollments stats:', err);
+            return { data: { stats: { total: 0, approved: 0, pending: 0 } } };
+          }),
+          reviewsAPI.getReviews({ limit: 1, status: 'pending' }).catch(err => {
+            console.warn('Failed to fetch pending reviews count:', err);
+            return { data: { reviews: [], pagination: { totalReviews: 0 } } };
+          }),
+          reviewsAPI.getReviews({ limit: 3 }).catch(err => {
+            console.warn('Failed to fetch recent reviews:', err);
             return { data: { reviews: [] } };
           }),
-          contactMessagesAPI.getContactMessages({ limit: 100 }).catch(err => {
-            console.warn('Failed to fetch messages:', err);
+          fetch(`${API_URL}/contact-messages/recent`, { headers }).then(r => r.json()).catch(err => {
+            console.warn('Failed to fetch recent messages:', err);
             return { data: { messages: [] } };
           }),
-          usersAPI.getUsers({ limit: 100 }).catch(err => {
-            console.warn('Failed to fetch users:', err);
-            return { data: { users: [] } };
+          fetch(`${API_URL}/contact-messages/stats`, { headers }).then(r => r.json()).catch(err => {
+            console.warn('Failed to fetch contact stats:', err);
+            return { data: { total: 0, new: 0, unread: 0 } };
+          }),
+          fetch(`${API_URL}/training-requests/stats`, { headers }).then(r => r.json()).catch(err => {
+            console.warn('Failed to fetch training stats:', err);
+            return { total: 0, byStatus: {} };
+          }),
+          fetch(`${API_URL}/magazine-requests/statistics`, { headers }).then(r => r.json()).catch(err => {
+            console.warn('Failed to fetch magazine stats:', err);
+            return { success: true, data: { totalRequests: 0, approvedCount: 0, totalCopiesApproved: 0 } };
+          }),
+          fetch(`${API_URL}/books?limit=1`, { headers }).then(r => r.json()).catch(err => {
+            console.warn('Failed to fetch books count:', err);
+            return { data: { pagination: { totalBooks: 0 } } };
+          }),
+          factCounterService.getStats().catch(err => {
+            console.warn('Failed to fetch fact counter:', err);
+            return { data: { countries: 0, leadersTraining: 0, publishedBooks: 0, givenMagazines: 0 } };
           })
         ]);
 
         // Extract data with proper error handling
         const blogs = blogsResponse.status === 'fulfilled' ? (blogsResponse.value.blogs || blogsResponse.value || []) : [];
-        const categories = categoriesResponse.status === 'fulfilled' ? (categoriesResponse.value.data?.categories || categoriesResponse.value?.categories || []) : [];
-        const reviews = reviewsResponse.status === 'fulfilled' ? (reviewsResponse.value.data?.reviews || reviewsResponse.value?.reviews || []) : [];
-        const messages = messagesResponse.status === 'fulfilled' ? (messagesResponse.value.data?.messages || messagesResponse.value?.messages || []) : [];
-        const users = usersResponse.status === 'fulfilled' ? (usersResponse.value.data?.users || usersResponse.value?.users || []) : [];
+        const coursesStats = coursesStatsResponse.status === 'fulfilled' ? (coursesStatsResponse.value.data?.stats || coursesStatsResponse.value.stats || {}) : { total: 0 };
+        const enrollmentsStats = enrollmentsStatsResponse.status === 'fulfilled' ? (enrollmentsStatsResponse.value.data?.stats || enrollmentsStatsResponse.value.stats || {}) : { total: 0 };
+        const reviewsData = reviewsStatsResponse.status === 'fulfilled' ? reviewsStatsResponse.value : { data: { pagination: { totalReviews: 0 } } };
+        const reviews = recentReviewsResponse.status === 'fulfilled' ? (recentReviewsResponse.value.data?.reviews || recentReviewsResponse.value?.reviews || []) : [];
+        const messagesData = recentMessagesResponse.status === 'fulfilled' ? recentMessagesResponse.value : { data: { messages: [] } };
+        const messages = messagesData.data?.messages || messagesData.messages || [];
+        const contactStats = contactStatsResponse.status === 'fulfilled' ? (contactStatsResponse.value.data || contactStatsResponse.value || {}) : {};
+        const trainingStats = trainingStatsResponse.status === 'fulfilled' ? trainingStatsResponse.value : { total: 0, byStatus: {} };
+        const magazineStats = magazineStatsResponse.status === 'fulfilled' ? (magazineStatsResponse.value.data || {}) : {};
+        const booksCount = booksResponse.status === 'fulfilled' ? (booksResponse.value.data?.pagination?.totalBooks || booksResponse.value.pagination?.totalBooks || 0) : 0;
+        const factCounterData = factCounterResponse.status === 'fulfilled' ? (factCounterResponse.value.data || factCounterResponse.value || {}) : {};
+
+        // Get countries from Analytics (FactCounter) - same as Analytics section
+        const countriesFromAnalytics = factCounterData.countries || factCounterData.members || 0;
+
+        // Count accepted/approved training requests from stats
+        const approvedCount = trainingStats.byStatus?.approved || 0;
+        const scheduledCount = trainingStats.byStatus?.scheduled || 0;
+        const completedCount = trainingStats.byStatus?.completed || 0;
+        const acceptedTraining = approvedCount + scheduledCount + completedCount;
+
+        // Get total approved magazines from magazine stats
+        // The magazine model has a getStatistics method that returns totalCopiesApproved
+        const totalMagazinesGiven = magazineStats.totalCopiesApproved || 0;
+
+        // Count unread messages from stats (new + unread status)
+        const unreadMessagesCount = (contactStats.new || 0) + (contactStats.unread || 0);
+
+        // Count pending reviews from pagination
+        const pendingReviewsCount = reviewsData.data?.pagination?.totalReviews || 0;
 
         const newStats = {
-          totalBooks: books.length,
-          totalReviews: reviews.length,
-          totalMessages: messages.length,
-          totalUsers: users.length || 1, // Current user if no users found
+          totalBooks: booksCount,
+          totalReviews: contactStats.total || 0,
+          totalMessages: contactStats.total || 0,
+          totalCountries: countriesFromAnalytics,
           totalBlogs: blogs.length,
-          totalCategories: categories.length,
-          pendingReviews: reviews.filter(r => r.status === 'pending').length,
-          unreadMessages: messages.filter(m => !m.read).length,
+          totalCourses: coursesStats.total || 0,
+          totalEnrollments: enrollmentsStats.total || 0,
+          pendingReviews: pendingReviewsCount,
+          unreadMessages: unreadMessagesCount,
           publishedBlogs: blogs.filter(b => b.status === 'published').length,
-          draftBlogs: blogs.filter(b => b.status === 'draft').length
+          draftBlogs: blogs.filter(b => b.status === 'draft').length,
+          acceptedTraining: acceptedTraining,
+          publishedBooks: booksCount, // Total number of books in the system
+          givenMagazines: totalMagazinesGiven
         };
 
         setStats(newStats);
@@ -156,13 +230,16 @@ const DashboardOverview = () => {
           totalBooks: books.length,
           totalReviews: reviews.length,
           totalMessages: contacts.length,
-          totalUsers: 1,
+          totalCountries: 0,
           totalBlogs: 0,
           totalCategories: 0,
           pendingReviews: 0,
           unreadMessages: 0,
           publishedBlogs: 0,
-          draftBlogs: 0
+          draftBlogs: 0,
+          acceptedTraining: 0,
+          publishedBooks: books.length,
+          givenMagazines: 0
         });
       } finally {
         setLoading(false);
@@ -170,73 +247,85 @@ const DashboardOverview = () => {
     };
 
     fetchDashboardData();
-  }, [books.length, reviews.length, contacts.length]);
+  }, [books.length, reviews.length, contacts.length, token]);
 
   const statCards = [
     {
-      title: t('dashboard.totalBooks'),
-      value: stats.totalBooks,
-      icon: Book,
+      title: 'Countries',
+      value: stats.totalCountries,
+      icon: Globe,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
       borderColor: 'border-blue-200',
-      trend: '+12%'
+      trend: 'From Analytics'
     },
     {
-      title: t('dashboard.reviews'),
-      value: stats.totalReviews,
-      icon: Star,
-      color: 'text-yellow-600',
-      bgColor: 'bg-yellow-50',
-      borderColor: 'border-yellow-200',
-      trend: '+8%'
-    },
-    {
-      title: t('dashboard.messages'),
-      value: stats.totalMessages,
-      icon: MessageSquare,
-      color: 'text-green-600',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
-      trend: '+15%'
-    },
-    {
-      title: t('dashboard.user'),
-      value: user?.name || user?.username || 'Admin',
-      icon: Users,
+      title: 'Leaders Training',
+      value: stats.acceptedTraining,
+      icon: GraduationCap,
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
       borderColor: 'border-purple-200',
-      trend: 'Active'
+      trend: 'Accepted'
+    },
+    {
+      title: 'Published Books',
+      value: stats.publishedBooks,
+      icon: BookMarked,
+      color: 'text-green-600',
+      bgColor: 'bg-green-50',
+      borderColor: 'border-green-200',
+      trend: 'Total Books'
+    },
+    {
+      title: 'Given Magazines',
+      value: stats.givenMagazines.toLocaleString(),
+      icon: BookOpen,
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-50',
+      borderColor: 'border-orange-200',
+      trend: 'Approved'
     }
   ];
 
   const quickStats = [
     {
-      title: 'Blogs',
+      title: t('dashboard.blogs'),
       value: stats.totalBlogs,
       published: stats.publishedBlogs,
       draft: stats.draftBlogs,
       icon: FileText,
-      color: 'text-indigo-600'
+      color: 'text-indigo-600',
+      bgColor: 'bg-indigo-50',
+      borderColor: 'border-indigo-200',
+      trend: `${stats.publishedBlogs} Published`
     },
     {
-      title: 'Categories',
-      value: stats.totalCategories,
-      icon: BookOpen,
-      color: 'text-orange-600'
+      title: t('dashboard.courses'),
+      value: stats.totalCourses,
+      icon: GraduationCap,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+      borderColor: 'border-purple-200',
+      trend: '+12%'
     },
     {
-      title: 'Pending Reviews',
-      value: stats.pendingReviews,
-      icon: Clock,
-      color: 'text-amber-600'
+      title: t('dashboard.courseEnrollments'),
+      value: stats.totalEnrollments,
+      icon: Users,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-200',
+      trend: '+18%'
     },
     {
-      title: 'Unread Messages',
+      title: t('dashboard.unreadMessages'),
       value: stats.unreadMessages,
-      icon: AlertCircle,
-      color: 'text-red-600'
+      icon: MessageSquare,
+      color: 'text-red-600',
+      bgColor: 'bg-red-50',
+      borderColor: 'border-red-200',
+      trend: 'Unread'
     }
   ];
 
@@ -302,29 +391,42 @@ const DashboardOverview = () => {
       </div>
 
       {/* Quick Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {quickStats.map((stat, index) => {
           const IconComponent = stat.icon;
           return (
-            <Card key={index} className="border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
-              <CardContent className="p-4">
-                <div className={`flex items-center gap-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                  <div className={`p-2 rounded-lg bg-gray-50`}>
-                    <IconComponent className={`h-5 w-5 ${stat.color}`} />
-                  </div>
+            <Card key={index} className={`border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 ${stat.borderColor} border-l-4`}>
+              <CardContent className="p-6">
+                <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
                   <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                    <p className="text-xs text-muted-foreground">{stat.title}</p>
-                    <p className="text-xl font-bold text-foreground">{stat.value}</p>
-                    {stat.published !== undefined && (
-                      <div className="flex gap-2 mt-1">
-                        <Badge variant="secondary" className="text-xs">
-                          {stat.published} Published
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {stat.draft} Draft
-                        </Badge>
-                      </div>
-                    )}
+                    <p className="text-sm font-medium text-muted-foreground mb-1">
+                      {stat.title}
+                    </p>
+                    <p className="text-3xl font-bold text-foreground mb-1">
+                      {stat.value}
+                    </p>
+                    <div className="flex items-center gap-1">
+                      {stat.published !== undefined ? (
+                        <div className="flex gap-2 mt-1">
+                          <Badge variant="secondary" className="text-xs">
+                            {stat.published} Published
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {stat.draft} Draft
+                          </Badge>
+                        </div>
+                      ) : (
+                        <>
+                          <TrendingUp className="h-3 w-3 text-green-500" />
+                          <span className="text-xs text-green-600 font-medium">
+                            {stat.trend}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className={`p-3 rounded-xl ${stat.bgColor}`}>
+                    <IconComponent className={`h-8 w-8 ${stat.color}`} />
                   </div>
                 </div>
               </CardContent>

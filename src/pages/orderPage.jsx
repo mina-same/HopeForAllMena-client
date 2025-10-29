@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from '@reach/router';
+import { graphql } from 'gatsby';
+import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
@@ -9,12 +11,16 @@ import { Textarea } from '../components/ui/textarea';
 import { useToast } from '../hooks/use-toast';
 import Layout from '../components/layout';
 import StickyHeader from '../components/header/sticky-header';
+import PageHeader from '../components/page-header';
 import HeaderTwo from '../components/header/header-two';
 import Footer from '../components/footer';
 
 const OrderPage = () => {
   const location = useLocation();
   const { toast } = useToast();
+  const { t } = useTranslation('PublishingHouse');
+  const { language: currentLanguage } = useI18next();
+  const isRTL = currentLanguage === 'ar';
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [form, setForm] = useState({
@@ -31,18 +37,18 @@ const OrderPage = () => {
       if (bookTitle) {
         setForm(prev => ({
           ...prev,
-          subject: `Book Order: ${bookTitle}`,
-          message: preFilledMessage || `I would like to order the book "${bookTitle}"${bookAuthor ? ` by ${bookAuthor}` : ''}. Please let me know about availability and pricing.`
+          subject: `${t('orderPage.form.bookOrderPrefix')}: ${bookTitle}`,
+          message: preFilledMessage || `${t('orderPage.form.defaultMessage')} "${bookTitle}"${bookAuthor ? ` ${t('orderPage.form.by')} ${bookAuthor}` : ''}. ${t('orderPage.form.availabilityRequest')}`
         }));
       }
     }
-  }, [location.state]);
+  }, [location.state, t]);
 
   const handleSubmit = async () => {
     if (!form.name || !form.email || !form.message || !form.subject) {
       toast({
-        title: "Please fill all fields",
-        description: "Name, email, message, and subject are required.",
+        title: t('orderPage.validation.fillAllFields'),
+        description: t('orderPage.validation.allFieldsRequired'),
         variant: "destructive"
       });
       return;
@@ -52,8 +58,8 @@ const OrderPage = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(form.email)) {
       toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address.",
+        title: t('orderPage.validation.invalidEmail'),
+        description: t('orderPage.validation.validEmailRequired'),
         variant: "destructive"
       });
       return;
@@ -88,8 +94,8 @@ const OrderPage = () => {
       if (response.ok) {
         setForm({ name: '', email: '', message: '', subject: '' });
         toast({
-          title: "Message Sent!",
-          description: "Thank you for contacting us. We'll get back to you within 24 hours.",
+          title: t('orderPage.success.title'),
+          description: t('orderPage.success.description'),
         });
       } else {
         throw new Error(result.message || 'Failed to send message');
@@ -97,8 +103,8 @@ const OrderPage = () => {
     } catch (error) {
       console.error('Contact form submission error:', error);
       toast({
-        title: "Error sending message",
-        description: "There was a problem sending your message. Please try again.",
+        title: t('orderPage.error.title'),
+        description: t('orderPage.error.description'),
         variant: "destructive"
       });
     } finally {
@@ -107,78 +113,80 @@ const OrderPage = () => {
   };
 
   return (
-    <Layout pageTitle="Order Page || Hope For All Mena Ministry">
+    <Layout pageTitle={`${t('orderPage.pageTitle')} || Hope For All Mena Ministry`}>
       <HeaderTwo />
       <StickyHeader />
-      <div className="min-h-screen bg-background pt-[100px]">
+      <PageHeader title={t('orderPage.pageTitle')} crumbTitle={t('orderPage.crumbTitle')} />
+      <div className="min-h-screen bg-background pt-[50px]" dir={isRTL ? 'rtl' : 'ltr'}>
 
         <main className="container mx-auto px-4 py-12">
           <div className="">
 
-
             {/* Physical Book Locations */}
             <div className="mb-12">
-              <h2 className="text-2xl font-bold mb-6 text-center">Visit Our Book Locations</h2>
+              <h2 className={`text-2xl font-bold mb-6 text-center ${isRTL ? 'font-arabic' : ''}`}>
+                {t('orderPage.locations.title')}
+              </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <MapPin className="h-5 w-5 mr-2 text-theme-base" />
-                      Cairo Office
+                    <CardTitle className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <MapPin className={`h-5 w-5 text-theme-base ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      {t('orderPage.locations.cairo.title')}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className={isRTL ? 'text-right' : ''}>
                     <p className="text-muted-foreground mb-2">
-                      15 Tahrir Square<br />
-                      Downtown Cairo, Egypt
+                      {t('orderPage.locations.cairo.address1')}<br />
+                      {t('orderPage.locations.cairo.address2')}
                     </p>
                     <p className="text-sm font-semibold text-theme-base">
-                      Phone: +20 2 2792 1234
+                      {t('orderPage.locations.phone')}: <a href={`tel:${t('orderPage.locations.cairo.phone')}`} className="hover:underline">{t('orderPage.locations.cairo.phone')}</a>
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Open: Sun-Thu 9AM-6PM
+                      {t('orderPage.locations.open')}: {t('orderPage.locations.cairo.hours')}
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <MapPin className="h-5 w-5 mr-2 text-theme-base" />
-                      Alexandria Branch
+                    <CardTitle className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <MapPin className={`h-5 w-5 text-theme-base ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      {t('orderPage.locations.alexandria.title')}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className={isRTL ? 'text-right' : ''}>
                     <p className="text-muted-foreground mb-2">
-                      45 Corniche Road<br />
-                      Alexandria, Egypt
+                      {t('orderPage.locations.alexandria.address1')}<br />
+                      {t('orderPage.locations.alexandria.address2')}
                     </p>
                     <p className="text-sm font-semibold text-theme-base">
-                      Phone: +20 3 487 5678
+                      {t('orderPage.locations.phone')}: <a href={`tel:${t('orderPage.locations.alexandria.phone')}`} className="hover:underline">{t('orderPage.locations.alexandria.phone')}</a>
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Open: Sun-Thu 10AM-7PM
+                      {t('orderPage.locations.open')}: {t('orderPage.locations.alexandria.hours')}
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <MapPin className="h-5 w-5 mr-2 text-theme-base" />
-                      Assiut Center
+                    <CardTitle className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <MapPin className={`h-5 w-5 text-theme-base ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      {t('orderPage.locations.assiut.title')}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className={isRTL ? 'text-right' : ''}>
                     <p className="text-muted-foreground mb-2">
-                      28 University Street<br />
-                      Assiut, Egypt
+                      {t('orderPage.locations.assiut.address1')}<br />
+                      {t('orderPage.locations.assiut.address2')}
                     </p>
                     <p className="text-sm font-semibold text-theme-base">
-                      Phone: +20 88 231 9012
+                      {t('orderPage.locations.phone')}: <a href={`tel:${t('orderPage.locations.assiut.phone')}`} className="hover:underline">{t('orderPage.locations.assiut.phone')}</a>
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      Open: Sun-Thu 9AM-5PM
+                      {t('orderPage.locations.open')}: {t('orderPage.locations.assiut.hours')}
                     </p>
                   </CardContent>
                 </Card>
@@ -186,9 +194,11 @@ const OrderPage = () => {
             </div>
 
             <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold mb-4 text-foreground">Order Books</h1>
+              <h1 className={`text-4xl font-bold mb-4 text-foreground ${isRTL ? 'font-arabic' : ''}`}>
+                {t('orderPage.hero.title')}
+              </h1>
               <p className="text-xl text-muted-foreground">
-                Get your books from our physical locations or contact us for delivery!
+                {t('orderPage.hero.subtitle')}
               </p>
             </div>
 
@@ -196,67 +206,81 @@ const OrderPage = () => {
               {/* Contact Form */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Send us a Message</CardTitle>
+                  <CardTitle className={isRTL ? 'text-right font-arabic' : ''}>
+                    {t('orderPage.form.title')}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
-                    <Label htmlFor="name">Your Name *</Label>
+                    <Label htmlFor="name" className={isRTL ? 'text-right block' : ''}>
+                      {t('orderPage.form.name')} *
+                    </Label>
                     <Input
                       id="name"
                       value={form.name}
                       onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
-                      placeholder="Enter your full name"
+                      placeholder={t('orderPage.form.namePlaceholder')}
                       required
                       disabled={isSubmitting}
+                      className={isRTL ? 'text-right' : ''}
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="email">Email Address *</Label>
+                    <Label htmlFor="email" className={isRTL ? 'text-right block' : ''}>
+                      {t('orderPage.form.email')} *
+                    </Label>
                     <Input
                       id="email"
                       type="email"
                       value={form.email}
                       onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
-                      placeholder="Enter your email address"
+                      placeholder={t('orderPage.form.emailPlaceholder')}
                       required
                       disabled={isSubmitting}
+                      className={isRTL ? 'text-right' : ''}
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="subject">Subject *</Label>
+                    <Label htmlFor="subject" className={isRTL ? 'text-right block' : ''}>
+                      {t('orderPage.form.subject')} *
+                    </Label>
                     <Input
                       id="subject"
                       value={form.subject}
                       onChange={(e) => setForm(prev => ({ ...prev, subject: e.target.value }))}
-                      placeholder="What is this regarding?"
+                      placeholder={t('orderPage.form.subjectPlaceholder')}
                       required
                       disabled={isSubmitting}
+                      className={isRTL ? 'text-right' : ''}
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="message">Message *</Label>
+                    <Label htmlFor="message" className={isRTL ? 'text-right block' : ''}>
+                      {t('orderPage.form.message')} *
+                    </Label>
                     <Textarea
                       id="message"
                       value={form.message}
                       onChange={(e) => setForm(prev => ({ ...prev, message: e.target.value }))}
-                      placeholder="Tell us how we can help you..."
+                      placeholder={t('orderPage.form.messagePlaceholder')}
                       rows={6}
                       required
                       disabled={isSubmitting}
+                      className={isRTL ? 'text-right' : ''}
                     />
                   </div>
 
                   <Button
                     onClick={handleSubmit}
-                    className="w-full bg-gradient-hero hover:opacity-90"
+                    className={`w-full bg-gradient-hero hover:opacity-90 ${isRTL ? 'flex-row-reverse' : ''}`}
                     size="lg"
                     disabled={isSubmitting}
                   >
-                    <Send className="h-4 w-4 mr-2" />
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                    <Send className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                    {isSubmitting ? t('orderPage.form.sending') : t('orderPage.form.sendButton')}
                   </Button>
                 </CardContent>
               </Card>
@@ -265,28 +289,38 @@ const OrderPage = () => {
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle>Contact Information</CardTitle>
+                    <CardTitle className={isRTL ? 'text-right font-arabic' : ''}>
+                      {t('orderPage.contactInfo.title')}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-6">
-                    <div className="flex items-start space-x-4">
+                    <div className={`flex items-start ${isRTL ? 'flex-row-reverse space-x-reverse' : ''} space-x-4`}>
                       <div className="bg-theme-base/10 p-3 rounded-lg">
                         <Mail className="h-6 w-6 text-theme-base" />
                       </div>
-                      <div>
-                        <h3 className="font-semibold mb-1">Email</h3>
-                        <p className="text-muted-foreground">info@hopeforallmena.org</p>
-                        <p className="text-sm text-muted-foreground">We reply within 24 hours</p>
+                      <div className={isRTL ? 'text-right' : ''}>
+                        <h3 className={`font-semibold mb-1 ${isRTL ? 'font-arabic' : ''}`}>
+                          {t('orderPage.contactInfo.email.label')}
+                        </h3>
+                        <a href={`mailto:${t('orderPage.contactInfo.email.address')}`} className="text-muted-foreground hover:text-theme-base hover:underline transition-colors">
+                          {t('orderPage.contactInfo.email.address')}
+                        </a>
+                        <p className="text-sm text-muted-foreground">{t('orderPage.contactInfo.email.note')}</p>
                       </div>
                     </div>
 
-                    <div className="flex items-start space-x-4">
+                    <div className={`flex items-start ${isRTL ? 'flex-row-reverse space-x-reverse' : ''} space-x-4`}>
                       <div className="bg-theme-base/10 p-3 rounded-lg">
                         <Phone className="h-6 w-6 text-theme-base" />
                       </div>
-                      <div>
-                        <h3 className="font-semibold mb-1">Phone</h3>
-                        <p className="text-muted-foreground">+20 2 2792 1234</p>
-                        <p className="text-sm text-muted-foreground">Sun-Thu, 9AM-6PM Cairo Time</p>
+                      <div className={isRTL ? 'text-right' : ''}>
+                        <h3 className={`font-semibold mb-1 ${isRTL ? 'font-arabic' : ''}`}>
+                          {t('orderPage.contactInfo.phone.label')}
+                        </h3>
+                        <a href={`tel:${t('orderPage.contactInfo.phone.number')}`} className="text-muted-foreground hover:text-theme-base hover:underline transition-colors">
+                          {t('orderPage.contactInfo.phone.number')}
+                        </a>
+                        <p className="text-sm text-muted-foreground">{t('orderPage.contactInfo.phone.hours')}</p>
                       </div>
                     </div>
                   </CardContent>
@@ -294,29 +328,31 @@ const OrderPage = () => {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle>Why Choose Hope For All MENA?</CardTitle>
+                    <CardTitle className={isRTL ? 'text-right font-arabic' : ''}>
+                      {t('orderPage.whyChoose.title')}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-3 text-muted-foreground">
-                      <li className="flex items-start">
-                        <span className="text-theme-base mr-2">•</span>
-                        Educational books promoting hope and positive change
+                    <ul className={`space-y-3 text-muted-foreground ${isRTL ? 'text-right' : ''}`}>
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className={`text-theme-base ${isRTL ? 'ml-2' : 'mr-2'}`}>•</span>
+                        {t('orderPage.whyChoose.reasons.0')}
                       </li>
-                      <li className="flex items-start">
-                        <span className="text-theme-base mr-2">•</span>
-                        Available at multiple locations across Egypt
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className={`text-theme-base ${isRTL ? 'ml-2' : 'mr-2'}`}>•</span>
+                        {t('orderPage.whyChoose.reasons.1')}
                       </li>
-                      <li className="flex items-start">
-                        <span className="text-theme-base mr-2">•</span>
-                        Supporting community development in MENA region
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className={`text-theme-base ${isRTL ? 'ml-2' : 'mr-2'}`}>•</span>
+                        {t('orderPage.whyChoose.reasons.2')}
                       </li>
-                      <li className="flex items-start">
-                        <span className="text-theme-base mr-2">•</span>
-                        Affordable pricing for educational materials
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className={`text-theme-base ${isRTL ? 'ml-2' : 'mr-2'}`}>•</span>
+                        {t('orderPage.whyChoose.reasons.3')}
                       </li>
-                      <li className="flex items-start">
-                        <span className="text-theme-base mr-2">•</span>
-                        Dedicated customer service in Arabic and English
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className={`text-theme-base ${isRTL ? 'ml-2' : 'mr-2'}`}>•</span>
+                        {t('orderPage.whyChoose.reasons.4')}
                       </li>
                     </ul>
                   </CardContent>
@@ -332,3 +368,17 @@ const OrderPage = () => {
 };
 
 export default OrderPage;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

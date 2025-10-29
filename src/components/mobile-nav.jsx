@@ -96,6 +96,7 @@ const MobileNav = () => {
                   const newLanguage = e.target.value;
                   if (typeof window !== 'undefined') {
                     const currentPath = window.location.pathname;
+                    const queryString = window.location.search; // Preserve query parameters
                     let newPath;
                     
                     if (newLanguage === 'en') {
@@ -107,7 +108,7 @@ const MobileNav = () => {
                         newPath = currentPath === '/' ? `/${newLanguage}` : `/${newLanguage}${currentPath}`;
                       }
                     }
-                    window.location.href = newPath;
+                    window.location.href = newPath + queryString;
                   }
                 }}
                 style={{

@@ -17,6 +17,7 @@ const NavLinks = ({ extraClassName, hideControls = false }) => {
     
     if (typeof window !== 'undefined') {
       const currentPath = window.location.pathname;
+      const queryString = window.location.search; // Preserve query parameters
       let newPath;
       
       if (newLanguage === 'en') {
@@ -33,7 +34,7 @@ const NavLinks = ({ extraClassName, hideControls = false }) => {
         }
       }
 
-      window.location.href = newPath;
+      window.location.href = newPath + queryString;
     }
   };
 
@@ -66,7 +67,7 @@ const NavLinks = ({ extraClassName, hideControls = false }) => {
           </ul>
         </li>
         <li className="">
-          <Link to="#">{t('navigation.conferences')}</Link>
+          <Link to="/events">{t('navigation.events')}</Link>
         </li>
         <li>
           <Link to="/contact">{t('navigation.links')}</Link>

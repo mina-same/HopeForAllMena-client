@@ -370,7 +370,6 @@ const BlogPage = () => {
         .form-control:focus {
           border-color: #007bff;
           box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
-          transform: scale(1.02);
         }
       `}</style>
     </section>

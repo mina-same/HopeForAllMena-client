@@ -22,6 +22,8 @@ import VideoCard from "../components/videos/video-card";
 import FactCounter from "../components/fact-counter";
 import PriceOne from "../components/price-one";
 import TrendingProducts from "../components/bookstore/TrendingProducts";
+import AboutCounter from "../components/about/about-counter";
+import CausesHome from "../components/causes/causes-home";
 
 const HomeOne = () => {
   return (
@@ -34,8 +36,7 @@ const HomeOne = () => {
       <VideoCard />
       <ServiceTwo />
       <ServiceOne />
-      {/* <AboutCounter /> */}
-      {/* <CausesHome /> */}
+      <CausesHome />
       <CallToActionTwo />
       <TrendingProducts />
       {/* <DonationOptions /> */}

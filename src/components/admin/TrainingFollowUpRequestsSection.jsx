@@ -24,85 +24,61 @@ const TrainingFollowUpRequestsSection = () => {
   const [requestToDelete, setRequestToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   useEffect(() => {
-    // Debug authentication state
-    const { authStorage } = require('../../utils/storage');
-    const token = authStorage.getToken();
-    const authToken = authStorage.getToken();
-    const accessToken = authStorage.getToken();
-    const user = authStorage.getUser();
-    
-    console.log('=== Authentication Debug ===');
-    console.log('token:', !!token);
-    console.log('authToken:', !!authToken);
-    console.log('accessToken:', !!accessToken);
-    console.log('User data exists:', !!user);
-    console.log('============================');
-    
-    // Try to get token from different possible keys
-    const finalToken = token || authToken || accessToken;
-    if (!finalToken && user) {
-      toast({
-        title: t('errors.authIssue'),
-        description: t('errors.authIssueMessage'),
-        variant: "destructive",
-        duration: 8000,
-      });
-    }
-    
-    fetchFollowUpRequests();
-  }, [fetchFollowUpRequests, t, toast]);
-
-  const fetchFollowUpRequests = async () => {
-    try {
-      console.log('Fetching follow-up requests...');
-      const { authStorage } = require('../../utils/storage');
-      const token = authStorage.getToken();
-      console.log('Token exists:', !!token);
-      console.log('Using token from: authStorage');
-      
-      const response = await fetch('http://localhost:5001/api/training-follow-ups', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      
-      console.log('Response status:', response.status);
-      console.log('Response ok:', response.ok);
-      
-      if (response.ok) {
-        const data = await response.json();
-        console.log('API Response data:', data);
-        console.log('Follow-ups array:', data.followUps);
-        console.log('Follow-ups length:', data.followUps?.length);
-        setRequests(data.followUps || []);
-      } else {
-        const errorText = await response.text();
-        console.error('API Error response:', errorText);
+    const fetchFollowUpRequests = async () => {
+      try {
+        console.log('Fetching follow-up requests...');
+        const { authStorage } = require('../../utils/storage');
+        const token = authStorage.getToken();
+        console.log('Token exists:', !!token);
+        console.log('Using token from: authStorage');
         
-        if (response.status === 401) {
-          toast({
-            title: t('errors.authRequired'),
-            description: t('errors.authMessage'),
-            variant: "destructive",
-            duration: 8000,
-          });
-        }
+        const response = await fetch('http://localhost:5001/api/training-follow-ups', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         
-        throw new Error(`Failed to fetch follow-up requests: ${response.status}`);
+        console.log('Response status:', response.status);
+        console.log('Response ok:', response.ok);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('API Response data:', data);
+          console.log('Follow-ups array:', data.followUps);
+          console.log('Follow-ups length:', data.followUps?.length);
+          setRequests(data.followUps || []);
+        } else {
+          const errorText = await response.text();
+          console.error('API Error response:', errorText);
+          
+          if (response.status === 401) {
+            toast({
+              title: t('errors.authRequired'),
+              description: t('errors.authMessage'),
+              variant: "destructive",
+              duration: 8000,
+            });
+          }
+          
+          throw new Error(`Failed to fetch follow-up requests: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        toast({
+          title: t('errors.title'),
+          description: t('errors.loadFailed'),
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Fetch error:', error);
-      toast({
-        title: t('errors.title'),
-        description: t('errors.loadFailed'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchFollowUpRequests();
+  }, [refetchTrigger, t, toast]);
 
   const updateRequestStatus = async (requestId, newStatus) => {
     try {
@@ -144,7 +120,7 @@ const TrainingFollowUpRequestsSection = () => {
         });
         
         console.log('Refreshing requests list...');
-        await fetchFollowUpRequests(); // Refresh the list
+        setRefetchTrigger(prev => prev + 1); // Refresh the list
       } else {
         const errorText = await response.text();
         console.error('❌ Update failed - Response:', errorText);
@@ -223,7 +199,7 @@ const TrainingFollowUpRequestsSection = () => {
           description: t('statusMessages.deleted'),
         });
         
-        fetchFollowUpRequests(); // Refresh the list
+        setRefetchTrigger(prev => prev + 1); // Refresh the list
         setDeleteDialogOpen(false);
         setRequestToDelete(null);
       } else {

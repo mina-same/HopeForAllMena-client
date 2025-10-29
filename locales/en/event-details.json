@@ -1,0 +1,38 @@
+{
+  "pageTitle": "Event Details",
+  "loading": "Loading event details...",
+  "notFound": "Event Not Found",
+  "errorMessage": "The event you are looking for does not exist.",
+  "backToEvents": "Back to Events",
+  "venue": "Venue",
+  "venueInfo": "Venue information will be announced soon.",
+  "organizer": "Organizer",
+  "mapNotAvailable": "Map not available",
+  "time": "Time",
+  "date": "Date",
+  "location": "Location",
+  "phone": "Phone",
+  "email": "Email",
+  "website": "Website",
+  "contactUs": "Contact Us",
+  "shareEvent": "Share Event",
+  "moreDetails": "More details coming soon",
+  "addToCalendar": "Add to Calendar",
+  "eventCategory": "Category",
+  "eventStatus": "Status",
+  "categories": {
+    "meeting": "Meeting",
+    "training": "Training",
+    "sunday-school": "Sunday School",
+    "workshop": "Workshop",
+    "conference": "Conference",
+    "other": "Other"
+  },
+  "status": {
+    "scheduled": "Scheduled",
+    "confirmed": "Confirmed",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  }
+}
+

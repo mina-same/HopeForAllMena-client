@@ -37,8 +37,35 @@ class EventService {
     return response.json();
   }
 
-  // Get all events (public endpoint)
+  // Get all events (admin - requires auth, returns both public and private)
   async getAllEvents(params = {}) {
+    try {
+      const queryParams = new URLSearchParams();
+      
+      Object.keys(params).forEach(key => {
+        if (params[key] !== undefined && params[key] !== null) {
+          queryParams.append(key, params[key]);
+        }
+      });
+
+      const url = queryParams.toString() 
+        ? `${this.baseURL}?${queryParams.toString()}`
+        : `${this.baseURL}`;
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: this.getHeaders(),
+      });
+
+      return this.handleResponse(response);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      throw error;
+    }
+  }
+
+  // Get public events only (for website display - no auth needed)
+  async getPublicEvents(params = {}) {
     try {
       const queryParams = new URLSearchParams();
       
@@ -59,7 +86,37 @@ class EventService {
 
       return this.handleResponse(response);
     } catch (error) {
-      console.error('Error fetching events:', error);
+      console.error('Error fetching public events:', error);
+      throw error;
+    }
+  }
+
+  // Get featured events (for homepage)
+  async getFeaturedEvents(limit = 3) {
+    try {
+      const response = await fetch(`${this.baseURL}/public/featured?limit=${limit}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      return this.handleResponse(response);
+    } catch (error) {
+      console.error('Error fetching featured events:', error);
+      throw error;
+    }
+  }
+
+  // Get event by slug (for event details page)
+  async getEventBySlug(slug) {
+    try {
+      const response = await fetch(`${this.baseURL}/public/slug/${slug}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      return this.handleResponse(response);
+    } catch (error) {
+      console.error('Error fetching event by slug:', error);
       throw error;
     }
   }
@@ -185,12 +242,23 @@ class EventService {
       end: new Date(apiEvent.end),
       color: apiEvent.color,
       description: apiEvent.description,
+      address: apiEvent.address,
       location: apiEvent.location,
       organizer: apiEvent.organizer,
       participants: apiEvent.participants,
       status: apiEvent.status,
       category: apiEvent.category,
       isAllDay: apiEvent.isAllDay,
+      // Public event fields
+      isPublic: apiEvent.isPublic || false,
+      isFeatured: apiEvent.isFeatured || false,
+      title_ar: apiEvent.title_ar,
+      description_ar: apiEvent.description_ar,
+      address_ar: apiEvent.address_ar,
+      slug: apiEvent.slug,
+      image: apiEvent.image,
+      imagePublicId: apiEvent.imagePublicId,
+      contactInfo: apiEvent.contactInfo,
     };
   }
 
@@ -209,19 +277,34 @@ class EventService {
       throw new Error('End date must be after start date');
     }
     
-    return {
+    const apiData = {
       title: calendarEvent.title?.trim() || '',
       description: calendarEvent.description?.trim() || '',
       start: startDate.toISOString(),
       end: endDate.toISOString(),
       color: calendarEvent.color || 'default',
+      address: calendarEvent.address?.trim() || '',
       location: calendarEvent.location?.trim() || '',
-      organizer: calendarEvent.organizer?.trim() || '',
+      organizer: calendarEvent.organizer,
       participants: parseInt(calendarEvent.participants) || 0,
       status: calendarEvent.status || 'scheduled',
       category: calendarEvent.category || 'other',
       isAllDay: Boolean(calendarEvent.isAllDay),
+      // Public event fields
+      isPublic: Boolean(calendarEvent.isPublic),
+      isFeatured: Boolean(calendarEvent.isFeatured),
     };
+    
+    // Add optional public event fields if present
+    if (calendarEvent.title_ar) apiData.title_ar = calendarEvent.title_ar.trim();
+    if (calendarEvent.description_ar) apiData.description_ar = calendarEvent.description_ar.trim();
+    if (calendarEvent.address_ar) apiData.address_ar = calendarEvent.address_ar.trim();
+    if (calendarEvent.slug) apiData.slug = calendarEvent.slug.trim();
+    if (calendarEvent.image) apiData.image = calendarEvent.image;
+    if (calendarEvent.imagePublicId) apiData.imagePublicId = calendarEvent.imagePublicId;
+    if (calendarEvent.contactInfo) apiData.contactInfo = calendarEvent.contactInfo;
+    
+    return apiData;
   }
 }
 

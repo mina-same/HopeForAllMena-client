@@ -59,22 +59,6 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
 
-.summary-card.members::before {
-  --card-gradient: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-}
-
-.summary-card.leaders::before {
-  --card-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-}
-
-.summary-card.books::before {
-  --card-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
-
-.summary-card.magazines::before {
-  --card-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
-
 .summary-card-title {
   color: #64748b;
   font-size: 0.875rem;

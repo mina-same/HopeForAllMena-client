@@ -58,6 +58,23 @@ html[dir="rtl"] .footer-social a + a {
   margin-left: 0px;
   margin-right: 10px;
 }
+
+html[dir="rtl"] .event-infos__social a + a {
+  margin-left: 0px;
+  margin-right: 10px;
+}
+
+/* Event info list icons RTL */
+html[dir="rtl"] .event-infos__list-has-icons li {
+  display: flex;
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+html[dir="rtl"] .event-infos__list-has-icons i {
+  margin-left: 0;
+  margin-right: 10px;
+}
 /* Language Switcher RTL */
 html[dir="rtl"] .language-switcher__inner {
   flex-direction: row-reverse;

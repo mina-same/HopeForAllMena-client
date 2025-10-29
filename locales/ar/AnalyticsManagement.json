@@ -10,7 +10,7 @@
     "cancel": "إلغاء",
     "save": "حفظ التغييرات",
     "saving": "جاري الحفظ...",
-    "members": "الأعضاء",
+    "countries": "الدول",
     "leadersTraining": "تدريب القادة",
     "publishedBooks": "الكتب المنشورة",
     "givenMagazines": "المجلات الموزعة",
@@ -35,7 +35,7 @@
   },
   "table": {
     "month": "الشهر",
-    "members": "الأعضاء",
+    "countries": "الدول",
     "leadersTraining": "تدريب القادة",
     "publishedBooks": "الكتب المنشورة",
     "givenMagazines": "المجلات الموزعة"
@@ -54,7 +54,7 @@
     "statsUpdated": "تم تحديث الإحصائيات بنجاح"
   },
   "icons": {
-    "members": "👥",
+    "countries": "🌍",
     "leadersTraining": "🎓",
     "publishedBooks": "📚",
     "givenMagazines": "📰",

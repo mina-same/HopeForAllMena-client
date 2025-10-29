@@ -1,5 +1,6 @@
 import React from "react";
 import { graphql } from "gatsby";
+import { Link, useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import { Container, Row, Col } from "react-bootstrap";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
@@ -8,8 +9,6 @@ import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
 import CallToAction from "../components/call-to-action/call-to-action";
 import BrandCarousel from "../components/brand-carousel";
-import { useTranslation } from "gatsby-plugin-react-i18next";
-import { useI18next } from "gatsby-plugin-react-i18next";
 
 import serviceBg from "../assets/images/backgrounds/service-hand-bg-1-1.png";
 import publishingHouseWhite from "../assets/images/publishing-house-white.png";
@@ -24,7 +23,7 @@ const PublishingHouse = () => {
     <Layout pageTitle={`${t("pageTitle")} || Hope For All Mena Ministry`}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title={t("pageTitle")} crumbTitle={t("crumbTitle")} />
+      <PageHeader title={t("pageTitle")} crumbTitle={t("crumbTitle")}/>
       <div dir={isRTL ? "rtl" : "ltr"}>
         {/* Hero Section */}
         <section 
@@ -48,7 +47,7 @@ const PublishingHouse = () => {
                 </div>
               </Col>
               <Col md={12} lg={6}>
-                <div className="service-details__image">
+                <div className="service-details__image bg-black">
                   <img 
                     src={publishingHouseWhite} 
                     alt={t("pageTitle")} 
@@ -108,7 +107,7 @@ const PublishingHouse = () => {
               <Col md={12}>
                 <div className={`block-title text-center ${isRTL ? "rtl-block-title" : ""}`}>
                   <h3 className={isRTL ? "font-arabic" : ""}>{t("impact.title")}</h3>
-                  <p>{t("impact.subtitle")}</p>
+                  <p style={{ lineHeight: '1.8' }}>{t("impact.subtitle")}</p>
                 </div>
               </Col>
             </Row>
@@ -116,7 +115,7 @@ const PublishingHouse = () => {
               <Col md={12} lg={6}>
                 <div className={`service-impact__content ${isRTL ? "text-right" : ""}`}>
                   <h4 className={isRTL ? "font-arabic" : ""}>{t("impact.achievementsTitle")}</h4>
-                  <ul className={`service-impact__list ${isRTL ? "rtl-list" : ""}`}>
+                  <ul className={`service-impact__list ${isRTL ? "rtl-list" : ""}`} style={{ lineHeight: '2' }}>
                     <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.booksPublished")}</li>
                     <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.authorsSupported")}</li>
                     <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.countriesReached")}</li>
@@ -129,27 +128,27 @@ const PublishingHouse = () => {
                 <div className="service-impact__stats">
                   <div className="row">
                     <div className="col-6">
-                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
+                      <div className={`impact-stat ${isRTL ? "!text-center" : ""}`}>
                         <h3>100+</h3>
-                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.books")}</p>
+                        <p className={isRTL ? "font-arabic text-center" : ""}>{t("impact.stats.books")}</p>
                       </div>
                     </div>
                     <div className="col-6">
-                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
+                      <div className={`impact-stat ${isRTL ? "!text-center" : ""}`}>
                         <h3>50+</h3>
-                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.authors")}</p>
+                        <p className={isRTL ? "font-arabic text-center" : ""}>{t("impact.stats.authors")}</p>
                       </div>
                     </div>
                     <div className="col-6">
-                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
+                      <div className={`impact-stat ${isRTL ? "!text-center" : ""}`}>
                         <h3>30+</h3>
-                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.countries")}</p>
+                        <p className={isRTL ? "font-arabic text-center" : ""}>{t("impact.stats.countries")}</p>
                       </div>
                     </div>
                     <div className="col-6">
-                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
+                      <div className={`impact-stat ${isRTL ? "!text-center" : ""}`}>
                         <h3>1000+</h3>
-                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.copies")}</p>
+                        <p className={isRTL ? "font-arabic text-center" : ""}>{t("impact.stats.copies")}</p>
                       </div>
                     </div>
                   </div>
@@ -159,7 +158,39 @@ const PublishingHouse = () => {
           </Container>
         </section>
 
-        <CallToAction />
+        {/* Browse Books Section */}
+        <section className="browse-books-section pt-90 pb-90" style={{ backgroundColor: '#f5f5f5' }}>
+          <Container>
+            <Row>
+              <Col md={12}>
+                <div className={`block-title text-center ${isRTL ? "rtl-block-title" : ""}`}>
+                  <h3 className={isRTL ? "font-arabic" : ""}>{t("browseBooks.title")}</h3>
+                  <p style={{ lineHeight: '1.8', marginBottom: '40px' }}>{t("browseBooks.description")}</p>
+                </div>
+              </Col>
+            </Row>
+            <Row className="justify-content-center">
+              <Col md={8} lg={6}>
+                <div className="text-center">
+                  <Link 
+                    to="/books" 
+                    className="thm-btn dynamic-radius"
+                    style={{
+                      display: 'inline-block',
+                      padding: '15px 40px',
+                      fontSize: '16px',
+                      textDecoration: 'none'
+                    }}
+                  >
+                    {t("browseBooks.buttonText")}
+                    <i className={`fa ${isRTL ? 'fa-arrow-left' : 'fa-arrow-right'}`} style={{ marginLeft: isRTL ? '0' : '10px', marginRight: isRTL ? '10px' : '0' }}></i>
+                  </Link>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+
         <BrandCarousel extraClass="client-carousel__has-border-top" />
       </div>
       <Footer />

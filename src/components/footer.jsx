@@ -76,17 +76,76 @@ const Footer = () => {
                 </p>
                 <ul className={`list-unstyled footer-widget__contact ${currentLanguage === 'ar' ? 'pl-10 pr-0' : ''}`}>
                   <li>
-                    <i className="azino-icon-telephone" style={{ color: "white", width: "15px", height: "15px" }}></i>
-                    <a href="tel:+201555103774" title="Alexandria Office">+20 155 510 3774 <small>(Alexandria)</small></a>
+                    <a 
+                      href="tel:+201555103774" 
+                      title="Alexandria Office"
+                      style={{
+                        paddingLeft: currentLanguage === 'ar' ? '0' : '15px',
+                        paddingRight: currentLanguage === 'ar' ? '26px' : '0'
+                      }}
+                    >
+                      <i 
+                        className="azino-icon-telephone" 
+                        style={{ 
+                          color: "white", 
+                          width: "15px", 
+                          height: "15px",
+                          position: 'absolute',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          left: currentLanguage === 'ar' ? 'auto' : '0',
+                          right: currentLanguage === 'ar' ? '0' : 'auto'
+                        }}
+                      ></i>
+                      +20 155 510 3774 <small>(Alexandria)</small>
+                    </a>
                   </li>
                   <li>
-                    <i className="azino-icon-telephone" style={{ color: "white", width: "15px", height: "15px" }}></i>
-
-                    <a href="tel:+20128141662" title="Cairo Office">+20 128 141 6629 <small>(Cairo)</small></a><br />
+                    <a 
+                      href="tel:+20128141662" 
+                      title="Cairo Office"
+                      style={{
+                        paddingLeft: currentLanguage === 'ar' ? '0' : '15px',
+                        paddingRight: currentLanguage === 'ar' ? '26px' : '0'
+                      }}
+                    >
+                      <i 
+                        className="azino-icon-telephone" 
+                        style={{ 
+                          color: "white", 
+                          width: "15px", 
+                          height: "15px",
+                          position: 'absolute',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          left: currentLanguage === 'ar' ? 'auto' : '0',
+                          right: currentLanguage === 'ar' ? '0' : 'auto'
+                        }}
+                      ></i>
+                      +20 128 141 6629 <small>(Cairo)</small>
+                    </a>
                   </li>
                   <li>
-                    <i className="azino-icon-email" style={{ color: "white" }}></i>
-                    <a href="mailto:hope4allmena@gmail.com">hope4allmena@gmail.com</a>
+                    <a 
+                      href="mailto:hope4allmena@gmail.com"
+                      style={{
+                        paddingLeft: currentLanguage === 'ar' ? '0' : '15px',
+                        paddingRight: currentLanguage === 'ar' ? '26px' : '0'
+                      }}
+                    >
+                      <i 
+                        className="azino-icon-email" 
+                        style={{ 
+                          color: "white",
+                          position: 'absolute',
+                          top: '50%',
+                          transform: 'translateY(-50%)',
+                          left: currentLanguage === 'ar' ? 'auto' : '0',
+                          right: currentLanguage === 'ar' ? '0' : 'auto'
+                        }}
+                      ></i>
+                      hope4allmena@gmail.com
+                    </a>
                   </li>
                 </ul>
               </div>

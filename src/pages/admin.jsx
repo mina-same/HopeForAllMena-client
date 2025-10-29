@@ -54,13 +54,24 @@ const AdminDashboardInner = () => {
   // Hide sidebar by default on mobile/tablet, show on desktop
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Initialize mobile sidebar state
+  // Initialize mobile sidebar state and desktop sidebar visibility
   React.useEffect(() => {
     if (isMobile && openMobile === undefined) {
       setOpenMobile(false);
     }
+    // Set sidebar open by default on desktop, closed on mobile/tablet
+    if (isMobile !== undefined) {
+      setSidebarOpen(!isMobile);
+    }
   }, [isMobile, openMobile, setOpenMobile]);
-  const [activeSection, setActiveSection] = useState('dashboard');
+  const [activeSection, setActiveSection] = useState(() => {
+    // Initialize from URL on first load
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('section') || 'dashboard';
+    }
+    return 'dashboard';
+  });
   const [editBlogId, setEditBlogId] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -166,27 +177,48 @@ const AdminDashboardInner = () => {
     }
   };
 
-  // Handle URL-based routing for edit blog
+  // Handle URL-based routing for sections and edit blog (runs once on mount)
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const path = window.location.pathname;
+      const params = new URLSearchParams(window.location.search);
+      const sectionFromUrl = params.get('section');
+      
+      // Check for blog edit URL pattern
       const editMatch = path.match(/\/admin\/blog\/edit\/([a-f\d]{24})/);
 
       if (editMatch) {
         const blogId = editMatch[1];
         setEditBlogId(blogId);
         setActiveSection('edit-blog');
+      } else if (sectionFromUrl) {
+        // Update active section from URL parameter
+        setActiveSection(sectionFromUrl);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Update URL when section changes
+  useEffect(() => {
+    if (typeof window !== 'undefined' && activeSection !== 'edit-blog') {
+      const currentParams = new URLSearchParams(window.location.search);
+      const currentSection = currentParams.get('section');
+      
+      // Only update URL if section has changed
+      if (currentSection !== activeSection) {
+        const newUrl = activeSection === 'dashboard' 
+          ? '/admin' 
+          : `/admin?section=${activeSection}`;
+        window.history.pushState({}, '', newUrl);
+      }
+    }
+  }, [activeSection]);
 
   const handleBackToBlogs = () => {
     setEditBlogId(null);
     setActiveSection('all-blogs');
-    // Update URL without page reload
-    if (typeof window !== 'undefined') {
-      window.history.pushState({}, '', '/admin');
-    }
+    // URL will be updated automatically by the useEffect
   };
 
   const renderDashboardContent = () => {

@@ -25,6 +25,7 @@ const TrainingBooksSection = () => {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     nameAr: '',
@@ -36,15 +37,38 @@ const TrainingBooksSection = () => {
   });
 
   useEffect(() => {
-    fetchTrainingBooks();
-  }, [fetchTrainingBooks]);
+    const fetchTrainingBooks = async () => {
+      try {
+        // Get auth token for admin requests to fetch all books (including inactive)
+        const token = authStorage.getToken();
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+        
+        const response = await fetch('http://localhost:5001/api/training-books', {
+          method: 'GET', 
+          headers
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setTrainingBooks(data);
+        } else {
+          throw new Error('Failed to fetch training books');
+        }
+      } catch (error) {
+        toast({
+          title: t('errors.loadBooks'),
+          description: t('errors.loadBooks'),
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Re-fetch data when language changes
-  useEffect(() => {
-    if (trainingBooks.length > 0) {
-      fetchTrainingBooks();
-    }
-  }, [currentLanguage, fetchTrainingBooks, trainingBooks.length]);
+    fetchTrainingBooks();
+  }, [refetchTrigger, currentLanguage, t, toast]);
 
   // Filter books based on search term and status filter
   const filteredBooks = trainingBooks.filter(book => {
@@ -59,35 +83,6 @@ const TrainingBooksSection = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const fetchTrainingBooks = async () => {
-    try {
-      // Get auth token for admin requests to fetch all books (including inactive)
-      const token = authStorage.getToken();
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) {
-        headers.Authorization = `Bearer ${token}`;
-      }
-      
-      const response = await fetch('http://localhost:5001/api/training-books', {
-        method: 'GET', 
-        headers
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setTrainingBooks(data);
-      } else {
-        throw new Error('Failed to fetch training books');
-      }
-    } catch (error) {
-      toast({
-        title: t('errors.loadBooks'),
-        description: t('errors.loadBooks'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -112,7 +107,7 @@ const TrainingBooksSection = () => {
           title: t('success.bookCreated'),
           description: editingBook ? t('success.bookUpdated') : t('success.bookCreated'),
         });
-        fetchTrainingBooks();
+        setRefetchTrigger(prev => prev + 1);
         resetForm();
       } else {
         const errorData = await response.json();
@@ -159,7 +154,7 @@ const TrainingBooksSection = () => {
           title: t('success.bookDeleted'),
           description: t('success.bookDeleted'),
         });
-        fetchTrainingBooks();
+        setRefetchTrigger(prev => prev + 1);
       } else {
         throw new Error('Failed to delete training book');
       }

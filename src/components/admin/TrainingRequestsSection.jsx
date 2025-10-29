@@ -25,50 +25,51 @@ const TrainingRequestsSection = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   useEffect(() => {
-    fetchRequests();
-  }, [fetchRequests]);
-
-  const fetchRequests = async () => {
-    try {
-      // Check multiple token storage keys for authentication
-      const { authStorage } = require('../../utils/storage');
-      const token = authStorage.getToken();
-      
-      if (!token) {
-        console.log('No authentication token found');
-        setRequests([]);
-        setLoading(false);
-        return;
-      }
-
-      const response = await fetch('http://localhost:5001/api/training-requests', {
-        headers: {
-          'Authorization': `Bearer ${token}`
+    const fetchRequests = async () => {
+      try {
+        // Check multiple token storage keys for authentication
+        const { authStorage } = require('../../utils/storage');
+        const token = authStorage.getToken();
+        
+        if (!token) {
+          console.log('No authentication token found');
+          setRequests([]);
+          setLoading(false);
+          return;
         }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setRequests(data.requests || []);
-      } else if (response.status === 401) {
-        console.log('Authentication failed - token may be invalid');
-        setRequests([]);
-      } else {
-        throw new Error('Failed to fetch training requests');
+
+        const response = await fetch('http://localhost:5001/api/training-requests', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setRequests(data.requests || []);
+        } else if (response.status === 401) {
+          console.log('Authentication failed - token may be invalid');
+          setRequests([]);
+        } else {
+          throw new Error('Failed to fetch training requests');
+        }
+      } catch (error) {
+        console.error('Error fetching training requests:', error);
+        toast({
+          title: t('errors.title'),
+          description: t('errors.loadFailed'),
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching training requests:', error);
-      toast({
-        title: t('errors.title'),
-        description: t('errors.loadFailed'),
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchRequests();
+  }, [refetchTrigger, t, toast]);
 
   const updateRequestStatus = async (requestId, newStatus) => {
     try {
@@ -105,7 +106,7 @@ const TrainingRequestsSection = () => {
           description: t(`statusMessages.${newStatus}`),
         });
         
-        fetchRequests(); // Refresh the list
+        setRefetchTrigger(prev => prev + 1); // Refresh the list
       } else {
         throw new Error('Failed to update request status');
       }

@@ -20,11 +20,12 @@ const LanguageSwitcher = ({ variant = "default", className = "" }) => {
 
     // Navigate to the same page in the new language
     if (typeof window !== 'undefined') {
+      const queryString = window.location.search; // Preserve query parameters
       const newPath = newLanguage === 'en'
         ? currentPath === '/' ? '/' : currentPath
         : `/${newLanguage}${currentPath === '/' ? '' : currentPath}`;
 
-      window.location.href = newPath;
+      window.location.href = newPath + queryString;
     }
   };
 

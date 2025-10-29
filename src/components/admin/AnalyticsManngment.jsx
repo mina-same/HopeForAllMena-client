@@ -38,11 +38,11 @@ ChartJS.register(
 const getFactCounterData = (t) => [
   {
     count: 8860,
-    text: t('statistics.members'),
+    text: t('statistics.countries'),
     color: '#3b82f6',
     bgColor: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(29, 78, 216, 0.05) 100%)',
-    icon: t('icons.members'),
-    category: 'members'
+    icon: t('icons.countries'),
+    category: 'countries'
   },
   {
     count: 456,
@@ -80,7 +80,7 @@ const AnalyticsManagement = () => {
   const [currentStats, setCurrentStats] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
-    members: '',
+    countries: '',
     leadersTraining: '',
     publishedBooks: '',
     givenMagazines: ''
@@ -96,7 +96,7 @@ const AnalyticsManagement = () => {
       const response = await factCounterService.getStats();
       setCurrentStats(response.data);
       setEditForm({
-        members: response.data.members.toString(),
+        countries: (response.data.countries || response.data.members || 0).toString(),
         leadersTraining: response.data.leadersTraining.toString(),
         publishedBooks: response.data.publishedBooks.toString(),
         givenMagazines: response.data.givenMagazines.toString()
@@ -132,10 +132,11 @@ const AnalyticsManagement = () => {
           const monthLabel = format(date, 'MMM yyyy');
           
           // Generate realistic growth patterns for each metric
+          const currentCountries = currentStats.countries || currentStats.members || 0;
           const monthData = {
             month: monthLabel,
             date: date,
-            members: Math.floor(currentStats.members * (0.7 + (months - i) * 0.3 / months) + Math.random() * 200),
+            countries: Math.floor(currentCountries * (0.7 + (months - i) * 0.3 / months) + Math.random() * 5),
             leadersTraining: Math.floor(currentStats.leadersTraining * (0.6 + (months - i) * 0.4 / months) + Math.random() * 30),
             publishedBooks: Math.floor(currentStats.publishedBooks * (0.5 + (months - i) * 0.5 / months) + Math.random() * 5),
             givenMagazines: Math.floor(currentStats.givenMagazines * (0.6 + (months - i) * 0.4 / months) + Math.random() * 500)
@@ -147,7 +148,7 @@ const AnalyticsManagement = () => {
         // Ensure the last month matches current totals
         if (data.length > 0) {
           const lastMonth = data[data.length - 1];
-          lastMonth.members = currentStats.members;
+          lastMonth.countries = currentStats.countries || currentStats.members || 0;
           lastMonth.leadersTraining = currentStats.leadersTraining;
           lastMonth.publishedBooks = currentStats.publishedBooks;
           lastMonth.givenMagazines = currentStats.givenMagazines;
@@ -179,7 +180,7 @@ const AnalyticsManagement = () => {
     try {
       setUpdating(true);
       const updates = {
-        members: parseInt(editForm.members),
+        countries: parseInt(editForm.countries),
         leadersTraining: parseInt(editForm.leadersTraining),
         publishedBooks: parseInt(editForm.publishedBooks),
         givenMagazines: parseInt(editForm.givenMagazines)
@@ -204,7 +205,7 @@ const AnalyticsManagement = () => {
     setIsEditing(false);
     if (currentStats) {
       setEditForm({
-        members: currentStats.members.toString(),
+        countries: (currentStats.countries || currentStats.members || 0).toString(),
         leadersTraining: currentStats.leadersTraining.toString(),
         publishedBooks: currentStats.publishedBooks.toString(),
         givenMagazines: currentStats.givenMagazines.toString()
@@ -306,8 +307,8 @@ const AnalyticsManagement = () => {
     labels: monthlyData.map(item => item.month),
     datasets: [
       {
-        label: t('statistics.members'),
-        data: monthlyData.map(item => item.members),
+        label: t('statistics.countries'),
+        data: monthlyData.map(item => item.countries),
         borderColor: '#3b82f6',
         backgroundColor: chartType === 'bar' ? 'rgba(59, 130, 246, 0.8)' : 'rgba(59, 130, 246, 0.1)',
         tension: 0.4,
@@ -440,12 +441,12 @@ const AnalyticsManagement = () => {
             <form onSubmit={handleUpdateStats}>
               <Row>
                 <Col md={6} lg={3} className="mb-3">
-                  <label className={`control-label ${currentLanguage === 'ar' ? '' : 'text-left'}`}>{t('icons.members')} {t('statistics.members')}</label>
+                  <label className={`control-label ${currentLanguage === 'ar' ? '' : 'text-left'}`}>{t('icons.countries')} {t('statistics.countries')}</label>
                   <input
                     type="number"
                     className="form-control"
-                    value={editForm.members}
-                    onChange={(e) => handleInputChange('members', e.target.value)}
+                    value={editForm.countries}
+                    onChange={(e) => handleInputChange('countries', e.target.value)}
                     min="0"
                     required
                     style={{

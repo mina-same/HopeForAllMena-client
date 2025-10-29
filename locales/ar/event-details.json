@@ -1,0 +1,38 @@
+{
+  "pageTitle": "تفاصيل الحدث",
+  "loading": "جارٍ تحميل تفاصيل الحدث...",
+  "notFound": "الحدث غير موجود",
+  "errorMessage": "الحدث الذي تبحث عنه غير موجود.",
+  "backToEvents": "العودة إلى الأحداث",
+  "venue": "المكان",
+  "venueInfo": "سيتم الإعلان عن معلومات المكان قريباً.",
+  "organizer": "المنظم",
+  "mapNotAvailable": "الخريطة غير متوفرة",
+  "time": "الوقت",
+  "date": "التاريخ",
+  "location": "الموقع",
+  "phone": "الهاتف",
+  "email": "البريد الإلكتروني",
+  "website": "الموقع الإلكتروني",
+  "contactUs": "اتصل بنا",
+  "shareEvent": "مشاركة الحدث",
+  "moreDetails": "المزيد من التفاصيل قريباً",
+  "addToCalendar": "إضافة إلى التقويم",
+  "eventCategory": "الفئة",
+  "eventStatus": "الحالة",
+  "categories": {
+    "meeting": "اجتماع",
+    "training": "تدريب",
+    "sunday-school": "مدرسة الأحد",
+    "workshop": "ورشة عمل",
+    "conference": "مؤتمر",
+    "other": "أخرى"
+  },
+  "status": {
+    "scheduled": "مجدول",
+    "confirmed": "مؤكد",
+    "completed": "مكتمل",
+    "cancelled": "ملغى"
+  }
+}
+

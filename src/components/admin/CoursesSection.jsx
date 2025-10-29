@@ -520,7 +520,103 @@ export const CoursesSection = () => {
       </Card>
 
       {/* Courses Table */}
-     w
+      <Card className="border-0 shadow-modern">
+        <CardContent className="p-4 md:p-6">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.title')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.category')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.instructor')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.institution')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.level')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.duration')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.price')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.enrollments')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.rating')}</TableHead>
+                  <TableHead className={currentLanguage === 'ar' ? 'text-left' : 'text-right'}>{t('table.headers.actions')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCourses.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={10} className="text-center py-8 text-muted-foreground">
+                      {t('table.noCourses')}
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filteredCourses.map((course) => (
+                    <TableRow key={course.id || course._id}>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <div className="font-medium">{course.title}</div>
+                        <div className="text-xs text-muted-foreground">{course.subcategory}</div>
+                      </TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <Badge variant="secondary">{course.category}</Badge>
+                      </TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{course.instructor}</TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{course.institution?.name || 'N/A'}</TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <Badge variant={
+                          course.level === 'beginner' ? 'default' :
+                          course.level === 'intermediate' ? 'secondary' :
+                          'outline'
+                        }>
+                          {t(`form.levels.${course.level}`)}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          <span className="text-sm">{course.duration}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <span className="font-medium">{course.currency}{course.price}</span>
+                      </TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <div className="flex items-center gap-1">
+                          <Users className="h-3 w-3" />
+                          <span className="text-sm">{course.totalEnrollments || 0}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
+                        <div className="flex items-center gap-1">
+                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          <span className="text-sm">{course.averageRating?.toFixed(1) || '0.0'}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className={currentLanguage === 'ar' ? 'text-left' : 'text-right'}>
+                        <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEdit(course)}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDelete(course)}
+                            className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CourseDialog />
 
       {/* Delete Confirmation Modal */}
       <Dialog open={deleteModalOpen} onOpenChange={setDeleteModalOpen}>

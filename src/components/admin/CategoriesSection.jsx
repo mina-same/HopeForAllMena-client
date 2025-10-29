@@ -43,6 +43,7 @@ export function CategoriesSection() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalCategories, setTotalCategories] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   // Delete confirmation modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -61,57 +62,57 @@ export function CategoriesSection() {
   });
 
   // Fetch categories
-  const fetchCategories = async () => {
-    try {
-      setLoading(true);
-      const params = {
-        page: currentPage,
-        limit: 10,
-        search: searchTerm,
-        sortBy: 'createdAt',
-        sortOrder: 'asc'
-      };
-
-      console.log('Frontend: Fetching categories with params:', params);
-      const { authStorage } = require('../../utils/storage');
-      console.log('Frontend: Auth token exists:', !!authStorage.getToken());
-      console.log('Frontend: User logged in:', !!authStorage.getUser());
-      const response = await categoriesAPI.getCategories(params);
-      console.log('Frontend: Categories response:', response.data);
-      console.log('Frontend: Categories data:', response.data.data.categories);
-      response.data.data.categories.forEach(cat => {
-        console.log(`Frontend: Category ${cat.name_en} has booksCount: ${cat.booksCount}`);
-      });
-      setCategories(response.data.data.categories);
-      setTotalPages(response.data.data.pagination.totalPages);
-      setTotalCategories(response.data.data.pagination.totalCategories);
-    } catch (error) {
-      console.error('Failed to fetch categories:', error);
-      console.error('Error details:', error.response?.data);
-      console.error('Error status:', error.response?.status);
-      console.error('Validation errors:', error.response?.data?.errors);
-
-      if (error.response?.status === 401) {
-        toast({
-          title: t('errors.authError'),
-          description: t('errors.authError'),
-          variant: "destructive"
-        });
-      } else {
-        toast({
-          title: t('errors.loadCategories'),
-          description: error.response?.data?.message || t('errors.loadCategories'),
-          variant: "destructive"
-        });
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const params = {
+          page: currentPage,
+          limit: 10,
+          search: searchTerm,
+          sortBy: 'createdAt',
+          sortOrder: 'asc'
+        };
+
+        console.log('Frontend: Fetching categories with params:', params);
+        const { authStorage } = require('../../utils/storage');
+        console.log('Frontend: Auth token exists:', !!authStorage.getToken());
+        console.log('Frontend: User logged in:', !!authStorage.getUser());
+        const response = await categoriesAPI.getCategories(params);
+        console.log('Frontend: Categories response:', response.data);
+        console.log('Frontend: Categories data:', response.data.data.categories);
+        response.data.data.categories.forEach(cat => {
+          console.log(`Frontend: Category ${cat.name_en} has booksCount: ${cat.booksCount}`);
+        });
+        setCategories(response.data.data.categories);
+        setTotalPages(response.data.data.pagination.totalPages);
+        setTotalCategories(response.data.data.pagination.totalCategories);
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+        console.error('Error details:', error.response?.data);
+        console.error('Error status:', error.response?.status);
+        console.error('Validation errors:', error.response?.data?.errors);
+
+        if (error.response?.status === 401) {
+          toast({
+            title: t('errors.authError'),
+            description: t('errors.authError'),
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: t('errors.loadCategories'),
+            description: error.response?.data?.message || t('errors.loadCategories'),
+            variant: "destructive"
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchCategories();
-  }, [currentPage, searchTerm, statusFilter, fetchCategories]);
+  }, [currentPage, searchTerm, statusFilter, toast, t, refetchTrigger]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -213,7 +214,7 @@ export function CategoriesSection() {
         parentCategory: 'none',
         sortOrder: 0
       });
-      fetchCategories();
+      setRefetchTrigger(prev => prev + 1);
     } catch (error) {
       console.error('Failed to save category:', error);
       console.error('Category creation error details:', error.response?.data);
@@ -262,7 +263,7 @@ export function CategoriesSection() {
         title: t('success.categoryDeleted', { name: categoryToDelete.name_en || categoryToDelete.name }),
         description: t('success.categoryDeleted', { name: categoryToDelete.name_en || categoryToDelete.name }),
       });
-      fetchCategories();
+      setRefetchTrigger(prev => prev + 1);
     } catch (error) {
       console.error('Failed to delete category:', error);
       toast({
@@ -285,7 +286,7 @@ export function CategoriesSection() {
         title: t('success.statusUpdated', { name: category.name_en || category.name, status: t(`status.${newStatus}`) }),
         description: t('success.statusUpdated', { name: category.name_en || category.name, status: t(`status.${newStatus}`) }),
       });
-      fetchCategories();
+      setRefetchTrigger(prev => prev + 1);
     } catch (error) {
       console.error('Failed to update status:', error);
       toast({

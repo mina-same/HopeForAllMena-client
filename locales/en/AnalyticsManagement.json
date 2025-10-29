@@ -10,7 +10,7 @@
     "cancel": "Cancel",
     "save": "Save Changes",
     "saving": "Saving...",
-    "members": "Members",
+    "countries": "Countries",
     "leadersTraining": "Leaders Training",
     "publishedBooks": "Published Books",
     "givenMagazines": "Given Magazines",
@@ -35,7 +35,7 @@
   },
   "table": {
     "month": "Month",
-    "members": "Members",
+    "countries": "Countries",
     "leadersTraining": "Leaders Training",
     "publishedBooks": "Published Books",
     "givenMagazines": "Given Magazines"
@@ -54,7 +54,7 @@
     "statsUpdated": "Statistics updated successfully"
   },
   "icons": {
-    "members": "👥",
+    "countries": "🌍",
     "leadersTraining": "🎓",
     "publishedBooks": "📚",
     "givenMagazines": "📰",
