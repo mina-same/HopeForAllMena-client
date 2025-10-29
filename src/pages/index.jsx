@@ -23,7 +23,7 @@ import FactCounter from "../components/fact-counter";
 import PriceOne from "../components/price-one";
 import TrendingProducts from "../components/bookstore/TrendingProducts";
 import AboutCounter from "../components/about/about-counter";
-import CausesHome from "../components/causes/causes-home";
+import CausesHome from "../components/causes/featured-events";
 
 const HomeOne = () => {
   return (
