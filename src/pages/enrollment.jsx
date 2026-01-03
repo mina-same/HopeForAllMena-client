@@ -69,7 +69,7 @@ const EnrollmentPage = ({ location }) => {
         // Education
         hasPreviousEducation: false,
         previousEducationDetails: '',
-        motivation: '',ق
+        motivation: '',
         referralSource: '',
         referralSourceOther: '',
         startDate: '',

@@ -12,111 +12,72 @@ export const useAuth = () => {
   return context;
 };
 
+// Guest user for when auth is disabled
+const GUEST_USER = {
+  _id: '000000000000000000000000',
+  username: 'guest',
+  name: 'Guest User',
+  email: 'guest@hopeforallmena.org',
+  role: 'admin',
+  status: 'active',
+  permissions: [
+    'books', 'authors', 'categories', 'reviews', 'courses',
+    'enrollments', 'magazines', 'training', 'analytics', 'settings',
+    'users', 'user-management', 'contact-messages', 'training-books',
+    'training-requests', 'training-followup-requests', 'calendar',
+    'generate-ids', 'blogs', 'admin_access', 'admin'
+  ]
+};
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState(GUEST_USER);
+  const [token, setToken] = useState('guest-token');
+  const [loading, setLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
 
   // Check if user is authenticated on app load
   useEffect(() => {
-    checkAuthStatus();
-  }, []);
+    // Keep it always authenticated for guest
+    setIsAuthenticated(true);
+    if (!user) {
+      setUser(GUEST_USER);
+      setToken('guest-token');
+    }
+    setLoading(false);
+  }, [user]);
 
   const checkAuthStatus = async () => {
-    try {
-      const token = authStorage.getToken();
-      const savedUser = authStorage.getUser();
-
-      if (token && savedUser) {
-        // Verify token is still valid
-        const response = await authAPI.verifyToken();
-        if (response.status === 'success') {
-          setUser(savedUser);
-          setToken(token);
-          setIsAuthenticated(true);
-        } else {
-          // Token invalid, clear storage
-          authStorage.clearAuth();
-          setToken(null);
-        }
-      }
-    } catch (error) {
-      console.error('Auth check failed:', error);
-      authStorage.clearAuth();
-      setToken(null);
-    } finally {
-      setLoading(false);
-    }
+    setIsAuthenticated(true);
+    setLoading(false);
   };
 
   const login = async (credentials) => {
-    try {
-      setLoading(true);
-      const response = await authAPI.login(credentials);
-      
-      if (response.status === 'success') {
-        const { user: userData, token } = response.data;
-        
-        // Store auth data
-        authStorage.setToken(token);
-        authStorage.setUser(userData);
-        
-        setUser(userData);
-        setToken(token);
-        setIsAuthenticated(true);
-        
-        return { success: true, user: userData };
-      }
-    } catch (error) {
-      console.error('Login failed:', error);
-      const errorMessage = error.response?.data?.message || 'Login failed. Please try again.';
-      return { success: false, error: errorMessage };
-    } finally {
-      setLoading(false);
-    }
+    setUser(GUEST_USER);
+    setToken('guest-token');
+    setIsAuthenticated(true);
+    return { success: true, user: GUEST_USER };
   };
 
   const logout = async () => {
-    try {
-      await authAPI.logout();
-    } catch (error) {
-      console.error('Logout error:', error);
-    } finally {
-      // Clear local state regardless of API call success
-      authStorage.clearAuth();
-      setUser(null);
-      setToken(null);
-      setIsAuthenticated(false);
-    }
+    // Optionally allow "logout" but it will just reset to guest or we can just do nothing
+    // For "disable login", let's make it do nothing or just keep guest
+    return;
   };
 
   const updateUser = (userData) => {
     setUser(userData);
-    authStorage.setUser(userData);
   };
 
   const hasPermission = (permission) => {
-    if (!user || !user.permissions) return false;
-    return user.permissions.includes(permission);
+    return true; // Always true when auth is disabled
   };
 
   const hasAnyPermission = (permissions) => {
-    if (!user || !user.permissions) return false;
-    return permissions.some(permission => user.permissions.includes(permission));
+    return true; // Always true when auth is disabled
   };
 
   const isAdmin = () => {
-    // Check if user has any admin-related permissions
-    const adminPermissions = [
-      'users', 'user-management', 'admin_access', 'admin',
-      'books', 'authors', 'categories', 'reviews', 
-      'courses', 'enrollments', 'magazines', 'training',
-      'analytics', 'settings', 'contact-messages',
-      'training-books', 'training-requests', 'training-followup-requests',
-      'calendar'
-    ];
-    return hasAnyPermission(adminPermissions);
+    return true; // Always true when auth is disabled
   };
 
   const value = {
