@@ -67,7 +67,7 @@ exports.onCreateDevServer = ({ app }) => {
       '/', '/404', '/about', '/admin', '/become-volunteer', '/bookDetails', '/books', '/bookstore',
       '/cause-details', '/causes', '/color-test', '/contact', '/development-department',
       '/evangelism-discipleship', '/event-details', '/events', '/gallery', '/index-2',
-      '/login', '/magazines', '/news-details', '/news', '/publishing-house', '/services',
+      '/login', '/magazines', '/news-details', '/news', '/publishing-house', '/services', '/services/publishing',
       '/studies-education', '/unauthorized', '/volunteers', '/magazines/request', '/courses', '/training',
       '/enrollment', '/donate', '/map',
       '/calendar',

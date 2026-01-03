@@ -52,7 +52,7 @@ const VisionMission = () => {
       <div className="container mx-auto px-6 relative z-10">
         {/* Enhanced Section Header */}
         <div className="text-center mb-20">
-          <div className={`inline-flex items-center justify-center space-x-2 mb-6 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+          <div className={`inline-flex items-center justify-center space-x-2 mb-6 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
             <div className="w-12 h-px bg-[#32669C]"></div>
             <Badge variant="outline" className="px-6 py-2 text-[#2194D1] border-[#2194D1]/20 bg-white/50 backdrop-blur-sm font-medium">
               {t('visionMission.header.badge')}
@@ -95,7 +95,7 @@ const VisionMission = () => {
                 
                 <div className="lg:col-span-3 p-12 lg:p-16 flex flex-col justify-center">
                   {/* Section Label */}
-                  <div className={`flex items-center space-x-3 mb-8 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center space-x-3 mb-8 px-2 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                     <div className="w-8 h-8 rounded-lg bg-[#2194D1]/10 flex items-center justify-center">
                       <Target className="w-5 h-5 text-[#2194D1]" />
                     </div>
@@ -152,7 +152,7 @@ const VisionMission = () => {
               <div className="grid lg:grid-cols-5 gap-0">
                 <div className="lg:col-span-3 p-12 lg:p-16 flex flex-col justify-center order-2 lg:order-1">
                   {/* Section Label */}
-                  <div className={`flex items-center space-x-3 mb-8 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center space-x-3 mb-8 px-2 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                     <div className="w-8 h-8 rounded-lg bg-[#32669C]/10 flex items-center justify-center">
                       <BookOpen className="w-5 h-5 text-[#32669C]" />
                     </div>
@@ -178,7 +178,7 @@ const VisionMission = () => {
                       { icon: Heart, textKey: "visionMission.mission.points.communities", color: "text-red-500" },
                       { icon: Globe, textKey: "visionMission.mission.points.societies", color: "text-green-600" }
                     ].map((item, index) => (
-                      <div key={index} className={`flex items-center space-x-4 group/item ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <div key={index} className={`flex items-center space-x-4 group/item ${currentLanguage === 'ar' ? '' : ''}`}>
                         <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center transition-colors group-hover/item:bg-primary/5">
                           <item.icon className={`w-6 h-6 ${item.color}`} />
                         </div>

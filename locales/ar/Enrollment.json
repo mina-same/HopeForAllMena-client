@@ -1,0 +1,174 @@
+{
+  "title": "التسجيل في الدورة",
+  
+  "form": {
+    "title": "طلب التسجيل",
+    "subtitle": "يرجى ملء جميع الأقسام لإكمال طلب التسجيل الخاص بك.",
+    
+    "sections": {
+      "courseSelection": "اختيار الدورة",
+      "personalInfo": "المعلومات الشخصية",
+      "churchInfo": "معلومات الكنيسة",
+      "serviceExperience": "خبرة الخدمة",
+      "educationMotivation": "التعليم والدافع"
+    },
+    
+    "courseSelection": {
+      "title": "اختر دورتك",
+      "courseLabel": "الدورة",
+      "coursePlaceholder": "اختر دورة",
+      "courseRequired": "يرجى اختيار دورة",
+      "nextButton": "التالي: المعلومات الشخصية"
+    },
+    
+    "personalInfo": {
+      "title": "المعلومات الشخصية",
+      "firstName": "الاسم الأول",
+      "firstNamePlaceholder": "الاسم الأول",
+      "secondName": "الاسم الثاني",
+      "secondNamePlaceholder": "الاسم الثاني",
+      "thirdName": "الاسم الثالث",
+      "thirdNamePlaceholder": "الاسم الثالث",
+      "fourthName": "الاسم الرابع",
+      "fourthNamePlaceholder": "الاسم الرابع",
+      "dateOfBirth": "تاريخ الميلاد",
+      "dateOfBirthRequired": "تاريخ الميلاد مطلوب",
+      "gender": "الجنس",
+      "genderPlaceholder": "اختر الجنس",
+      "genderRequired": "الجنس مطلوب",
+      "male": "ذكر",
+      "female": "أنثى",
+      "maritalStatus": "الحالة الاجتماعية",
+      "maritalStatusPlaceholder": "اختر الحالة",
+      "single": "أعزب",
+      "married": "متزوج",
+      "email": "عنوان البريد الإلكتروني",
+      "emailPlaceholder": "your.email@example.com",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "تنسيق البريد الإلكتروني غير صحيح",
+      "phone": "رقم الهاتف",
+      "phonePlaceholder": "+20 123 456 7890",
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "highestEducation": "المستوى التعليمي",
+      "highestEducationPlaceholder": "مثال: شهادة الثانوية العامة",
+      "graduationYear": "سنة التخرج",
+      "graduationYearPlaceholder": "2020",
+      "currentJob": "الوظيفة / الدراسة الحالية",
+      "currentJobPlaceholder": "مهنتك الحالية أو دراستك",
+      "address": "العنوان التفصيلي",
+      "addressPlaceholder": "العنوان الكامل مع الشارع والمدينة والبلد",
+      "nextButton": "التالي: معلومات الكنيسة"
+    },
+    
+    "churchInfo": {
+      "title": "معلومات الكنيسة",
+      "churchName": "اسم الكنيسة",
+      "churchNamePlaceholder": "اسم كنيستك",
+      "churchNameRequired": "اسم الكنيسة مطلوب",
+      "denomination": "الطائفة",
+      "denominationPlaceholder": "طائفة الكنيسة",
+      "pastorName": "اسم الراعي",
+      "pastorNamePlaceholder": "اسم الراعي/الكاهن المسؤول",
+      "pastorNameRequired": "اسم الراعي مطلوب",
+      "pastorPhone": "هاتف الراعي",
+      "pastorPhonePlaceholder": "رقم هاتف الراعي",
+      "sundaySchoolSupervisor": "مسئول مدارس الأحد",
+      "sundaySchoolSupervisorPlaceholder": "اسم مسئول مدارس الأحد",
+      "servantPhone": "هاتف مسئول مدراس الاحد",
+      "servantPhonePlaceholder": "رقم هاتفك كخادم",
+      "nextButton": "التالي: خبرة الخدمة"
+    },
+    
+    "serviceExperience": {
+      "title": "خبرة الخدمة",
+      "currentService": "الخدمة الحالية في الكنيسة",
+      "currentServicePlaceholder": "صف خدمتك الحالية في الكنيسة",
+      "currentServiceDuration": "مدة الخدمة في هذه الخدمة",
+      "currentServiceDurationPlaceholder": "مثال: 3 سنوات، 6 أشهر",
+      "serviceSupervisor": "اسم مسئول الخدمة",
+      "serviceSupervisorPlaceholder": "اسم مسئول الخدمة",
+      "supervisorPhone": "رقم هاتف مسئول الخدمة",
+      "supervisorPhonePlaceholder": "رقم هاتف مسئول الخدمة",
+      "servedWithChildren": "هل خدمت هذه الخدمة من قبل ؟",
+      "yes": "نعم",
+      "no": "لا",
+      "serviceDuration": "مدة الخدمة مع الأطفال",
+      "serviceDurationPlaceholder": "مثال: سنتان، 5 أشهر",
+      "talents": "المواهب أو المهارات",
+      "talentsPlaceholder": "ما هي المواهب أو المهارات التي تملكها والتي تود استخدامها في الخدمة؟",
+      "nextButton": "التالي: التعليم والدافع"
+    },
+    
+    "educationMotivation": {
+      "title": "التعليم والدافع",
+      "previousEducation": "هل التحقت بأي دراسات تعليمية أو لاهوتية من قبل؟",
+      "yes": "نعم",
+      "no": "لا",
+      "previousEducationDetails": "تفاصيل التعليم السابق",
+      "previousEducationDetailsPlaceholder": "يرجى تقديم تفاصيل حول دراساتك السابقة",
+      "motivation": "ما الذي يحفزك للانضمام إلى هذه الأكاديمية؟",
+      "motivationPlaceholder": "شارك دافعك للانضمام إلى هذه الأكاديمية",
+      "referralSource": "كيف علمت بهذا البرنامج التدريبي",
+      "referralSourcePlaceholder": "اختر المصدر",
+      "socialMedia": "وسائل التواصل الاجتماعي",
+      "churchAnnouncement": "إعلان الكنيسة",
+      "friend": "صديق",
+      "other": "أخرى",
+      "referralSourceOther": "يرجى التحديد",
+      "referralSourceOtherPlaceholder": "كيف علمت بنا؟",
+      "submitButton": "إرسال طلب التسجيل"
+    },
+    
+    "buttons": {
+      "previous": "السابق",
+      "next": "التالي",
+      "submit": "إرسال الطلب"
+    },
+    
+    "validation": {
+      "nameRequired": "الاسم مطلوب",
+      "required": "هذا الحقل مطلوب"
+    }
+  },
+  
+  "courseSummary": {
+    "title": "ملخص الدورة",
+    "instructor": "مدرب الدورة",
+    "institution": "المؤسسة",
+    "studyHours": "ساعات الدراسة",
+    "courseDuration": "مدة الدورة",
+    "weeklySchedule": "الجدول الأسبوعي",
+    "startDate": "تاريخ بداية الدورة",
+    "diplomaLevels": "مستويات الشهادة",
+    "level": "المستوى",
+    "price": "السعر",
+    "free": "مجاني",
+    "seatsLeft": "مقعد متبقي",
+    "whatsIncluded": "ما يتضمنه:",
+    "courseMaterials": "جميع مواد الدورة",
+    "expertInstruction": "تدريب خبير",
+    "studentSupport": "دعم الطلاب",
+    "enrolled": "مسجل"
+  },
+  
+  "success": {
+    "title": "✅ تم إضافة التسجيل بنجاح!",
+    "description": "تم إرسال تسجيلك في \"{{courseTitle}}\" بنجاح. ستتلقى رسالة تأكيد على {{email}} قريباً. رقم تسجيلك هو: {{enrollmentId}}",
+    "redirecting": "إعادة التوجيه إلى صفحة الدورات..."
+  },
+  
+  "error": {
+    "title": "❌ فشل التسجيل",
+    "description": "فشل في إرسال التسجيل. يرجى التحقق من معلوماتك والمحاولة مرة أخرى.",
+    "generic": "حدث خطأ أثناء معالجة تسجيلك."
+  },
+  
+  "loading": {
+    "submitting": "جاري إرسال التسجيل...",
+    "processing": "جاري معالجة طلبك..."
+  },
+  
+  "navigation": {
+    "backToCourses": "العودة إلى الدورات"
+  }
+}

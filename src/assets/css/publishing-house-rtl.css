@@ -107,3 +107,136 @@
   unicode-bidi: embed;
 }
 
+/* Featured Authors Section RTL */
+[dir="rtl"] .featured-authors-section .author-card {
+  text-align: right;
+}
+
+[dir="rtl"] .featured-authors-section .author-card h5 {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+[dir="rtl"] .featured-authors-section .author-card p {
+  text-align: right;
+}
+
+[dir="rtl"] .featured-authors-section .author-avatar {
+  text-align: center;
+}
+
+/* Recent Books Section RTL */
+[dir="rtl"] .recent-books-section .book-card {
+  text-align: right;
+}
+
+[dir="rtl"] .recent-books-section .book-card h5 {
+  text-align: right;
+}
+
+[dir="rtl"] .recent-books-section .book-card p {
+  text-align: right;
+}
+
+/* Browse Books Section RTL */
+[dir="rtl"] .browse-books-section {
+  text-align: center;
+}
+
+[dir="rtl"] .browse-books-section .thm-btn {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+[dir="rtl"] .browse-books-section .thm-btn:last-child {
+  margin-left: 0;
+}
+
+/* Service Details Content Buttons RTL */
+[dir="rtl"] .service-details__content .thm-btn {
+  margin-right: 0;
+  margin-left: 15px;
+}
+
+[dir="rtl"] .service-details__content .thm-btn:last-child {
+  margin-left: 0;
+}
+
+/* Arrow Icons RTL */
+[dir="rtl"] .azino-icon-right-arrow.rotate-180 {
+  transform: rotate(180deg);
+  display: inline-block;
+}
+
+[dir="rtl"] .fa-arrow-right {
+  transform: rotate(180deg);
+}
+
+[dir="rtl"] .fa-arrow-left {
+  transform: rotate(0deg);
+}
+
+/* Card Hover Effects RTL */
+[dir="rtl"] .book-card,
+[dir="rtl"] .author-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+[dir="rtl"] .book-card:hover,
+[dir="rtl"] .author-card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* Text Alignment for RTL */
+[dir="rtl"] .text-right {
+  text-align: right !important;
+}
+
+[dir="rtl"] .text-left {
+  text-align: left !important;
+}
+
+/* Flex Row Reverse for RTL */
+[dir="rtl"] .flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+/* Button Spacing RTL */
+[dir="rtl"] .thm-btn + .thm-btn {
+  margin-right: 15px;
+  margin-left: 0;
+}
+
+/* Service Features Link RTL */
+[dir="rtl"] .service-features__single .thm-btn {
+  text-align: right;
+  display: inline-block;
+}
+
+/* Ensure proper icon alignment in RTL */
+[dir="rtl"] .service-features__icon i {
+  display: block;
+}
+
+/* Author Card Biography RTL */
+[dir="rtl"] .author-card p {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Book Card Description RTL */
+[dir="rtl"] .book-card p {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Center alignment for stats in RTL */
+[dir="rtl"] .impact-stat {
+  text-align: center !important;
+}
+
+[dir="rtl"] .impact-stat p {
+  text-align: center !important;
+  direction: rtl;
+}
+

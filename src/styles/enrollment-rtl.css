@@ -1,0 +1,199 @@
+/* RTL Styles for Enrollment Page */
+.enrollment-rtl {
+  direction: rtl;
+  text-align: right;
+}
+
+.enrollment-rtl .container {
+  direction: rtl;
+}
+
+/* Form sections RTL */
+.enrollment-rtl .form-section {
+  text-align: right;
+}
+
+.enrollment-rtl .form-section h3 {
+  text-align: right;
+}
+
+.enrollment-rtl .form-section .flex {
+  flex-direction: row-reverse;
+}
+
+/* Input fields RTL */
+.enrollment-rtl input,
+.enrollment-rtl textarea,
+.enrollment-rtl select {
+  direction: rtl;
+  text-align: right;
+}
+
+.enrollment-rtl input::placeholder,
+.enrollment-rtl textarea::placeholder {
+  text-align: right;
+}
+
+/* Button groups RTL */
+.enrollment-rtl .button-group {
+  flex-direction: row-reverse;
+}
+
+.enrollment-rtl .button-group .gap-3 > * + * {
+  margin-right: 0.75rem;
+  margin-left: 0;
+}
+
+/* Progress steps RTL */
+.enrollment-rtl .progress-steps {
+  flex-direction: row-reverse;
+}
+
+.enrollment-rtl .progress-steps .gap-2 > * + * {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+/* Course summary RTL */
+.enrollment-rtl .course-summary {
+  text-align: right;
+}
+
+.enrollment-rtl .course-summary .flex {
+  flex-direction: row-reverse;
+}
+
+.enrollment-rtl .course-summary .flex.items-center.gap-2 > * + * {
+  margin-right: 0.5rem;
+  margin-left: 0;
+}
+
+.enrollment-rtl .course-summary .flex.items-center.gap-3 > * + * {
+  margin-right: 0.75rem;
+  margin-left: 0;
+}
+
+/* Icons RTL positioning */
+.enrollment-rtl .icon-left {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+.enrollment-rtl .icon-right {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+/* Grid RTL */
+.enrollment-rtl .grid {
+  direction: rtl;
+}
+
+/* Badge RTL */
+.enrollment-rtl .badge {
+  direction: rtl;
+}
+
+/* Card content RTL */
+.enrollment-rtl .card-content {
+  text-align: right;
+}
+
+/* Form validation RTL */
+.enrollment-rtl .validation-message {
+  text-align: right;
+}
+
+/* Select dropdown RTL */
+.enrollment-rtl .select-trigger {
+  text-align: right;
+}
+
+.enrollment-rtl .select-content {
+  direction: rtl;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 640px) {
+  .enrollment-rtl .mobile-stack {
+    text-align: right;
+  }
+  
+  .enrollment-rtl .mobile-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Arabic font support */
+.enrollment-rtl {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+}
+
+.enrollment-rtl h1,
+.enrollment-rtl h2,
+.enrollment-rtl h3,
+.enrollment-rtl h4,
+.enrollment-rtl h5,
+.enrollment-rtl h6 {
+  font-family: 'Cairo', 'Amiri', 'Noto Sans Arabic', sans-serif;
+  font-weight: 600;
+}
+
+/* Form field spacing RTL */
+.enrollment-rtl .form-field {
+  margin-bottom: 1rem;
+}
+
+.enrollment-rtl .form-field label {
+  text-align: right;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+/* Hero section RTL */
+.enrollment-rtl .hero-section {
+  text-align: right;
+}
+
+.enrollment-rtl .hero-section h1 {
+  text-align: right;
+}
+
+.enrollment-rtl .hero-section p {
+  text-align: right;
+}
+
+/* Course details RTL */
+.enrollment-rtl .course-details .flex.items-center {
+  justify-content: flex-end;
+}
+
+.enrollment-rtl .course-details .text-muted-foreground {
+  text-align: right;
+}
+
+/* Navigation buttons RTL */
+.enrollment-rtl .nav-buttons {
+  justify-content: space-between;
+}
+
+.enrollment-rtl .nav-buttons.justify-end {
+  justify-content: flex-start;
+}
+
+.enrollment-rtl .nav-buttons.justify-start {
+  justify-content: flex-end;
+}
+
+/* Sticky positioning RTL */
+.enrollment-rtl .sticky {
+  right: auto;
+  left: 0;
+}
+
+/* Toast notifications RTL */
+.enrollment-rtl .toast {
+  direction: rtl;
+  text-align: right;
+}

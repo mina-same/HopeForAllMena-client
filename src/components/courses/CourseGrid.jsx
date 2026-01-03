@@ -1,12 +1,10 @@
 import React from 'react';
-import { Link } from 'gatsby';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import {
     Calendar,
     Clock,
-    DollarSign,
     GraduationCap,
     MapPin,
     Star,
@@ -14,8 +12,7 @@ import {
     BookOpen,
     Award
 } from 'lucide-react';
-import { useTranslation } from 'gatsby-plugin-react-i18next';
-import { useI18next } from 'gatsby-plugin-react-i18next';
+import { useTranslation, useI18next, Link } from 'gatsby-plugin-react-i18next';
 
 const CourseGrid = ({ courses }) => {
     const { t } = useTranslation('Courses');
@@ -68,23 +65,32 @@ const CourseGrid = ({ courses }) => {
                     <CardHeader className="pb-4 relative">
                         {/* Course Image/Icon with Enhanced Design */}
                         <div className="aspect-video bg-[#050517] rounded-xl mb-4 flex items-center justify-center group-hover:from-theme-primary/30 group-hover:via-theme-base/30 group-hover:to-theme-secondary/30 transition-all duration-500 relative overflow-hidden">
-                            <div className="bg-white backdrop-blur-sm rounded-full p-4 group-hover:scale-110 transition-transform duration-300">
-                                <BookOpen className="h-10 w-10 text-theme-primary group-hover:text-theme-base transition-colors duration-300" />
-                            </div>
-
-                            {/* Decorative Corner */}
-                            <div className={`absolute top-3 w-2 h-2 bg-theme-primary rounded-full opacity-60 ${isRTL ? 'left-3' : 'right-3'}`}></div>
+                            {course.imageUrl ? (
+                                <img
+                                    src={course.imageUrl}
+                                    alt={course.title}
+                                    className="w-full h-full object-cover rounded-xl"
+                                />
+                            ) : (
+                                <>
+                                    <div className="bg-white backdrop-blur-sm rounded-full p-4 group-hover:scale-110 transition-transform duration-300">
+                                        <BookOpen className="h-10 w-10 text-theme-primary group-hover:text-theme-base transition-colors duration-300" />
+                                    </div>
+                                    {/* Decorative Corner */}
+                                    <div className={`absolute top-3 w-2 h-2 bg-theme-primary rounded-full opacity-60 ${isRTL ? 'left-3' : 'right-3'}`}></div>
+                                </>
+                            )}
                         </div>
 
                         {/* Title and Badges */}
                         <div className={`space-y-4 ${isRTL ? 'text-right' : ''}`}>
                             <h3 className={`font-bold text-xl leading-tight group-hover:text-theme-primary transition-colors duration-300 line-clamp-2 ${isRTL ? 'font-arabic' : ''}`}>
-                                {isRTL && course.titleAr ? course.titleAr : course.title}
+                                {isRTL ? (course.titleAr || course.title) : (course.titleEn || course.title)}
                             </h3>
 
-                            <div className={`flex flex-wrap gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                            <div className={`flex flex-wrap gap-2 ${isRTL ? 'flex-row' : ''}`}>
                                 <Badge variant="secondary" className="text-xs bg-theme-light/20 text-theme-primary border-theme-primary/20 hover:bg-theme-light/30">
-                                    {isRTL && course.categoryAr ? course.categoryAr : course.category}
+                                    {isRTL ? (course.categoryAr || course.category) : (course.categoryEn || course.category)}
                                 </Badge>
                                 <Badge
                                     variant={course.level === 'beginner' ? 'default' : course.level === 'intermediate' ? 'secondary' : 'destructive'}
@@ -103,29 +109,29 @@ const CourseGrid = ({ courses }) => {
                         {/* Course Info */}
                         <div className="space-y-4">
                             <p className={`text-sm text-foreground line-clamp-3 leading-relaxed ${isRTL ? 'text-right' : ''}`}>
-                                {isRTL && course.shortDescriptionAr ? course.shortDescriptionAr : course.shortDescription}
+                                {isRTL ? (course.shortDescriptionAr || course.shortDescription) : (course.shortDescriptionEn || course.shortDescription)}
                             </p>
 
                             <div className="space-y-3 text-sm">
-                                <div className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                <div className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row' : ''}`}>
                                     <div className="bg-theme-light/20 p-1.5 rounded-lg">
                                         <GraduationCap className="h-4 w-4 text-theme-primary flex-shrink-0" />
                                     </div>
                                     <span className={`truncate font-medium ${isRTL ? 'text-right' : ''}`}>
-                                        {isRTL && course.instructorAr ? course.instructorAr : course.instructor}
+                                        {isRTL ? (course.instructorAr || course.instructor) : (course.instructorEn || course.instructor)}
                                     </span>
                                 </div>
 
-                                <div className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                <div className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row' : ''}`}>
                                     <div className="bg-theme-light/20 p-1.5 rounded-lg">
                                         <Award className="h-4 w-4 text-theme-primary flex-shrink-0" />
                                     </div>
                                     <span className={`truncate ${isRTL ? 'text-right' : ''}`}>
-                                        {isRTL && course.institution.nameAr ? course.institution.nameAr : course.institution.name}
+                                        {isRTL ? (course.institution.nameAr || course.institution.name) : (course.institution.nameEn || course.institution.name)}
                                     </span>
                                 </div>
 
-                                <div className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                <div className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row' : ''}`}>
                                     <div className="bg-theme-light/20 p-1.5 rounded-lg">
                                         <MapPin className="h-4 w-4 text-theme-primary flex-shrink-0" />
                                     </div>
@@ -135,12 +141,12 @@ const CourseGrid = ({ courses }) => {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-3">
-                                    <div className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                    <div className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row' : ''}`}>
                                         <Clock className="h-4 w-4 text-theme-primary flex-shrink-0" />
-                                        <span className="text-xs">{isRTL && course.durationAr ? course.durationAr : course.duration}</span>
+                                        <span className="text-xs">{isRTL ? (course.durationAr || course.duration) : (course.durationEn || course.duration)}</span>
                                     </div>
 
-                                    <div className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                    <div className={`flex items-center gap-2 p-2 rounded-lg transition-colors ${isRTL ? 'flex-row' : ''}`}>
                                         <Calendar className="h-4 w-4 text-theme-primary flex-shrink-0" />
                                         <span className="text-xs">{t('courseCard.starts')} {formatDate(course.startDate)}</span>
                                     </div>
@@ -148,12 +154,12 @@ const CourseGrid = ({ courses }) => {
                             </div>
 
                             {/* Rating and Enrollment */}
-                            <div className={`flex items-center justify-between p-3 bg-[#2194D1]/10 rounded-xl ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                            <div className={`flex items-center justify-between p-3 bg-[#2194D1]/10 rounded-xl ${isRTL ? 'flex-row' : ''}`}>
+                                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row' : ''}`}>
                                     <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                                     <span className="font-semibold text-sm" dir="ltr">{course.averageRating.toFixed(1)}</span>
                                 </div>
-                                <div className={`flex items-center gap-2 text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                <div className={`flex items-center gap-2 text-muted-foreground ${isRTL ? 'flex-row' : ''}`}>
                                     <Users className="h-4 w-4" />
                                     <span className="text-sm font-medium" dir="ltr">{course.totalEnrollments}</span>
                                     <span className="text-sm font-medium">{t('courseCard.enrolled')}</span>
@@ -163,9 +169,8 @@ const CourseGrid = ({ courses }) => {
 
                         {/* Price and CTA */}
                         <div className="space-y-4 pt-4 border-t border-border/50">
-                            <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                    <DollarSign className="h-5 w-5 text-theme-primary" />
+                            <div className={`flex items-center justify-between ${isRTL ? 'flex-row' : ''}`}>
+                                <div className={`flex items-center gap-2 ${isRTL ? 'flex-row' : ''}`}>
                                     <span className="font-bold text-xl text-foreground">
                                         {formatPrice(course.price, course.currency)}
                                     </span>

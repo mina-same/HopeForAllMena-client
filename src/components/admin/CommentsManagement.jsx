@@ -11,8 +11,7 @@ import { Alert, AlertDescription } from '../ui/alert';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
 import { useTranslation } from 'react-i18next';
-import { useI18next } from 'gatsby-plugin-react-i18next';
-import { Link } from 'gatsby';
+import { useI18next, Link } from 'gatsby-plugin-react-i18next';
 
 const CommentsManagement = () => {
   const { user, token } = useAuth();

@@ -1,5 +1,5 @@
 import React from "react";
-import { graphql, Link } from "gatsby";
+import { graphql } from "gatsby";
 import { Container, Row, Col } from "react-bootstrap";
 import { Button } from "../components/ui/button";
 import { Card, CardContent } from "../components/ui/card";
@@ -10,8 +10,7 @@ import PageHeader from "../components/page-header";
 import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
 import BrandCarousel from "../components/brand-carousel";
-import { useTranslation } from "gatsby-plugin-react-i18next";
-import { useI18next } from "gatsby-plugin-react-i18next";
+import { useTranslation, useI18next, Link } from "gatsby-plugin-react-i18next";
 
 import serviceBg from "../assets/images/backgrounds/service-hand-bg-1-1.png";
 import studiesImage from "../assets/images/22.jpg";
@@ -29,12 +28,12 @@ const StudiesEducation = () => {
       <PageHeader title={t("pageTitle")} crumbTitle={t("crumbTitle")} />
       <div dir={isRTL ? "rtl" : "ltr"}>
         {/* Hero Section */}
-        <section 
-          className="service-details pt-120 pb-90" 
+        <section
+          className="service-details pt-120 pb-90"
           style={{ backgroundImage: `url(${serviceBg})` }}
         >
           <Container>
-            <Row className={isRTL ? "flex-row-reverse" : ""}>
+            <Row className={isRTL ? "flex-row" : ""}>
               <Col md={12} lg={6}>
                 <div className={`service-details__content ${isRTL ? "text-right" : ""}`}>
                   <h3 className={isRTL ? "font-arabic" : ""}>{t("hero.title")}</h3>
@@ -51,10 +50,10 @@ const StudiesEducation = () => {
               </Col>
               <Col md={12} lg={6}>
                 <div className="service-details__image">
-                  <img 
-                    src={studiesImage} 
-                    alt={t("pageTitle")} 
-                    className="img-fluid" 
+                  <img
+                    src={studiesImage}
+                    alt={t("pageTitle")}
+                    className="img-fluid"
                   />
                 </div>
               </Col>
@@ -69,7 +68,7 @@ const StudiesEducation = () => {
               <Col md={12}>
                 <Card className="bg-card border shadow-card">
                   <CardContent className={`p-8 ${isRTL ? "text-right" : ""}`}>
-                    <div className={`flex items-center gap-3 mb-6 ${isRTL ? "flex-row-reverse" : ""}`}>
+                    <div className={`flex items-center gap-3 mb-6 ${isRTL ? "flex-row" : ""}`}>
                       <div className="h-12 w-12 bg-[#2194D1] text-white rounded-xl flex items-center justify-center">
                         <BookOpen className="h-6 w-6" />
                       </div>
@@ -94,7 +93,7 @@ const StudiesEducation = () => {
             <div className="absolute top-0 left-0 w-96 h-96 bg-[#2194D1] rounded-full blur-3xl"></div>
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#FF5A3C] rounded-full blur-3xl"></div>
           </div>
-          
+
           <Container className="relative z-10">
             {/* Section Header */}
             <div className={`text-center mb-16 space-y-4 ${isRTL ? "rtl" : ""}`}>
@@ -102,7 +101,7 @@ const StudiesEducation = () => {
                 <BookOpen className="h-4 w-4" />
                 <span className={isRTL ? "font-arabic" : ""}>{t("features.badge")}</span>
               </div>
-              <h2 className={`text-4xl lg:text-5xl font-bold text-foreground ${isRTL ? "font-arabic" : ""}`}>
+              <h2 className={`text-4xl lg:text-5xl font-bold text-foreground text-center ${isRTL ? "font-arabic" : ""}`}>
                 {t("features.sectionTitle")}
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -118,10 +117,10 @@ const StudiesEducation = () => {
                   <Card className="h-full bg-card border-2 border-transparent hover:border-[#2194D1]/30 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
                     {/* Gradient Overlay on Hover */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[#2194D1]/0 via-transparent to-transparent group-hover:from-[#2194D1]/5 transition-all duration-500"></div>
-                    
+
                     <CardContent className={`p-8 relative z-10 ${isRTL ? "text-right" : ""}`}>
                       {/* Icon Container */}
-                      <div className={`mb-6 ${isRTL ? "flex flex-row-reverse" : "flex"}`}>
+                      <div className={`mb-6 ${isRTL ? "flex flex-row" : "flex"}`}>
                         <div className="relative">
                           <div className="absolute inset-0 bg-[#2194D1] blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
                           <div className="relative h-20 w-20 bg-gradient-to-br from-[#2194D1] to-[#1a75a8] text-white rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
@@ -151,10 +150,10 @@ const StudiesEducation = () => {
                   <Card className="h-full bg-card border-2 border-transparent hover:border-[#FF5A3C]/30 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
                     {/* Gradient Overlay on Hover */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[#FF5A3C]/0 via-transparent to-transparent group-hover:from-[#FF5A3C]/5 transition-all duration-500"></div>
-                    
+
                     <CardContent className={`p-8 relative z-10 ${isRTL ? "text-right" : ""}`}>
                       {/* Icon Container */}
-                      <div className={`mb-6 ${isRTL ? "flex flex-row-reverse" : "flex"}`}>
+                      <div className={`mb-6 ${isRTL ? "flex flex-row" : "flex"}`}>
                         <div className="relative">
                           <div className="absolute inset-0 bg-[#FF5A3C] blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
                           <div className="relative h-20 w-20 bg-gradient-to-br from-[#FF5A3C] to-[#e04527] text-white rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
@@ -184,10 +183,10 @@ const StudiesEducation = () => {
                   <Card className="h-full bg-card border-2 border-transparent hover:border-[#FFBA08]/30 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
                     {/* Gradient Overlay on Hover */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[#FFBA08]/0 via-transparent to-transparent group-hover:from-[#FFBA08]/5 transition-all duration-500"></div>
-                    
+
                     <CardContent className={`p-8 relative z-10 ${isRTL ? "text-right" : ""}`}>
                       {/* Icon Container */}
-                      <div className={`mb-6 ${isRTL ? "flex flex-row-reverse" : "flex"}`}>
+                      <div className={`mb-6 ${isRTL ? "flex flex-row" : "flex"}`}>
                         <div className="relative">
                           <div className="absolute inset-0 bg-[#FFBA08] blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
                           <div className="relative h-20 w-20 bg-gradient-to-br from-[#FFBA08] to-[#d99b06] text-white rounded-2xl flex items-center justify-center transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg">
@@ -211,44 +210,6 @@ const StudiesEducation = () => {
                 </div>
               </Col>
             </Row>
-
-            {/* Bottom Statistics Row */}
-            <div className="mt-16 pt-12 border-t border-border/50">
-              <Row className="text-center">
-                <Col xs={6} md={3}>
-                  <div className="space-y-2">
-                    <div className="text-4xl font-bold text-[#2194D1]">10+</div>
-                    <div className={`text-sm text-muted-foreground uppercase tracking-wider ${isRTL ? "font-arabic" : ""}`}>
-                      {t("features.statistics.yearsExperience")}
-                    </div>
-                  </div>
-                </Col>
-                <Col xs={6} md={3}>
-                  <div className="space-y-2">
-                    <div className="text-4xl font-bold text-[#FF5A3C]">500+</div>
-                    <div className={`text-sm text-muted-foreground uppercase tracking-wider ${isRTL ? "font-arabic" : ""}`}>
-                      {t("features.statistics.graduates")}
-                    </div>
-                  </div>
-                </Col>
-                <Col xs={6} md={3}>
-                  <div className="space-y-2">
-                    <div className="text-4xl font-bold text-[#FFBA08]">30+</div>
-                    <div className={`text-sm text-muted-foreground uppercase tracking-wider ${isRTL ? "font-arabic" : ""}`}>
-                      {t("features.statistics.programs")}
-                    </div>
-                  </div>
-                </Col>
-                <Col xs={6} md={3}>
-                  <div className="space-y-2">
-                    <div className="text-4xl font-bold text-[#2194D1]">95%</div>
-                    <div className={`text-sm text-muted-foreground uppercase tracking-wider ${isRTL ? "font-arabic" : ""}`}>
-                      {t("features.statistics.successRate")}
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-            </div>
           </Container>
         </section>
 
@@ -257,10 +218,10 @@ const StudiesEducation = () => {
           <Container>
             <div className={`text-center space-y-8 ${isRTL ? "rtl" : ""}`}>
               <div className="space-y-4">
-                <h2 className={`text-4xl lg:text-5xl font-bold text-foreground ${isRTL ? "font-arabic" : ""}`}>
+                <h2 className={`text-4xl lg:text-5xl font-bold text-foreground text-center ${isRTL ? "font-arabic" : ""}`}>
                   {t("exploreCourses.title")}
                 </h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-center">
                   {t("exploreCourses.subtitle")}
                 </p>
               </div>
@@ -282,7 +243,7 @@ const StudiesEducation = () => {
                 <Users className="h-5 w-5" />
                 <span className={isRTL ? "font-arabic" : ""}>{t("academy.badge")}</span>
               </div>
-              <h2 className={`text-4xl lg:text-5xl font-bold text-foreground ${isRTL ? "font-arabic" : ""}`}>
+              <h2 className={`text-4xl lg:text-5xl font-bold text-foreground text-center ${isRTL ? "font-arabic" : ""}`}>
                 {t("academy.title")}
               </h2>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
@@ -295,7 +256,7 @@ const StudiesEducation = () => {
               <Col md={12} lg={6}>
                 <Card className="h-100 bg-card border shadow-card hover:shadow-hover transition-shadow duration-300">
                   <CardContent className={`p-8 ${isRTL ? "text-right" : ""}`}>
-                    <div className={`flex items-center gap-3 mb-4 ${isRTL ? "flex-row-reverse" : ""}`}>
+                    <div className={`flex items-center gap-3 mb-4 ${isRTL ? "flex-row" : ""}`}>
                       <div className="h-12 w-12 bg-[#2194D1] text-white rounded-xl flex items-center justify-center">
                         <GraduationCap className="h-6 w-6" />
                       </div>
@@ -315,7 +276,7 @@ const StudiesEducation = () => {
               <Col md={12} lg={6}>
                 <Card className="h-100 bg-card border shadow-card hover:shadow-hover transition-shadow duration-300">
                   <CardContent className={`p-8 ${isRTL ? "text-right" : ""}`}>
-                    <div className={`flex items-center gap-3 mb-4 ${isRTL ? "flex-row-reverse" : ""}`}>
+                    <div className={`flex items-center gap-3 mb-4 ${isRTL ? "flex-row" : ""}`}>
                       <div className="h-12 w-12 bg-[#2194D1] text-white rounded-xl flex items-center justify-center">
                         <BookOpen className="h-6 w-6" />
                       </div>
@@ -333,69 +294,11 @@ const StudiesEducation = () => {
           </Container>
         </section>
 
-        {/* Impact Section */}
-        <section className="service-impact pt-20 pb-90">
-          <Container>
-            <Row>
-              <Col md={12}>
-                <div className={`block-title text-center ${isRTL ? "rtl-block-title" : ""}`}>
-                  <h3 className={isRTL ? "font-arabic" : ""}>{t("impact.title")}</h3>
-                  <p>{t("impact.subtitle")}</p>
-                </div>
-              </Col>
-            </Row>
-            <Row className={isRTL ? "flex-row-reverse" : ""}>
-              <Col md={12} lg={6}>
-                <div className={`service-impact__content ${isRTL ? "text-right" : ""}`}>
-                  <h4 className={isRTL ? "font-arabic" : ""}>{t("impact.achievementsTitle")}</h4>
-                  <ul className={`service-impact__list ${isRTL ? "rtl-list" : ""}`}>
-                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.scholarships")}</li>
-                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.centers")}</li>
-                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.teachers")}</li>
-                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.curriculum")}</li>
-                    <li className={isRTL ? "text-right" : ""}>{t("impact.achievements.mentorship")}</li>
-                  </ul>
-                </div>
-              </Col>
-              <Col md={12} lg={6}>
-                <div className="service-impact__stats">
-                  <div className="row">
-                    <div className="col-6">
-                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
-                        <h3>750+</h3>
-                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.students")}</p>
-                      </div>
-                    </div>
-                    <div className="col-6">
-                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
-                        <h3>20+</h3>
-                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.centers")}</p>
-                      </div>
-                    </div>
-                    <div className="col-6">
-                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
-                        <h3>100+</h3>
-                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.teachers")}</p>
-                      </div>
-                    </div>
-                    <div className="col-6">
-                      <div className={`impact-stat ${isRTL ? "text-center" : ""}`}>
-                        <h3>50+</h3>
-                        <p className={isRTL ? "font-arabic" : ""}>{t("impact.stats.scholarships")}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </section>
-
         {/* Addresses Section */}
         <section className="py-20 bg-muted/30">
           <Container>
             <div className={`text-center mb-12 ${isRTL ? "rtl" : ""}`}>
-              <h2 className={`text-4xl lg:text-5xl font-bold text-foreground mb-4 ${isRTL ? "font-arabic" : ""}`}>
+              <h2 className={`text-4xl lg:text-5xl font-bold text-foreground mb-4 text-center ${isRTL ? "font-arabic" : ""}`}>
                 {t("addresses.title")}
               </h2>
             </div>
@@ -403,7 +306,7 @@ const StudiesEducation = () => {
               <Col md={12} lg={6}>
                 <Card className="bg-card border shadow-card hover:shadow-hover transition-shadow duration-300">
                   <CardContent className={`p-8 ${isRTL ? "text-right" : ""}`}>
-                    <div className={`flex items-start gap-4 ${isRTL ? "flex-row-reverse" : ""}`}>
+                    <div className={`flex items-start gap-4 ${isRTL ? "flex-row" : ""}`}>
                       <div className="h-12 w-12 bg-[#2194D1] text-white rounded-xl flex items-center justify-center flex-shrink-0">
                         <MapPin className="h-6 w-6" />
                       </div>
@@ -422,7 +325,7 @@ const StudiesEducation = () => {
               <Col md={12} lg={6}>
                 <Card className="bg-card border shadow-card hover:shadow-hover transition-shadow duration-300">
                   <CardContent className={`p-8 ${isRTL ? "text-right" : ""}`}>
-                    <div className={`flex items-start gap-4 ${isRTL ? "flex-row-reverse" : ""}`}>
+                    <div className={`flex items-start gap-4 ${isRTL ? "flex-row" : ""}`}>
                       <div className="h-12 w-12 bg-[#2194D1] text-white rounded-xl flex items-center justify-center flex-shrink-0">
                         <MapPin className="h-6 w-6" />
                       </div>
@@ -447,10 +350,10 @@ const StudiesEducation = () => {
           <Container>
             <div className={`text-center space-y-8 ${isRTL ? "rtl" : ""}`}>
               <div className="space-y-4">
-                <h2 className={`text-4xl lg:text-5xl font-bold text-foreground ${isRTL ? "font-arabic" : ""}`}>
+                <h2 className={`text-4xl lg:text-5xl font-bold text-foreground text-center ${isRTL ? "font-arabic" : ""}`}>
                   {t("contact.title")}
                 </h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed text-center">
                   {t("contact.subtitle")}
                 </p>
               </div>

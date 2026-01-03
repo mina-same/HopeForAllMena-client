@@ -2,7 +2,7 @@ import React, { useState } from "react"; // Added React import
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Star, ShoppingCart, Eye, Heart } from "lucide-react";
-import { Link, navigate } from "gatsby";
+import { Link, navigate } from "gatsby-plugin-react-i18next";
 
 export function BookCard({
   id,
@@ -65,9 +65,8 @@ export function BookCard({
           </button>
           <button
             onClick={handleLoveToggle}
-            className={`w-10 h-10 backdrop-blur-sm rounded-full flex items-center justify-center hover:scale-110 transition-all duration-200 shadow-lg ${
-              isLoved ? "bg-red-500 text-white" : "bg-white/90 text-red-500 hover:bg-white"
-            }`}
+            className={`w-10 h-10 backdrop-blur-sm rounded-full flex items-center justify-center hover:scale-110 transition-all duration-200 shadow-lg ${isLoved ? "bg-red-500 text-white" : "bg-white/90 text-red-500 hover:bg-white"
+              }`}
             aria-label={isLoved ? "Remove from favorites" : "Add to favorites"}
           >
             <Heart className={`w-4 h-4 ${isLoved ? "fill-current" : ""}`} />
@@ -87,9 +86,8 @@ export function BookCard({
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`w-3 h-3 transition-colors duration-200 ${
-                  i < Math.floor(rating) ? "fill-[#2194D1] text-[#2194D1]" : "text-muted-foreground"
-                }`}
+                className={`w-3 h-3 transition-colors duration-200 ${i < Math.floor(rating) ? "fill-[#2194D1] text-[#2194D1]" : "text-muted-foreground"
+                  }`}
               />
             ))}
             <span className="text-xs text-muted-foreground ml-1">({reviews})</span>

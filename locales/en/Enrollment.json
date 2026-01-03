@@ -1,0 +1,175 @@
+{
+  "title": "Course Enrollment",
+  "subtitle": "Take the next step in your theological journey. Enroll in world-class courses from accredited institutions and expert instructors.",
+  
+  "form": {
+    "title": "Enrollment Application",
+    "subtitle": "Please fill in all sections to complete your enrollment application.",
+    
+    "sections": {
+      "courseSelection": "Course Selection",
+      "personalInfo": "Personal Information", 
+      "churchInfo": "Church Information",
+      "serviceExperience": "Service Experience",
+      "educationMotivation": "Education & Motivation"
+    },
+    
+    "courseSelection": {
+      "title": "Select Your Course",
+      "courseLabel": "Course",
+      "coursePlaceholder": "Choose a course",
+      "courseRequired": "Please select a course",
+      "nextButton": "Next: Personal Information"
+    },
+    
+    "personalInfo": {
+      "title": "Personal Information",
+      "firstName": "First Name",
+      "firstNamePlaceholder": "First name",
+      "secondName": "Second Name", 
+      "secondNamePlaceholder": "Second name",
+      "thirdName": "Third Name",
+      "thirdNamePlaceholder": "Third name", 
+      "fourthName": "Fourth Name",
+      "fourthNamePlaceholder": "Fourth name",
+      "dateOfBirth": "Date of Birth",
+      "dateOfBirthRequired": "Date of birth is required",
+      "gender": "Gender",
+      "genderPlaceholder": "Select gender",
+      "genderRequired": "Gender is required",
+      "male": "Male",
+      "female": "Female",
+      "maritalStatus": "Marital Status",
+      "maritalStatusPlaceholder": "Select status",
+      "single": "Single",
+      "married": "Married",
+      "email": "Email Address",
+      "emailPlaceholder": "your.email@example.com",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "phone": "Phone Number",
+      "phonePlaceholder": "+20 123 456 7890",
+      "phoneRequired": "Phone number is required",
+      "highestEducation": "Highest Education",
+      "highestEducationPlaceholder": "e.g., High School Diploma",
+      "graduationYear": "Graduation Year",
+      "graduationYearPlaceholder": "2020",
+      "currentJob": "Current Job/Study",
+      "currentJobPlaceholder": "Your current occupation or studies",
+      "address": "Detailed Address",
+      "addressPlaceholder": "Full address with street, city, country",
+      "nextButton": "Next: Church Information"
+    },
+    
+    "churchInfo": {
+      "title": "Church Information",
+      "churchName": "Church Name",
+      "churchNamePlaceholder": "Your church name",
+      "churchNameRequired": "Church name is required",
+      "denomination": "Denomination",
+      "denominationPlaceholder": "Church denomination",
+      "pastorName": "Pastor Name",
+      "pastorNamePlaceholder": "Pastor/Responsible priest name",
+      "pastorNameRequired": "Pastor name is required",
+      "pastorPhone": "Pastor Phone",
+      "pastorPhonePlaceholder": "Pastor phone number",
+      "sundaySchoolSupervisor": "Sunday School Supervisor",
+      "sundaySchoolSupervisorPlaceholder": "Sunday school supervisor name",
+      "servantPhone": "Servant Phone",
+      "servantPhonePlaceholder": "Your phone number as servant",
+      "nextButton": "Next: Service Experience"
+    },
+    
+    "serviceExperience": {
+      "title": "Service Experience",
+      "currentService": "Current Service in Church",
+      "currentServicePlaceholder": "Describe your current service in the church",
+      "currentServiceDuration": "Duration of Service in This Ministry",
+      "currentServiceDurationPlaceholder": "e.g., 3 years, 6 months",
+      "serviceSupervisor": "Service Supervisor Name",
+      "serviceSupervisorPlaceholder": "Name of your service supervisor",
+      "supervisorPhone": "Supervisor Phone Number",
+      "supervisorPhonePlaceholder": "Service supervisor's phone number",
+      "servedWithChildren": "Have you served with children before?",
+      "yes": "Yes",
+      "no": "No",
+      "serviceDuration": "Service Duration with Children",
+      "serviceDurationPlaceholder": "e.g., 2 years, 5 months",
+      "talents": "Talents or Skills",
+      "talentsPlaceholder": "What talents or skills do you have that you'd like to use in service?",
+      "nextButton": "Next: Education & Motivation"
+    },
+    
+    "educationMotivation": {
+      "title": "Education & Motivation",
+      "previousEducation": "Have you enrolled in any educational or theological studies before?",
+      "yes": "Yes",
+      "no": "No",
+      "previousEducationDetails": "Previous Education Details",
+      "previousEducationDetailsPlaceholder": "Please provide details about your previous studies",
+      "motivation": "What motivates you to join this academy?",
+      "motivationPlaceholder": "Share your motivation for joining this academy",
+      "referralSource": "How did you learn about this diploma?",
+      "referralSourcePlaceholder": "Select source",
+      "socialMedia": "Social Media",
+      "churchAnnouncement": "Church Announcement",
+      "friend": "Friend",
+      "other": "Other",
+      "referralSourceOther": "Please specify",
+      "referralSourceOtherPlaceholder": "How did you learn about us?",
+      "submitButton": "Submit Enrollment Application"
+    },
+    
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "submit": "Submit Application"
+    },
+    
+    "validation": {
+      "nameRequired": "Name is required",
+      "required": "This field is required"
+    }
+  },
+  
+  "courseSummary": {
+    "title": "Course Summary",
+    "instructor": "Course Instructor",
+    "institution": "Institution",
+    "studyHours": "Study Hours",
+    "courseDuration": "Course Duration",
+    "weeklySchedule": "Weekly Schedule",
+    "startDate": "Course Start Date",
+    "diplomaLevels": "Diploma Levels",
+    "level": "Level",
+    "price": "Price",
+    "free": "Free",
+    "seatsLeft": "seats left",
+    "whatsIncluded": "What's Included:",
+    "courseMaterials": "Full course materials",
+    "expertInstruction": "Expert instruction",
+    "studentSupport": "Student support",
+    "enrolled": "enrolled"
+  },
+  
+  "success": {
+    "title": "✅ Enrollment Added Successfully!",
+    "description": "Your enrollment for \"{{courseTitle}}\" has been submitted successfully. You will receive a confirmation email at {{email}} shortly. Your enrollment ID is: {{enrollmentId}}",
+    "redirecting": "Redirecting to courses page..."
+  },
+  
+  "error": {
+    "title": "❌ Enrollment Failed",
+    "description": "Failed to submit enrollment. Please check your information and try again.",
+    "generic": "An error occurred while processing your enrollment."
+  },
+  
+  "loading": {
+    "submitting": "Submitting enrollment...",
+    "processing": "Processing your application..."
+  },
+  
+  "navigation": {
+    "backToCourses": "Back to Courses"
+  }
+}

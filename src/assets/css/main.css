@@ -670,14 +670,6 @@
   position: relative;
   margin-bottom: 30px;
   border-radius: 50%;
-  background-color: var(--thm-black);
-}
-
-@media (min-width: 1200px) {
-  .event-card-image-inner {
-    margin-bottom: 0;
-    margin-right: 55px;
-  }
 }
 
 .event-card-image-inner span {

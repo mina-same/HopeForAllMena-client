@@ -112,15 +112,15 @@ const CoursesPage = () => {
           
           {/* Content */}
           <div className="container mx-auto px-4 relative z-10">
-            <div className={`max-w-4xl mx-auto text-white ${isRTL ? 'text-right' : 'text-center'}`}>
+            <div className={`max-w-4xl mx-auto text-white ${isRTL ? '' : 'text-center'}`}>
               {/* Badge */}
-              <div className={`inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm font-medium mb-8 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className={`inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white text-sm font-medium mb-8 text-center ${isRTL ? 'flex-row' : ''}`}>
                 <GraduationCap className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 <span className={isRTL ? 'font-arabic' : ''}>{t('hero.badge')}</span>
               </div>
               
               {/* Main Heading */}
-              <h1 className={`text-4xl md:text-6xl lg:text-7xl text-[#2194D1] font-bold mb-6 leading-tight ${isRTL ? 'font-arabic' : ''}`}>
+              <h1 className={`text-4xl md:text-6xl lg:text-7xl text-[#2194D1] font-bold mb-6 leading-relaxed ${isRTL ? '' : ''}`}>
                 {t('hero.title')}
                 <span className="block bg-gradient-to-r from-thm-base to-thm-primary bg-clip-text text-transparent">
                   {t('hero.titleHighlight')}
@@ -128,13 +128,12 @@ const CoursesPage = () => {
               </h1>
               
               {/* Subtitle */}
-              <p className={`text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-3xl mx-auto ${isRTL ? 'text-right' : ''}`}>
+              <p className={`text-xl md:text-2xl text-white/90 mb-12 leading-loose max-w-3xl ${isRTL ? '' : ''}`}>
                 {t('hero.subtitle')}
-                <strong className="text-white"> {t('hero.subtitleBold')}</strong>
               </p>
               
               {/* CTA Buttons */}
-              <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-16 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+              <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-16 ${isRTL ? 'sm:flex-row' : ''}`}>
                 <button className="text-thm-primary bg-[#2194D1] hover:bg-[#2194D1]/90 px-6 py-2 text-sm font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border-0">
                   {t('hero.primaryButton')}
                 </button>
@@ -167,8 +166,8 @@ const CoursesPage = () => {
           {/* Courses Grid */}
           <main className="w-full">
             {/* Header Section */}
-            <div className={`flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-6 ${isRTL ? 'lg:flex-row-reverse' : ''}`}>
-              <div className={`space-y-2 ${isRTL ? 'text-right' : ''}`}>
+            <div className={`flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-6 ${isRTL ? 'lg:flex-row' : ''}`}>
+              <div className={`space-y-2 ${isRTL ? '' : ''}`}>
                 <h2 className={`text-3xl md:text-4xl font-bold bg-gradient-to-r from-thm-primary to-thm-base bg-clip-text text-transparent ${isRTL ? 'font-arabic' : ''}`}>
                   {t('content.title')}
                 </h2>
@@ -180,13 +179,13 @@ const CoursesPage = () => {
               <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
                 <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
                   <SheetTrigger asChild>
-                    <Button variant="outline" className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <Button variant="outline" className={`flex items-center gap-2 ${isRTL ? 'flex-row' : ''}`}>
                       <Filter className="h-4 w-4" />
                       {t('filters.button')}
                     </Button>
                   </SheetTrigger>
                   <SheetContent side={isRTL ? 'left' : 'right'} className="w-80 sm:max-w-80">
-                    <SheetHeader className={isRTL ? 'text-right' : ''}>
+                    <SheetHeader className={isRTL ? '' : ''}>
                       <SheetTitle className={isRTL ? 'font-arabic' : ''}>{t('filters.title')}</SheetTitle>
                     </SheetHeader>
                     <div className="mt-6">

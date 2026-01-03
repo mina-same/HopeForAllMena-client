@@ -17,14 +17,17 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     // Only add auth token for non-public endpoints
-    const isPublicEndpoint = config.url?.includes('/books') ||
-      config.url?.includes('/categories') ||
-      config.url?.includes('/authors') ||
-      config.url?.includes('/courses') ||
-      config.url?.includes('/enrollments') ||
-      (config.url?.includes('/reviews') && config.method === 'post');
+    // Public endpoints are only GET requests for browsing content
+    const method = config.method?.toLowerCase();
+    const isPublicEndpoint = (config.url?.includes('/books') && method === 'get') ||
+      (config.url?.includes('/categories') && method === 'get') ||
+      (config.url?.includes('/authors') && method === 'get') ||
+      (config.url?.includes('/courses') && method === 'get') ||
+      (config.url?.includes('/enrollments') && method === 'get') ||
+      (config.url?.includes('/reviews') && method === 'post');
 
     const token = authStorage.getToken();
+    
     if (token && !isPublicEndpoint) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -44,12 +47,13 @@ api.interceptors.response.use(
       // and if this is not a login attempt or public endpoint
       const currentPath = window.location.pathname;
       const isLoginAttempt = error.config?.url?.includes('/auth/login');
-      const isPublicEndpoint = error.config?.url?.includes('/books') ||
-        error.config?.url?.includes('/categories') ||
-        error.config?.url?.includes('/authors') ||
-        error.config?.url?.includes('/courses') ||
-        error.config?.url?.includes('/enrollments') ||
-        (error.config?.url?.includes('/reviews') && error.config?.method === 'post');
+      const method = error.config?.method?.toLowerCase();
+      const isPublicEndpoint = (error.config?.url?.includes('/books') && method === 'get') ||
+        (error.config?.url?.includes('/categories') && method === 'get') ||
+        (error.config?.url?.includes('/authors') && method === 'get') ||
+        (error.config?.url?.includes('/courses') && method === 'get') ||
+        (error.config?.url?.includes('/enrollments') && method === 'get') ||
+        (error.config?.url?.includes('/reviews') && method === 'post');
 
       if (currentPath !== '/login' && !isLoginAttempt && !isPublicEndpoint) {
         // Token expired or invalid - redirect to login
@@ -482,6 +486,60 @@ export const enrollmentsAPI = {
       rating,
       review,
       wouldRecommend
+    });
+    return response.data;
+  },
+};
+
+// Upload API methods
+export const uploadAPI = {
+  uploadAuthorImage: async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const response = await api.post('/upload/author-image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  uploadBookCover: async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const response = await api.post('/upload/book-cover', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  uploadCourseImage: async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const response = await api.post('/upload/course-image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  uploadTrainingBookCover: async (file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    const response = await api.post('/upload/training-book-cover', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  deleteImage: async (publicId) => {
+    const response = await api.delete('/upload/image', {
+      data: { public_id: publicId }
     });
     return response.data;
   },

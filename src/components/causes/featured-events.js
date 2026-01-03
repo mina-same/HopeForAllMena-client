@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "gatsby";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Container, Row, Col } from "react-bootstrap";
-import { useI18next, useTranslation } from "gatsby-plugin-react-i18next";
+import { useI18next, useTranslation, Link } from "gatsby-plugin-react-i18next";
 import heartImage from "../../assets/images/shapes/heart-2-1.png";
 import defaultEventImage from "../../assets/images/events/event-details-1-1.jpg";
 import eventService from "../../services/eventService";
@@ -157,13 +156,13 @@ const FeaturedEvents = () => {
               </div>
             </div>
             <h3 style={{ minHeight: '60px', display: 'flex', alignItems: 'center' }}>
-              <Link to={`${isArabic ? '/ar' : ''}/event-details/?slug=${event.slug}`}>{title}</Link>
+              <Link to={`/event-details?slug=${event.slug}`}>{title}</Link>
             </h3>
             <p style={{ minHeight: '80px', flex: 1 }}>{description ? description.substring(0, 100) + "..." : ""}</p>
             <div className="cause-card__bottom" style={{ marginTop: 'auto' }}>
               <Link
                 className="thm-btn"
-                to={`${isArabic ? '/ar' : ''}/event-details/?slug=${event.slug}`}
+                to={`/event-details?slug=${event.slug}`}
               >
                 {t("showDetails")}
               </Link>

@@ -39,6 +39,18 @@ module.exports = {
         }
       }
     },
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Hope For All Mena`,
+        short_name: `Hope For All`,
+        start_url: `/`,
+        background_color: `#ffffff`,
+        theme_color: `#2194D1`,
+        display: `minimal-ui`,
+        icon: `src/assets/images/favicons/favicon-32x32.png`,
+      },
+    },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`
   ]

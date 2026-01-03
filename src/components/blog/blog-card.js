@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "gatsby";
+import { Link } from "gatsby-plugin-react-i18next";
 import { useTranslation } from "gatsby-plugin-react-i18next";
 
 const BlogCard = ({ image, title, date, text, link, commentCount, author, currentLanguage }) => {

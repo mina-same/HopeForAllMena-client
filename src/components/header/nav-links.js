@@ -70,9 +70,6 @@ const NavLinks = ({ extraClassName, hideControls = false }) => {
           <Link to="/events">{t('navigation.events')}</Link>
         </li>
         <li>
-          <Link to="/contact">{t('navigation.links')}</Link>
-        </li>
-        <li>
           <Link to="/contact">{t('navigation.contact')}</Link>
         </li>
         {!hideControls && (
