@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, CheckCircle, Shirt, Download, Trash2, AlertTriangle, Package, XCircle, Search } from 'lucide-react';
+import { Eye, CheckCircle, Shirt, Download, Trash2, Package, XCircle } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Input } from '../ui/input';
+import { DataTable } from '../ui/DataTable';
+import { AdminModal } from '../ui/AdminModal';
+import { SectionShell, SearchInput } from '../ui/SectionShell';
 import { useToast } from '../../hooks/use-toast';
 import { cn } from '../../lib/utils';
 import { useTranslation } from 'react-i18next';
@@ -34,16 +34,16 @@ const TrainingFollowUpRequestsSection = () => {
         const token = authStorage.getToken();
         console.log('Token exists:', !!token);
         console.log('Using token from: authStorage');
-        
+
         const response = await fetch('http://localhost:5001/api/training-follow-ups', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
-        
+
         console.log('Response status:', response.status);
         console.log('Response ok:', response.ok);
-        
+
         if (response.ok) {
           const data = await response.json();
           console.log('API Response data:', data);
@@ -53,7 +53,7 @@ const TrainingFollowUpRequestsSection = () => {
         } else {
           const errorText = await response.text();
           console.error('API Error response:', errorText);
-          
+
           if (response.status === 401) {
             toast({
               title: t('errors.authRequired'),
@@ -62,7 +62,7 @@ const TrainingFollowUpRequestsSection = () => {
               duration: 8000,
             });
           }
-          
+
           throw new Error(`Failed to fetch follow-up requests: ${response.status}`);
         }
       } catch (error) {
@@ -86,18 +86,18 @@ const TrainingFollowUpRequestsSection = () => {
       console.log('Request ID:', requestId);
       console.log('New Status:', newStatus);
       console.log('Request ID type:', typeof requestId);
-      
+
       const { authStorage } = require('../../utils/storage');
       const token = authStorage.getToken();
       console.log('Token exists:', !!token);
       console.log('Token preview:', token ? token.substring(0, 20) + '...' : 'No token');
-      
+
       const requestBody = { status: newStatus };
       console.log('Request body:', JSON.stringify(requestBody));
-      
+
       const url = `http://localhost:5001/api/training-follow-ups/${requestId}/status`;
       console.log('Request URL:', url);
-      
+
       const response = await fetch(url, {
         method: 'PATCH',
         headers: {
@@ -113,19 +113,19 @@ const TrainingFollowUpRequestsSection = () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log('✅ Update successful:', responseData);
-        
+
         toast({
           title: t('errors.statusUpdated'),
           description: t(`statusMessages.${newStatus}`),
         });
-        
+
         console.log('Refreshing requests list...');
         setRefetchTrigger(prev => prev + 1); // Refresh the list
       } else {
         const errorText = await response.text();
         console.error('❌ Update failed - Response:', errorText);
         console.error('❌ Status code:', response.status);
-        
+
         // Try to parse error as JSON
         let errorMessage = errorText;
         try {
@@ -134,7 +134,7 @@ const TrainingFollowUpRequestsSection = () => {
         } catch (e) {
           // Keep original error text
         }
-        
+
         throw new Error(`Failed to update status (${response.status}): ${errorMessage}`);
       }
     } catch (error) {
@@ -158,7 +158,7 @@ const TrainingFollowUpRequestsSection = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
@@ -198,7 +198,7 @@ const TrainingFollowUpRequestsSection = () => {
           title: t('errors.requestDeleted'),
           description: t('statusMessages.deleted'),
         });
-        
+
         setRefetchTrigger(prev => prev + 1); // Refresh the list
         setDeleteDialogOpen(false);
         setRequestToDelete(null);
@@ -255,30 +255,158 @@ const TrainingFollowUpRequestsSection = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-lg">{t('loading.requests')}</div>
-      </div>
-    );
-  }
+  const isRTL = currentLanguage === 'ar';
+  const dir = isRTL ? 'rtl' : 'ltr';
+
+  const columns = [
+    {
+      key: 'trainerName',
+      label: t('table.headers.trainer'),
+    },
+    {
+      key: 'name',
+      label: t('table.headers.requester'),
+      render: (row) => (
+        <div>
+          <p className="font-medium">{row.name}</p>
+          <p className="text-sm text-muted-foreground">{row.phoneNumber}</p>
+        </div>
+      ),
+    },
+    {
+      key: 'churchName',
+      label: t('table.headers.church'),
+    },
+    {
+      key: 'address',
+      label: t('table.headers.address'),
+      render: (row) => <span title={row.address}>{row.address || t('table.notAvailable')}</span>,
+    },
+    {
+      key: 'books',
+      label: t('table.headers.books'),
+      render: (row) => <span>{t('table.booksCount', { count: row.books?.length || 0 })}</span>,
+    },
+    {
+      key: 'tshirtSizes',
+      label: t('table.headers.tshirts'),
+      render: (row) => (
+        <div className="flex items-center gap-1">
+          <Shirt className="h-4 w-4" />
+          {Object.entries(row.tshirtSizes || {}).filter(([size]) => size !== '_id').reduce((total, [, qty]) => total + (parseInt(qty) || 0), 0)}
+        </div>
+      ),
+    },
+    {
+      key: 'status',
+      label: t('table.headers.status'),
+      render: (row) => (
+        <Badge
+          variant={getStatusBadgeVariant(row.status)}
+          className={cn("capitalize", getStatusColor(row.status))}
+        >
+          {t(`status.${row.status}`)}
+        </Badge>
+      ),
+    },
+    {
+      key: '_actions',
+      label: t('table.headers.actions'),
+      align: 'end',
+      render: (row) => (
+        <div className={cn("flex items-center", isRTL ? 'space-x-reverse space-x-2' : 'space-x-2')}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSelectedRequest(row)}
+            className="hover:bg-muted rounded-md"
+          >
+            <Eye className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              console.log('Processing request:', row._id);
+              updateRequestStatus(row._id, 'processing');
+            }}
+            className="hover:bg-blue-50 hover:text-blue-700"
+            title="Mark as Processing"
+          >
+            <Package className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              console.log('Fulfilling request:', row._id);
+              updateRequestStatus(row._id, 'fulfilled');
+            }}
+            className="hover:bg-green-50 hover:text-green-700"
+            title="Mark as Fulfilled"
+          >
+            <CheckCircle className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => {
+              console.log('Cancelling request:', row._id);
+              updateRequestStatus(row._id, 'cancelled');
+            }}
+            className="hover:bg-red-50 hover:text-red-700"
+            title="Mark as Cancelled"
+          >
+            <XCircle className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => handleDeleteClick(row)}
+            className="hover:bg-muted rounded-md text-red-600"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
   return (
-    <div className={cn("space-y-6", currentLanguage === 'ar' ? 'rtl' : 'ltr')} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-      <div className={cn("flex items-center justify-between flex-row", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">{t('title')}</h2>
-          <p className="text-muted-foreground">{t('description')}</p>
+    <SectionShell
+      title={t('title')}
+      subtitle={t('description')}
+      dir={dir}
+      filters={
+        <div className={cn("flex flex-row md:flex-row gap-4", isRTL ? 'md:flex-row' : '')}>
+          <SearchInput
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder={t('filters.searchPlaceholder')}
+            dir={dir}
+          />
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger className="w-full md:w-48 flex-row">
+              <SelectValue placeholder={t('filters.filterByStatus')} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{t('filters.status.all')}</SelectItem>
+              <SelectItem value="pending">{t('filters.status.pending')}</SelectItem>
+              <SelectItem value="processing">{t('filters.status.processing')}</SelectItem>
+              <SelectItem value="fulfilled">{t('filters.status.fulfilled')}</SelectItem>
+              <SelectItem value="cancelled">{t('filters.status.cancelled')}</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
-      </div>
-
+      }
+    >
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-primary/5">
           <CardContent className="p-6">
             <div className="flex items-center justify-between flex-row">
               <div>
-                <p className={cn("text-sm font-medium text-muted-foreground", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>{t('stats.totalRequests')}</p>
+                <p className={cn("text-sm font-medium text-muted-foreground", isRTL ? 'text-right' : 'text-left')}>{t('stats.totalRequests')}</p>
                 <p className="text-3xl font-bold text-foreground">{requests.length}</p>
               </div>
               <div className="p-3 rounded-lg bg-primary/10">
@@ -287,12 +415,12 @@ const TrainingFollowUpRequestsSection = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-yellow-500/5">
           <CardContent className="p-6">
             <div className="flex items-center justify-between flex-row">
               <div>
-                <p className={cn("text-sm font-medium text-muted-foreground", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>{t('stats.pending')}</p>
+                <p className={cn("text-sm font-medium text-muted-foreground", isRTL ? 'text-right' : 'text-left')}>{t('stats.pending')}</p>
                 <p className="text-3xl font-bold text-yellow-600">
                   {requests.filter(r => r.status === 'pending').length}
                 </p>
@@ -303,12 +431,12 @@ const TrainingFollowUpRequestsSection = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-purple-500/5">
           <CardContent className="p-6">
             <div className="flex items-center justify-between flex-row">
               <div>
-                <p className={cn("text-sm font-medium text-muted-foreground", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>{t('stats.processing')}</p>
+                <p className={cn("text-sm font-medium text-muted-foreground", isRTL ? 'text-right' : 'text-left')}>{t('stats.processing')}</p>
                 <p className="text-3xl font-bold text-blue-600">
                   {requests.filter(r => r.status === 'processing').length}
                 </p>
@@ -319,12 +447,12 @@ const TrainingFollowUpRequestsSection = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="border-0 shadow-modern bg-gradient-to-br from-card to-green-500/5">
           <CardContent className="p-6">
             <div className="flex items-center justify-between flex-row">
               <div>
-                <p className={cn("text-sm font-medium text-muted-foreground", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>{t('stats.fulfilled')}</p>
+                <p className={cn("text-sm font-medium text-muted-foreground", isRTL ? 'text-right' : 'text-left')}>{t('stats.fulfilled')}</p>
                 <p className="text-3xl font-bold text-green-600">
                   {requests.filter(r => r.status === 'fulfilled').length}
                 </p>
@@ -337,370 +465,211 @@ const TrainingFollowUpRequestsSection = () => {
         </Card>
       </div>
 
-      {/* Requests Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className={cn("flex items-center gap-2", currentLanguage === 'ar' ? 'text-right' : 'text-left')}>
-            <Shirt className="h-5 w-5" />
-            {t('table.count', { count: filteredRequests.length })}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* Filters */}
-          <div className={cn("flex flex-row md:flex-row gap-4 mb-6", currentLanguage === 'ar' ? 'md:flex-row' : '')}>
-            <div className="relative flex-1">
-              <Search className={cn("absolute top-3 h-4 w-4 text-muted-foreground", currentLanguage === 'ar' ? 'right-3' : 'left-3')} />
-              <Input
-                placeholder={t('filters.searchPlaceholder')}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className={currentLanguage === 'ar' ? 'pr-[30px] text-right' : 'pl-[30px]'}
-                dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-              />
+      <DataTable
+        columns={columns}
+        data={filteredRequests}
+        loading={loading}
+        emptyTitle={searchTerm || statusFilter !== 'all' ? 'No matching requests found' : 'No Follow-up Requests'}
+        emptyDescription={searchTerm || statusFilter !== 'all' ? 'Try adjusting your search or filter criteria.' : 'Follow-up requests will appear here when submitted.'}
+        emptyIcon={<Shirt className="h-12 w-12 text-muted-foreground opacity-50" />}
+        countLabel={t('table.count', { count: filteredRequests.length })}
+        dir={dir}
+      />
+
+      {/* View Detail Modal */}
+      <AdminModal
+        open={!!selectedRequest}
+        onClose={setSelectedRequest}
+        title="Follow-up Request Details"
+        size="xl"
+        dir={dir}
+        footer={
+          <Button variant="outline" onClick={() => setSelectedRequest(null)}>
+            Close
+          </Button>
+        }
+      >
+        {selectedRequest && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-foreground mb-3">Contact Information</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Trainer:</span>
+                      <span className="font-medium">{selectedRequest.trainerName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Requester:</span>
+                      <span className="font-medium">{selectedRequest.name}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Church:</span>
+                      <span className="font-medium">{selectedRequest.churchName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Phone:</span>
+                      <span className="font-medium">{selectedRequest.phoneNumber}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Address:</span>
+                      <span className="font-medium">{selectedRequest.address || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">People Served:</span>
+                      <span className="font-medium">{selectedRequest.numberOfServed}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-foreground mb-3">T-shirt Sizes</h4>
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    {Object.entries(selectedRequest.tshirtSizes || {}).filter(([size]) => size !== '_id').map(([size, quantity]) => (
+                      <div key={size} className="flex justify-between p-2 bg-muted/50 rounded">
+                        <span className="text-muted-foreground capitalize">
+                          {size.replace('size', 'Size ')}:
+                        </span>
+                        <span className="font-medium">{quantity}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-2 p-2 bg-primary/10 rounded text-sm">
+                    <div className="flex justify-between font-medium">
+                      <span>Total T-shirts:</span>
+                      <span>{Object.entries(selectedRequest.tshirtSizes || {}).filter(([size]) => size !== '_id').reduce((total, [, qty]) => total + (parseInt(qty) || 0), 0)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-foreground mb-3">Books Requested</h4>
+                  <div className="space-y-3">
+                    {(selectedRequest.books || []).map((book, i) => (
+                      <div key={i} className="p-3 border border-border rounded-lg">
+                        <p className="font-medium text-sm">{book.bookName || 'Unknown Book'}</p>
+                        <p className="text-sm text-muted-foreground">{book.partName}</p>
+                        <div className="flex justify-between items-center mt-2">
+                          <span className="text-xs text-muted-foreground">Copies needed:</span>
+                          <Badge variant="secondary">{book.copies}</Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {selectedRequest.servedListFile && (
+                  <div>
+                    <h4 className="font-semibold text-foreground mb-3">Attendee Names File</h4>
+                    <div className="p-3 border border-border rounded-lg bg-muted/30">
+                      <div className="flex items-center gap-2">
+                        <Download className="h-4 w-4 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">
+                          {selectedRequest.servedListFile.originalName}
+                        </span>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="mt-2 w-full"
+                        onClick={() => downloadFile(selectedRequest._id, selectedRequest.servedListFile.originalName)}
+                      >
+                        <Download className="h-3 w-3 mr-1" />
+                        Download Names File
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                <div>
+                  <h4 className="font-semibold text-foreground mb-3">Request Details</h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Submitted:</span>
+                      <span className="font-medium">
+                        {new Date(selectedRequest.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Status:</span>
+                      <Badge
+                        variant={getStatusBadgeVariant(selectedRequest.status)}
+                        className={cn("capitalize", getStatusColor(selectedRequest.status))}
+                      >
+                        {selectedRequest.status}
+                      </Badge>
+                    </div>
+                    {selectedRequest.notes && (
+                      <div>
+                        <span className="text-muted-foreground">Notes:</span>
+                        <p className="font-medium mt-1">{selectedRequest.notes}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-full md:w-48 flex-row">
-                <SelectValue placeholder={t('filters.filterByStatus')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('filters.status.all')}</SelectItem>
-                <SelectItem value="pending">{t('filters.status.pending')}</SelectItem>
-                <SelectItem value="processing">{t('filters.status.processing')}</SelectItem>
-                <SelectItem value="fulfilled">{t('filters.status.fulfilled')}</SelectItem>
-                <SelectItem value="cancelled">{t('filters.status.cancelled')}</SelectItem>
-              </SelectContent>
-            </Select>
           </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.trainer')}</TableHead>
-                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.requester')}</TableHead>
-                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.church')}</TableHead>
-                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.address')}</TableHead>
-                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.books')}</TableHead>
-                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.tshirts')}</TableHead>
-                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.status')}</TableHead>
-                <TableHead className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.headers.actions')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredRequests.map((request) => (
-                <TableRow key={request._id}>
-                  <TableCell>{request.trainerName}</TableCell>
-                  <TableCell>
-                    <div>
-                      <p className="font-medium">{request.name}</p>
-                      <p className="text-sm text-muted-foreground">{request.phoneNumber}</p>
-                    </div>
-                  </TableCell>
-                  <TableCell>{request.churchName}</TableCell>
-                  <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'} title={request.address}>{request.address || t('table.notAvailable')}</TableCell>
-                  <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>{t('table.booksCount', { count: request.books?.length || 0 })}</TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <Shirt className="h-4 w-4" />
-                      {Object.entries(request.tshirtSizes || {}).filter(([size]) => size !== '_id').reduce((total, [, qty]) => total + (parseInt(qty) || 0), 0)}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge 
-                      variant={getStatusBadgeVariant(request.status)}
-                      className={cn("capitalize", getStatusColor(request.status))}
-                    >
-                      {t(`status.${request.status}`)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <div className={cn("flex items-center", currentLanguage === 'ar' ? 'space-x-reverse space-x-2' : 'space-x-2')}>
-                      <Dialog>
-                        <DialogTrigger asChild>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => setSelectedRequest(request)}
-                            className="hover:bg-primary/10 hover:text-primary"
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                        </DialogTrigger>
-                        <DialogContent className="max-w-6xl max-h-[85vh] overflow-y-auto">
-                          <DialogHeader>
-                            <DialogTitle className="text-xl font-semibold text-foreground">
-                              Follow-up Request Details
-                            </DialogTitle>
-                          </DialogHeader>
-                          {selectedRequest && (
-                            <div className="space-y-6">
-                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <div className="space-y-4">
-                                  <div>
-                                    <h4 className="font-semibold text-foreground mb-3">Contact Information</h4>
-                                    <div className="space-y-2 text-sm">
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Trainer:</span>
-                                        <span className="font-medium">{selectedRequest.trainerName}</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Requester:</span>
-                                        <span className="font-medium">{selectedRequest.name}</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Church:</span>
-                                        <span className="font-medium">{selectedRequest.churchName}</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Phone:</span>
-                                        <span className="font-medium">{selectedRequest.phoneNumber}</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Address:</span>
-                                        <span className="font-medium">{selectedRequest.address || 'N/A'}</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">People Served:</span>
-                                        <span className="font-medium">{selectedRequest.numberOfServed}</span>
-                                      </div>
-                                    </div>
-                                  </div>
+        )}
+      </AdminModal>
 
-                                  <div>
-                                    <h4 className="font-semibold text-foreground mb-3">T-shirt Sizes</h4>
-                                    <div className="grid grid-cols-2 gap-2 text-sm">
-                                      {Object.entries(selectedRequest.tshirtSizes || {}).filter(([size]) => size !== '_id').map(([size, quantity]) => (
-                                        <div key={size} className="flex justify-between p-2 bg-muted/50 rounded">
-                                          <span className="text-muted-foreground capitalize">
-                                            {size.replace('size', 'Size ')}:
-                                          </span>
-                                          <span className="font-medium">{quantity}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                    <div className="mt-2 p-2 bg-primary/10 rounded text-sm">
-                                      <div className="flex justify-between font-medium">
-                                        <span>Total T-shirts:</span>
-                                        <span>{Object.entries(selectedRequest.tshirtSizes || {}).filter(([size]) => size !== '_id').reduce((total, [, qty]) => total + (parseInt(qty) || 0), 0)}</span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+      {/* Delete Confirmation Modal */}
+      <AdminModal
+        open={deleteDialogOpen}
+        onClose={setDeleteDialogOpen}
+        title="Confirm Deletion"
+        size="sm"
+        dir={dir}
+        variant="danger"
+        footer={
+          <div className="flex gap-3 w-full">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setDeleteDialogOpen(false);
+                setRequestToDelete(null);
+              }}
+              className="flex-1"
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+              className="flex-1 font-semibold"
+            >
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete Request
+            </Button>
+          </div>
+        }
+      >
+        <div className="space-y-4">
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-800 font-medium mb-2">
+              Are you sure you want to delete this follow-up request?
+            </p>
+            <p className="text-red-700 text-sm">
+              This action cannot be undone. All request data will be permanently removed.
+            </p>
+          </div>
 
-                                <div className="space-y-4">
-                                  <div>
-                                    <h4 className="font-semibold text-foreground mb-3">Books Requested</h4>
-                                    <div className="space-y-3">
-                                      {(selectedRequest.books || []).map((book, i) => (
-                                        <div key={i} className="p-3 border rounded-lg">
-                                          <p className="font-medium text-sm">{book.bookName || 'Unknown Book'}</p>
-                                          <p className="text-sm text-muted-foreground">{book.partName}</p>
-                                          <div className="flex justify-between items-center mt-2">
-                                            <span className="text-xs text-muted-foreground">Copies needed:</span>
-                                            <Badge variant="secondary">{book.copies}</Badge>
-                                          </div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </div>
-
-                                  {selectedRequest.servedListFile && (
-                                    <div>
-                                      <h4 className="font-semibold text-foreground mb-3">Attendee Names File</h4>
-                                      <div className="p-3 border rounded-lg bg-muted/30">
-                                        <div className="flex items-center gap-2">
-                                          <Download className="h-4 w-4 text-muted-foreground" />
-                                          <span className="text-sm text-muted-foreground">
-                                            {selectedRequest.servedListFile.originalName}
-                                          </span>
-                                        </div>
-                                        <Button 
-                                          variant="outline" 
-                                          size="sm" 
-                                          className="mt-2 w-full"
-                                          onClick={() => downloadFile(selectedRequest._id, selectedRequest.servedListFile.originalName)}
-                                        >
-                                          <Download className="h-3 w-3 mr-1" />
-                                          Download Names File
-                                        </Button>
-                                      </div>
-                                    </div>
-                                  )}
-
-                                  <div>
-                                    <h4 className="font-semibold text-foreground mb-3">Request Details</h4>
-                                    <div className="space-y-2 text-sm">
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Submitted:</span>
-                                        <span className="font-medium">
-                                          {new Date(selectedRequest.createdAt).toLocaleDateString()}
-                                        </span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Status:</span>
-                                        <Badge 
-                                          variant={getStatusBadgeVariant(selectedRequest.status)}
-                                          className={cn("capitalize", getStatusColor(selectedRequest.status))}
-                                        >
-                                          {selectedRequest.status}
-                                        </Badge>
-                                      </div>
-                                      {selectedRequest.notes && (
-                                        <div>
-                                          <span className="text-muted-foreground">Notes:</span>
-                                          <p className="font-medium mt-1">{selectedRequest.notes}</p>
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </DialogContent>
-                      </Dialog>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          console.log('Processing request:', request._id);
-                          updateRequestStatus(request._id, 'processing');
-                        }}
-                        className="hover:bg-blue-50 hover:text-blue-700"
-                        title="Mark as Processing"
-                      >
-                        <Package className="h-4 w-4" />
-                      </Button>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          console.log('Fulfilling request:', request._id);
-                          updateRequestStatus(request._id, 'fulfilled');
-                        }}
-                        className="hover:bg-green-50 hover:text-green-700"
-                        title="Mark as Fulfilled"
-                      >
-                        <CheckCircle className="h-4 w-4" />
-                      </Button>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => {
-                          console.log('Cancelling request:', request._id);
-                          updateRequestStatus(request._id, 'cancelled');
-                        }}
-                        className="hover:bg-red-50 hover:text-red-700"
-                        title="Mark as Cancelled"
-                      >
-                        <XCircle className="h-4 w-4" />
-                      </Button>
-
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteClick(request)}
-                        className="hover:bg-red-50 hover:text-red-700 text-red-600"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-
-          {filteredRequests.length === 0 && !loading && (
-            <div className="text-center py-12">
-              <Shirt className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h3 className="text-lg font-medium text-muted-foreground mb-2">
-                {searchTerm || statusFilter !== 'all' ? 'No matching requests found' : 'No Follow-up Requests'}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {searchTerm || statusFilter !== 'all'
-                  ? 'Try adjusting your search or filter criteria.'
-                  : 'Follow-up requests will appear here when submitted.'}
+          {requestToDelete && (
+            <div className="p-3 bg-muted rounded-lg border border-border">
+              <p className="text-sm text-muted-foreground mb-1">Request Details:</p>
+              <p className="font-semibold text-foreground">{requestToDelete.name}</p>
+              <p className="text-sm text-muted-foreground">{requestToDelete.churchName}</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Submitted: {new Date(requestToDelete.createdAt).toLocaleDateString()}
               </p>
             </div>
           )}
-
-          {requests.length === 0 && !loading && searchTerm === '' && statusFilter === 'all' && (
-            <div className="text-center py-12">
-              <Shirt className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h3 className="text-lg font-medium text-muted-foreground mb-2">No Follow-up Requests</h3>
-              <p className="text-sm text-muted-foreground">Follow-up requests will appear here when submitted.</p>
-              <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <p className="text-sm text-yellow-800">
-                  <strong>Debug Info:</strong> Check browser console for authentication details.
-                  <br />
-                  Expected: 5 requests in database. If not showing, check login status.
-                </p>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="max-w-md bg-white border-0 shadow-2xl">
-          <DialogHeader className="pb-4">
-            <DialogTitle className="text-xl font-bold text-gray-900 flex items-center gap-3">
-              <div className="p-2 bg-red-100 rounded-lg">
-                <AlertTriangle className="h-6 w-6 text-red-600" />
-              </div>
-              Confirm Deletion
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-4">
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-800 font-medium mb-2">
-                Are you sure you want to delete this follow-up request?
-              </p>
-              <p className="text-red-700 text-sm">
-                This action cannot be undone. All request data will be permanently removed.
-              </p>
-            </div>
-            
-            {requestToDelete && (
-              <div className="p-3 bg-gray-50 rounded-lg border">
-                <p className="text-sm text-gray-600 mb-1">Request Details:</p>
-                <p className="font-semibold text-gray-900">{requestToDelete.name}</p>
-                <p className="text-sm text-gray-600">{requestToDelete.churchName}</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Submitted: {new Date(requestToDelete.createdAt).toLocaleDateString()}
-                </p>
-              </div>
-            )}
-            
-            <div className="flex gap-3 pt-2">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setDeleteDialogOpen(false);
-                  setRequestToDelete(null);
-                }}
-                className="flex-1 hover:bg-gray-50"
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={confirmDelete}
-                className="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold"
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Delete Request
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+        </div>
+      </AdminModal>
+    </SectionShell>
   );
 };
 

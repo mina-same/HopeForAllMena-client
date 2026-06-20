@@ -404,7 +404,7 @@ const DashboardOverview = () => {
                     <div className="mt-2">
                       {stat.published !== undefined ? (
                         <div className={`flex gap-1.5 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
-                          <span className="inline-flex items-center rounded-md bg-status-approved px-1.5 py-0.5 text-[10px] font-medium text-status-approved-solid">
+                          <span className="inline-flex items-center rounded-md bg-status-approved px-1.5 py-0.5 text-[10px] font-medium text-status-approved">
                             {stat.published}↑
                           </span>
                           <span className="inline-flex items-center rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
@@ -512,8 +512,8 @@ const DashboardOverview = () => {
                   <span
                     className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${
                       ok
-                        ? 'bg-status-approved text-status-approved-solid ring-status-approved'
-                        : 'bg-status-pending text-status-pending-solid ring-status-pending'
+                        ? 'bg-status-approved text-status-approved ring-status-approved'
+                        : 'bg-status-pending text-status-pending ring-status-pending'
                     }`}
                   >
                     {status}

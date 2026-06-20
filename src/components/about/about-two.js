@@ -38,9 +38,6 @@ const AboutTwo = () => {
           <Col xl={6}>
             <div className="about-two__image">
               <img src={welcomeImage} alt="" style={{ width: '586px', height: '666px', objectFit: 'cover' }} />
-              <div className="about-two__award">
-                <img src={aboutImage} alt="" />
-              </div>
             </div>
           </Col>
           <Col xl={6}>
