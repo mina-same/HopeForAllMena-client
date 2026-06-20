@@ -1,0 +1,105 @@
+{
+  "title": "Development Project Requests",
+  "description": "Manage and review development project requests from churches",
+  "loading": {
+    "requests": "Loading requests..."
+  },
+  "stats": {
+    "totalRequests": "Total Requests",
+    "pending": "Pending",
+    "reviewing": "Under Review",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "filters": {
+    "searchPlaceholder": "Search by name, church, project title...",
+    "filterByStatus": "Filter by status",
+    "status": {
+      "all": "All",
+      "pending": "Pending",
+      "reviewing": "Reviewing",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    }
+  },
+  "table": {
+    "count": "Showing {{count}} requests",
+    "headers": {
+      "requester": "Requester",
+      "church": "Church",
+      "projectTitle": "Project Title",
+      "category": "Category",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  },
+  "categories": {
+    "training-centers": "Training Centers",
+    "talent-development": "Talent Development",
+    "community-engagement": "Community Engagement",
+    "medical-outreach": "Medical Outreach",
+    "evangelism-outreach": "Evangelism & Outreach",
+    "vocational-training": "Vocational Training",
+    "refugees": "Refugee Support",
+    "higher-education": "Higher Education",
+    "critical-need": "Critical Need",
+    "human-development": "Human Development",
+    "other": "Other"
+  },
+  "status": {
+    "pending": "Pending",
+    "reviewing": "Reviewing",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  },
+  "actions": {
+    "view": "View Details",
+    "downloadAttachments": "Download Files",
+    "updateStatus": "Update Status"
+  },
+  "detailsModal": {
+    "title": "Project Request Details",
+    "projectInformation": "Project Information",
+    "contactInformation": "Contact Information",
+    "churchInformation": "Church Information",
+    "projectDetails": "Project Details",
+    "attachments": "Attachments",
+    "fields": {
+      "projectTitle": "Project Title",
+      "category": "Category",
+      "problemStatement": "Problem Statement / Need",
+      "proposedSolution": "Proposed Solution",
+      "projectPhases": "Project Phases & Monitoring",
+      "requesterName": "Requester Name",
+      "phone": "Phone",
+      "email": "Email",
+      "status": "Status",
+      "churchName": "Church Name",
+      "denomination": "Denomination",
+      "country": "Country",
+      "city": "City",
+      "churchAddress": "Church Address",
+      "beneficiaries": "Number of Beneficiaries",
+      "targetGroup": "Target Group",
+      "sustainabilityPlan": "Sustainability Plan",
+      "teamInfo": "Team & Management",
+      "budgetDetails": "Budget Details"
+    }
+  },
+  "errors": {
+    "title": "Error",
+    "loadFailed": "Failed to load requests",
+    "updateFailed": "Failed to update status",
+    "downloadFailed": "Failed to download file",
+    "statusUpdated": "Status Updated"
+  },
+  "statusMessages": {
+    "pending": "Request marked as pending",
+    "reviewing": "Request is now under review",
+    "approved": "Request has been approved",
+    "rejected": "Request has been rejected"
+  },
+  "empty": {
+    "noRequests": "No development project requests found"
+  }
+}

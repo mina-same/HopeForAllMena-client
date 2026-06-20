@@ -20,6 +20,7 @@
     "courseManagement": "إدارة الدورات",
     "magazineManagement": "إدارة المجلات",
     "trainingManagement": "إدارة التدريب",
+    "developmentDepartment": "قسم التنمية",
     "blogManagement": "إدارة المدونة"
   },
   "items": {
@@ -34,6 +35,8 @@
     "trainingBooks": "كتب التدريب",
     "trainingRequests": "طلبات التدريب",
     "trainingFollowUp": "متابعة التدريب",
+    "developmentRequests": "طلبات التنمية",
+    "developmentProjectRequests": "طلبات مشاريع التنمية",
     "generateIds": "إنشاء الهويات",
     "newBlog": "مدونة جديدة",
     "allBlogs": "جميع المدونات",

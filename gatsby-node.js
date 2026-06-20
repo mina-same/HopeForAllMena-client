@@ -9,13 +9,21 @@ exports.onCreatePage = ({ page, actions }) => {
     return;
   }
 
+  // Don't modify root pages — they're static and gatsby-plugin-react-i18next
+  // needs them left alone for client-side language detection to work correctly.
+  // Adding matchPath: '/' here breaks back-button navigation to the home page.
+  const isRoot = page.path === '/' || /^\/[a-z]{2}\/$/.test(page.path);
+  if (isRoot) {
+    return;
+  }
+
   // Delete the original page (since we're going to recreate it)
   deletePage(page);
 
   // Create the new page with client-side routing
   createPage({
     ...page,
-    matchPath: page.path === '/' ? '/' : `${page.path}*`,
+    matchPath: `${page.path}*`,
   });
 };
 

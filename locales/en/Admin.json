@@ -20,6 +20,7 @@
     "courseManagement": "Course Management",
     "magazineManagement": "Magazine Management",
     "trainingManagement": "Training Management",
+    "developmentDepartment": "Development Department",
     "blogManagement": "Blog Management"
   },
   "items": {
@@ -34,6 +35,8 @@
     "trainingBooks": "Training Books",
     "trainingRequests": "Training Requests",
     "trainingFollowUp": "Training Follow-up",
+    "developmentRequests": "Development Requests",
+    "developmentProjectRequests": "Development Project Requests",
     "generateIds": "Generate IDs",
     "newBlog": "New Blog",
     "allBlogs": "All Blogs",

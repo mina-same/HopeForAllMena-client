@@ -1,0 +1,124 @@
+{
+  "pageTitle": "تقديم طلب مشروع || رجاء للجميع الشرق الأوسط",
+  "header": {
+    "title": "طلب مشروع تنموي",
+    "description": "استخدم هذا النموذج لتقديم مشروع تنموي أو مشروع خدمة مجتمعية تقوده الكنيسة للمراجعة. يرجى تقديم معلومات دقيقة ومفصلة لمساعدتنا في تقييم الأثر والاستدامة ودراسة الجدوى وقدرة الفريق ووضوح الميزانية."
+  },
+  "form": {
+    "title": "نموذج طلب مشروع",
+    "subtitle": "الحقول التي تحمل * إلزامية."
+  },
+  "sections": {
+    "requester": "بيانات مقدم الطلب",
+    "church": "بيانات الكنيسة",
+    "project": "تفاصيل المشروع"
+  },
+  "fields": {
+    "applicant": {
+      "full_name": { "label": "الاسم بالكامل" },
+      "phone": { "label": "رقم الهاتف" },
+      "email": { "label": "البريد الإلكتروني" },
+      "age": { "label": "العمر (اختياري)" },
+      "marital_status": {
+        "label": "الحالة الاجتماعية (اختياري)",
+        "placeholder": "اختر...",
+        "options": {
+          "single": "أعزب",
+          "married": "متزوج",
+          "divorced": "مطلق",
+          "widowed": "أرمل"
+        }
+      },
+      "faith_testimony": { "label": "شهادة الإيمان / اختبار شخصي (حد أدنى 50 حرفًا)" },
+      "church_membership_since": { "label": "عضوية الكنيسة منذ (اختياري)" }
+    },
+
+    "church": {
+      "church_name": { "label": "اسم الكنيسة" },
+      "denomination": { "label": "الطائفة (اختياري)" },
+      "governorate": { "label": "المحافظة" },
+      "phone": { "label": "هاتف الكنيسة (اختياري)" },
+      "address": { "label": "عنوان الكنيسة" },
+      "has_church_council": { "label": "هل يوجد مجلس كنيسة؟" },
+      "council_members_names": { "label": "أسماء أعضاء مجلس الكنيسة (اختياري، مفصول بفواصل/سطر جديد)" },
+      "church_community_photos": { "label": "روابط صور الكنيسة والجماعة (اختياري، مفصول بفواصل/سطر جديد)" }
+    },
+
+    "project_core": {
+      "project_name": { "label": "اسم المشروع" },
+      "is_new_project": { "label": "هذا مشروع جديد" },
+      "requested_amount_egp": { "label": "المبلغ المطلوب (جنيه مصري)" },
+      "planned_start_date": { "label": "تاريخ البدء المتوقع (اختياري)" },
+      "previously_received_this_grant": { "label": "هل سبق الحصول على هذه المنحة؟" },
+      "previous_grant_year": { "label": "سنة المنحة السابقة" }
+    },
+
+    "project_details": {
+      "community_overview": { "label": "وصف المجتمع المحيط (حد أدنى 100 حرف)" },
+      "project_summary": { "label": "ملخص المشروع (حد أدنى 80 حرفًا)" },
+      "goals": {
+        "label": "الأهداف",
+        "spiritual": "روحية",
+        "social": "اجتماعية",
+        "economic": "اقتصادية",
+        "other": "أخرى"
+      },
+      "how_goals_will_be_achieved": { "label": "كيفية تحقيق الأهداف (حد أدنى 100 حرف)" },
+      "similar_projects_exist": { "label": "هل توجد مشاريع/خدمات مشابهة في المنطقة؟" },
+      "similar_projects_details": { "label": "تفاصيل المشاريع المشابهة (اختياري)" },
+      "beneficiaries_approximate_number": { "label": "العدد التقريبي للمستفيدين" },
+      "beneficiaries_main_categories": { "label": "الفئات الرئيسية (مفصول بفواصل/سطر جديد)" },
+      "beneficiaries_relation_to_church": { "label": "علاقة المستفيدين بالكنيسة" },
+      "beneficiaries_specific_needs": { "label": "الاحتياجات المحددة" },
+      "beneficiaries_contribution": { "label": "مساهمة المنتفعين" },
+      "monitoring_responsible_name_or_committee": { "label": "اسم المسؤول/اللجنة عن المتابعة" },
+      "monitoring_responsible_position": { "label": "الصفة/المنصب" },
+      "monitoring_plan": { "label": "خطة المتابعة" },
+      "sustainability_plan": { "label": "خطة استمرارية المشروع (حد أدنى 100 حرف)" },
+      "expected_ongoing_income_sufficient": { "label": "هل الإيرادات المستقبلية تغطي المصروفات المستمرة؟" },
+      "ongoing_funding_sources": { "label": "مصادر التمويل المستمر (اختياري)" },
+      "church_contribution": {
+        "label": "مساهمة الكنيسة",
+        "financial": "مالية",
+        "human": "بشرية",
+        "in_kind": "عينية",
+        "other": "أخرى"
+      }
+    },
+
+    "financials": {
+      "previous_year_church_income": { "label": "دخل الكنيسة السنة الماضية (اختياري)" },
+      "previous_year_church_expenses": { "label": "مصروفات الكنيسة السنة الماضية (اختياري)" }
+    },
+
+    "additional_attachments": { "label": "روابط مرفقات إضافية (اختياري، مفصول بفواصل/سطر جديد)" },
+    "applicant_signature_name": { "label": "اسم مقدم الطلب كتوقيع" },
+
+    "attachments": {
+      "label": "مرفقات المشروع (اختياري)",
+      "help": "يمكنك رفع حتى 3 ملفات (PDF, DOC, DOCX, JPG, PNG). الحد الأقصى 10 ميجابايت لكل ملف.",
+      "dragDrop": "اسحب الملفات هنا أو انقر لاختيار الملفات",
+      "selectedFiles": "الملفات المختارة",
+      "removeFile": "إزالة",
+      "maxFilesError": "الحد الأقصى 3 ملفات",
+      "fileSizeError": "الملف كبير جداً. الحد الأقصى 10 ميجابايت لكل ملف.",
+      "invalidType": "نوع الملف غير صالح. يُسمح فقط بـ PDF, DOC, DOCX, JPG, JPEG, PNG."
+    }
+  },
+  "buttons": {
+    "back": "رجوع",
+    "submit": "إرسال الطلب",
+    "submitting": "جارٍ الإرسال..."
+  },
+  "toast": {
+    "success": {
+      "title": "تم إرسال الطلب",
+      "description": "شكرًا لك. تم استلام طلبك وسنتواصل معك بالخطوات التالية."
+    },
+    "error": {
+      "title": "فشل الإرسال",
+      "description": "لم نتمكن من إرسال طلبك. يرجى المحاولة مرة أخرى."
+    }
+  },
+  "validationHint": "هناك حقول إلزامية ناقصة أو غير صحيحة. يرجى مراجعة النموذج ثم المحاولة مرة أخرى."
+}

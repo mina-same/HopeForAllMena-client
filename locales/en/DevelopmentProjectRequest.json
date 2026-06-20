@@ -1,0 +1,124 @@
+{
+  "pageTitle": "Submit a Project Request || Hope For All Mena Ministry",
+  "header": {
+    "title": "Development Project Request",
+    "description": "Use this form to submit a development or church-led community project for review. Please provide detailed, accurate information to help us evaluate impact, sustainability, feasibility, team capacity, and budget clarity."
+  },
+  "form": {
+    "title": "Project Request Form",
+    "subtitle": "Fields marked with * are required."
+  },
+  "sections": {
+    "requester": "Applicant Information",
+    "church": "Church Information",
+    "project": "Project Details"
+  },
+  "fields": {
+    "applicant": {
+      "full_name": { "label": "Full Name" },
+      "phone": { "label": "Phone" },
+      "email": { "label": "Email" },
+      "age": { "label": "Age (Optional)" },
+      "marital_status": {
+        "label": "Marital Status (Optional)",
+        "placeholder": "Select...",
+        "options": {
+          "single": "Single",
+          "married": "Married",
+          "divorced": "Divorced",
+          "widowed": "Widowed"
+        }
+      },
+      "faith_testimony": { "label": "Faith testimony (min 50 characters)" },
+      "church_membership_since": { "label": "Church membership since (Optional)" }
+    },
+
+    "church": {
+      "church_name": { "label": "Church Name" },
+      "denomination": { "label": "Denomination (Optional)" },
+      "governorate": { "label": "Governorate" },
+      "phone": { "label": "Church Phone (Optional)" },
+      "address": { "label": "Church Address" },
+      "has_church_council": { "label": "Has church council?" },
+      "council_members_names": { "label": "Council members (Optional, comma/newline separated)" },
+      "church_community_photos": { "label": "Church/community photos URLs (Optional, comma/newline separated)" }
+    },
+
+    "project_core": {
+      "project_name": { "label": "Project Name" },
+      "is_new_project": { "label": "This is a new project" },
+      "requested_amount_egp": { "label": "Requested amount (EGP)" },
+      "planned_start_date": { "label": "Planned start date (Optional)" },
+      "previously_received_this_grant": { "label": "Previously received this grant?" },
+      "previous_grant_year": { "label": "Previous grant year" }
+    },
+
+    "project_details": {
+      "community_overview": { "label": "Community overview (min 100 characters)" },
+      "project_summary": { "label": "Project summary (min 80 characters)" },
+      "goals": {
+        "label": "Goals",
+        "spiritual": "Spiritual",
+        "social": "Social",
+        "economic": "Economic",
+        "other": "Other"
+      },
+      "how_goals_will_be_achieved": { "label": "How goals will be achieved (min 100 characters)" },
+      "similar_projects_exist": { "label": "Similar projects exist in the area?" },
+      "similar_projects_details": { "label": "Similar projects details (Optional)" },
+      "beneficiaries_approximate_number": { "label": "Approx. # beneficiaries" },
+      "beneficiaries_main_categories": { "label": "Main categories (comma/newline separated)" },
+      "beneficiaries_relation_to_church": { "label": "Relation to church" },
+      "beneficiaries_specific_needs": { "label": "Specific needs" },
+      "beneficiaries_contribution": { "label": "Beneficiaries contribution" },
+      "monitoring_responsible_name_or_committee": { "label": "Monitoring responsible name/committee" },
+      "monitoring_responsible_position": { "label": "Monitoring responsible position" },
+      "monitoring_plan": { "label": "Monitoring plan" },
+      "sustainability_plan": { "label": "Sustainability plan (min 100 characters)" },
+      "expected_ongoing_income_sufficient": { "label": "Expected ongoing income is sufficient?" },
+      "ongoing_funding_sources": { "label": "Ongoing funding sources (Optional)" },
+      "church_contribution": {
+        "label": "Church contribution",
+        "financial": "Financial",
+        "human": "Human resources",
+        "in_kind": "In-kind",
+        "other": "Other"
+      }
+    },
+
+    "financials": {
+      "previous_year_church_income": { "label": "Previous year church income (Optional)" },
+      "previous_year_church_expenses": { "label": "Previous year church expenses (Optional)" }
+    },
+
+    "additional_attachments": { "label": "Additional attachments URLs (Optional, comma/newline separated)" },
+    "applicant_signature_name": { "label": "Applicant signature name" },
+
+    "attachments": {
+      "label": "Project Attachments (Optional)",
+      "help": "Upload up to 3 files (PDF, DOC, DOCX, JPG, PNG). Max 10MB each.",
+      "dragDrop": "Drag and drop files here, or click to select",
+      "selectedFiles": "Selected files",
+      "removeFile": "Remove",
+      "maxFilesError": "Maximum 3 files allowed",
+      "fileSizeError": "File too large. Maximum 10MB per file.",
+      "invalidType": "Invalid file type. Only PDF, DOC, DOCX, JPG, JPEG, and PNG are allowed."
+    }
+  },
+  "buttons": {
+    "back": "Back",
+    "submit": "Submit Request",
+    "submitting": "Submitting..."
+  },
+  "toast": {
+    "success": {
+      "title": "Request submitted",
+      "description": "Thank you. We received your request and will follow up with next steps."
+    },
+    "error": {
+      "title": "Submission failed",
+      "description": "We couldn’t submit your request. Please try again."
+    }
+  },
+  "validationHint": "Some required fields are missing or invalid. Please review the form and try again."
+}

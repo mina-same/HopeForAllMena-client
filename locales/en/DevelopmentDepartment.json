@@ -1,58 +1,81 @@
 {
   "pageTitle": "Development Department || Hope For All Mena Ministry",
-  "title": "Development Department",
+  "title": "Department of Development & Church Projects",
   "breadcrumb": "Services",
   "hero": {
-    "title": "Development Department",
-    "description1": "Our Development Department is committed to creating sustainable change and improving life opportunities for individuals and communities. We focus on holistic development that addresses economic, social, and spiritual needs.",
-    "description2": "Through strategic partnerships, innovative programs, and community-driven initiatives, we work to break cycles of poverty and create pathways to prosperity. Our approach emphasizes capacity building, skill development, and creating opportunities for sustainable income generation.",
-    "description3": "We believe that true development happens when communities are empowered to identify their own needs and solutions, with our role being to provide support, resources, and expertise to help them achieve their goals.",
+    "title": "Department of Development & Church Projects",
+    "intro": "Hope for All MENA Ministries is committed to supporting the local church through Department of Development & Church Projects. We work to build strong bridges of connection with the surrounding community, expressing our faith in practical, creative, and impactful ways.",
+    "primaryCta": "Submit a Project Request",
+    "secondaryCta": "Contact Us",
     "imageAlt": "Development Department"
   },
-  "features": {
-    "economicEmpowerment": {
-      "title": "Economic Empowerment",
-      "description": "Programs designed to create sustainable income opportunities through micro-enterprise development, vocational training, and financial literacy education."
-    },
-    "communityInfrastructure": {
-      "title": "Community Infrastructure",
-      "description": "Development of essential community facilities and services including clean water, sanitation, education centers, and healthcare access."
-    },
-    "capacityBuilding": {
-      "title": "Capacity Building",
-      "description": "Training and mentoring programs that build local leadership, organizational skills, and community management capabilities."
-    }
+  "vision": {
+    "title": "Our Vision",
+    "text": "To contribute to improving life opportunities, enabling individuals and communities to move toward a better and more dignified quality of life."
   },
-  "impact": {
-    "title": "Our Impact",
-    "subtitle": "Building better futures through sustainable development",
-    "achievements": {
-      "title": "What We've Achieved",
-      "list": [
-        "Established micro-enterprise programs in multiple communities",
-        "Built and renovated community centers and schools",
-        "Provided clean water access to thousands of families",
-        "Trained hundreds in vocational and business skills",
-        "Created sustainable employment opportunities"
-      ]
-    },
-    "stats": {
-      "familiesHelped": {
-        "number": "1000+",
-        "label": "Families Helped"
+  "mission": {
+    "title": "Our Mission",
+    "items": [
+      "To serve and empower the local church, equipping it to engage actively and effectively with the wider community.",
+      "To care for the underprivileged, marginalized, and vulnerable groups, helping to improve their living conditions and uncover their God-given talents and potential."
+    ]
+  },
+  "matchingFund": {
+    "title": "Our Goals",
+    "text": "Through strategic partnerships and a Matching Fund model (50%), Hope for All MENA Ministries supports innovative development projects led by local churches—where the church contributes the remaining 50%, ensuring ownership, sustainability, and long-term impact.",
+    "ministryShare": "Hope for All MENA Ministries contribution",
+    "churchShare": "Local church contribution",
+    "quote": "Because the true capital of development work lies in ideas rather than money, Hope for All MENA Ministries focuses on investing in people, not buildings."
+  },
+  "supportAreas": {
+    "title": "Our Areas of Support",
+    "subtitle": "We support church-led initiatives through multiple development and outreach tracks.",
+    "items": [
+      "Establishing and supporting training centers that equip individuals with practical and life skills.",
+      "Talent development programs that help individuals discover and nurture their abilities.",
+      "Supporting strategic development initiatives that strengthen church-led community engagement.",
+      "Organizing medical outreaches and health awareness programs to serve underserved communities.",
+      "Supporting evangelistic and outreach projects that address spiritual and social needs.",
+      "Providing vocational and skills-based training for youth and women, enabling them to gain new professional and income-generating skills.",
+      "Working with refugees in Egypt and beyond, offering humanitarian assistance, first-aid training, and diverse skills development programs.",
+      "Supporting youth access to higher education, including assistance with university enrollment.",
+      "Providing financial and in-kind assistance to families and individuals in critical need.",
+      "Delivering human development and personal growth training to help individuals discover their identity, purpose, and untapped potential."
+    ]
+  },
+  "requirements": {
+    "title": "Project Requirements",
+    "subtitle": "These criteria help ensure accountability, sustainability, and measurable impact for every supported project.",
+    "items": [
+      {
+        "title": "Impact",
+        "text": "The project should have a wide reach and create meaningful impact for the largest possible number of beneficiaries."
       },
-      "projectsCompleted": {
-        "number": "25+",
-        "label": "Projects Completed"
+      {
+        "title": "Sustainability",
+        "text": "The project must be sustainable in nature and not limited to a one-time or temporary activity."
       },
-      "jobsCreated": {
-        "number": "500+",
-        "label": "Jobs Created"
+      {
+        "title": "Feasibility Study",
+        "text": "The project should be based on a real, identified need and offer a practical solution to a genuine problem."
       },
-      "communitiesServed": {
-        "number": "15+",
-        "label": "Communities Served"
+      {
+        "title": "Team-Based Management",
+        "text": "The project should be managed by a dedicated team rather than driven by an individual vision. Effective management and the experience of the team are among the most critical success factors for any project."
+      },
+      {
+        "title": "Project Budget",
+        "text": "The budget must be clearly defined, detailed, and itemized."
+      },
+      {
+        "title": "Project Development & Monitoring",
+        "text": "Clear project phases should be established, with ongoing monitoring and evaluation to track progress from one stage to the next."
       }
-    }
+    ]
+  },
+  "bottomCta": {
+    "title": "Ready to submit a development project?",
+    "text": "Share your project idea with us. We’ll review it using the requirements above and follow up with next steps.",
+    "button": "Submit Project Request"
   }
 }

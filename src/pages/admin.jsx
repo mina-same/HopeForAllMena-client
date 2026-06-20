@@ -3,7 +3,8 @@ import { navigate, graphql } from 'gatsby';
 import { useTranslation } from 'gatsby-plugin-react-i18next';
 import {
   LogOut,
-  Menu
+  Menu,
+  ShieldOff,
 } from 'lucide-react';
 import { reviewsAPI } from '../services/api';
 import { Card, CardContent } from '../components/ui/card';
@@ -22,6 +23,7 @@ import { ContactMessagesSection } from '../components/admin/ContactMessagesSecti
 import ContactMessagesPage from '../components/admin/ContactMessagesPage';
 import TrainingBooksSection from '../components/admin/TrainingBooksSection';
 import TrainingRequestsSection from '../components/admin/TrainingRequestsSection';
+import DevelopmentProjectRequestsSection from '../components/admin/DevelopmentProjectRequestsSection';
 import DashboardOverview from '../components/admin/DashboardOverview';
 import TrainingFollowUpRequestsSection from '../components/admin/TrainingFollowUpRequestsSection';
 import CalendarSection from '../components/admin/CalendarSection';
@@ -99,6 +101,7 @@ const AdminDashboardInner = () => {
     'training-books': ['training-books'],
     'training-requests': ['training-requests'],
     'training-followup-requests': ['training-followup-requests'],
+    'development-requests': ['development-requests'],
     'generate-ids': ['generate-ids'],
     'new-blog': ['blogs'],
     'all-blogs': ['blogs'],
@@ -230,11 +233,13 @@ const AdminDashboardInner = () => {
             <h2 className={`text-2xl font-bold text-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>{t('dashboard.accessDenied')}</h2>
             <p className={`text-muted-foreground ${i18n?.resolvedLanguage === 'ar' ? 'text-right' : 'text-left'}`}>You don't have permission to access this section.</p>
           </div>
-          <Card className="border-0 shadow-modern">
-            <CardContent className="text-center py-12">
-              <div className="text-4xl mb-4">🚫</div>
-              <h3 className="text-lg font-semibold mb-2">{t('dashboard.insufficientPermissions')}</h3>
-              <p className="text-muted-foreground">
+          <Card className="border border-border shadow-sm">
+            <CardContent className="text-center py-16">
+              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-destructive/10">
+                <ShieldOff className="h-7 w-7 text-destructive" />
+              </div>
+              <h3 className="text-base font-semibold text-foreground mb-1">{t('dashboard.insufficientPermissions')}</h3>
+              <p className="text-sm text-muted-foreground max-w-sm mx-auto">
                 {t('dashboard.needPermissions')} {sectionPermissions[activeSection]?.join(', ')}
               </p>
             </CardContent>
@@ -278,6 +283,8 @@ const AdminDashboardInner = () => {
         );
       case 'training-followup-requests':
         return <TrainingFollowUpRequestsSection />;
+      case 'development-requests':
+        return <DevelopmentProjectRequestsSection />;
       case 'messages':
         return <ContactMessagesPage />;
       case 'calendar':
@@ -501,27 +508,27 @@ const AdminDashboardInner = () => {
     <>
       {i18n?.resolvedLanguage === 'ar' ? (
         /* Arabic Layout */
-        <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/30 flex" dir="rtl">
+        <div className="min-h-screen w-full bg-background flex" dir="rtl">
           {/* Sidebar for Arabic - using proper Sidebar component */}
           {isMobile ? (
             <Sheet open={openMobile || false} onOpenChange={setOpenMobile}>
               <SheetContent
                 side="right"
-                className="w-64 p-0 bg-gray-100 dark:bg-gray-900 overflow-y-auto"
+                className="w-64 p-0 bg-sidebar overflow-y-auto border-sidebar-border"
                 dir="rtl"
               >
                 <AdminSidebar
                   activeSection={activeSection}
                   onSectionChange={(section) => {
                     setActiveSection(section);
-                    setOpenMobile(false); // Close mobile sidebar after selection
+                    setOpenMobile(false);
                   }}
                 />
               </SheetContent>
             </Sheet>
           ) : (
             <div
-              className="h-screen bg-gray-100 dark:bg-gray-900 border-l border-gray-200 dark:border-gray-800 fixed right-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64"
+              className="h-screen bg-sidebar border-l border-sidebar-border fixed right-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64"
               style={{
                 transform: sidebarOpen ? 'translateX(0)' : 'translateX(100%)',
                 opacity: sidebarOpen ? 1 : 0,
@@ -545,35 +552,37 @@ const AdminDashboardInner = () => {
             }}
           >
             {/* Header */}
-            <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40" dir="rtl">
-              <div className={`flex h-full items-center px-4 md:px-6 gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                {/* Far left: Logout button */}
+            <header className="h-14 border-b border-border bg-card sticky top-0 z-40 shadow-xs" dir="rtl">
+              <div className="flex h-full items-center px-4 md:px-6 gap-3">
+                {/* Logout */}
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleLogout}
-                  className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors flex items-center"
+                  className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors gap-1.5"
                 >
-                  <span className="hidden sm:inline ml-2">{t('modal.logout')}</span>
                   <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline text-sm">{t('modal.logout')}</span>
                 </Button>
 
-                {/* Middle-left: Other items */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   <LanguageSwitcher variant="admin" className="hidden sm:flex" />
                   <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>{t('header.welcomeBack')}, {user?.name || user?.username || 'Admin'}</span>
+                    <div className="h-7 w-7 rounded-full bg-brand-light flex items-center justify-center text-xs font-semibold text-brand">
+                      {(user?.name || user?.username || 'A')[0].toUpperCase()}
+                    </div>
+                    <span>{user?.name || user?.username || 'Admin'}</span>
                   </div>
                 </div>
 
                 <div className="flex-1" />
 
-                {/* Far right: Toggle menu */}
+                {/* Menu toggle */}
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => isMobile ? setOpenMobile(!openMobile) : setSidebarOpen(!sidebarOpen)}
-                  className="text-sidebar-foreground"
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted"
                 >
                   <Menu className="h-4 w-4" />
                 </Button>
@@ -581,7 +590,7 @@ const AdminDashboardInner = () => {
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 p-4 md:p-6 overflow-auto w-full text-right" dir="rtl">
+            <main className="flex-1 p-5 md:p-8 overflow-auto w-full" dir="rtl">
               {renderDashboardContent()}
             </main>
           </div>
@@ -608,26 +617,26 @@ const AdminDashboardInner = () => {
         </div>
       ) : (
         /* English Layout - Custom with SidebarProvider */
-        <div className="min-h-screen w-full bg-gradient-to-br from-background to-muted/30 flex" dir="ltr">
+        <div className="min-h-screen w-full bg-background flex" dir="ltr">
           {/* Sidebar for English - using proper Sidebar component */}
           {isMobile ? (
             <Sheet open={openMobile || false} onOpenChange={setOpenMobile}>
               <SheetContent
                 side="left"
-                className="w-64 p-0 bg-gray-100 dark:bg-gray-900 overflow-y-auto"
+                className="w-64 p-0 bg-sidebar overflow-y-auto border-sidebar-border"
               >
                 <AdminSidebar
                   activeSection={activeSection}
                   onSectionChange={(section) => {
                     setActiveSection(section);
-                    setOpenMobile(false); // Close mobile sidebar after selection
+                    setOpenMobile(false);
                   }}
                 />
               </SheetContent>
             </Sheet>
           ) : (
             <div
-              className="h-screen bg-gray-100 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 fixed left-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64"
+              className="h-screen bg-sidebar border-r border-sidebar-border fixed left-0 top-0 z-50 overflow-y-auto transition-all duration-300 w-64"
               style={{
                 transform: sidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
                 opacity: sidebarOpen ? 1 : 0,
@@ -651,41 +660,44 @@ const AdminDashboardInner = () => {
             }}
           >
             {/* Header */}
-            <header className="h-14 md:h-16 border-b border-border/50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40" dir="ltr">
-              <div className={`flex h-full items-center px-4 md:px-6 gap-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                {/* Left side items */}
+            <header className="h-14 border-b border-border bg-card sticky top-0 z-40 shadow-xs" dir="ltr">
+              <div className="flex h-full items-center px-4 md:px-6 gap-3">
+                {/* Menu toggle */}
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => isMobile ? setOpenMobile(!openMobile) : setSidebarOpen(!sidebarOpen)}
-                  className="text-sidebar-foreground"
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted"
                 >
                   <Menu className="h-4 w-4" />
                 </Button>
 
                 <div className="flex-1" />
 
-                {/* Right side items */}
-                <div className="flex items-center gap-4">
+                {/* Right side */}
+                <div className="flex items-center gap-3">
                   <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>{t('header.welcomeBack')}, {user?.name || user?.username || 'Admin'}</span>
+                    <div className="h-7 w-7 rounded-full bg-brand-light flex items-center justify-center text-xs font-semibold text-brand">
+                      {(user?.name || user?.username || 'A')[0].toUpperCase()}
+                    </div>
+                    <span>{user?.name || user?.username || 'Admin'}</span>
                   </div>
                   <LanguageSwitcher variant="admin" className="hidden sm:flex" />
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={handleLogout}
-                    className="text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors flex items-center"
+                    className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors gap-1.5"
                   >
-                    <LogOut className="h-4 w-4 mr-2" />
-                    <span className="hidden sm:inline">{t('modal.logout')}</span>
+                    <LogOut className="h-4 w-4" />
+                    <span className="hidden sm:inline text-sm">{t('modal.logout')}</span>
                   </Button>
                 </div>
               </div>
             </header>
 
             {/* Main Content */}
-            <main className="flex-1 p-4 md:p-6 overflow-auto w-full text-left" dir="ltr">
+            <main className="flex-1 p-5 md:p-8 overflow-auto w-full" dir="ltr">
               {renderDashboardContent()}
             </main>
           </div>
@@ -727,7 +739,7 @@ const AdminDashboard = () => {
   return (
     <ProtectedRoute
       requireAuth={true}
-      requiredPermissions={['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids']}
+      requiredPermissions={['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'development-requests', 'calendar', 'generate-ids', 'blogs']}
     >
       <Layout pageTitle="Admin Dashboard || Hope for All Mena || Charity React Next Template">
         <AdminDashboardContent />

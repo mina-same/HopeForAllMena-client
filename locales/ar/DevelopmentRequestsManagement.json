@@ -1,0 +1,105 @@
+{
+  "title": "طلبات مشاريع التنمية",
+  "description": "إدارة ومراجعة طلبات مشاريع التنمية من الكنائس",
+  "loading": {
+    "requests": "جاري تحميل الطلبات..."
+  },
+  "stats": {
+    "totalRequests": "إجمالي الطلبات",
+    "pending": "معلقة",
+    "reviewing": "قيد المراجعة",
+    "approved": "تمت الموافقة",
+    "rejected": "مرفوضة"
+  },
+  "filters": {
+    "searchPlaceholder": "البحث بالاسم، الكنيسة، عنوان المشروع...",
+    "filterByStatus": "تصفية حسب الحالة",
+    "status": {
+      "all": "الكل",
+      "pending": "معلقة",
+      "reviewing": "قيد المراجعة",
+      "approved": "تمت الموافقة",
+      "rejected": "مرفوضة"
+    }
+  },
+  "table": {
+    "count": "عرض {{count}} طلب",
+    "headers": {
+      "requester": "مقدم الطلب",
+      "church": "الكنيسة",
+      "projectTitle": "عنوان المشروع",
+      "category": "التصنيف",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    }
+  },
+  "categories": {
+    "training-centers": "مراكز التدريب",
+    "talent-development": "تنمية المواهب",
+    "community-engagement": "خدمة المجتمع",
+    "medical-outreach": "قوافل طبية",
+    "evangelism-outreach": "الكرازة والخدمة",
+    "vocational-training": "تدريب مهني",
+    "refugees": "دعم اللاجئين",
+    "higher-education": "التعليم العالي",
+    "critical-need": "احتياج شديد",
+    "human-development": "تنمية بشرية",
+    "other": "أخرى"
+  },
+  "status": {
+    "pending": "معلقة",
+    "reviewing": "قيد المراجعة",
+    "approved": "تمت الموافقة",
+    "rejected": "مرفوضة"
+  },
+  "actions": {
+    "view": "عرض التفاصيل",
+    "downloadAttachments": "تحميل الملفات",
+    "updateStatus": "تحديث الحالة"
+  },
+  "detailsModal": {
+    "title": "تفاصيل طلب المشروع",
+    "projectInformation": "معلومات المشروع",
+    "contactInformation": "معلومات التواصل",
+    "churchInformation": "معلومات الكنيسة",
+    "projectDetails": "تفاصيل المشروع",
+    "attachments": "المرفقات",
+    "fields": {
+      "projectTitle": "عنوان المشروع",
+      "category": "التصنيف",
+      "problemStatement": "المشكلة / الاحتياج",
+      "proposedSolution": "الحل المقترح",
+      "projectPhases": "مراحل المشروع والمتابعة",
+      "requesterName": "اسم مقدم الطلب",
+      "phone": "الهاتف",
+      "email": "البريد الإلكتروني",
+      "status": "الحالة",
+      "churchName": "اسم الكنيسة",
+      "denomination": "الطائفة",
+      "country": "الدولة",
+      "city": "المدينة",
+      "churchAddress": "عنوان الكنيسة",
+      "beneficiaries": "عدد المستفيدين",
+      "targetGroup": "الفئة المستهدفة",
+      "sustainabilityPlan": "خطة الاستدامة",
+      "teamInfo": "الفريق والإدارة",
+      "budgetDetails": "تفاصيل الميزانية"
+    }
+  },
+  "errors": {
+    "title": "خطأ",
+    "loadFailed": "فشل تحميل الطلبات",
+    "updateFailed": "فشل تحديث الحالة",
+    "downloadFailed": "فشل تحميل الملف",
+    "statusUpdated": "تم تحديث الحالة"
+  },
+  "statusMessages": {
+    "pending": "تم وضع الطلب كمعلق",
+    "reviewing": "الطلب قيد المراجعة الآن",
+    "approved": "تمت الموافقة على الطلب",
+    "rejected": "تم رفض الطلب"
+  },
+  "empty": {
+    "noRequests": "لا توجد طلبات مشاريع تنمية"
+  }
+}

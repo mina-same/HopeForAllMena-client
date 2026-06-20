@@ -340,48 +340,44 @@ const DashboardOverview = () => {
     );
   }
 
+  const isRTL = currentLanguage === 'ar';
+  const dir = isRTL ? 'rtl' : 'ltr';
+
   return (
-    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-      {/* Header */}
-      <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-        <h1 className="text-3xl font-bold text-foreground mb-2">
-          {t('dashboard.title')}
-        </h1>
-        <p className="text-muted-foreground text-lg">
+    <div className={`space-y-8 ${isRTL ? 'rtl' : 'ltr'}`} dir={dir}>
+
+      {/* ── Page Header ──────────────────────────────────────── */}
+      <div className={isRTL ? 'text-right' : 'text-left'}>
+        <div className={`flex items-center gap-2.5 mb-1 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
+          <div className="w-1 h-6 rounded-full bg-brand flex-shrink-0" />
+          <h1 className="text-2xl font-semibold text-foreground tracking-tight">
+            {t('dashboard.title')}
+          </h1>
+        </div>
+        <p className={`text-sm text-muted-foreground ${isRTL ? 'mr-[18px]' : 'ml-[18px]'}`}>
           {t('dashboard.subtitle')}
         </p>
-        <div className="flex items-center gap-2 mt-2">
-          <Badge variant="outline" className="text-sm">
-            <Activity className="h-3 w-3 mr-1" />
-            Last updated: {new Date().toLocaleDateString()}
-          </Badge>
-        </div>
       </div>
 
-      {/* Main Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* ── Primary KPI Row ───────────────────────────────────── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((stat, index) => {
           const IconComponent = stat.icon;
           return (
-            <Card key={index} className={`border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 ${stat.borderColor} border-l-4`}>
-              <CardContent className="p-6">
-                <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                  <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">
+            <Card key={index} className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+              <CardContent className="p-5">
+                <div className={`flex items-start justify-between gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
                       {stat.title}
                     </p>
-                    <p className="text-3xl font-bold text-foreground mb-1">
+                    <p className="text-3xl font-bold text-foreground tabular-nums leading-none">
                       {stat.value}
                     </p>
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-3 w-3 text-green-500" />
-                      <span className="text-xs text-green-600 font-medium">
-                        {stat.trend}
-                      </span>
-                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">{stat.trend}</p>
                   </div>
-                  <div className={`p-3 rounded-xl ${stat.bgColor}`}>
-                    <IconComponent className={`h-8 w-8 ${stat.color}`} />
+                  <div className={`p-2.5 rounded-xl flex-shrink-0 ${stat.bgColor}`}>
+                    <IconComponent className={`h-5 w-5 ${stat.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -390,43 +386,38 @@ const DashboardOverview = () => {
         })}
       </div>
 
-      {/* Quick Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* ── Secondary KPI Row ─────────────────────────────────── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {quickStats.map((stat, index) => {
           const IconComponent = stat.icon;
           return (
-            <Card key={index} className={`border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 ${stat.borderColor} border-l-4`}>
-              <CardContent className="p-6">
-                <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                  <div className={`${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                    <p className="text-sm font-medium text-muted-foreground mb-1">
+            <Card key={index} className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
+              <CardContent className="p-5">
+                <div className={`flex items-start justify-between gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
                       {stat.title}
                     </p>
-                    <p className="text-3xl font-bold text-foreground mb-1">
+                    <p className="text-3xl font-bold text-foreground tabular-nums leading-none">
                       {stat.value}
                     </p>
-                    <div className="flex items-center gap-1">
+                    <div className="mt-2">
                       {stat.published !== undefined ? (
-                        <div className="flex gap-2 mt-1">
-                          <Badge variant="secondary" className="text-xs">
-                            {stat.published} Published
-                          </Badge>
-                          <Badge variant="outline" className="text-xs">
-                            {stat.draft} Draft
-                          </Badge>
+                        <div className={`flex gap-1.5 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <span className="inline-flex items-center rounded-md bg-status-approved px-1.5 py-0.5 text-[10px] font-medium text-status-approved-solid">
+                            {stat.published}↑
+                          </span>
+                          <span className="inline-flex items-center rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                            {stat.draft} draft
+                          </span>
                         </div>
                       ) : (
-                        <>
-                          <TrendingUp className="h-3 w-3 text-green-500" />
-                          <span className="text-xs text-green-600 font-medium">
-                            {stat.trend}
-                          </span>
-                        </>
+                        <p className="text-xs text-muted-foreground">{stat.trend}</p>
                       )}
                     </div>
                   </div>
-                  <div className={`p-3 rounded-xl ${stat.bgColor}`}>
-                    <IconComponent className={`h-8 w-8 ${stat.color}`} />
+                  <div className={`p-2.5 rounded-xl flex-shrink-0 ${stat.bgColor}`}>
+                    <IconComponent className={`h-5 w-5 ${stat.color}`} />
                   </div>
                 </div>
               </CardContent>
@@ -435,43 +426,54 @@ const DashboardOverview = () => {
         })}
       </div>
 
-      {/* Recent Activity */}
+      {/* ── Activity + Status ─────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="border border-gray-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'text-right flex-row-reverse' : 'text-left'}`}>
-              <Clock className="h-5 w-5 text-primary" />
+
+        {/* Recent Activity */}
+        <Card className="bg-card border border-border shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className={`flex items-center gap-2 text-base font-semibold ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+              <Clock className="h-4 w-4 text-brand flex-shrink-0" />
               Recent Activity
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
+          <CardContent className="pt-0">
+            <div className="space-y-1">
               {loading ? (
-                <div className="text-center py-8">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-                  <p className="text-muted-foreground">Loading activity...</p>
+                <div className="space-y-2 py-2">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="flex gap-3 p-2 animate-pulse">
+                      <div className="w-8 h-8 rounded-full bg-muted flex-shrink-0" />
+                      <div className="flex-1 space-y-1.5">
+                        <div className="h-3 bg-muted rounded w-3/4" />
+                        <div className="h-2.5 bg-muted rounded w-1/2" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : recentActivity.length > 0 ? (
-                recentActivity.map((activity, index) => {
+                recentActivity.map((activity) => {
                   const IconComponent = activity.icon;
                   return (
-                    <div key={activity.id} className={`flex items-start gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                      <div className={`p-2 rounded-full ${activity.bgColor}`}>
-                        <IconComponent className={`h-4 w-4 ${activity.color}`} />
+                    <div
+                      key={activity.id}
+                      className={`flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+                    >
+                      <div className={`p-1.5 rounded-full flex-shrink-0 mt-0.5 ${activity.bgColor}`}>
+                        <IconComponent className={`h-3.5 w-3.5 ${activity.color}`} />
                       </div>
-                      <div className={`flex-1 ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                        <p className="text-sm font-medium text-foreground">{activity.title}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{activity.description}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{activity.time}</p>
+                      <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
+                        <p className="text-sm font-medium text-foreground leading-snug">{activity.title}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 truncate">{activity.description}</p>
+                        <p className="text-[10px] text-muted-foreground/70 mt-0.5">{activity.time}</p>
                       </div>
                     </div>
                   );
                 })
               ) : (
-                <div className="text-center py-8">
-                  <Activity className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">No recent activity</p>
-                  <p className="text-xs text-muted-foreground mt-1">Activity will appear here as users interact with the system</p>
+                <div className="text-center py-10">
+                  <Activity className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">No recent activity</p>
                 </div>
               )}
             </div>
@@ -479,54 +481,45 @@ const DashboardOverview = () => {
         </Card>
 
         {/* System Status */}
-        <Card className="border border-gray-200 shadow-sm">
-          <CardHeader>
-            <CardTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'text-right flex-row-reverse' : 'text-left'}`}>
-              <BarChart3 className="h-5 w-5 text-primary" />
+        <Card className="bg-card border border-border shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className={`flex items-center gap-2 text-base font-semibold ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+              <BarChart3 className="h-4 w-4 text-brand flex-shrink-0" />
               System Status
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span className="text-sm">Database Connection</span>
+          <CardContent className="pt-0">
+            <div className="space-y-1">
+              {[
+                { icon: CheckCircle, label: 'Database Connection', status: 'Online', ok: true },
+                { icon: CheckCircle, label: 'API Services', status: 'Active', ok: true },
+                { icon: CheckCircle, label: 'File Storage', status: 'Available', ok: true },
+                {
+                  icon: AlertCircle,
+                  label: 'Pending Reviews',
+                  status: `${stats.pendingReviews} items`,
+                  ok: stats.pendingReviews === 0,
+                },
+              ].map(({ icon: Icon, label, status, ok }) => (
+                <div
+                  key={label}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+                >
+                  <div className={`flex items-center gap-2.5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <Icon className={`h-4 w-4 flex-shrink-0 ${ok ? 'text-status-approved' : 'text-status-pending'}`} />
+                    <span className="text-sm text-foreground">{label}</span>
+                  </div>
+                  <span
+                    className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${
+                      ok
+                        ? 'bg-status-approved text-status-approved-solid ring-status-approved'
+                        : 'bg-status-pending text-status-pending-solid ring-status-pending'
+                    }`}
+                  >
+                    {status}
+                  </span>
                 </div>
-                <Badge variant="secondary" className="bg-green-100 text-green-800">
-                  Online
-                </Badge>
-              </div>
-              
-              <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span className="text-sm">API Services</span>
-                </div>
-                <Badge variant="secondary" className="bg-green-100 text-green-800">
-                  Active
-                </Badge>
-              </div>
-              
-              <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span className="text-sm">File Storage</span>
-                </div>
-                <Badge variant="secondary" className="bg-green-100 text-green-800">
-                  Available
-                </Badge>
-              </div>
-              
-              <div className={`flex items-center justify-between ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                  <AlertCircle className="h-4 w-4 text-amber-500" />
-                  <span className="text-sm">Pending Reviews</span>
-                </div>
-                <Badge variant="secondary" className="bg-amber-100 text-amber-800">
-                  {stats.pendingReviews} items
-                </Badge>
-              </div>
+              ))}
             </div>
           </CardContent>
         </Card>

@@ -46,6 +46,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   const [coursesOpen, setCoursesOpen] = useState(true);
   const [magazinesOpen, setMagazinesOpen] = useState(true);
   const [trainingOpen, setTrainingOpen] = useState(true);
+  const [developmentOpen, setDevelopmentOpen] = useState(true);
   const [blogOpen, setBlogOpen] = useState(true);
   const [pendingReviews, setPendingReviews] = useState(0);
   const [unreadMessages, setUnreadMessages] = useState(0);
@@ -74,6 +75,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
     'training-books': ['training-books'],
     'training-requests': ['training-requests'],
     'training-followup-requests': ['training-followup-requests'],
+    'development-requests': ['development-requests'],
     'generate-ids': ['generate-ids'],
     'new-blog': ['blogs'],
     'all-blogs': ['blogs'],
@@ -245,6 +247,14 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
     }
   ].filter(item => hasSectionPermission(item.id));
 
+  const developmentItems = [
+    {
+      title: t('items.developmentProjectRequests'),
+      icon: FileText,
+      id: 'development-requests'
+    }
+  ].filter(item => hasSectionPermission(item.id));
+
   const blogItems = [
     {
       title: t('items.newBlog'),
@@ -268,7 +278,7 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   };
 
   // If user has no permissions, show a message
-  if (!user || (!hasAnyPermission(['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'calendar', 'generate-ids']) && mainItems.length === 0)) {
+  if (!user || (!hasAnyPermission(['books', 'authors', 'categories', 'reviews', 'courses', 'enrollments', 'magazines', 'training', 'analytics', 'settings', 'users', 'user-management', 'contact-messages', 'training-books', 'training-requests', 'training-followup-requests', 'development-requests', 'calendar', 'generate-ids', 'blogs']) && mainItems.length === 0)) {
     return (
       <Sidebar className={cn("border-sidebar-border bg-sidebar", isRTL ? "border-l" : "border-r")} dir={isRTL ? "rtl" : "ltr"}>
           <SidebarHeader className="border-b border-sidebar-border p-4">
@@ -503,6 +513,48 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
                       <CollapsibleContent>
                         <SidebarMenuSub>
                           {trainingItems.map((item) => (
+                            <SidebarMenuSubItem key={item.id}>
+                              <SidebarMenuSubButton
+                                onClick={() => handleItemClick(item.id)}
+                                isActive={activeSection === item.id}
+                                className={cn(
+                                  "w-full bg-sidebar justify-start gap-3 rounded-lg px-3 py-2 text-sidebar-foreground/80 transition-all duration-200"
+                                )}
+                              >
+                                <item.icon className="h-4 w-4 flex-shrink-0 text-sidebar-foreground/80" />
+                                <span className="whitespace-nowrap">{item.title}</span>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </SidebarMenuItem>
+                )}
+
+                {/* Development Department */}
+                {developmentItems.length > 0 && (
+                  <SidebarMenuItem>
+                    <Collapsible open={developmentOpen} onOpenChange={setDevelopmentOpen}>
+                      <CollapsibleTrigger asChild>
+                        <SidebarMenuButton
+                          className={cn(
+                            "w-full bg-sidebar gap-3 rounded-lg px-3 py-2.5 text-sidebar-foreground transition-all duration-200 [&[data-state=open]>svg:last-child]:rotate-90",
+                            "hover:bg-[#2194D1]",
+                            isRTL ? "justify-end" : "justify-start"
+                          )}
+                        >
+                          <FileText className="h-4 w-4 flex-shrink-0" />
+                          <span className={cn("font-medium whitespace-nowrap", isRTL && "text-right")}>
+                            {t('sections.developmentDepartment')}
+                          </span>
+                          <ChevronIcon className={cn("h-4 w-4 flex-shrink-0 transition-transform duration-200", isRTL ? "mr-auto" : "ml-auto")} />
+                        </SidebarMenuButton>
+                      </CollapsibleTrigger>
+
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {developmentItems.map((item) => (
                             <SidebarMenuSubItem key={item.id}>
                               <SidebarMenuSubButton
                                 onClick={() => handleItemClick(item.id)}
