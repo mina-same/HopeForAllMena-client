@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import { Plus, Search, Edit, Trash2, Shield, ShieldCheck, Eye, EyeOff, RefreshCw, AlertCircle } from 'lucide-react';
+import { Plus, Edit, Trash2, Shield, ShieldCheck, Eye, EyeOff, RefreshCw, AlertCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Switch } from '../ui/switch';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
 import { Label } from '../ui/label';
 import { Checkbox } from '../ui/checkbox';
 import { Avatar, AvatarFallback } from '../ui/avatar';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { usersAPI } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import Layout from '../layout';
@@ -18,6 +16,9 @@ import ConfirmationModal from '../ui/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
 import './UserManagement-rtl.css';
+import { DataTable } from '../ui/DataTable';
+import { AdminModal } from '../ui/AdminModal';
+import { SectionShell, SearchInput } from '../ui/SectionShell';
 
 const availablePermissions = [
   { id: 'books', label: 'Books & Publishing', description: 'Manage books, authors, categories, and reviews' },
@@ -40,20 +41,21 @@ const availablePermissions = [
 ];
 
 // Separate FormDialog component to prevent re-renders
-const FormDialog = React.memo(({ 
-  isEdit, 
-  initialData, 
-  onSubmit, 
-  onCancel, 
+const FormDialog = React.memo(({
+  isEdit,
+  initialData,
+  onSubmit,
+  onCancel,
   isSubmitting,
-  error 
+  error,
+  open,
+  currentLanguage
 }) => {
   const { t } = useTranslation('UserManagement');
-  const { language: currentLanguage } = useI18next();
   const [formData, setFormData] = useState(initialData);
   const [showPassword, setShowPassword] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
-  
+
   // Update form data when initialData changes
   useEffect(() => {
     setFormData(initialData);
@@ -64,7 +66,7 @@ const FormDialog = React.memo(({
   useEffect(() => {
     if (error) {
       const errors = {};
-      
+
       // Try to parse structured error response
       let errorData = error;
       if (typeof error === 'string') {
@@ -76,7 +78,7 @@ const FormDialog = React.memo(({
           errorData = { message: error };
         }
       }
-      
+
       // Handle structured error response from API
       if (errorData.errors && Array.isArray(errorData.errors)) {
         errorData.errors.forEach(err => {
@@ -85,16 +87,16 @@ const FormDialog = React.memo(({
           }
         });
       }
-      
+
       // Handle simple error message
       if (errorData.message && Object.keys(errors).length === 0) {
         errors.general = errorData.message;
       }
-      
+
       // If no structured errors found, try to extract field-specific errors from message
       if (Object.keys(errors).length === 0 && errorData.message) {
         const message = errorData.message.toLowerCase();
-        
+
         if (message.includes('email')) {
           errors.email = VALIDATION_MESSAGES.email.taken || 'Email address is already taken';
         }
@@ -113,13 +115,13 @@ const FormDialog = React.memo(({
         if (message.includes('permission')) {
           errors.permissions = VALIDATION_MESSAGES.permissions.required;
         }
-        
+
         // If no specific field errors found, show general error
         if (Object.keys(errors).length === 0) {
           errors.general = errorData.message;
         }
       }
-      
+
       setFieldErrors(errors);
     } else {
       setFieldErrors({});
@@ -156,7 +158,7 @@ const FormDialog = React.memo(({
 
   const validateForm = () => {
     const errors = {};
-    
+
     if (!formData.name?.trim()) {
       errors.name = VALIDATION_MESSAGES.name.required;
     } else if (formData.name.length < 2) {
@@ -166,7 +168,7 @@ const FormDialog = React.memo(({
     } else if (!/^[a-zA-Z\s'-]+$/.test(formData.name)) {
       errors.name = VALIDATION_MESSAGES.name.pattern;
     }
-    
+
     if (!formData.email?.trim()) {
       errors.email = VALIDATION_MESSAGES.email.required;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -174,7 +176,7 @@ const FormDialog = React.memo(({
     } else if (formData.email.length > 255) {
       errors.email = VALIDATION_MESSAGES.email.maxLength;
     }
-    
+
     if (!formData.username?.trim()) {
       errors.username = VALIDATION_MESSAGES.username.required;
     } else if (formData.username.length < 3) {
@@ -184,7 +186,7 @@ const FormDialog = React.memo(({
     } else if (!/^[a-zA-Z0-9._-]+$/.test(formData.username)) {
       errors.username = VALIDATION_MESSAGES.username.pattern;
     }
-    
+
     if (!isEdit && !formData.password?.trim()) {
       errors.password = VALIDATION_MESSAGES.password.required;
     } else if (formData.password && formData.password.length < 6) {
@@ -192,308 +194,298 @@ const FormDialog = React.memo(({
     } else if (formData.password && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
       errors.password = VALIDATION_MESSAGES.password.pattern;
     }
-    
+
     if (!formData.role?.trim()) {
       errors.role = VALIDATION_MESSAGES.role.required;
     } else if (formData.role.length > 50) {
       errors.role = VALIDATION_MESSAGES.role.maxLength;
     }
-    
+
     if (!formData.permissions || formData.permissions.length === 0) {
       errors.permissions = VALIDATION_MESSAGES.permissions.required;
     }
-    
+
     return errors;
   };
 
   const handleSubmit = () => {
     const errors = validateForm();
-    
+
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors);
       return;
     }
-    
+
     onSubmit(formData);
   };
 
+  const dir = currentLanguage === 'ar' ? 'rtl' : 'ltr';
+
   return (
-    <DialogContent 
-      className={`max-w-2xl max-h-[90vh] overflow-y-auto bg-white ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`}
-      dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-      onOpenAutoFocus={(e) => e.preventDefault()}
-    >
-      <DialogHeader>
-        <DialogTitle className={`text-xl font-semibold text-sidebar-text ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-          {isEdit ? t('form.editTitle') : t('form.createTitle')}
-        </DialogTitle>
-      </DialogHeader>
-      
-      <div className="space-y-6">
-        {/* General Error Message */}
-        {fieldErrors.general && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
-            <AlertCircle className="h-5 w-5 text-red-600" />
-            <p className="text-red-800">{fieldErrors.general}</p>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="name" className={currentLanguage === 'ar' ? '' : 'text-left'}>
-              {t('form.fields.fullName.label')} *
-            </Label>
-            <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => handleInputChange('name', e.target.value)}
-              placeholder={t('form.fields.fullName.placeholder')}
-              className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
-                fieldErrors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-              } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
-              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-              autoComplete="off"
-            />
-            {fieldErrors.name && (
-              <div className="mt-1">
-                <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                  {fieldErrors.name}
-                </p>
-                {fieldErrors.name.includes('taken') && (
-                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                    {t('form.validation.suggestions.nameTaken')}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="email" className={currentLanguage === 'ar' ? '' : 'text-left'}>
-              {t('form.fields.email.label')} *
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-              placeholder={t('form.fields.email.placeholder')}
-              className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
-                fieldErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-              } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
-              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-              autoComplete="off"
-            />
-            {fieldErrors.email && (
-              <div className="mt-1">
-                <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                  {fieldErrors.email}
-                </p>
-                {fieldErrors.email.includes('taken') && (
-                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                    {t('form.validation.suggestions.emailTaken')}
-                  </p>
-                )}
-                {fieldErrors.email.includes('valid') && (
-                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                    {t('form.validation.suggestions.emailFormat')}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
+    <div className="space-y-6">
+      {/* General Error Message */}
+      {fieldErrors.general && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
+          <AlertCircle className="h-5 w-5 text-red-600" />
+          <p className="text-red-800">{fieldErrors.general}</p>
         </div>
+      )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="username" className={currentLanguage === 'ar' ? '' : 'text-left'}>
-              {t('form.fields.username.label')} *
-            </Label>
-            <Input
-              id="username"
-              value={formData.username}
-              onChange={(e) => handleInputChange('username', e.target.value)}
-              placeholder={t('form.fields.username.placeholder')}
-              className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
-                fieldErrors.username ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
-              } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
-              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-              autoComplete="off"
-            />
-            {fieldErrors.username && (
-              <div className="mt-1">
-                <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                  {fieldErrors.username}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="name" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+            {t('form.fields.fullName.label')} *
+          </Label>
+          <Input
+            id="name"
+            value={formData.name}
+            onChange={(e) => handleInputChange('name', e.target.value)}
+            placeholder={t('form.fields.fullName.placeholder')}
+            className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
+              fieldErrors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+            } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
+            dir={dir}
+            autoComplete="off"
+          />
+          {fieldErrors.name && (
+            <div className="mt-1">
+              <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                {fieldErrors.name}
+              </p>
+              {fieldErrors.name.includes('taken') && (
+                <p className={`text-xs text-muted-foreground mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {t('form.validation.suggestions.nameTaken')}
                 </p>
-                {fieldErrors.username.includes('taken') && (
-                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                    {t('form.validation.suggestions.usernameTaken')}
-                  </p>
-                )}
-                {fieldErrors.username.includes('pattern') && (
-                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                    {t('form.validation.suggestions.usernamePattern')}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="password" className={currentLanguage === 'ar' ? '' : 'text-left'}>
-              {isEdit ? t('form.fields.password.labelEdit') : `${t('form.fields.password.label')} *`}
-            </Label>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                value={formData.password}
-                onChange={(e) => handleInputChange('password', e.target.value)}
-                placeholder={isEdit ? t('form.fields.password.placeholderEdit') : t('form.fields.password.placeholder')}
-                className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
-                  currentLanguage === 'ar' ? 'pl-10 pr-3 ' : 'pr-10 pl-3 text-left'
-                } ${fieldErrors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
-                dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-                autoComplete="new-password"
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className={`absolute ${currentLanguage === 'ar' ? 'left-2' : 'right-2'} top-1/2 -translate-y-1/2 h-6 w-6 p-0`}
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </Button>
+              )}
             </div>
-            {fieldErrors.password && (
-              <div className="mt-1">
-                <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                  {fieldErrors.password}
-                </p>
-                {fieldErrors.password.includes('pattern') && (
-                  <p className={`text-xs text-gray-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                    {t('form.validation.suggestions.passwordPattern')}
-                  </p>
-                )}
-              </div>
-            )}
-          </div>
+          )}
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="role" className={currentLanguage === 'ar' ? '' : 'text-left'}>
-            {t('form.fields.role.label')} *
+          <Label htmlFor="email" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+            {t('form.fields.email.label')} *
           </Label>
           <Input
-            id="role"
-            value={formData.role}
-            onChange={(e) => handleInputChange('role', e.target.value)}
-            placeholder={t('form.fields.role.placeholder')}
+            id="email"
+            type="email"
+            value={formData.email}
+            onChange={(e) => handleInputChange('email', e.target.value)}
+            placeholder={t('form.fields.email.placeholder')}
             className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
-              fieldErrors.role ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+              fieldErrors.email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
             } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
-            dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+            dir={dir}
             autoComplete="off"
           />
-          {fieldErrors.role && (
-            <p className={`text-sm text-red-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-              {fieldErrors.role}
-            </p>
+          {fieldErrors.email && (
+            <div className="mt-1">
+              <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                {fieldErrors.email}
+              </p>
+              {fieldErrors.email.includes('taken') && (
+                <p className={`text-xs text-muted-foreground mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {t('form.validation.suggestions.emailTaken')}
+                </p>
+              )}
+              {fieldErrors.email.includes('valid') && (
+                <p className={`text-xs text-muted-foreground mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {t('form.validation.suggestions.emailFormat')}
+                </p>
+              )}
+            </div>
           )}
-        </div>
-
-        <div className="space-y-4">
-          <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
-            <ShieldCheck className="h-4 w-4 text-theme-base" />
-            <Label className={`text-black font-semibold ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-              {t('form.fields.permissions.label')} *
-            </Label>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto">
-            {availablePermissions.map((permission) => (
-              <div 
-                key={permission.id} 
-                className={`relative p-4 border rounded-xl transition-all duration-200 cursor-pointer group hover:shadow-md ${
-                  formData.permissions.includes(permission.id)
-                    ? 'border-theme-base bg-theme-light shadow-sm'
-                    : 'border-border hover:border-theme-base/50 bg-card'
-                }`}
-                onClick={() => handlePermissionChange(permission.id, !formData.permissions.includes(permission.id))}
-              >
-                <div className={`flex items-start gap-3 ${currentLanguage === 'ar' ? '' : ''}`}>
-                  <Checkbox
-                    id={permission.id}
-                    checked={formData.permissions.includes(permission.id)}
-                    onCheckedChange={(checked) => handlePermissionChange(permission.id, checked)}
-                    className="mt-0.5 border-2 data-[state=checked]:bg-theme-base data-[state=checked]:border-theme-base"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <Label
-                      htmlFor={permission.id}
-                      className={`text-sm font-semibold cursor-pointer block mb-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}
-                    >
-                      {t(`permissions.${permission.id}.label`)}
-                    </Label>
-                    <p className={`text-xs text-muted-foreground leading-relaxed ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-                      {t(`permissions.${permission.id}.description`)}
-                    </p>
-                  </div>
-                </div>
-                {formData.permissions.includes(permission.id) && (
-                  <div className={`absolute top-2 ${currentLanguage === 'ar' ? 'left-2' : 'right-2'}`}>
-                    <div className="w-2 h-2 bg-theme-base rounded-full animate-pulse"></div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          {fieldErrors.permissions && (
-            <p className={`text-sm text-red-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-              {fieldErrors.permissions}
-            </p>
-          )}
-          <div className={`text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
-            <ShieldCheck className={`h-3 w-3 inline ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
-            {t('form.fields.permissions.description')}
-          </div>
-        </div>
-
-        <div className={`flex items-center ${currentLanguage === 'ar' ? 'space-x-reverse space-x-3 ' : 'space-x-3'}`}>
-          <Switch
-            id="status"
-            checked={formData.status === 'active'}
-            onCheckedChange={(checked) => handleInputChange('status', checked ? 'active' : 'inactive')}
-          />
-          <Label htmlFor="status" className={currentLanguage === 'ar' ? '' : 'text-left'}>
-            {t('form.fields.status.label')}
-          </Label>
-        </div>
-
-        <div className={`flex ${currentLanguage === 'ar' ? 'justify-start space-x-reverse space-x-3 ' : 'justify-end space-x-3'} pt-4 border-t`}>
-          <Button
-            variant="outline"
-            onClick={onCancel}
-          >
-            {t('form.buttons.cancel')}
-          </Button>
-          <Button
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-            className="bg-gradient-button text-white hover:opacity-90"
-          >
-            {isSubmitting ? (
-              <div className={`flex items-center ${currentLanguage === 'ar' ? '' : ''}`}>
-                <RefreshCw className={`h-4 w-4 animate-spin ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
-                {isEdit ? t('form.buttons.updating') : t('form.buttons.creating')}
-              </div>
-            ) : (
-              isEdit ? t('form.buttons.update') : t('form.buttons.create')
-            )}
-          </Button>
         </div>
       </div>
-    </DialogContent>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="username" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+            {t('form.fields.username.label')} *
+          </Label>
+          <Input
+            id="username"
+            value={formData.username}
+            onChange={(e) => handleInputChange('username', e.target.value)}
+            placeholder={t('form.fields.username.placeholder')}
+            className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
+              fieldErrors.username ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+            } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
+            dir={dir}
+            autoComplete="off"
+          />
+          {fieldErrors.username && (
+            <div className="mt-1">
+              <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                {fieldErrors.username}
+              </p>
+              {fieldErrors.username.includes('taken') && (
+                <p className={`text-xs text-muted-foreground mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {t('form.validation.suggestions.usernameTaken')}
+                </p>
+              )}
+              {fieldErrors.username.includes('pattern') && (
+                <p className={`text-xs text-muted-foreground mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {t('form.validation.suggestions.usernamePattern')}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="password" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+            {isEdit ? t('form.fields.password.labelEdit') : `${t('form.fields.password.label')} *`}
+          </Label>
+          <div className="relative">
+            <Input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              value={formData.password}
+              onChange={(e) => handleInputChange('password', e.target.value)}
+              placeholder={isEdit ? t('form.fields.password.placeholderEdit') : t('form.fields.password.placeholder')}
+              className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
+                currentLanguage === 'ar' ? 'pl-10 pr-3 ' : 'pr-10 pl-3 text-left'
+              } ${fieldErrors.password ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+              dir={dir}
+              autoComplete="new-password"
+            />
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className={`absolute ${currentLanguage === 'ar' ? 'left-2' : 'right-2'} top-1/2 -translate-y-1/2 h-6 w-6 p-0`}
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </Button>
+          </div>
+          {fieldErrors.password && (
+            <div className="mt-1">
+              <p className={`text-sm text-red-600 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                {fieldErrors.password}
+              </p>
+              {fieldErrors.password.includes('pattern') && (
+                <p className={`text-xs text-muted-foreground mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                  {t('form.validation.suggestions.passwordPattern')}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="role" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+          {t('form.fields.role.label')} *
+        </Label>
+        <Input
+          id="role"
+          value={formData.role}
+          onChange={(e) => handleInputChange('role', e.target.value)}
+          placeholder={t('form.fields.role.placeholder')}
+          className={`border-border focus:border-theme-base focus:ring-1 focus:ring-theme-base ${
+            fieldErrors.role ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''
+          } ${currentLanguage === 'ar' ? '' : 'text-left'}`}
+          dir={dir}
+          autoComplete="off"
+        />
+        {fieldErrors.role && (
+          <p className={`text-sm text-red-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+            {fieldErrors.role}
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? '' : ''}`}>
+          <ShieldCheck className="h-4 w-4 text-theme-base" />
+          <Label className={`text-black font-semibold ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+            {t('form.fields.permissions.label')} *
+          </Label>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-64 overflow-y-auto">
+          {availablePermissions.map((permission) => (
+            <div
+              key={permission.id}
+              className={`relative p-4 border rounded-xl transition-all duration-200 cursor-pointer group hover:shadow-md ${
+                formData.permissions.includes(permission.id)
+                  ? 'border-theme-base bg-theme-light shadow-sm'
+                  : 'border-border hover:border-theme-base/50 bg-card'
+              }`}
+              onClick={() => handlePermissionChange(permission.id, !formData.permissions.includes(permission.id))}
+            >
+              <div className={`flex items-start gap-3 ${currentLanguage === 'ar' ? '' : ''}`}>
+                <Checkbox
+                  id={permission.id}
+                  checked={formData.permissions.includes(permission.id)}
+                  onCheckedChange={(checked) => handlePermissionChange(permission.id, checked)}
+                  className="mt-0.5 border-2 data-[state=checked]:bg-theme-base data-[state=checked]:border-theme-base"
+                />
+                <div className="flex-1 min-w-0">
+                  <Label
+                    htmlFor={permission.id}
+                    className={`text-sm font-semibold cursor-pointer block mb-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}
+                  >
+                    {t(`permissions.${permission.id}.label`)}
+                  </Label>
+                  <p className={`text-xs text-muted-foreground leading-relaxed ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+                    {t(`permissions.${permission.id}.description`)}
+                  </p>
+                </div>
+              </div>
+              {formData.permissions.includes(permission.id) && (
+                <div className={`absolute top-2 ${currentLanguage === 'ar' ? 'left-2' : 'right-2'}`}>
+                  <div className="w-2 h-2 bg-theme-base rounded-full animate-pulse"></div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {fieldErrors.permissions && (
+          <p className={`text-sm text-red-600 mt-1 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+            {fieldErrors.permissions}
+          </p>
+        )}
+        <div className={`text-xs text-muted-foreground bg-muted/50 p-3 rounded-lg ${currentLanguage === 'ar' ? '' : 'text-left'}`}>
+          <ShieldCheck className={`h-3 w-3 inline ${currentLanguage === 'ar' ? 'ml-1' : 'mr-1'}`} />
+          {t('form.fields.permissions.description')}
+        </div>
+      </div>
+
+      <div className={`flex items-center ${currentLanguage === 'ar' ? 'space-x-reverse space-x-3 ' : 'space-x-3'}`}>
+        <Switch
+          id="status"
+          checked={formData.status === 'active'}
+          onCheckedChange={(checked) => handleInputChange('status', checked ? 'active' : 'inactive')}
+        />
+        <Label htmlFor="status" className={currentLanguage === 'ar' ? '' : 'text-left'}>
+          {t('form.fields.status.label')}
+        </Label>
+      </div>
+
+      <div className={`flex ${currentLanguage === 'ar' ? 'justify-start space-x-reverse space-x-3 ' : 'justify-end space-x-3'} pt-4 border-t`}>
+        <Button
+          variant="outline"
+          onClick={onCancel}
+        >
+          {t('form.buttons.cancel')}
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+          className="bg-gradient-button text-white hover:opacity-90"
+        >
+          {isSubmitting ? (
+            <div className={`flex items-center ${currentLanguage === 'ar' ? '' : ''}`}>
+              <RefreshCw className={`h-4 w-4 animate-spin ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
+              {isEdit ? t('form.buttons.updating') : t('form.buttons.creating')}
+            </div>
+          ) : (
+            isEdit ? t('form.buttons.update') : t('form.buttons.create')
+          )}
+        </Button>
+      </div>
+    </div>
   );
 });
 
@@ -503,7 +495,7 @@ export function UserManagementSection() {
   const { user: currentUser } = useAuth();
   const { t } = useTranslation('UserManagement');
   const { language: currentLanguage } = useI18next();
-  
+
   // State for users data
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -514,13 +506,13 @@ export function UserManagementSection() {
     totalUsers: 0,
     limit: 10
   });
-  
+
   // State for UI
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // State for delete confirmation modal
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
@@ -531,7 +523,7 @@ export function UserManagementSection() {
     try {
       setLoading(true);
       setError('');
-      
+
       const params = {
         page: pagination.currentPage,
         limit: pagination.limit,
@@ -539,9 +531,9 @@ export function UserManagementSection() {
         sortBy: 'createdAt',
         sortOrder: 'desc'
       };
-      
+
       const response = await usersAPI.getUsers(params);
-      
+
       if (response.status === 'success') {
         setUsers(response.data.users);
         setPagination(prev => ({
@@ -570,9 +562,9 @@ export function UserManagementSection() {
     try {
       setIsSubmitting(true);
       setError('');
-      
+
       const response = await usersAPI.createUser(formData);
-      
+
       if (response.status === 'success') {
         await fetchUsers(); // Refresh the list
         setShowCreateDialog(false);
@@ -591,18 +583,18 @@ export function UserManagementSection() {
 
   const handleUpdateUser = async (formData) => {
     if (!editingUser) return;
-    
+
     try {
       setIsSubmitting(true);
       setError('');
-      
+
       const updateData = { ...formData };
       if (!updateData.password) {
         delete updateData.password; // Don't send empty password
       }
-      
+
       const response = await usersAPI.updateUser(editingUser._id, updateData);
-      
+
       if (response.status === 'success') {
         await fetchUsers(); // Refresh the list
         setEditingUser(null);
@@ -623,12 +615,12 @@ export function UserManagementSection() {
 
   const confirmDeleteUser = async () => {
     if (!userToDelete) return;
-    
+
     setIsDeleting(true);
     try {
       setError('');
       const response = await usersAPI.deleteUser(userToDelete._id);
-      
+
       if (response.status === 'success') {
         await fetchUsers(); // Refresh the list
         setShowDeleteModal(false);
@@ -647,7 +639,7 @@ export function UserManagementSection() {
       setError('');
       const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
       const response = await usersAPI.updateUserStatus(userId, newStatus);
-      
+
       if (response.status === 'success') {
         await fetchUsers(); // Refresh the list
       }
@@ -697,6 +689,109 @@ export function UserManagementSection() {
     setPagination(prev => ({ ...prev, currentPage: newPage }));
   };
 
+  const isRTL = currentLanguage === 'ar';
+  const dir = isRTL ? 'rtl' : 'ltr';
+
+  const columns = [
+    {
+      key: 'user',
+      label: t('table.headers.user'),
+      render: (user) => (
+        <div className={`flex items-center gap-3 ${isRTL ? '' : ''}`}>
+          <Avatar className="h-8 w-8">
+            <AvatarFallback className="text-sm">
+              {user.name.split(' ').map(n => n[0]).join('')}
+            </AvatarFallback>
+          </Avatar>
+          <div className={isRTL ? 'text-right' : 'text-left'}>
+            <p className="font-medium">{user.name}</p>
+            <p className="text-sm text-muted-foreground">{user.email}</p>
+          </div>
+        </div>
+      )
+    },
+    {
+      key: 'role',
+      label: t('table.headers.role'),
+      render: (user) => (
+        <Badge variant="secondary" className="bg-theme-light text-theme-primary">
+          {user.role}
+        </Badge>
+      )
+    },
+    {
+      key: 'permissions',
+      label: t('table.headers.permissions'),
+      render: (user) => (
+        <div className={`flex flex-wrap gap-1 max-w-xs ${isRTL ? 'justify-end' : 'justify-start'}`}>
+          {user.permissions.slice(0, 2).map((permission) => (
+            <Badge key={permission} variant="outline" className="text-xs">
+              {t(`permissions.${permission}.label`)}
+            </Badge>
+          ))}
+          {user.permissions.length > 2 && (
+            <Badge variant="outline" className="text-xs">
+              {t('table.morePermissions', { count: user.permissions.length - 2 })}
+            </Badge>
+          )}
+        </div>
+      )
+    },
+    {
+      key: 'status',
+      label: t('table.headers.status'),
+      render: (user) => (
+        <div className={`flex items-center gap-2 ${isRTL ? ' justify-end' : 'justify-start'}`}>
+          <Switch
+            checked={user.status === 'active'}
+            onCheckedChange={() => toggleUserStatus(user._id, user.status)}
+          />
+          <Badge
+            variant={user.status === 'active' ? 'default' : 'secondary'}
+            className={user.status === 'active'
+              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+              : 'bg-muted text-muted-foreground'
+            }
+          >
+            {t(`status.${user.status}`)}
+          </Badge>
+        </div>
+      )
+    },
+    {
+      key: 'lastLogin',
+      label: t('table.headers.lastLogin'),
+      render: (user) => (
+        <span className="text-sm text-muted-foreground">{user.lastLogin}</span>
+      )
+    },
+    {
+      key: '_actions',
+      label: t('table.headers.actions'),
+      align: 'end',
+      render: (user) => (
+        <div className={`flex items-center gap-2 ${isRTL ? 'justify-start' : 'justify-end'}`}>
+          <Button
+            variant="ghost"
+            className="h-8 w-8 p-0 hover:bg-muted rounded-md"
+            onClick={() => handleEditUser(user)}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+            onClick={() => handleDeleteUser(user._id)}
+            disabled={user._id === currentUser?._id}
+            title={user._id === currentUser?._id ? t('deleteModal.cannotDeleteSelf') : t('actions.delete')}
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
+      )
+    }
+  ];
+
   if (loading && users.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -710,238 +805,125 @@ export function UserManagementSection() {
 
   return (
     <Layout>
-    <div className={`space-y-6 ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
-      {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
-          <AlertCircle className="h-5 w-5 text-red-600" />
-          <p className={`text-red-800 ${currentLanguage === 'ar' ? '' : 'text-left'}`}>{error}</p>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={() => setError('')}
-            className={`${currentLanguage === 'ar' ? 'mr-auto' : 'ml-auto'} text-red-600 hover:text-red-800`}
-          >
-            ×
-          </Button>
-        </div>
-      )}
-      
-      <div className={`flex items-center ${currentLanguage === 'ar' ? 'justify-between ' : 'justify-between'}`}>
-        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-          <h2 className="text-2xl font-bold text-[#2194D1]">
-            {t('title')}
-          </h2>
-          <p className="text-muted-foreground mt-1">
-            {t('description', { count: pagination.totalUsers })}
-          </p>
-        </div>
-        
-        <Dialog open={showCreateDialog} onOpenChange={(open) => {
-          setShowCreateDialog(open);
-          if (!open) {
-            setEditingUser(null); // Reset editing user when closing create dialog
-          }
-        }}>
-          <DialogTrigger asChild>
-            <Button variant="default" className="text-white hover:opacity-90 shadow-lg">
-              <div className={`flex items-center ${currentLanguage === 'ar' ? '' : ''}`}>
-                <Plus className={`h-4 w-4 ${currentLanguage === 'ar' ? 'ml-2' : 'mr-2'}`} />
-                {t('addUser')}
-              </div>
-            </Button>
-          </DialogTrigger>
-          <FormDialog 
-            isEdit={false} 
-            initialData={createFormData} 
-            onSubmit={handleCreateUser} 
-            onCancel={() => setShowCreateDialog(false)} 
-            isSubmitting={isSubmitting}
-            error={error}
-          />
-        </Dialog>
-      </div>
-
-      {/* Search and Filters */}
-      <Card className="border-0 shadow-modern">
-        <CardContent className="p-4">
-          <div className="relative">
-            <div className={`absolute inset-y-0 ${currentLanguage === 'ar' ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
-              <Search className="h-4 w-4 text-muted-foreground" />
+      <SectionShell
+        title={t('title')}
+        subtitle={t('description', { count: pagination.totalUsers })}
+        dir={dir}
+        actions={
+          <Button variant="default" className="text-white hover:opacity-90 shadow-lg" onClick={() => setShowCreateDialog(true)}>
+            <div className={`flex items-center ${isRTL ? '' : ''}`}>
+              <Plus className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('addUser')}
             </div>
-            <Input
-              placeholder={t('searchPlaceholder')}
+          </Button>
+        }
+        filters={
+          <div className="relative">
+            <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
+              <Shield className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <SearchInput
               value={searchTerm}
               onChange={handleSearchChange}
-              className={`${currentLanguage === 'ar' ? 'pr-[30px] ' : 'pl-[30px] text-left'} border-sidebar-border focus:border-theme-primary`}
-              dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
+              placeholder={t('searchPlaceholder')}
+              dir={dir}
             />
             {loading && (
-              <div className={`absolute inset-y-0 ${currentLanguage === 'ar' ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
+              <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
                 <RefreshCw className="h-4 w-4 animate-spin text-muted-foreground" />
               </div>
             )}
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Users Table */}
-      <Card className="border-0 rounded-xl">
-        <CardHeader>
-          <CardTitle className={`flex items-center gap-2 ${currentLanguage === 'ar' ? ' ' : 'text-left'}`}>
-            <Shield className="h-5 w-5 text-theme-primary" />
-            {t('table.usersCount', { count: filteredUsers.length })}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
-                    {t('table.headers.user')}
-                  </TableHead>
-                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
-                    {t('table.headers.role')}
-                  </TableHead>
-                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
-                    {t('table.headers.permissions')}
-                  </TableHead>
-                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
-                    {t('table.headers.status')}
-                  </TableHead>
-                  <TableHead className={currentLanguage === 'ar' ? '' : 'text-left'}>
-                    {t('table.headers.lastLogin')}
-                  </TableHead>
-                  <TableHead className={currentLanguage === 'ar' ? 'text-left' : ''}>
-                    {t('table.headers.actions')}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredUsers.map((user) => (
-                  <TableRow key={user.id} className="hover:bg-gray-200">
-                    <TableCell>
-                      <div className={`flex items-center gap-3 ${currentLanguage === 'ar' ? '' : ''}`}>
-                        <Avatar className="h-8 w-8">
-                          <AvatarFallback className="text-sm">
-                            {user.name.split(' ').map(n => n[0]).join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                          <p className="font-medium">{user.name}</p>
-                          <p className="text-sm text-muted-foreground">{user.email}</p>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                      <Badge variant="secondary" className="bg-theme-light text-theme-primary">
-                        {user.role}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                      <div className={`flex flex-wrap gap-1 max-w-xs ${currentLanguage === 'ar' ? 'justify-end' : 'justify-start'}`}>
-                        {user.permissions.slice(0, 2).map((permission) => (
-                          <Badge key={permission} variant="outline" className="text-xs">
-                            {t(`permissions.${permission}.label`)}
-                          </Badge>
-                        ))}
-                        {user.permissions.length > 2 && (
-                          <Badge variant="outline" className="text-xs">
-                            {t('table.morePermissions', { count: user.permissions.length - 2 })}
-                          </Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
-                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? ' justify-end' : 'justify-start'}`}>
-                        <Switch
-                          checked={user.status === 'active'}
-                          onCheckedChange={() => toggleUserStatus(user._id, user.status)}
-                        />
-                        <Badge 
-                          variant={user.status === 'active' ? 'default' : 'secondary'}
-                          className={user.status === 'active' 
-                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
-                            : 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
-                          }
-                        >
-                          {t(`status.${user.status}`)}
-                        </Badge>
-                      </div>
-                    </TableCell>
-                    <TableCell className={`text-sm text-muted-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
-                      {user.lastLogin}
-                    </TableCell>
-                    <TableCell className={currentLanguage === 'ar' ? 'text-left' : 'text-right'}>
-                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'justify-start' : 'justify-end'}`}>
-                        <Dialog open={editingUser?.id === user.id} onOpenChange={(open) => {
-                          if (!open) {
-                            setEditingUser(null);
-                          }
-                        }}>
-                          <DialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleEditUser(user)}
-                              className="h-8 w-8 p-0"
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                          </DialogTrigger>
-                          <FormDialog 
-                            isEdit={true} 
-                            initialData={editFormData} 
-                            onSubmit={handleUpdateUser} 
-                            onCancel={() => setEditingUser(null)} 
-                            isSubmitting={isSubmitting}
-                            error={error}
-                          />
-                        </Dialog>
-                        
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDeleteUser(user._id)}
-                          disabled={user._id === currentUser?._id}
-                          className="h-8 w-8 p-0 text-red-600 hover:text-red-800 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                          title={user._id === currentUser?._id ? t('deleteModal.cannotDeleteSelf') : t('actions.delete')}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+        }
+      >
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
+            <AlertCircle className="h-5 w-5 text-red-600" />
+            <p className={`text-red-800 ${isRTL ? '' : 'text-left'}`}>{error}</p>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setError('')}
+              className={`${isRTL ? 'mr-auto' : 'ml-auto'} text-red-600 hover:text-red-800`}
+            >
+              ×
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        )}
 
-    {/* Delete Confirmation Modal */}
-    <ConfirmationModal
-      isOpen={showDeleteModal}
-      onClose={() => {
-        setShowDeleteModal(false);
-        setUserToDelete(null);
-      }}
-      onConfirm={confirmDeleteUser}
-      title={t('deleteModal.title')}
-      description={t('deleteModal.description', { name: userToDelete?.name || userToDelete?.username || 'this user' })}
-      confirmText={t('deleteModal.confirmText')}
-      cancelText={t('deleteModal.cancelText')}
-      variant="danger"
-      isLoading={isDeleting}
-      icon={
-        <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 border-red-200 border-2">
-          <svg className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-          </svg>
-        </div>
-      }
-    />
+        <DataTable
+          columns={columns}
+          data={filteredUsers}
+          loading={loading}
+          emptyTitle={t('table.usersCount', { count: 0 })}
+          countLabel={t('table.usersCount', { count: filteredUsers.length })}
+          currentPage={pagination.currentPage}
+          totalPages={pagination.totalPages}
+          onPageChange={handlePageChange}
+          dir={dir}
+        />
+      </SectionShell>
+
+      {/* Create User Modal */}
+      <AdminModal
+        open={showCreateDialog}
+        onClose={(open) => {
+          setShowCreateDialog(open);
+          if (!open) setEditingUser(null);
+        }}
+        title={t('form.createTitle')}
+        size="lg"
+        dir={dir}
+      >
+        <FormDialog
+          isEdit={false}
+          initialData={createFormData}
+          onSubmit={handleCreateUser}
+          onCancel={() => setShowCreateDialog(false)}
+          isSubmitting={isSubmitting}
+          error={error}
+          open={showCreateDialog}
+          currentLanguage={currentLanguage}
+        />
+      </AdminModal>
+
+      {/* Edit User Modal */}
+      <AdminModal
+        open={!!editingUser}
+        onClose={(open) => {
+          if (!open) setEditingUser(null);
+        }}
+        title={t('form.editTitle')}
+        size="lg"
+        dir={dir}
+      >
+        <FormDialog
+          isEdit={true}
+          initialData={editFormData}
+          onSubmit={handleUpdateUser}
+          onCancel={() => setEditingUser(null)}
+          isSubmitting={isSubmitting}
+          error={error}
+          open={!!editingUser}
+          currentLanguage={currentLanguage}
+        />
+      </AdminModal>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmationModal
+        isOpen={showDeleteModal}
+        onClose={() => {
+          setShowDeleteModal(false);
+          setUserToDelete(null);
+        }}
+        onConfirm={confirmDeleteUser}
+        title={t('deleteModal.title')}
+        description={t('deleteModal.description', { name: userToDelete?.name || userToDelete?.username || 'this user' })}
+        confirmText={t('deleteModal.confirmText')}
+        cancelText={t('deleteModal.cancelText')}
+        variant="danger"
+        isLoading={isDeleting}
+      />
     </Layout>
   );
 }

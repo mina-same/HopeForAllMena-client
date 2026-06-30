@@ -1,14 +1,6 @@
 import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './button';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from './table';
 
 /**
  * DataTable — universal data list for every admin section.
@@ -17,10 +9,12 @@ import {
  *   key: string,
  *   label: string,
  *   align?: 'start' | 'center' | 'end',
- *   width?: string,            // Tailwind w-* class
- *   skeletonWidth?: string,    // inline width for skeleton bar
+ *   width?: string,
+ *   skeletonWidth?: string,
  *   render?: (row) => ReactNode,
  * }>
+ *
+ * emptyIcon: component reference OR pre-rendered JSX element — both accepted.
  */
 export function DataTable({
   columns = [],
@@ -28,7 +22,7 @@ export function DataTable({
   loading = false,
   emptyTitle = 'No results',
   emptyDescription,
-  emptyIcon: EmptyIcon,
+  emptyIcon,
   countLabel,
   currentPage,
   totalPages,
@@ -37,6 +31,17 @@ export function DataTable({
   className = '',
 }) {
   const isRTL = dir === 'rtl';
+
+  // Accept both a component reference (Icon) and a pre-rendered element (<Icon />).
+  const renderEmptyIcon = () => {
+    if (!emptyIcon) return null;
+    if (React.isValidElement(emptyIcon)) return emptyIcon;
+    const Icon = emptyIcon;
+    return <Icon className="h-8 w-8 text-muted-foreground/40" />;
+  };
+
+  const cellAlign = (col) =>
+    col.align === 'center' ? 'text-center' : col.align === 'end' ? 'text-end' : 'text-start';
 
   return (
     <div className={`bg-card border border-border rounded-xl shadow-sm overflow-hidden ${className}`}>
@@ -50,75 +55,73 @@ export function DataTable({
 
       {/* Scrollable table */}
       <div className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow className="hover:bg-transparent bg-muted/40 border-border">
+        <table className="w-full caption-bottom text-sm">
+          <thead>
+            <tr className="bg-muted/40 border-b border-border">
               {columns.map((col) => (
-                <TableHead
+                <th
                   key={col.key}
                   className={[
                     'text-[11px] font-semibold uppercase tracking-wider text-muted-foreground',
-                    'py-3 px-4',
-                    col.align === 'center' ? 'text-center' : col.align === 'end' ? 'text-end' : 'text-start',
+                    'py-3 px-4 align-middle',
+                    cellAlign(col),
                     col.width ?? '',
                   ].join(' ')}
                 >
                   {col.label}
-                </TableHead>
+                </th>
               ))}
-            </TableRow>
-          </TableHeader>
+            </tr>
+          </thead>
 
-          <TableBody>
+          <tbody className="[&_tr:last-child]:border-0">
             {loading ? (
               Array.from({ length: 5 }).map((_, i) => (
-                <TableRow key={i} className="border-border">
+                <tr key={i} className="border-b border-border">
                   {columns.map((col) => (
-                    <TableCell key={col.key} className="py-4 px-4">
+                    <td key={col.key} className="py-4 px-4 align-middle">
                       <div
                         className="h-4 bg-muted rounded animate-pulse"
                         style={{ width: col.skeletonWidth ?? '70%' }}
                       />
-                    </TableCell>
+                    </td>
                   ))}
-                </TableRow>
+                </tr>
               ))
             ) : data.length === 0 ? (
-              <TableRow className="hover:bg-transparent border-0">
-                <TableCell colSpan={columns.length} className="py-16">
+              <tr>
+                <td colSpan={columns.length} className="py-16 align-middle">
                   <div className="flex flex-col items-center gap-2 text-center">
-                    {EmptyIcon && (
-                      <EmptyIcon className="h-8 w-8 text-muted-foreground/40" />
-                    )}
+                    {renderEmptyIcon()}
                     <p className="text-sm font-medium text-foreground">{emptyTitle}</p>
                     {emptyDescription && (
                       <p className="text-xs text-muted-foreground">{emptyDescription}</p>
                     )}
                   </div>
-                </TableCell>
-              </TableRow>
+                </td>
+              </tr>
             ) : (
               data.map((row, i) => (
-                <TableRow
+                <tr
                   key={row._id ?? i}
-                  className="border-border hover:bg-muted/30 transition-colors"
+                  className="border-b border-border hover:bg-muted/30 transition-colors"
                 >
                   {columns.map((col) => (
-                    <TableCell
+                    <td
                       key={col.key}
                       className={[
-                        'py-3.5 px-4 text-sm',
-                        col.align === 'center' ? 'text-center' : col.align === 'end' ? 'text-end' : 'text-start',
+                        'py-3.5 px-4 text-sm align-middle',
+                        cellAlign(col),
                       ].join(' ')}
                     >
                       {col.render ? col.render(row) : row[col.key]}
-                    </TableCell>
+                    </td>
                   ))}
-                </TableRow>
+                </tr>
               ))
             )}
-          </TableBody>
-        </Table>
+          </tbody>
+        </table>
       </div>
 
       {/* Pagination */}

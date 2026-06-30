@@ -53,13 +53,13 @@ const NavLinks = ({ extraClassName, hideControls = false }) => {
           </button>
           <ul className="dropdown-list">
             <li>
+              <Link to="/studies-education">{t('navigation.studiesEducation')}</Link>
+            </li>
+            <li>
               <Link to="/development-department">{t('navigation.developmentDepartment')}</Link>
             </li>
             <li>
               <Link to="/evangelism-discipleship">{t('navigation.evangelismDiscipleship')}</Link>
-            </li>
-            <li>
-              <Link to="/studies-education">{t('navigation.studiesEducation')}</Link>
             </li>
             <li>
               <Link to="/publishing-house">{t('navigation.publishingHouse')}</Link>
