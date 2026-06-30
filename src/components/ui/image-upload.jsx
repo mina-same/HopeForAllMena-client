@@ -48,10 +48,11 @@ const ImageUpload = ({
         throw new Error('Authentication required. Please login first.');
       }
 
-      console.log('Uploading to:', `http://localhost:5001/api/upload/${uploadType}`);
+      const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+      console.log('Uploading to:', `${API_URL}/upload/${uploadType}`);
       console.log('Token available:', !!token);
 
-      const response = await fetch(`http://localhost:5001/api/upload/${uploadType}`, {
+      const response = await fetch(`${API_URL}/upload/${uploadType}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

@@ -16,6 +16,8 @@ import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 const TrainingBooksSection = () => {
   const { t } = useTranslation('TrainingBooksManagement');
   const { language: currentLanguage } = useI18next();
@@ -48,7 +50,7 @@ const TrainingBooksSection = () => {
           headers.Authorization = `Bearer ${token}`;
         }
 
-        const response = await fetch('http://localhost:5001/api/training-books', {
+        const response = await fetch(`${API_URL}/training-books`, {
           method: 'GET',
           headers
         });
@@ -89,8 +91,8 @@ const TrainingBooksSection = () => {
     e.preventDefault();
     try {
       const url = editingBook
-        ? `http://localhost:5001/api/training-books/${editingBook._id}`
-        : 'http://localhost:5001/api/training-books';
+        ? `${API_URL}/training-books/${editingBook._id}`
+        : `${API_URL}/training-books`;
 
       const method = editingBook ? 'PUT' : 'POST';
 
@@ -143,7 +145,7 @@ const TrainingBooksSection = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/api/training-books/${bookId}`, {
+      const response = await fetch(`${API_URL}/training-books/${bookId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${authStorage.getToken()}`

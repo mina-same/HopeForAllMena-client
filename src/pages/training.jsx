@@ -15,6 +15,8 @@ import trainingImg2 from '../assets/images/Training/live training/02.jpg';
 import trainingImg3 from '../assets/images/Training/live training/03.jpg';
 import trainingImg4 from '../assets/images/Training/live training/04.jpg';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 // Training hero slider images array
 const trainingHeroImages = [
   trainingImg1, trainingImg2, trainingImg3, trainingImg4
@@ -90,7 +92,7 @@ const TrainingPage = () => {
     const fetchTrainingBooks = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:5001/api/training-books');
+        const response = await fetch(`${API_URL}/training-books`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

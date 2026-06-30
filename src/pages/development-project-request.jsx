@@ -20,6 +20,8 @@ import { Checkbox } from "../components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/select";
 import { useToast } from "../hooks/use-toast";
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 const formSchema = z.object({
   applicant: z.object({
     full_name: z.string().min(1),
@@ -364,7 +366,7 @@ const DevelopmentProjectRequestPage = () => {
         formData.append("attachments", file);
       });
 
-      const response = await fetch("http://localhost:5001/api/development-project-requests", {
+      const response = await fetch(`${API_URL}/development-project-requests`, {
         method: "POST",
         body: formData
       });

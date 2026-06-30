@@ -19,6 +19,8 @@ import '../../components/Calendar/Calendar.css';
 moment.locale('en-GB');
 const localizer = momentLocalizer(moment);
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 // Mobile Event List Component
 const MobileEventList = ({ events, onEventClick, onAddEvent }) => {
   const groupedEvents = events.reduce((groups, event) => {
@@ -457,7 +459,7 @@ const BigCalendar = () => {
       if (imageFile) {
         const formData = new FormData();
         formData.append('image', imageFile);
-        const uploadResponse = await fetch('http://localhost:5001/api/upload/single', {
+        const uploadResponse = await fetch(`${API_URL}/upload/single`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${eventService.getAuthToken()}`
@@ -546,7 +548,7 @@ const BigCalendar = () => {
       if (imageFile) {
         const formData = new FormData();
         formData.append('image', imageFile);
-        const uploadResponse = await fetch('http://localhost:5001/api/upload/single', {
+        const uploadResponse = await fetch(`${API_URL}/upload/single`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${eventService.getAuthToken()}`

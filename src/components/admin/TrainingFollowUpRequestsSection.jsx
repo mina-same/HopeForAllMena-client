@@ -13,6 +13,8 @@ import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
 import '../../styles/TrainingFollowUpRequestsManagement-rtl.css';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 const TrainingFollowUpRequestsSection = () => {
   const { t } = useTranslation('TrainingFollowUpRequestsManagement');
   const { language: currentLanguage } = useI18next();
@@ -35,7 +37,7 @@ const TrainingFollowUpRequestsSection = () => {
         console.log('Token exists:', !!token);
         console.log('Using token from: authStorage');
 
-        const response = await fetch('http://localhost:5001/api/training-follow-ups', {
+        const response = await fetch(`${API_URL}/training-follow-ups`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -95,7 +97,7 @@ const TrainingFollowUpRequestsSection = () => {
       const requestBody = { status: newStatus };
       console.log('Request body:', JSON.stringify(requestBody));
 
-      const url = `http://localhost:5001/api/training-follow-ups/${requestId}/status`;
+      const url = `${API_URL}/training-follow-ups/${requestId}/status`;
       console.log('Request URL:', url);
 
       const response = await fetch(url, {
@@ -153,7 +155,7 @@ const TrainingFollowUpRequestsSection = () => {
     try {
       const { authStorage } = require('../../utils/storage');
       const token = authStorage.getToken();
-      const response = await fetch(`http://localhost:5001/api/training-follow-ups/${requestId}/download`, {
+      const response = await fetch(`${API_URL}/training-follow-ups/${requestId}/download`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -186,7 +188,7 @@ const TrainingFollowUpRequestsSection = () => {
     try {
       const { authStorage } = require('../../utils/storage');
       const token = authStorage.getToken();
-      const response = await fetch(`http://localhost:5001/api/training-follow-ups/${requestId}`, {
+      const response = await fetch(`${API_URL}/training-follow-ups/${requestId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

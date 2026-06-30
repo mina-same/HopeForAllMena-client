@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
 import '../../styles/TrainingRequestsManagement-rtl.css';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 
 const TrainingRequestsSection = () => {
   const { t } = useTranslation('TrainingRequestsManagement');
@@ -41,7 +42,7 @@ const TrainingRequestsSection = () => {
           return;
         }
 
-        const response = await fetch('http://localhost:5001/api/training-requests', {
+        const response = await fetch(`${API_URL}/training-requests`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -76,7 +77,7 @@ const TrainingRequestsSection = () => {
       const { authStorage } = require('../../utils/storage');
       const token = authStorage.getToken();
 
-      const response = await fetch(`http://localhost:5001/api/training-requests/${requestId}/status`, {
+      const response = await fetch(`${API_URL}/training-requests/${requestId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

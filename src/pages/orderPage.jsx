@@ -15,6 +15,8 @@ import PageHeader from '../components/page-header';
 import HeaderTwo from '../components/header/header-two';
 import Footer from '../components/footer';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 const OrderPage = () => {
   const location = useLocation();
   const { toast } = useToast();
@@ -81,7 +83,7 @@ const OrderPage = () => {
         preferredContactMethod: 'email'
       };
 
-      const response = await fetch('http://localhost:5001/api/contact-messages', {
+      const response = await fetch(`${API_URL}/contact-messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -19,6 +19,8 @@ import { useBookstore } from '../context/BookstoreContext';
 import { useToast } from '../hooks/use-toast';
 import Layout from '../components/layout';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 // Schema will be created inside component to access translations
 const createBookRequestSchema = (t) => z.object({
   bookName: z.string().min(1, t('validation.bookNameRequired')),
@@ -115,7 +117,7 @@ const TrainingFollowUpRequestPage = () => {
   useEffect(() => {
     const loadTrainingBooks = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/training-books', {});
+        const response = await fetch(`${API_URL}/training-books`, {});
         if (response.ok) {
           const books = await response.json();
           // Use appropriate language field based on current language
@@ -190,7 +192,7 @@ const TrainingFollowUpRequestPage = () => {
         )
       });
 
-      const response = await fetch('http://localhost:5001/api/training-follow-ups', {
+      const response = await fetch(`${API_URL}/training-follow-ups`, {
         method: 'POST',
         body: formData,
       });

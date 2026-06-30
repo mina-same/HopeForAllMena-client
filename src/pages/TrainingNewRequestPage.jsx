@@ -24,6 +24,8 @@ import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
 import Footer from '../components/footer';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 const nearbyChurchSchema = z.object({
   name: z.string().min(1, 'Church name is required'),
   responsiblePerson: z.string().min(1, 'Responsible person name is required'),
@@ -86,7 +88,7 @@ const TrainingNewRequestPage = () => {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('http://localhost:5001/api/training-requests', {
+      const response = await fetch(`${API_URL}/training-requests`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

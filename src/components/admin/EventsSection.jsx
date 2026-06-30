@@ -16,6 +16,8 @@ import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 export const EventsSection = () => {
   const { toast } = useToast();
   const { t } = useTranslation();
@@ -168,7 +170,7 @@ export const EventsSection = () => {
 
     try {
       const token = authStorage.getToken();
-      const response = await fetch('http://localhost:5001/api/upload/single', {
+      const response = await fetch(`${API_URL}/upload/single`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`

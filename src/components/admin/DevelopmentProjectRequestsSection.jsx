@@ -12,6 +12,8 @@ import { cn } from '../../lib/utils';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
 
+const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+
 const DevelopmentProjectRequestsSection = () => {
   const { t } = useTranslation('DevelopmentRequestsManagement');
   const { language: currentLanguage } = useI18next();
@@ -36,7 +38,7 @@ const DevelopmentProjectRequestsSection = () => {
           return;
         }
 
-        const response = await fetch('http://localhost:5001/api/development-project-requests', {
+        const response = await fetch(`${API_URL}/development-project-requests`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -71,7 +73,7 @@ const DevelopmentProjectRequestsSection = () => {
       const { authStorage } = require('../../utils/storage');
       const token = authStorage.getToken();
 
-      const response = await fetch(`http://localhost:5001/api/development-project-requests/${requestId}/status`, {
+      const response = await fetch(`${API_URL}/development-project-requests/${requestId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +106,7 @@ const DevelopmentProjectRequestsSection = () => {
       const { authStorage } = require('../../utils/storage');
       const token = authStorage.getToken();
 
-      const response = await fetch(`http://localhost:5001/api/development-project-requests/${requestId}/attachments/${filename}`, {
+      const response = await fetch(`${API_URL}/development-project-requests/${requestId}/attachments/${filename}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
