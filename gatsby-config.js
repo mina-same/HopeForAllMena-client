@@ -22,7 +22,6 @@ module.exports = {
         name: `locale`
       }
     },
-    `gatsby-transformer-json`,
     {
       resolve: 'gatsby-plugin-react-i18next',
       options: {
