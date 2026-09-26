@@ -12,10 +12,9 @@ import {
   GraduationCap,
   HandHeart,
   Lightbulb,
-  Users,
   Eye,
   Target,
-  Quote,
+  CheckCircle2,
   HeartHandshake,
   ArrowRight,
   ArrowLeft,
@@ -55,8 +54,6 @@ const DevelopmentDepartment = () => {
   const { t } = useTranslation("DevelopmentDepartment");
   const { language: currentLanguage } = useI18next();
   const isRTL = currentLanguage === "ar";
-  const align = isRTL ? "text-right" : "text-left";
-  const arabicFont = isRTL ? "font-arabic" : "";
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
 
   const missionItems = t("mission.items", { returnObjects: true }) || [];
@@ -82,39 +79,26 @@ const DevelopmentDepartment = () => {
       <PageHeader title={t("title")} crumbTitle={t("breadcrumb")} image={devHall} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
-        {/* ---------------------------------------------------------------- Hero */}
-        <section className="dept-hero dept-hero--intro pt-24">
-          <div className="dept-hero__beam" />
-          <div className="dept-hero__grid" />
-          <Container className="relative z-10">
+        {/* Intro */}
+        <section className="dept-section dept-intro">
+          <Container>
             <Row className="align-items-center g-5">
               <Col lg={6}>
-                <div className={align}>
-                  <span className="dept-wordmark mb-4">
-                    <span className="dept-wordmark__name">{t("wordmark.name")}</span>
-                    <span className="dept-wordmark__label">{t("wordmark.label")}</span>
-                  </span>
-                  <h1 className={`text-white text-4xl lg:text-[3rem] leading-tight font-bold mb-3 ${arabicFont}`}>
-                    {t("hero.title")}
-                  </h1>
-                  <span className="dept-rule mb-4" />
-                  <p className={`text-white/80 text-lg leading-relaxed mb-5 ${align}`}>{t("hero.intro")}</p>
-
-                  <div className="dept-verse rounded-xl p-5 mb-5">
-                    <Quote className="h-5 w-5 text-[#2194d1] mb-2" />
-                    <p className={`text-white text-lg leading-relaxed m-0 ${arabicFont}`}>{t("verse.text")}</p>
-                    <span className="text-[#5cb4e4] text-sm">{t("verse.ref")}</span>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
-                    <Link to="/development-project-request" className="dept-btn dept-btn--accent">
-                      <HeartHandshake className="h-5 w-5" />
-                      {t("hero.primaryCta")}
-                    </Link>
-                    <Link to="/contact" className="dept-btn dept-btn--ghost">
-                      {t("hero.secondaryCta")}
-                    </Link>
-                  </div>
+                <span className="dept-intro__eyebrow">{t("wordmark.name")}</span>
+                <h1>{t("hero.title")}</h1>
+                <p className="dept-text">{t("hero.intro")}</p>
+                <blockquote className="dept-verse">
+                  <p>{t("verse.text")}</p>
+                  <cite>{t("verse.ref")}</cite>
+                </blockquote>
+                <div className="dept-actions">
+                  <Link to="/development-project-request" className="dept-btn dept-btn--primary">
+                    <HeartHandshake />
+                    {t("hero.primaryCta")}
+                  </Link>
+                  <Link to="/contact" className="dept-btn dept-btn--outline">
+                    {t("hero.secondaryCta")}
+                  </Link>
                 </div>
               </Col>
               <Col lg={6}>
@@ -122,7 +106,7 @@ const DevelopmentDepartment = () => {
                   src={devWomen}
                   alt={t("heroImageAlt")}
                   title={t("heroImageTitle")}
-                  className="dept-hero__image"
+                  className="dept-intro__img"
                   width="1280"
                   height="720"
                 />
@@ -131,96 +115,80 @@ const DevelopmentDepartment = () => {
           </Container>
         </section>
 
-        {/* ------------------------------------------------- Highlight over hero */}
-        <section className="bg-[#f5f8fb] pb-20">
-          <Container>
-            <div className={`dept-highlight p-4 p-lg-5 ${align}`}>
-              <Row className="align-items-center g-4">
-                <Col lg={7}>
-                  <p className={`dept-highlight__figure mb-2 ${arabicFont}`}>{t("about.highlight")}</p>
-                  <p className={`text-muted-foreground text-lg leading-relaxed m-0 ${align}`}>
-                    {t("matchingFund.quote")}
-                  </p>
-                </Col>
-                <Col lg={5}>
-                  <div className={align}>
-                    <div className="dept-split mb-3">
-                      <span className="dept-split__ministry" />
-                      <span className="dept-split__church" />
-                    </div>
-                    <div className={`flex items-center justify-between gap-3 ${isRTL ? "flex-row" : ""}`}>
-                      <span className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span className="h-3 w-3 rounded-full bg-[#32669c] flex-shrink-0" />
-                        {t("matchingFund.ministryShare")} <strong className="text-[#050517]">50%</strong>
-                      </span>
-                      <span className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span className="h-3 w-3 rounded-full bg-[#2194d1] flex-shrink-0" />
-                        {t("matchingFund.churchShare")} <strong className="text-[#050517]">50%</strong>
-                      </span>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-            </div>
-          </Container>
-        </section>
-
-        {/* ---------------------------------------------------------- Who We Are */}
-        <section className="py-20 bg-background">
+        {/* Matching fund */}
+        <section className="dept-section dept-section--alt">
           <Container>
             <Row className="align-items-center g-5">
-              <Col lg={6}>
-                <div className="dept-frame">
-                  <img
-                    src={devHall}
-                    alt={t("about.imageAlt")}
-                    title={t("about.imageTitle")}
-                    loading="lazy"
-                  />
-                </div>
+              <Col lg={7}>
+                <p className="dept-figure">{t("about.highlight")}</p>
+                <p className="dept-text">{t("matchingFund.quote")}</p>
               </Col>
-              <Col lg={6}>
-                <div className={align}>
-                  <span className="inline-flex items-center gap-2 text-[#32669c] font-semibold text-sm px-4 py-2 bg-[#32669c]/10 rounded-full mb-4">
-                    <Users className="h-4 w-4" />
-                    <span className={arabicFont}>{t("about.badge")}</span>
+              <Col lg={5}>
+                <div className="dept-split" aria-hidden="true">
+                  <span />
+                  <span />
+                </div>
+                <div className="dept-split-legend">
+                  <span>
+                    {t("matchingFund.ministryShare")} <strong>50%</strong>
                   </span>
-                  <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] mb-4 ${align} ${arabicFont}`}>
-                    {t("about.title")}
-                  </h2>
-                  <span className="dept-rule mb-4" />
-                  <p className={`text-lg text-muted-foreground leading-relaxed mb-3 ${align}`}>{t("about.p1")}</p>
-                  <p className={`text-lg text-muted-foreground leading-relaxed m-0 ${align}`}>{t("about.p2")}</p>
+                  <span>
+                    {t("matchingFund.churchShare")} <strong>50%</strong>
+                  </span>
                 </div>
               </Col>
             </Row>
           </Container>
         </section>
 
-        {/* --------------------------------------------------- Vision & Mission */}
-        <section className="py-20 bg-[#f5f8fb]">
+        {/* Who we are */}
+        <section className="dept-section">
+          <Container>
+            <Row className="align-items-center g-5">
+              <Col lg={6}>
+                <div className="dept-heading mb-4">
+                  <h2>{t("about.title")}</h2>
+                </div>
+                <p className="dept-text">{t("about.p1")}</p>
+                <p className="dept-text">{t("about.p2")}</p>
+              </Col>
+              <Col lg={6}>
+                <img
+                  src={devHall}
+                  alt={t("about.imageAlt")}
+                  title={t("about.imageTitle")}
+                  className="dept-img"
+                  loading="lazy"
+                />
+              </Col>
+            </Row>
+          </Container>
+        </section>
+
+        {/* Vision & mission */}
+        <section className="dept-section dept-section--alt">
           <Container>
             <Row className="g-4">
               <Col lg={6}>
-                <div className={`dept-panel p-4 p-lg-5 ${align}`}>
-                  <span className="dept-chip dept-chip--accent mb-4">
-                    <Eye className="h-6 w-6" />
+                <div className="dept-card">
+                  <span className="dept-icon">
+                    <Eye />
                   </span>
-                  <h3 className={`text-2xl font-bold text-white mb-3 ${arabicFont}`}>{t("vision.title")}</h3>
-                  <p className={`text-white/75 text-lg leading-relaxed m-0 ${align}`}>{t("vision.text")}</p>
+                  <h3>{t("vision.title")}</h3>
+                  <p>{t("vision.text")}</p>
                 </div>
               </Col>
               <Col lg={6}>
-                <div className={`dept-panel p-4 p-lg-5 ${align}`}>
-                  <span className="dept-chip dept-chip--accent mb-4">
-                    <Target className="h-6 w-6" />
+                <div className="dept-card">
+                  <span className="dept-icon">
+                    <Target />
                   </span>
-                  <h3 className={`text-2xl font-bold text-white mb-3 ${arabicFont}`}>{t("mission.title")}</h3>
-                  <ul className="list-none p-0 m-0 space-y-3">
-                    {missionItems.map((item, i) => (
-                      <li key={i} className={`flex items-start gap-3 ${isRTL ? "flex-row" : ""}`}>
-                        <span className="h-2 w-2 rounded-full bg-[#5cb4e4] flex-shrink-0 mt-2" />
-                        <span className={`text-white/75 leading-relaxed ${align}`}>{item}</span>
+                  <h3>{t("mission.title")}</h3>
+                  <ul className="dept-checks">
+                    {missionItems.map((item) => (
+                      <li key={item}>
+                        <CheckCircle2 />
+                        <span>{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -230,34 +198,23 @@ const DevelopmentDepartment = () => {
           </Container>
         </section>
 
-        {/* ------------------------------------------------------ Support areas */}
-        <section className="py-20 bg-background">
+        {/* Support areas */}
+        <section className="dept-section">
           <Container>
-            <div className="text-center mb-12">
-              <span className="inline-flex items-center gap-2 text-[#2194d1] font-semibold text-sm px-4 py-2 bg-[#2194d1]/10 rounded-full mb-4">
-                <Compass className="h-4 w-4" />
-                <span className={arabicFont}>{t("matchingFund.title")}</span>
-              </span>
-              <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] text-center mb-3 ${arabicFont}`}>
-                {t("supportAreas.title")}
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-center m-0">
-                {t("matchingFund.text")}
-              </p>
+            <div className="dept-heading">
+              <h2>{t("supportAreas.title")}</h2>
+              <p>{t("matchingFund.text")}</p>
             </div>
             <Row className="g-4">
               {areaItems.map((item, i) => {
                 const Icon = AREA_ICONS[i] || Sparkles;
                 return (
-                  <Col md={6} lg={4} key={i}>
-                    <div className={`dept-area ${align}`}>
-                      <span className="dept-num">{i + 1}</span>
-                      <div className="flex-1">
-                        <span className="dept-chip dept-chip--sm mb-3">
-                          <Icon className="h-5 w-5" />
-                        </span>
-                        <p className={`text-muted-foreground leading-relaxed m-0 ${align}`}>{item}</p>
-                      </div>
+                  <Col md={6} lg={4} key={item}>
+                    <div className="dept-card">
+                      <span className="dept-icon">
+                        <Icon />
+                      </span>
+                      <p>{item}</p>
                     </div>
                   </Col>
                 );
@@ -266,65 +223,40 @@ const DevelopmentDepartment = () => {
           </Container>
         </section>
 
-        {/* ------------------------------------------------------- Requirements */}
-        <section className="py-20 bg-[#f5f8fb]">
+        {/* Requirements — an ordered checklist, so numbered */}
+        <section className="dept-section dept-section--alt">
           <Container>
-            <div className="text-center mb-12">
-              <span className="inline-flex items-center gap-2 text-[#32669c] font-semibold text-sm px-4 py-2 bg-[#32669c]/10 rounded-full mb-4">
-                <Building2 className="h-4 w-4" />
-                <span className="tracking-[0.2em] text-xs">{t("wordmark.label")}</span>
-              </span>
-              <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] text-center mb-3 ${arabicFont}`}>
-                {t("requirements.title")}
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-center m-0">
-                {t("requirements.subtitle")}
-              </p>
+            <div className="dept-heading">
+              <h2>{t("requirements.title")}</h2>
+              <p>{t("requirements.subtitle")}</p>
             </div>
-            <Row className="g-4">
+            <ol className="dept-rows dept-rows--cols">
               {requirementItems.map((item, i) => (
-                <Col md={6} lg={4} key={i}>
-                  <div className={`dept-req p-4 p-lg-5 ${align}`}>
-                    <span className="dept-req__ghost" aria-hidden="true">
-                      {i + 1}
-                    </span>
-                    <div className="relative z-10">
-                      <h4 className={`text-xl font-bold text-[#050517] mb-2 ${arabicFont}`}>{item.title}</h4>
-                      <p className={`text-muted-foreground leading-relaxed m-0 ${align}`}>{item.text}</p>
-                    </div>
+                <li key={item.title}>
+                  <span className="dept-num">{i + 1}</span>
+                  <div>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
                   </div>
-                </Col>
+                </li>
               ))}
-            </Row>
+            </ol>
           </Container>
         </section>
 
-        {/* ------------------------------------------------------------ Gallery */}
-        <section className="py-20 bg-background">
+        {/* Gallery */}
+        <section className="dept-section">
           <Container>
-            <div className="text-center mb-12">
-              <span className="inline-flex items-center gap-2 text-[#32669c] font-semibold text-sm px-4 py-2 bg-[#32669c]/10 rounded-full mb-4">
-                <HandHeart className="h-4 w-4" />
-                <span className={arabicFont}>{t("gallery.badge")}</span>
-              </span>
-              <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] text-center mb-3 ${arabicFont}`}>
-                {t("gallery.title")}
-              </h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-center m-0">
-                {t("gallery.subtitle")}
-              </p>
+            <div className="dept-heading">
+              <h2>{t("gallery.title")}</h2>
+              <p>{t("gallery.subtitle")}</p>
             </div>
             <Row className="g-4">
               {gallery.map(({ src, key }) => (
                 <Col md={4} key={key}>
-                  <figure className="dept-shot m-0">
-                    <img
-                      src={src}
-                      alt={t(`gallery.${key}Alt`)}
-                      title={t(`gallery.${key}Title`)}
-                      loading="lazy"
-                    />
-                    <figcaption className={`dept-shot__caption ${align}`}>{t(`gallery.${key}Title`)}</figcaption>
+                  <figure className="dept-shot">
+                    <img src={src} alt={t(`gallery.${key}Alt`)} loading="lazy" />
+                    <figcaption>{t(`gallery.${key}Title`)}</figcaption>
                   </figure>
                 </Col>
               ))}
@@ -332,42 +264,33 @@ const DevelopmentDepartment = () => {
           </Container>
         </section>
 
-        {/* ---------------------------------------------------------------- CTA */}
-        <section className="dept-hero py-20">
-          <div className="dept-hero__beam" />
-          <Container className="relative z-10">
-            <div className="text-center max-w-3xl mx-auto">
-              <h2 className={`text-3xl lg:text-4xl font-bold text-white text-center mb-3 ${arabicFont}`}>
-                {t("bottomCta.title")}
-              </h2>
-              <p className="text-lg text-white/75 text-center mb-4">{t("bottomCta.text")}</p>
-              <div className="flex flex-wrap justify-center gap-3">
-                <Link to="/development-project-request" className="dept-btn dept-btn--accent">
-                  {t("bottomCta.button")}
-                  <Arrow className="h-4 w-4" />
-                </Link>
-                <Link to="/contact" className="dept-btn dept-btn--ghost">
-                  {t("hero.secondaryCta")}
-                </Link>
-              </div>
+        {/* Call to action */}
+        <section className="dept-band">
+          <Container>
+            <h2>{t("bottomCta.title")}</h2>
+            <p>{t("bottomCta.text")}</p>
+            <div className="dept-actions dept-actions--center">
+              <Link to="/development-project-request" className="dept-btn dept-btn--light">
+                {t("bottomCta.button")}
+                <Arrow />
+              </Link>
+              <Link to="/contact" className="dept-btn dept-btn--ghost">
+                {t("hero.secondaryCta")}
+              </Link>
             </div>
           </Container>
         </section>
 
-        {/* ----------------------------------------------------------- Partners */}
-        <section className="py-16 bg-background border-t">
+        {/* Partners */}
+        <section className="dept-section">
           <Container>
-            <div className="text-center mb-10">
-              <h3 className={`text-2xl font-bold text-[#050517] text-center mb-2 ${arabicFont}`}>
-                {t("partners.title")}
-              </h3>
-              <p className="text-muted-foreground text-center m-0">{t("partners.subtitle")}</p>
+            <div className="dept-heading dept-heading--center">
+              <h2>{t("partners.title")}</h2>
+              <p>{t("partners.subtitle")}</p>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-20">
+            <div className="dept-partners">
               {partners.map((brand) => (
-                <div className="dept-partner" key={brand.alt}>
-                  <img src={brand.src} alt={brand.alt} title={brand.title} loading="lazy" />
-                </div>
+                <img key={brand.alt} src={brand.src} alt={brand.alt} title={brand.title} loading="lazy" />
               ))}
             </div>
           </Container>

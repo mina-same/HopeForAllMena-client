@@ -18,6 +18,9 @@ import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
 
 import publishingHouseWhite from "../assets/images/publishing-house-white.png";
+import brandSynod from "../assets/images/resources/brand-1-4.png";
+import brandPartner from "../assets/images/resources/brand-1-3.png";
+import hopeLogo from "../assets/images/logos/hope4AllMena.png";
 import "../assets/css/department-pages.css";
 
 const asArray = (value) => (Array.isArray(value) ? value : []);
@@ -32,7 +35,6 @@ const PublishingHouse = () => {
   const { t } = useTranslation("PublishingHouse");
   const { language: currentLanguage } = useI18next();
   const isRTL = currentLanguage === "ar";
-  const align = isRTL ? "text-right" : "text-left";
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
 
   const taglines = asArray(t("hero.taglines", { returnObjects: true }));
@@ -46,6 +48,12 @@ const PublishingHouse = () => {
   const emails = asArray(t("contact.emails", { returnObjects: true }));
   const person = t("contact.person");
 
+  const partners = [
+    { src: hopeLogo, alt: t("partners.hopeAlt"), title: t("partners.hopeTitle") },
+    { src: brandSynod, alt: t("partners.brand4Alt"), title: t("partners.brand4Title") },
+    { src: brandPartner, alt: t("partners.brand3Alt"), title: t("partners.brand3Title") },
+  ];
+
   return (
     <Layout pageTitle={`${t("pageTitle")} || Hope For All Mena Ministry`}>
       <HeaderTwo />
@@ -53,37 +61,33 @@ const PublishingHouse = () => {
       <PageHeader title={t("pageTitle")} crumbTitle={t("crumbTitle")} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
-        {/* ---------------------------------------------------------------- Hero */}
-        <section className="dept-hero dept-hero--intro pt-24">
-          <div className="dept-hero__beam" />
-          <div className="dept-hero__grid" />
-          <Container className="relative z-10">
+        {/* Intro */}
+        <section className="dept-section dept-intro">
+          <Container>
             <Row className="align-items-center g-5">
-              <Col lg={7}>
-                <div className={align}>
-                  <span className="dept-wordmark mb-4">
-                    <span className="dept-wordmark__name">{t("hero.eyebrow")}</span>
-                  </span>
-                  <h1 className="dept-hero__title">{t("hero.title")}</h1>
-                  <span className="dept-rule mb-4" />
-                  <ul className="dept-hero__list">
-                    {taglines.map((line) => (
-                      <li key={line}>{line}</li>
-                    ))}
-                  </ul>
-                  <div className="flex flex-wrap gap-3">
-                    <Link to="/books" className="dept-btn dept-btn--accent">
-                      <BookOpen className="h-5 w-5" />
-                      {t("hero.primaryCta")}
-                    </Link>
-                    <a href="#pub-contact" className="dept-btn dept-btn--ghost">
-                      {t("hero.secondaryCta")}
-                    </a>
-                  </div>
+              <Col lg={6}>
+                <span className="dept-intro__eyebrow">{t("hero.eyebrow")}</span>
+                <h1>{t("hero.title")}</h1>
+                <ul className="dept-checks">
+                  {taglines.map((line) => (
+                    <li key={line} className="text-lg">
+                      <CheckCircle2 />
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="dept-actions">
+                  <Link to="/books" className="dept-btn dept-btn--primary">
+                    <BookOpen />
+                    {t("hero.primaryCta")}
+                  </Link>
+                  <a href="#pub-contact" className="dept-btn dept-btn--outline">
+                    {t("hero.secondaryCta")}
+                  </a>
                 </div>
               </Col>
-              <Col lg={5}>
-                <div className="dept-hero__logo">
+              <Col lg={6}>
+                <div className="dept-intro__logo">
                   <img src={publishingHouseWhite} alt={t("pageTitle")} />
                 </div>
               </Col>
@@ -91,33 +95,26 @@ const PublishingHouse = () => {
           </Container>
         </section>
 
-        {/* ---------------------------------------------- Who we are / identity */}
-        <section className="dept-paper pb-20">
+        {/* Who we are / identity */}
+        <section className="dept-section dept-section--alt">
           <Container>
-            <div className="dept-highlight p-4 p-lg-5 text-center">
-              <div className="dept-heading mb-4">
-                <h2 className="dept-title">{t("about.title")}</h2>
-                <span className="dept-rule" />
-              </div>
+            <div className="dept-heading">
+              <h2>{t("about.title")}</h2>
+            </div>
+            <div style={{ maxWidth: 820 }}>
               {aboutParagraphs.map((paragraph) => (
-                <p key={paragraph} className="dept-text max-w-4xl mx-auto">
+                <p key={paragraph} className="dept-text">
                   {paragraph}
                 </p>
               ))}
             </div>
             {pillars.length > 0 && (
-              <Row className="g-4 mt-2">
-                {pillars.map((pillar, i) => (
+              <Row className="g-4 mt-3">
+                {pillars.map((pillar) => (
                   <Col md={6} key={pillar.title}>
-                    <div className={`dept-card p-4 p-lg-5 ${align}`}>
-                      <div className="flex items-start justify-between gap-3 mb-3">
-                        <span className="dept-chip dept-chip--accent">
-                          <BookOpen className="h-6 w-6" />
-                        </span>
-                        <span className="dept-card__index">{`0${i + 1}`}</span>
-                      </div>
-                      <h3 className="text-2xl font-bold mb-3">{pillar.title}</h3>
-                      <p className="text-muted-foreground leading-relaxed m-0">{pillar.text}</p>
+                    <div className="dept-card">
+                      <h3>{pillar.title}</h3>
+                      <p>{pillar.text}</p>
                     </div>
                   </Col>
                 ))}
@@ -126,45 +123,37 @@ const PublishingHouse = () => {
           </Container>
         </section>
 
-        {/* ------------------------------------------ Goals / strategic focus */}
-        <section className="py-20 bg-background">
+        {/* Goals / strategic focus */}
+        <section className="dept-section">
           <Container>
             <div className="dept-heading">
-              <h2 className="dept-title">{t("goals.title")}</h2>
-              <span className="dept-rule" />
+              <h2>{t("goals.title")}</h2>
             </div>
-            <Row className="g-4 justify-content-center">
-              {goals.map((goal, i) => (
-                <Col md={6} lg={goal.text ? 6 : 4} key={goal.title}>
-                  <div className={`dept-area ${align}`}>
-                    <span className="dept-num">{i + 1}</span>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-bold leading-relaxed m-0">{goal.title}</h3>
-                      {goal.text && (
-                        <p className="text-muted-foreground leading-relaxed mt-2 mb-0">{goal.text}</p>
-                      )}
-                    </div>
+            <ul className="dept-rows dept-rows--cols">
+              {goals.map((goal) => (
+                <li key={goal.title}>
+                  <CheckCircle2 />
+                  <div>
+                    <h3>{goal.title}</h3>
+                    {goal.text && <p>{goal.text}</p>}
                   </div>
-                </Col>
+                </li>
               ))}
-            </Row>
+            </ul>
           </Container>
         </section>
 
-        {/* ------------- Why it matters / impact (en) — publishing policy (ar) */}
+        {/* Why it matters / impact (en) — publishing policy (ar) */}
         {lists.length > 0 && (
-          <section className="py-20 dept-paper">
+          <section className="dept-section dept-section--alt">
             <Container>
               <Row className="g-4">
                 {lists.map((list) => (
                   <Col lg={lists.length > 1 ? 6 : 12} key={list.title}>
-                    <div className={`dept-card dept-card--raised p-4 p-lg-5 ${align}`}>
-                      <div className="dept-heading dept-heading--start">
-                        <h2 className="dept-title">{list.title}</h2>
-                        <span className="dept-rule" />
-                      </div>
-                      {list.intro && <p className="font-semibold text-[#050517]">{list.intro}</p>}
-                      <ul className={`dept-checks ${lists.length > 1 ? "" : "dept-checks--grid"}`}>
+                    <div className="dept-card">
+                      <h3>{list.title}</h3>
+                      {list.intro && <p className="font-semibold">{list.intro}</p>}
+                      <ul className={`dept-checks ${lists.length > 1 ? "" : "dept-checks--cols"}`}>
                         {asArray(list.items).map((item) => (
                           <li key={item}>
                             <CheckCircle2 />
@@ -172,7 +161,7 @@ const PublishingHouse = () => {
                           </li>
                         ))}
                       </ul>
-                      {list.outro && <p className="font-semibold text-[#2194d1] mt-4 mb-0">{list.outro}</p>}
+                      {list.outro && <p className="font-semibold mt-3">{list.outro}</p>}
                     </div>
                   </Col>
                 ))}
@@ -181,24 +170,21 @@ const PublishingHouse = () => {
           </section>
         )}
 
-        {/* ------------------------------------------------- Publishing series */}
-        <section className="py-20 bg-background">
+        {/* Publishing series */}
+        <section className="dept-section">
           <Container>
             <div className="dept-heading">
-              <h2 className="dept-title">{t("series.title")}</h2>
-              <span className="dept-rule" />
+              <h2>{t("series.title")}</h2>
             </div>
             <Row className="g-4">
               {series.map((item) => (
                 <Col sm={6} lg={item.text && isRTL ? 4 : 3} key={item.title}>
-                  <div className="dept-card p-4 text-center">
-                    <span className="dept-chip dept-chip--sm mb-3">
-                      <BookOpen className="h-5 w-5" />
+                  <div className="dept-card">
+                    <span className="dept-icon">
+                      <BookOpen />
                     </span>
-                    <h3 className="text-lg font-bold m-0">{item.title}</h3>
-                    {item.text && (
-                      <p className="text-muted-foreground leading-relaxed mt-2 mb-0">{item.text}</p>
-                    )}
+                    <h3>{item.title}</h3>
+                    {item.text && <p>{item.text}</p>}
                   </div>
                 </Col>
               ))}
@@ -206,35 +192,33 @@ const PublishingHouse = () => {
           </Container>
         </section>
 
-        {/* ----------------------------------------------------------- Contact */}
-        <section className="dept-hero py-20" id="pub-contact">
-          <div className="dept-hero__beam" />
-          <Container className="relative z-10">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl lg:text-4xl font-bold text-white mb-3">{t("contact.title")}</h2>
-              <span className="dept-rule mx-auto" />
+        {/* Contact */}
+        <section className="dept-section dept-section--alt" id="pub-contact">
+          <Container>
+            <div className="dept-heading">
+              <h2>{t("contact.title")}</h2>
             </div>
             <Row className="g-4">
               <Col lg={4}>
-                <div className="dept-panel dept-panel--glass p-4 p-lg-5 text-center">
-                  <span className="dept-chip dept-chip--accent mb-4">
-                    <MapPin className="h-6 w-6" />
+                <div className="dept-card">
+                  <span className="dept-icon">
+                    <MapPin />
                   </span>
-                  <h3 className="text-xl font-bold mb-3">{t("contact.addressesTitle")}</h3>
+                  <h3>{t("contact.addressesTitle")}</h3>
                   {addresses.map((address) => (
-                    <p key={address} className="text-white/80 leading-relaxed">
+                    <p key={address} className="mb-2">
                       {address}
                     </p>
                   ))}
                 </div>
               </Col>
               <Col lg={4}>
-                <div className="dept-panel dept-panel--glass p-4 p-lg-5 text-center">
-                  <span className="dept-chip dept-chip--accent mb-4">
-                    <MessageCircle className="h-6 w-6" />
+                <div className="dept-card">
+                  <span className="dept-icon">
+                    <MessageCircle />
                   </span>
-                  <h3 className="text-xl font-bold mb-3">{t("contact.whatsappTitle")}</h3>
-                  {person && <p className="text-white font-bold mb-2">{person}</p>}
+                  <h3>{t("contact.whatsappTitle")}</h3>
+                  {person && <p className="font-semibold mb-2">{person}</p>}
                   {phones.map((phone) => (
                     <a
                       key={phone}
@@ -242,7 +226,7 @@ const PublishingHouse = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       dir="ltr"
-                      className="block text-[#5cb4e4] font-bold text-lg mb-2 hover:text-white"
+                      className="dept-link d-flex mb-2"
                     >
                       {phone}
                     </a>
@@ -250,18 +234,13 @@ const PublishingHouse = () => {
                 </div>
               </Col>
               <Col lg={4}>
-                <div className="dept-panel dept-panel--glass p-4 p-lg-5 text-center">
-                  <span className="dept-chip dept-chip--accent mb-4">
-                    <Mail className="h-6 w-6" />
+                <div className="dept-card">
+                  <span className="dept-icon">
+                    <Mail />
                   </span>
-                  <h3 className="text-xl font-bold mb-3">{t("contact.emailTitle")}</h3>
+                  <h3>{t("contact.emailTitle")}</h3>
                   {emails.map((email) => (
-                    <a
-                      key={email}
-                      href={`mailto:${email}`}
-                      dir="ltr"
-                      className="block text-[#5cb4e4] font-bold mb-2 break-words hover:text-white"
-                    >
+                    <a key={email} href={`mailto:${email}`} dir="ltr" className="dept-link d-flex mb-2 text-break">
                       {email}
                     </a>
                   ))}
@@ -271,16 +250,30 @@ const PublishingHouse = () => {
           </Container>
         </section>
 
-        {/* ------------------------------------------------------ Browse books */}
-        <section className="py-20 bg-background">
+        {/* Browse books */}
+        <section className="dept-band">
           <Container>
-            <div className="dept-heading m-0">
-              <h2 className="dept-title">{t("browseBooks.title")}</h2>
-              <p className="dept-subtitle mb-4">{t("browseBooks.description")}</p>
-              <Link to="/books" className="dept-btn dept-btn--accent">
+            <h2>{t("browseBooks.title")}</h2>
+            <p>{t("browseBooks.description")}</p>
+            <div className="dept-actions dept-actions--center">
+              <Link to="/books" className="dept-btn dept-btn--light">
                 {t("browseBooks.buttonText")}
-                <Arrow className="h-4 w-4" />
+                <Arrow />
               </Link>
+            </div>
+          </Container>
+        </section>
+        {/* Partners */}
+        <section className="dept-section">
+          <Container>
+            <div className="dept-heading dept-heading--center">
+              <h2>{t("partners.title")}</h2>
+              <p>{t("partners.subtitle")}</p>
+            </div>
+            <div className="dept-partners">
+              {partners.map((brand) => (
+                <img key={brand.alt} src={brand.src} alt={brand.alt} title={brand.title} loading="lazy" />
+              ))}
             </div>
           </Container>
         </section>

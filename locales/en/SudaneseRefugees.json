@@ -82,5 +82,15 @@
         }
       }
     }
+  },
+  "partners": {
+    "title": "Ministry Partners",
+    "subtitle": "We work in partnership with churches and institutions to strengthen local church ministry.",
+    "hopeAlt": "Hope For All MENA ministry logo",
+    "hopeTitle": "Hope For All MENA",
+    "brand3Alt": "Logo of a partner institution of the Sudanese Refugees in Egypt Ministry",
+    "brand3Title": "Partner institution",
+    "brand4Alt": "Synod of the Nile logo, partner of the Sudanese Refugees in Egypt Ministry",
+    "brand4Title": "Synod of the Nile"
   }
 }
