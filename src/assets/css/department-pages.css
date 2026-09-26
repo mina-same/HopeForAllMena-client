@@ -1,0 +1,633 @@
+/* ==========================================================================
+   Department pages — one shared design system for every ministry page
+   (Development, Alexandria Bible College, Publishing House, Evangelism &
+   Discipleship, Sudanese Refugees). Scope everything under `.dept`.
+   ========================================================================== */
+
+.dept {
+  /* Site theme tokens from main.css :root — kept literal so this file is
+     self-contained, but the values are --thm-* and must track them. */
+  --dept-primary: #32669c;      /* --thm-primary */
+  --dept-dark: #050517;         /* --thm-dark */
+  --dept-special: #5366c2;      /* --thm-special */
+  --dept-accent: #2194d1;       /* --thm-base */
+  --dept-accent-soft: #5cb4e4;  /* --thm-base, lightened */
+  --dept-paper: #f5f8fb;
+}
+
+/* --- Section backgrounds & headings -------------------------------------- */
+.dept-paper {
+  background: var(--dept-paper);
+}
+
+.dept-heading {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.dept-heading--start {
+  text-align: start;
+  margin-bottom: 1.5rem;
+}
+.dept-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dept-primary);
+  background: rgba(50, 102, 156, 0.1);
+}
+.dept-badge svg {
+  width: 1rem;
+  height: 1rem;
+}
+.dept-title {
+  font-size: clamp(1.875rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--dept-dark);
+  margin: 0 0 0.75rem;
+}
+.dept-heading--start .dept-title {
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+}
+.dept-subtitle {
+  max-width: 48rem;
+  margin: 0 auto;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: hsl(var(--muted-foreground));
+}
+.dept-text {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: hsl(var(--muted-foreground));
+}
+
+/* --- Hero ---------------------------------------------------------------- */
+.dept-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--dept-special) 0%, var(--dept-primary) 55%, var(--dept-dark) 100%);
+}
+.dept-hero--intro {
+  padding-bottom: 13rem;
+}
+.dept-hero__beam {
+  position: absolute;
+  inset: -20% -10% auto -10%;
+  height: 140%;
+  background:
+    radial-gradient(60% 50% at 50% 0%, rgba(92, 180, 228, 0.2) 0%, rgba(92, 180, 228, 0) 70%),
+    radial-gradient(40% 60% at 85% 20%, rgba(83, 102, 194, 0.5) 0%, rgba(83, 102, 194, 0) 70%);
+  pointer-events: none;
+}
+.dept-hero__grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(70% 70% at 50% 40%, #000 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000 0%, transparent 100%);
+  pointer-events: none;
+}
+.dept-hero__image {
+  border-radius: 20px;
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.75);
+  border: 1px solid rgba(92, 180, 228, 0.35);
+  display: block;
+  width: 100%;
+}
+.dept-hero__image--cover {
+  height: 460px;
+  object-fit: cover;
+}
+/* Round logo medallion (for pages whose hero art is a logo, not a photo) */
+.dept-hero__logo {
+  max-width: 340px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid rgba(92, 180, 228, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dept-hero__logo img {
+  width: 85%;
+  height: auto;
+}
+.dept-hero__title {
+  color: #fff;
+  font-size: clamp(2.25rem, 4.5vw, 3rem);
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+.dept-hero__title span {
+  color: var(--dept-accent-soft);
+}
+.dept-hero__lead {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.125rem;
+  line-height: 1.75;
+  margin-bottom: 1.5rem;
+}
+.dept-hero__tagline {
+  color: var(--dept-accent-soft);
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.dept-hero__list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+}
+.dept-hero__list li {
+  position: relative;
+  padding-inline-start: 22px;
+  margin-bottom: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+}
+.dept-hero__list li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  background: var(--dept-accent);
+  transform: rotate(45deg);
+}
+.dept-hero--band h2 {
+  color: #fff;
+}
+
+/* --- Wordmark / eyebrow pill ---------------------------------------------- */
+.dept-wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(92, 180, 228, 0.4);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+}
+.dept-wordmark__name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--dept-accent-soft);
+  letter-spacing: 0.01em;
+}
+.dept-wordmark__label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.dept-rule {
+  display: block;
+  width: 68px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--dept-accent), rgba(33, 148, 209, 0));
+}
+[dir="rtl"] .dept-rule {
+  background: linear-gradient(270deg, var(--dept-accent), rgba(33, 148, 209, 0));
+}
+.dept-heading .dept-rule {
+  margin: 0 auto 1rem;
+  background: var(--dept-accent);
+}
+
+.dept-verse {
+  border-inline-start: 3px solid var(--dept-accent);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(4px);
+}
+
+/* --- Content pulled up over the intro hero -------------------------------- */
+.dept-highlight {
+  margin-top: -6rem;
+  position: relative;
+  background: #fff;
+  border: 1px solid rgba(50, 102, 156, 0.1);
+  border-radius: 18px;
+  box-shadow: 0 24px 50px -34px rgba(5, 5, 23, 0.55);
+}
+.dept-highlight__figure {
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--dept-special);
+}
+.dept-overlap {
+  margin-top: -6rem;
+  position: relative;
+}
+
+/* --- Cards --------------------------------------------------------------- */
+.dept-card {
+  position: relative;
+  height: 100%;
+  background: #fff;
+  border: 1px solid rgba(50, 102, 156, 0.1);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.dept-card::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--dept-accent), var(--dept-special));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+[dir="rtl"] .dept-card::before {
+  transform-origin: right;
+}
+.dept-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(33, 148, 209, 0.4);
+  box-shadow: 0 30px 60px -32px rgba(5, 5, 23, 0.5);
+}
+.dept-card:hover::before {
+  transform: scaleX(1);
+}
+.dept-card--raised {
+  box-shadow: 0 24px 50px -34px rgba(5, 5, 23, 0.55);
+}
+.dept-card__index {
+  font-size: 3.25rem;
+  line-height: 1;
+  font-weight: 800;
+  color: rgba(33, 148, 209, 0.22);
+}
+.dept-card h3,
+.dept-card h4 {
+  color: var(--dept-dark);
+}
+
+.dept-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
+  color: #fff;
+  background: linear-gradient(140deg, var(--dept-special), var(--dept-primary));
+  box-shadow: 0 14px 26px -14px rgba(50, 102, 156, 0.85);
+  flex-shrink: 0;
+}
+.dept-chip--accent {
+  background: linear-gradient(140deg, var(--dept-accent-soft), var(--dept-accent));
+  box-shadow: 0 14px 26px -14px rgba(33, 148, 209, 0.9);
+  color: #fff;
+}
+.dept-chip--sm {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+.dept-chip--lg {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+}
+
+/* --- Dark panel (vision / mission) --------------------------------------- */
+.dept-panel {
+  height: 100%;
+  border-radius: 20px;
+  color: #fff;
+  background: linear-gradient(150deg, var(--dept-primary) 0%, var(--dept-dark) 100%);
+  border: 1px solid rgba(92, 180, 228, 0.22);
+  position: relative;
+  overflow: hidden;
+}
+.dept-panel::after {
+  content: "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 120px;
+  height: 3px;
+  background: var(--dept-accent);
+}
+.dept-panel h3 {
+  color: #fff;
+}
+/* Glass variant for use on the dark hero gradient */
+.dept-panel--glass {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(92, 180, 228, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+/* --- Matching fund split bar --------------------------------------------- */
+.dept-split {
+  display: flex;
+  height: 22px;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(50, 102, 156, 0.15);
+}
+.dept-split__ministry {
+  width: 50%;
+  background: linear-gradient(90deg, var(--dept-special), var(--dept-primary));
+}
+.dept-split__church {
+  width: 50%;
+  background: linear-gradient(90deg, var(--dept-accent-soft), var(--dept-accent));
+}
+
+/* --- Numbered cards with a ghost ordinal --------------------------------- */
+.dept-req {
+  position: relative;
+  height: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgba(50, 102, 156, 0.1);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.dept-req:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px -32px rgba(5, 5, 23, 0.5);
+}
+.dept-req__ghost {
+  position: absolute;
+  inset-block-end: -0.3em;
+  inset-inline-end: 0.08em;
+  font-size: clamp(4rem, 8vw, 6rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(50, 102, 156, 0.12);
+  pointer-events: none;
+  user-select: none;
+}
+.dept-req__ghost--word {
+  font-size: clamp(3.5rem, 7vw, 5.25rem);
+  inset-block-end: -0.35em;
+}
+
+/* --- Numbered / icon list items ------------------------------------------ */
+.dept-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  height: 100%;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid rgba(50, 102, 156, 0.1);
+  border-radius: 14px;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.dept-area:hover {
+  transform: translateY(-4px);
+  border-color: rgba(33, 148, 209, 0.45);
+  box-shadow: 0 24px 46px -30px rgba(5, 5, 23, 0.5);
+}
+.dept-area--center {
+  align-items: center;
+}
+.dept-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--dept-primary);
+  background: rgba(33, 148, 209, 0.14);
+  border: 1px solid rgba(33, 148, 209, 0.45);
+}
+
+/* --- Check list ---------------------------------------------------------- */
+.dept-checks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dept-checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  line-height: 1.75;
+  color: hsl(var(--muted-foreground));
+}
+.dept-checks li svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.3rem;
+  flex-shrink: 0;
+  color: var(--dept-accent);
+}
+.dept-checks--grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 2.5rem;
+}
+.dept-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-top: 0.6rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--dept-accent);
+}
+
+/* --- Gallery ------------------------------------------------------------- */
+.dept-shot {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(50, 102, 156, 0.12);
+  background: var(--dept-dark);
+}
+.dept-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.dept-shot:hover img {
+  transform: scale(1.05);
+}
+.dept-shot__caption {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  padding: 1.5rem 1.25rem 1rem;
+  color: #fff;
+  font-size: 0.9rem;
+  background: linear-gradient(to top, rgba(5, 5, 23, 0.92), rgba(5, 5, 23, 0));
+}
+/* Full-width tile for very wide captures */
+.dept-shot--wide {
+  aspect-ratio: 24 / 7;
+}
+.dept-shot--fill {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 200px;
+}
+
+/* --- Framed image -------------------------------------------------------- */
+.dept-frame {
+  position: relative;
+  border-radius: 20px;
+}
+.dept-frame::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 22px;
+  inset-inline-start: 22px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--dept-accent);
+  border-radius: 20px;
+  z-index: 0;
+}
+.dept-frame img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  border-radius: 20px;
+  display: block;
+}
+
+/* --- Buttons (page-scoped: the shared <Button> forces !border-none) ------- */
+.dept-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1.9rem;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.975rem;
+  line-height: 1;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease,
+    transform 0.25s ease, box-shadow 0.25s ease;
+}
+.dept-btn:hover {
+  text-decoration: none;
+  transform: translateY(-2px);
+}
+.dept-btn--accent {
+  background: var(--dept-accent);
+  border-color: var(--dept-accent);
+  color: #fff;
+  box-shadow: 0 16px 30px -16px rgba(33, 148, 209, 0.9);
+}
+.dept-btn--accent:hover {
+  background: var(--dept-accent-soft);
+  border-color: var(--dept-accent-soft);
+  color: #fff;
+}
+.dept-btn--ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #fff;
+}
+.dept-btn--ghost:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--dept-primary);
+}
+.dept-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--dept-accent);
+  transition: color 0.25s ease;
+}
+.dept-link:hover {
+  color: var(--dept-primary);
+  text-decoration: none;
+}
+
+/* --- Partners ------------------------------------------------------------ */
+.dept-partner img {
+  max-height: 92px;
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.65;
+  transition: filter 0.35s ease, opacity 0.35s ease, transform 0.35s ease;
+}
+.dept-partner:hover img {
+  filter: grayscale(0);
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+/* --- Arabic font --------------------------------------------------------- */
+.dept .font-arabic,
+.dept[dir="rtl"] h1,
+.dept[dir="rtl"] h2,
+.dept[dir="rtl"] h3,
+.dept[dir="rtl"] h4 {
+  font-family: "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+}
+.dept .font-arabic {
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+  .dept-frame::before {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .dept-hero--intro {
+    padding-bottom: 10rem;
+  }
+  .dept-highlight,
+  .dept-overlap {
+    margin-top: -5rem;
+  }
+  .dept-hero__image--cover {
+    height: 320px;
+  }
+  .dept-hero__logo {
+    max-width: 240px;
+  }
+  .dept-checks--grid {
+    grid-template-columns: 1fr;
+  }
+  .dept-shot--wide {
+    aspect-ratio: 16 / 10;
+  }
+}

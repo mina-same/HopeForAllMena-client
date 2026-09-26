@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useStaticQuery, graphql } from "gatsby";
 import ModalVideo from "react-modal-video";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -12,19 +11,6 @@ const VideoCardTwo = () => {
   const [isOpen, setOpen] = useState(false);
   const { t } = useTranslation('VideoCardTwo');
   const { language: currentLanguage } = useI18next();
-  useStaticQuery(graphql`
-    query {
-      locales: allLocale {
-        edges {
-          node {
-            ns
-            data
-            language
-          }
-        }
-      }
-    }
-  `);
   return (
     <section className={`video-card-two ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} style={{marginBottom: "100px"}} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <ModalVideo

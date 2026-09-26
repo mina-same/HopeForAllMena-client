@@ -47,7 +47,9 @@ const NavLinks = ({ extraClassName, hideControls = false }) => {
           <Link to="/about">{t('navigation.about')}</Link>
         </li>
         <li className="dropdown">
-          <Link to="/news">{t('navigation.ministryDepartments')}</Link>
+          <a href="#" onClick={(e) => e.preventDefault()} style={{ cursor: "default" }}>
+            {t('navigation.ministryDepartments')}
+          </a>
           <button aria-label="dropdown toggler" onClick={handleDropdownStatus}>
             <i className="fa fa-angle-down"></i>
           </button>

@@ -35,7 +35,7 @@ import devParticipants from "../assets/images/development/dev-inclusion-particip
 import brandSynod from "../assets/images/resources/brand-1-4.png";
 import brandPartner from "../assets/images/resources/brand-1-3.png";
 import hopeLogo from "../assets/images/logos/hope4AllMena.png";
-import "../assets/css/development-department.css";
+import "../assets/css/department-pages.css";
 
 // One icon per entry in supportAreas.items, in order.
 const AREA_ICONS = [
@@ -81,37 +81,37 @@ const DevelopmentDepartment = () => {
       <StickyHeader />
       <PageHeader title={t("title")} crumbTitle={t("breadcrumb")} image={devHall} />
 
-      <div className="tan" dir={isRTL ? "rtl" : "ltr"}>
+      <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
         {/* ---------------------------------------------------------------- Hero */}
-        <section className="tan-hero tan-hero--intro pt-24">
-          <div className="tan-hero__beam" />
-          <div className="tan-hero__grid" />
+        <section className="dept-hero dept-hero--intro pt-24">
+          <div className="dept-hero__beam" />
+          <div className="dept-hero__grid" />
           <Container className="relative z-10">
             <Row className="align-items-center g-5">
               <Col lg={6}>
                 <div className={align}>
-                  <span className="tan-wordmark mb-4">
-                    <span className="tan-wordmark__name">{t("wordmark.name")}</span>
-                    <span className="tan-wordmark__label">{t("wordmark.label")}</span>
+                  <span className="dept-wordmark mb-4">
+                    <span className="dept-wordmark__name">{t("wordmark.name")}</span>
+                    <span className="dept-wordmark__label">{t("wordmark.label")}</span>
                   </span>
                   <h1 className={`text-white text-4xl lg:text-[3rem] leading-tight font-bold mb-3 ${arabicFont}`}>
                     {t("hero.title")}
                   </h1>
-                  <span className="tan-rule mb-4" />
+                  <span className="dept-rule mb-4" />
                   <p className={`text-white/80 text-lg leading-relaxed mb-5 ${align}`}>{t("hero.intro")}</p>
 
-                  <div className="tan-verse rounded-xl p-5 mb-5">
+                  <div className="dept-verse rounded-xl p-5 mb-5">
                     <Quote className="h-5 w-5 text-[#2194d1] mb-2" />
                     <p className={`text-white text-lg leading-relaxed m-0 ${arabicFont}`}>{t("verse.text")}</p>
                     <span className="text-[#5cb4e4] text-sm">{t("verse.ref")}</span>
                   </div>
 
                   <div className="flex flex-wrap gap-3">
-                    <Link to="/development-project-request" className="tan-btn tan-btn--amber">
+                    <Link to="/development-project-request" className="dept-btn dept-btn--accent">
                       <HeartHandshake className="h-5 w-5" />
                       {t("hero.primaryCta")}
                     </Link>
-                    <Link to="/contact" className="tan-btn tan-btn--ghost">
+                    <Link to="/contact" className="dept-btn dept-btn--ghost">
                       {t("hero.secondaryCta")}
                     </Link>
                   </div>
@@ -122,7 +122,7 @@ const DevelopmentDepartment = () => {
                   src={devWomen}
                   alt={t("heroImageAlt")}
                   title={t("heroImageTitle")}
-                  className="tan-hero__image"
+                  className="dept-hero__image"
                   width="1280"
                   height="720"
                 />
@@ -134,19 +134,19 @@ const DevelopmentDepartment = () => {
         {/* ------------------------------------------------- Highlight over hero */}
         <section className="bg-[#f5f8fb] pb-20">
           <Container>
-            <div className={`tan-highlight p-4 p-lg-5 ${align}`}>
+            <div className={`dept-highlight p-4 p-lg-5 ${align}`}>
               <Row className="align-items-center g-4">
                 <Col lg={7}>
-                  <p className={`tan-highlight__figure mb-2 ${arabicFont}`}>{t("about.highlight")}</p>
+                  <p className={`dept-highlight__figure mb-2 ${arabicFont}`}>{t("about.highlight")}</p>
                   <p className={`text-muted-foreground text-lg leading-relaxed m-0 ${align}`}>
                     {t("matchingFund.quote")}
                   </p>
                 </Col>
                 <Col lg={5}>
                   <div className={align}>
-                    <div className="tan-split mb-3">
-                      <span className="tan-split__ministry" />
-                      <span className="tan-split__church" />
+                    <div className="dept-split mb-3">
+                      <span className="dept-split__ministry" />
+                      <span className="dept-split__church" />
                     </div>
                     <div className={`flex items-center justify-between gap-3 ${isRTL ? "flex-row" : ""}`}>
                       <span className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -170,7 +170,7 @@ const DevelopmentDepartment = () => {
           <Container>
             <Row className="align-items-center g-5">
               <Col lg={6}>
-                <div className="tan-frame">
+                <div className="dept-frame">
                   <img
                     src={devHall}
                     alt={t("about.imageAlt")}
@@ -188,7 +188,7 @@ const DevelopmentDepartment = () => {
                   <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] mb-4 ${align} ${arabicFont}`}>
                     {t("about.title")}
                   </h2>
-                  <span className="tan-rule mb-4" />
+                  <span className="dept-rule mb-4" />
                   <p className={`text-lg text-muted-foreground leading-relaxed mb-3 ${align}`}>{t("about.p1")}</p>
                   <p className={`text-lg text-muted-foreground leading-relaxed m-0 ${align}`}>{t("about.p2")}</p>
                 </div>
@@ -202,8 +202,8 @@ const DevelopmentDepartment = () => {
           <Container>
             <Row className="g-4">
               <Col lg={6}>
-                <div className={`tan-panel p-4 p-lg-5 ${align}`}>
-                  <span className="tan-chip tan-chip--amber mb-4">
+                <div className={`dept-panel p-4 p-lg-5 ${align}`}>
+                  <span className="dept-chip dept-chip--accent mb-4">
                     <Eye className="h-6 w-6" />
                   </span>
                   <h3 className={`text-2xl font-bold text-white mb-3 ${arabicFont}`}>{t("vision.title")}</h3>
@@ -211,8 +211,8 @@ const DevelopmentDepartment = () => {
                 </div>
               </Col>
               <Col lg={6}>
-                <div className={`tan-panel p-4 p-lg-5 ${align}`}>
-                  <span className="tan-chip tan-chip--amber mb-4">
+                <div className={`dept-panel p-4 p-lg-5 ${align}`}>
+                  <span className="dept-chip dept-chip--accent mb-4">
                     <Target className="h-6 w-6" />
                   </span>
                   <h3 className={`text-2xl font-bold text-white mb-3 ${arabicFont}`}>{t("mission.title")}</h3>
@@ -250,10 +250,10 @@ const DevelopmentDepartment = () => {
                 const Icon = AREA_ICONS[i] || Sparkles;
                 return (
                   <Col md={6} lg={4} key={i}>
-                    <div className={`tan-area ${align}`}>
-                      <span className="tan-area__num">{i + 1}</span>
+                    <div className={`dept-area ${align}`}>
+                      <span className="dept-num">{i + 1}</span>
                       <div className="flex-1">
-                        <span className="tan-chip tan-chip--sm mb-3">
+                        <span className="dept-chip dept-chip--sm mb-3">
                           <Icon className="h-5 w-5" />
                         </span>
                         <p className={`text-muted-foreground leading-relaxed m-0 ${align}`}>{item}</p>
@@ -284,8 +284,8 @@ const DevelopmentDepartment = () => {
             <Row className="g-4">
               {requirementItems.map((item, i) => (
                 <Col md={6} lg={4} key={i}>
-                  <div className={`tan-req p-4 p-lg-5 ${align}`}>
-                    <span className="tan-req__ghost" aria-hidden="true">
+                  <div className={`dept-req p-4 p-lg-5 ${align}`}>
+                    <span className="dept-req__ghost" aria-hidden="true">
                       {i + 1}
                     </span>
                     <div className="relative z-10">
@@ -317,14 +317,14 @@ const DevelopmentDepartment = () => {
             <Row className="g-4">
               {gallery.map(({ src, key }) => (
                 <Col md={4} key={key}>
-                  <figure className="tan-shot m-0">
+                  <figure className="dept-shot m-0">
                     <img
                       src={src}
                       alt={t(`gallery.${key}Alt`)}
                       title={t(`gallery.${key}Title`)}
                       loading="lazy"
                     />
-                    <figcaption className={`tan-shot__caption ${align}`}>{t(`gallery.${key}Title`)}</figcaption>
+                    <figcaption className={`dept-shot__caption ${align}`}>{t(`gallery.${key}Title`)}</figcaption>
                   </figure>
                 </Col>
               ))}
@@ -333,8 +333,8 @@ const DevelopmentDepartment = () => {
         </section>
 
         {/* ---------------------------------------------------------------- CTA */}
-        <section className="tan-hero py-20">
-          <div className="tan-hero__beam" />
+        <section className="dept-hero py-20">
+          <div className="dept-hero__beam" />
           <Container className="relative z-10">
             <div className="text-center max-w-3xl mx-auto">
               <h2 className={`text-3xl lg:text-4xl font-bold text-white text-center mb-3 ${arabicFont}`}>
@@ -342,11 +342,11 @@ const DevelopmentDepartment = () => {
               </h2>
               <p className="text-lg text-white/75 text-center mb-4">{t("bottomCta.text")}</p>
               <div className="flex flex-wrap justify-center gap-3">
-                <Link to="/development-project-request" className="tan-btn tan-btn--amber">
+                <Link to="/development-project-request" className="dept-btn dept-btn--accent">
                   {t("bottomCta.button")}
                   <Arrow className="h-4 w-4" />
                 </Link>
-                <Link to="/contact" className="tan-btn tan-btn--ghost">
+                <Link to="/contact" className="dept-btn dept-btn--ghost">
                   {t("hero.secondaryCta")}
                 </Link>
               </div>
@@ -365,7 +365,7 @@ const DevelopmentDepartment = () => {
             </div>
             <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-20">
               {partners.map((brand) => (
-                <div className="tan-partner" key={brand.alt}>
+                <div className="dept-partner" key={brand.alt}>
                   <img src={brand.src} alt={brand.alt} title={brand.title} loading="lazy" />
                 </div>
               ))}

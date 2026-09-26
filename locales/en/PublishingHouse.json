@@ -1,47 +1,149 @@
 {
-  "pageTitle": "Compelling Biblical Teaching for the Community",
-  "crumbTitle": "Services",
+  "pageTitle": "Publishing House – Hope For All",
+  "crumbTitle": "Ministry Departments",
   "hero": {
-    "title": "Compelling Biblical Teaching for the Community",
-    "intro": "Our Publishing and Distribution House is dedicated to amplifying voices and sharing stories that inspire, educate, and transform lives. We believe in the power of written words to create lasting impact and bring positive change to communities.",
-    "mission": "We support young writers and emerging authors by providing them with the resources, guidance, and platform they need to share their messages with the world. Our publishing services include editorial support, design assistance, and distribution channels that ensure their work reaches the right audience.",
-    "approach": "Through strategic partnerships with bookstores, libraries, and educational institutions, we ensure that valuable content is accessible to readers everywhere, fostering a culture of learning and growth."
+    "eyebrow": "Hope for All Ministries MENA",
+    "title": "Publishing House – Hope For All",
+    "taglines": [
+      "Rooted in Scripture",
+      "Engaging the Present",
+      "Shaping the Future"
+    ],
+    "primaryCta": "Browse Our Books",
+    "secondaryCta": "Contact Us"
   },
-  "features": {
-    "authorSupport": {
-      "title": "Author Support",
-      "description": "Comprehensive support for writers including manuscript review, editing, design, and publishing guidance to bring their vision to life."
-    },
-    "qualityPublishing": {
-      "title": "Quality Publishing",
-      "description": "Professional publishing services that ensure high-quality books, articles, and educational materials that meet industry standards."
-    },
-    "wideDistribution": {
-      "title": "Wide Distribution",
-      "description": "Extensive distribution networks that make published works available through multiple channels including online platforms and physical locations."
-    }
+  "about": {
+    "title": "Who We Are",
+    "paragraphs": [
+      "Hope for All Ministries MENA operates under the Evangelical Synod of the Nile in Egypt.",
+      "We exist to serve the Church and society by producing and disseminating Reformed Christian biblical thought that is deeply rooted in Scripture and thoughtfully engaged with today's challenges.",
+      "We believe that true renewal in the Church begins with a return to authentic biblical teaching, faithfully interpreted and clearly communicated for our time."
+    ]
   },
-  "impact": {
-    "title": "Our Impact",
-    "subtitle": "Amplifying voices and sharing stories that change lives",
-    "achievementsTitle": "What We've Achieved",
-    "achievements": {
-      "booksPublished": "Published over 100 books and educational materials",
-      "authorsSupported": "Supported 50+ young and emerging authors",
-      "countriesReached": "Distributed content to 30+ countries worldwide",
-      "partnerships": "Established partnerships with major distribution networks",
-      "platforms": "Created digital and print publishing platforms"
+  "pillars": [
+    {
+      "title": "Our Vision",
+      "text": "To contribute to the renewal of the Church through biblically grounded, intellectually sound, and culturally relevant Christian publishing."
     },
-    "stats": {
-      "books": "Books Published",
-      "authors": "Authors Supported",
-      "countries": "Countries Reached",
-      "copies": "Copies Distributed"
+    {
+      "title": "Our Mission",
+      "text": "To produce, translate, and distribute Christian resources that strengthen biblical faith, engage contemporary intellectual challenges, and equip churches, families, and future leaders."
     }
+  ],
+  "goals": {
+    "title": "Our Strategic Focus",
+    "items": [
+      {
+        "title": "Reviving personal and church libraries"
+      },
+      {
+        "title": "Publishing Christian theological and cultural thought"
+      },
+      {
+        "title": "Investing in young Christian writers"
+      },
+      {
+        "title": "Strengthening faith amid postmodern challenges"
+      },
+      {
+        "title": "Reviving Christian heritage works"
+      },
+      {
+        "title": "Producing collaborative publications"
+      },
+      {
+        "title": "Building strategic partnerships"
+      }
+    ]
+  },
+  "lists": [
+    {
+      "title": "Why This Ministry Matters",
+      "items": [
+        "Christian books are becoming less accessible due to rising costs.",
+        "The Church needs trustworthy, biblically rooted resources.",
+        "A new generation of Christian writers needs training and support.",
+        "Faith today must respond wisely to postmodern and cultural challenges.",
+        "Your support enables us to move from limited access to lasting influence."
+      ]
+    },
+    {
+      "title": "How You Can Make an Impact",
+      "intro": "Your partnership helps us:",
+      "items": [
+        "Keep Christian resources affordable",
+        "Equip churches with reliable biblical content",
+        "Empower new Christian voices",
+        "Preserve and transmit Christian heritage"
+      ],
+      "outro": "Partner with us in shaping minds, strengthening faith, and impacting generations."
+    }
+  ],
+  "series": {
+    "title": "Publishing Series",
+    "items": [
+      {
+        "title": "Youth Dialogues"
+      },
+      {
+        "title": "Biblical Studies"
+      },
+      {
+        "title": "Historical Readings"
+      },
+      {
+        "title": "We Believe and Confess",
+        "text": "Presbyterian Doctrine"
+      },
+      {
+        "title": "The Shield",
+        "text": "Apologetics"
+      },
+      {
+        "title": "Arab Christianity"
+      },
+      {
+        "title": "Pastoral Care & Ministry"
+      },
+      {
+        "title": "Church & Society"
+      },
+      {
+        "title": "Literature & Arts"
+      },
+      {
+        "title": "Family & Child"
+      },
+      {
+        "title": "Academic Studies"
+      },
+      {
+        "title": "Theological Readings"
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact Us",
+    "addressesTitle": "Our Offices",
+    "addresses": [
+      "37 Sidi El-Motawaly Street – Alexandria office",
+      "11 El-Masoud Street, Abbasia Street – Cairo office"
+    ],
+    "person": "Dr. Rev. Radi Iskander",
+    "whatsappTitle": "WhatsApp",
+    "phones": [
+      "+2 01556745096",
+      "+2 01229133317"
+    ],
+    "emailTitle": "Email",
+    "emails": [
+      "Hope4allpublishing@gmail.com",
+      "Radiiskander@gmail.com"
+    ]
   },
   "browseBooks": {
     "title": "Explore Our Book Collection",
-    "description": "Discover a wide range of books and educational materials published through our ministry. From theological resources to inspirational stories, find content that enriches faith and knowledge.",
+    "description": "Discover the books published by Hope For All across our publishing series.",
     "buttonText": "Browse All Books"
   },
   "orderPage": {
@@ -133,4 +235,3 @@
     }
   }
 }
-

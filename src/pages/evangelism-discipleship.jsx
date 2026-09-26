@@ -1,7 +1,7 @@
 import React from "react";
 import { graphql } from "gatsby";
 import { Link, useTranslation, useI18next } from "gatsby-plugin-react-i18next";
-import { Card, CardContent } from "../components/ui/card";
+import { Container, Row, Col } from "react-bootstrap";
 import {
   Target,
   Eye,
@@ -19,11 +19,12 @@ import {
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
-import HeroSection from "../components/HeroSection";
 import HeaderTwo from "../components/header/header-two";
 import StickyHeader from "../components/header/sticky-header";
+import PageHeader from "../components/page-header";
 import Footer from "../components/footer";
 import Layout from "../components/layout";
+import heroImage from "../assets/images/قسم التعليم و الكرازه/IMG-20250513-WA0055.jpg";
 import missionImage from "../assets/images/قسم التعليم و الكرازه/IMG-20250513-WA0063.jpg";
 import visionImage from "../assets/images/قسم التعليم و الكرازه/IMG-20250513-WA0073.jpg";
 import programsImageOne from "../assets/images/قسم التعليم و الكرازه/IMG-20250513-WA0086.jpg";
@@ -34,6 +35,7 @@ import galleryImageThree from "../assets/images/قسم التعليم و الك�
 import galleryImageFour from "../assets/images/قسم التعليم و الكرازه/IMG_20240701_185628.jpg";
 import mailboxLogo from "../assets/images/resources/brand-1-1.png";
 import synodLogo from "../assets/images/resources/brand-1-4.png";
+import "../assets/css/department-pages.css";
 
 const OBJECTIVE_KEYS = [
   "evangelism",
@@ -67,255 +69,233 @@ const EvangelismDiscipleship = () => {
   const { t } = useTranslation("EvangelismDiscipleship");
   const { language: currentLanguage } = useI18next();
   const isRTL = currentLanguage === "ar";
+  const align = isRTL ? "text-right" : "text-left";
   const ActionChevron = isRTL ? ChevronLeft : ChevronRight;
 
   const philosophyBody = t("philosophy.body");
 
   return (
     <Layout pageTitle={`${t("pageTitle")} || Hope for All Mena`}>
-      <div className="min-h-screen bg-background" dir={isRTL ? "rtl" : "ltr"}>
-        <HeaderTwo />
-        <StickyHeader />
+      <HeaderTwo />
+      <StickyHeader />
+      <PageHeader title={t("pageTitle")} crumbTitle={t("pageTitle")} image={missionImage} />
 
-        {/* Hero */}
-        <HeroSection />
-
-        {/* Our Mission — statement over a photo of the ministry it describes */}
-        <section className="relative py-24 animate-in fade-in duration-700">
-          <img
-            src={missionImage}
-            alt={t("mission.imageAlt")}
-            className="absolute inset-0 h-full w-full object-cover"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B3C5D]/95 via-[#0B3C5D]/90 to-[#2194D1]/85"></div>
-          <div className="relative container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center space-y-8 animate-in slide-in-from-bottom duration-700">
-              <div className="h-20 w-20 bg-white/15 text-white rounded-2xl flex items-center justify-center mx-auto border border-white/30">
-                <Target className="h-10 w-10" />
-              </div>
-              <h2 className="text-4xl lg:text-5xl font-bold text-white">
-                {t("mission.title")}
-              </h2>
-              <div className="h-1 w-20 bg-white/60 rounded-full mx-auto"></div>
-              <p className="text-xl lg:text-2xl text-white/90 leading-relaxed">
-                {t("mission.body")}
-              </p>
-            </div>
-          </div>
+      <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
+        {/* ---------------------------------------------------------------- Hero */}
+        <section className="dept-hero dept-hero--intro pt-24">
+          <div className="dept-hero__beam" />
+          <div className="dept-hero__grid" />
+          <Container className="relative z-10">
+            <Row className="align-items-center g-5">
+              <Col lg={6}>
+                <div className={align}>
+                  <span className="dept-wordmark mb-4">
+                    <span className="dept-wordmark__name">{t("heroSection.badge")}</span>
+                  </span>
+                  <h1 className="dept-hero__title">
+                    {t("heroSection.title")} <span>{t("heroSection.titleHighlight")}</span>
+                  </h1>
+                  <span className="dept-rule mb-4" />
+                  <p className="dept-hero__lead m-0">{t("heroSection.description")}</p>
+                </div>
+              </Col>
+              <Col lg={6}>
+                <img
+                  src={heroImage}
+                  alt={t("heroSection.imageAlt")}
+                  className="dept-hero__image dept-hero__image--cover object-top"
+                />
+              </Col>
+            </Row>
+          </Container>
         </section>
 
-        {/* Our Vision */}
-        <section className="py-20 bg-background animate-in fade-in duration-700">
-          <div className="container mx-auto px-4">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div className={`space-y-6 animate-in slide-in-from-bottom duration-700 ${isRTL ? "lg:order-2" : ""}`}>
-                <div className="h-16 w-16 bg-[#2194D1] text-white rounded-2xl flex items-center justify-center shadow-card">
-                  <Eye className="h-8 w-8" />
-                </div>
-                <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-                  {t("vision.title")}
-                </h2>
-                <div className="h-1 w-20 bg-[#2194D1] rounded-full"></div>
-                <p className="text-xl text-muted-foreground leading-relaxed">
-                  {t("vision.body")}
-                </p>
+        {/* --------------------------------------- Our Mission (over the hero) */}
+        <section className="dept-paper pb-20">
+          <Container>
+            <div className="dept-highlight p-4 p-lg-5 text-center">
+              <span className="dept-chip dept-chip--accent dept-chip--lg mb-4">
+                <Target className="h-8 w-8" />
+              </span>
+              <div className="dept-heading mb-4">
+                <h2 className="dept-title">{t("mission.title")}</h2>
+                <span className="dept-rule" />
               </div>
-
-              <div className={`relative animate-in slide-in-from-bottom duration-700 delay-150 ${isRTL ? "lg:order-1" : ""}`}>
-                <div className="rounded-2xl overflow-hidden shadow-hover">
-                  <img
-                    src={visionImage}
-                    alt={t("vision.imageAlt")}
-                    className="w-full h-[420px] object-cover"
-                    loading="lazy"
-                  />
-                </div>
-                {/* Trained-teachers accent tile */}
-                <div className={`absolute -bottom-6 bg-[#2194D1] text-white rounded-2xl px-6 py-4 shadow-card ${isRTL ? "-left-4" : "-right-4"}`}>
-                  <GraduationCap className="h-7 w-7" />
-                </div>
-              </div>
+              <p className="dept-text max-w-4xl mx-auto m-0">{t("mission.body")}</p>
             </div>
-          </div>
+          </Container>
         </section>
 
-        {/* Overall Objectives */}
-        <section className="py-20 bg-muted/30 animate-in fade-in duration-700">
-          <div className="container mx-auto px-4">
-            <div className="text-center space-y-4 mb-16 animate-in slide-in-from-bottom duration-700">
-              <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-                {t("objectives.title")}
-              </h2>
-              <div className="h-1 w-20 bg-[#2194D1] rounded-full mx-auto"></div>
-            </div>
+        {/* ---------------------------------------------------------- Our Vision */}
+        <section className="py-20 bg-background">
+          <Container>
+            <Row className="align-items-center g-5">
+              <Col lg={6}>
+                <div className="dept-frame">
+                  <img src={visionImage} alt={t("vision.imageAlt")} loading="lazy" />
+                </div>
+              </Col>
+              <Col lg={6}>
+                <div className={align}>
+                  <span className="dept-chip dept-chip--accent mb-4">
+                    <Eye className="h-6 w-6" />
+                  </span>
+                  <h2 className="dept-title mb-4">{t("vision.title")}</h2>
+                  <span className="dept-rule mb-4" />
+                  <p className="dept-text m-0">{t("vision.body")}</p>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </section>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto animate-in slide-in-from-bottom duration-700 delay-150">
-              {OBJECTIVE_KEYS.map((key, index) => (
-                <Card
-                  key={key}
-                  className={`group hover:shadow-hover transition-all duration-300 bg-card border shadow-card ${
-                    index === OBJECTIVE_KEYS.length - 1 ? "md:col-span-2" : ""
-                  }`}
-                >
-                  <CardContent className="p-8">
-                    <div className="flex gap-6">
-                      <div className="text-3xl font-bold text-[#2194D1] leading-none flex-shrink-0">
-                        {String(index + 1).padStart(2, "0")}
-                      </div>
-                      <div className="space-y-3">
-                        <h3 className="text-2xl font-bold text-foreground">
+        {/* ------------------------------------------------ Overall Objectives */}
+        <section className="py-20 dept-paper">
+          <Container>
+            <div className="dept-heading">
+              <h2 className="dept-title">{t("objectives.title")}</h2>
+              <span className="dept-rule" />
+            </div>
+            <Row className="g-4">
+              {OBJECTIVE_KEYS.map((key, i) => (
+                <Col md={i === OBJECTIVE_KEYS.length - 1 ? 12 : 6} key={key}>
+                  <div className={`dept-req p-4 p-lg-5 ${align}`}>
+                    <span className="dept-req__ghost" aria-hidden="true">
+                      {i + 1}
+                    </span>
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span className="dept-num">{i + 1}</span>
+                        <h3 className="text-xl font-bold text-[#050517] m-0">
                           {t(`objectives.items.${key}.title`)}
                         </h3>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {t(`objectives.items.${key}.description`)}
-                        </p>
                       </div>
+                      <p className="text-muted-foreground leading-relaxed m-0">
+                        {t(`objectives.items.${key}.description`)}
+                      </p>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </Col>
               ))}
-            </div>
-          </div>
+            </Row>
+          </Container>
         </section>
 
-        {/* Our Philosophy — renders once philosophy.body is filled in */}
+        {/* ------------------ Our Philosophy — renders once philosophy.body is filled in */}
         {philosophyBody ? (
-          <section className="py-20 bg-background animate-in fade-in duration-700">
-            <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto space-y-8 animate-in slide-in-from-bottom duration-700">
-                <div className="h-16 w-16 bg-[#2194D1] text-white rounded-2xl flex items-center justify-center shadow-card">
-                  <Compass className="h-8 w-8" />
-                </div>
-                <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-                  {t("philosophy.title")}
-                </h2>
-                <div className={`bg-muted/50 rounded-2xl p-8 shadow-card ${isRTL ? "border-r-4" : "border-l-4"} border-[#2194D1]`}>
-                  <Quote className="h-8 w-8 text-[#2194D1] mb-4" />
-                  <p className="text-xl text-muted-foreground leading-relaxed">
-                    {philosophyBody}
-                  </p>
-                </div>
-              </div>
-            </div>
+          <section className="py-20 bg-background">
+            <Container>
+              <Row className="justify-content-center">
+                <Col lg={10}>
+                  <div className={`dept-panel p-4 p-lg-5 ${align}`}>
+                    <span className="dept-chip dept-chip--accent mb-4">
+                      <Compass className="h-6 w-6" />
+                    </span>
+                    <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">{t("philosophy.title")}</h2>
+                    <Quote className="h-6 w-6 text-[#5cb4e4] mb-2" />
+                    <p className="text-white/75 text-lg leading-relaxed m-0">{philosophyBody}</p>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
           </section>
         ) : null}
 
-        {/* Our Programs */}
-        <section className="py-20 bg-background animate-in fade-in duration-700">
-          <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto space-y-12">
-              <div className="text-center space-y-4 animate-in slide-in-from-bottom duration-700">
-                <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-                  {t("programs.title")}
-                </h2>
-                <div className="h-1 w-20 bg-[#2194D1] rounded-full mx-auto"></div>
-                <p className="text-xl text-muted-foreground leading-relaxed">
-                  {t("programs.description")}
-                </p>
-                <p className="text-lg text-muted-foreground leading-relaxed">
-                  {t("programs.note")}
-                </p>
-              </div>
+        {/* -------------------------------------------------------- Our Programs */}
+        <section className="py-20 bg-background">
+          <Container>
+            <div className="dept-heading">
+              <h2 className="dept-title">{t("programs.title")}</h2>
+              <span className="dept-rule" />
+              <p className="dept-subtitle">{t("programs.description")}</p>
+              <p className="dept-subtitle mt-2">{t("programs.note")}</p>
+            </div>
 
-              {/* Levels and ages, framed by two photos from the lessons */}
-              <div className="grid lg:grid-cols-2 gap-8 animate-in slide-in-from-bottom duration-700 delay-150">
-                <div className="rounded-2xl overflow-hidden shadow-card">
-                  <img
-                    src={programsImageOne}
-                    alt={t("programs.imageAltOne")}
-                    className="w-full h-72 object-cover transition-transform duration-500 hover:scale-105"
-                    loading="lazy"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="bg-card border rounded-2xl p-6 shadow-card flex flex-col justify-center text-center">
-                    <Layers className="h-7 w-7 text-[#2194D1] mx-auto mb-3" />
-                    <div className="text-4xl font-bold text-[#2194D1] mb-1">
-                      {t("programs.levelsValue")}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {t("programs.levelsLabel")}
-                    </div>
-                  </div>
-                  <div className="bg-card border rounded-2xl p-6 shadow-card flex flex-col justify-center text-center">
-                    <Heart className="h-7 w-7 text-[#2194D1] mx-auto mb-3" />
-                    <div className="text-4xl font-bold text-[#2194D1] mb-1">
-                      {t("programs.agesValue")}
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      {t("programs.agesLabel")}
-                    </div>
-                  </div>
-                  <div className="col-span-2 rounded-2xl overflow-hidden shadow-card">
-                    <img
-                      src={programsImageTwo}
-                      alt={t("programs.imageAltTwo")}
-                      className="w-full h-40 object-cover transition-transform duration-500 hover:scale-105"
-                      loading="lazy"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Core features */}
-              <div className="space-y-8 animate-in slide-in-from-bottom duration-700 delay-300">
-                <h3 className="text-2xl lg:text-3xl font-bold text-foreground text-center">
-                  {t("programs.featuresTitle")}
-                </h3>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {PROGRAM_FEATURES.map((feature) => (
-                    <div
-                      key={feature.key}
-                      className="flex items-center gap-4 bg-card border rounded-xl p-6 shadow-card hover:shadow-hover transition-all duration-300"
-                    >
-                      <div className="h-12 w-12 bg-[#2194D1] text-white rounded-xl flex items-center justify-center flex-shrink-0">
-                        <feature.icon className="h-6 w-6" />
-                      </div>
-                      <span className="text-lg font-medium text-foreground">
-                        {t(`programs.features.${feature.key}`)}
+            {/* Levels and ages, framed by two photos from the lessons */}
+            <Row className="g-4 mb-5">
+              <Col lg={6}>
+                <figure className="dept-shot dept-shot--fill m-0">
+                  <img src={programsImageOne} alt={t("programs.imageAltOne")} loading="lazy" />
+                </figure>
+              </Col>
+              <Col lg={6}>
+                <Row className="g-4">
+                  <Col xs={6}>
+                    <div className="dept-card p-4 text-center">
+                      <span className="dept-chip dept-chip--sm mb-3">
+                        <Layers className="h-5 w-5" />
                       </span>
+                      <div className="text-4xl font-bold text-[#2194d1] mb-1">{t("programs.levelsValue")}</div>
+                      <div className="text-sm text-muted-foreground">{t("programs.levelsLabel")}</div>
                     </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+                  </Col>
+                  <Col xs={6}>
+                    <div className="dept-card p-4 text-center">
+                      <span className="dept-chip dept-chip--sm mb-3">
+                        <Heart className="h-5 w-5" />
+                      </span>
+                      <div className="text-4xl font-bold text-[#2194d1] mb-1">{t("programs.agesValue")}</div>
+                      <div className="text-sm text-muted-foreground">{t("programs.agesLabel")}</div>
+                    </div>
+                  </Col>
+                  <Col xs={12}>
+                    <figure className="dept-shot dept-shot--wide m-0">
+                      <img src={programsImageTwo} alt={t("programs.imageAltTwo")} loading="lazy" />
+                    </figure>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
 
-        {/* From the ministry — photo strip */}
-        <section className="py-20 bg-muted/30 animate-in fade-in duration-700">
-          <div className="container mx-auto px-4">
-            <div className="text-center space-y-4 mb-12 animate-in slide-in-from-bottom duration-700">
-              <h2 className="text-4xl lg:text-5xl font-bold text-foreground">
-                {t("gallery.title")}
-              </h2>
-              <div className="h-1 w-20 bg-[#2194D1] rounded-full mx-auto"></div>
+            {/* Core features */}
+            <div className="dept-heading mb-4">
+              <h3 className="text-2xl lg:text-3xl font-bold text-[#050517] m-0">{t("programs.featuresTitle")}</h3>
             </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 animate-in slide-in-from-bottom duration-700 delay-150">
-              {GALLERY_IMAGES.map((image) => (
-                <div
-                  key={image.key}
-                  className="rounded-2xl overflow-hidden shadow-card hover:shadow-hover transition-all duration-300"
-                >
-                  <img
-                    src={image.src}
-                    alt={t(`gallery.items.${image.key}`)}
-                    className="w-full h-60 object-cover transition-transform duration-500 hover:scale-110"
-                    loading="lazy"
-                  />
-                </div>
+            <Row className="g-4">
+              {PROGRAM_FEATURES.map((feature) => (
+                <Col sm={6} lg={4} key={feature.key}>
+                  <div className={`dept-area dept-area--center ${align}`}>
+                    <span className="dept-chip dept-chip--sm">
+                      <feature.icon className="h-5 w-5" />
+                    </span>
+                    <span className="text-lg font-semibold text-[#050517]">
+                      {t(`programs.features.${feature.key}`)}
+                    </span>
+                  </div>
+                </Col>
               ))}
-            </div>
-          </div>
+            </Row>
+          </Container>
         </section>
 
-        {/* The Mailbox Club */}
-        <section className="pt-20 pb-32 bg-[#2194D1] animate-in fade-in duration-700">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center space-y-8 animate-in slide-in-from-bottom duration-700">
-              <div className="inline-flex bg-white rounded-2xl p-6 shadow-card">
+        {/* --------------------------------------- From the ministry — gallery */}
+        <section className="py-20 dept-paper">
+          <Container>
+            <div className="dept-heading">
+              <h2 className="dept-title">{t("gallery.title")}</h2>
+              <span className="dept-rule" />
+            </div>
+            <Row className="g-4">
+              {GALLERY_IMAGES.map((image) => (
+                <Col sm={6} lg={3} key={image.key}>
+                  <figure className="dept-shot m-0">
+                    <img src={image.src} alt={t(`gallery.items.${image.key}`)} loading="lazy" />
+                    <figcaption className={`dept-shot__caption ${align}`}>
+                      {t(`gallery.items.${image.key}`)}
+                    </figcaption>
+                  </figure>
+                </Col>
+              ))}
+            </Row>
+          </Container>
+        </section>
+
+        {/* ------------------------------------------------- The Mailbox Club */}
+        <section className="dept-hero dept-hero--intro pt-20">
+          <div className="dept-hero__beam" />
+          <Container className="relative z-10">
+            <div className="text-center max-w-3xl mx-auto">
+              <div className="inline-flex bg-white rounded-2xl p-4 mb-4">
                 <img
                   src={mailboxLogo}
                   alt={t("mailbox.logoAlt")}
@@ -323,73 +303,59 @@ const EvangelismDiscipleship = () => {
                   loading="lazy"
                 />
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold text-white" dir="ltr">
+              <h2 className="text-3xl lg:text-4xl font-bold text-white text-center mb-3" dir="ltr">
                 {t("mailbox.title")}
               </h2>
-              <div className="h-1 w-20 bg-white/60 rounded-full mx-auto"></div>
-              <p className="text-xl lg:text-2xl text-white/90 leading-relaxed">
-                {t("mailbox.body")}
-              </p>
+              <span className="dept-rule mx-auto mb-4" />
+              <p className="text-lg text-white/75 text-center m-0">{t("mailbox.body")}</p>
             </div>
-          </div>
+          </Container>
         </section>
 
-        {/* Page actions */}
-        <section className="bg-muted/30 pb-20">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto -mt-20 relative z-10 grid sm:grid-cols-2 gap-6">
+        {/* ------------------------------------- Page actions (over the band) */}
+        <section className="dept-paper pb-20">
+          <Container>
+            <Row className="dept-overlap g-4 justify-content-center">
               {PAGE_ACTIONS.map((action) => (
-                <Link
-                  key={action.key}
-                  to={action.link}
-                  className="group block bg-card border rounded-2xl p-6 shadow-card hover:shadow-hover hover:border-[#2194D1] transition-all duration-300"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-xl bg-[#2194D1] text-white flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
-                      <action.icon className="h-6 w-6" />
+                <Col sm={6} lg={5} key={action.key}>
+                  <Link to={action.link} className="block no-underline hover:no-underline">
+                    <div className="dept-card dept-card--raised p-4">
+                      <div className="flex items-center gap-4">
+                        <span className="dept-chip dept-chip--accent">
+                          <action.icon className="h-6 w-6" />
+                        </span>
+                        <span className="flex-1 text-lg font-semibold text-[#050517]">
+                          {t(`actions.${action.key}`)}
+                        </span>
+                        <ActionChevron className="h-5 w-5 text-[#2194d1] flex-shrink-0" />
+                      </div>
                     </div>
-                    <span className="flex-1 text-lg font-semibold text-foreground">
-                      {t(`actions.${action.key}`)}
-                    </span>
-                    <ActionChevron className={`h-5 w-5 text-[#2194D1] flex-shrink-0 transition-transform duration-200 ${isRTL ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"}`} />
-                  </div>
-                </Link>
+                  </Link>
+                </Col>
               ))}
-            </div>
-          </div>
+            </Row>
+          </Container>
         </section>
 
-        {/* In partnership with */}
-        <section className="py-16 bg-background border-t animate-in fade-in duration-700">
-          <div className="container mx-auto px-4">
-            <div className="text-center space-y-10">
-              <div className="space-y-4">
-                <h2 className="text-2xl lg:text-3xl font-bold text-foreground">
-                  {t("partners.title")}
-                </h2>
-                <div className="h-1 w-16 bg-[#2194D1] rounded-full mx-auto"></div>
+        {/* ------------------------------------------------ In partnership with */}
+        <section className="py-16 bg-background border-t">
+          <Container>
+            <div className="text-center mb-10">
+              <h3 className="text-2xl font-bold text-[#050517] text-center m-0">{t("partners.title")}</h3>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-20">
+              <div className="dept-partner">
+                <img src={synodLogo} alt={t("partners.synodAlt")} loading="lazy" />
               </div>
-
-              <div className="flex flex-wrap items-center justify-center gap-12 lg:gap-20">
-                <img
-                  src={synodLogo}
-                  alt={t("partners.synodAlt")}
-                  className="h-32 w-auto object-contain transition-transform duration-300 hover:scale-105"
-                  loading="lazy"
-                />
-                <img
-                  src={mailboxLogo}
-                  alt={t("partners.mailboxAlt")}
-                  className="h-24 w-auto object-contain transition-transform duration-300 hover:scale-105"
-                  loading="lazy"
-                />
+              <div className="dept-partner">
+                <img src={mailboxLogo} alt={t("partners.mailboxAlt")} loading="lazy" />
               </div>
             </div>
-          </div>
+          </Container>
         </section>
-
-        <Footer />
       </div>
+
+      <Footer />
     </Layout>
   );
 };
