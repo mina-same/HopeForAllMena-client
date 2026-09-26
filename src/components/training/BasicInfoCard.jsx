@@ -2,7 +2,7 @@ import React from 'react';
 import { Users } from 'lucide-react';
 import { useTranslation } from 'gatsby-plugin-react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../components/ui/form';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../../components/ui/form';
 import { Input } from '../../components/ui/input';
 import { Textarea } from '../../components/ui/textarea';
 

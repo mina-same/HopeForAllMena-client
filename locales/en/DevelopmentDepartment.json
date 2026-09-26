@@ -77,5 +77,47 @@
     "title": "Ready to submit a development project?",
     "text": "Share your project idea with us. We’ll review it using the requirements above and follow up with next steps.",
     "button": "Submit Project Request"
+  },
+  "wordmark": {
+    "name": "Tanmia",
+    "nameEn": "تنمية",
+    "label": "DEVELOPMENT",
+    "org": "Hope 4 All Ministries MENA"
+  },
+  "verse": {
+    "text": "Jesus went through all the towns and villages, teaching in their synagogues, proclaiming the good news of the kingdom and healing every disease and sickness.",
+    "ref": "(Matthew 9:35)"
+  },
+  "about": {
+    "badge": "Who We Are",
+    "title": "Building bridges into the community",
+    "p1": "Hope for All MENA Ministries is committed to supporting the local church through the Department of Development & Church Projects. We work to build strong bridges of connection with the surrounding community, expressing our faith in practical, creative, and impactful ways.",
+    "p2": "Because the true capital of development work lies in ideas rather than money, Hope for All MENA Ministries focuses on investing in people, not buildings.",
+    "highlight": "Investing in people, not buildings",
+    "imageAlt": "Women from the local community taking part in a development gathering held by the Department of Development & Church Projects",
+    "imageTitle": "A community development gathering of the Department of Development & Church Projects"
+  },
+  "gallery": {
+    "badge": "From the field",
+    "title": "Ministry that reaches people",
+    "subtitle": "Moments from the Department of Development & Church Projects among local communities and those most in need of care.",
+    "photo1Alt": "A Hope for All volunteer serving refreshments to an elderly woman during a Department of Development activity",
+    "photo1Title": "Caring for the elderly through the Development Department",
+    "photo2Alt": "A young man with a disability joining joyfully in a community event of the Department of Development & Church Projects",
+    "photo2Title": "Including people with disabilities in Development Department activities",
+    "photo3Alt": "Participants with disabilities engaging during a community gathering held by the Department of Development & Church Projects",
+    "photo3Title": "An inclusive community gathering of the Development Department"
+  },
+  "heroImageAlt": "A hall filled with women from the local community during a Hope for All development gathering",
+  "heroImageTitle": "A development gathering of the Department of Development & Church Projects",
+  "partners": {
+    "title": "Ministry Partners",
+    "subtitle": "We work in partnership with churches and institutions to strengthen local church ministry.",
+    "hopeAlt": "Hope For All MENA ministry logo",
+    "hopeTitle": "Hope For All MENA",
+    "brand3Alt": "Logo of a partner institution of the Department of Development & Church Projects",
+    "brand3Title": "Partner institution",
+    "brand4Alt": "Synod of the Nile logo, partner of Hope For All MENA",
+    "brand4Title": "Synod of the Nile"
   }
 }

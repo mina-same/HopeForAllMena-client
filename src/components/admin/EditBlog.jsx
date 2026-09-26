@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Card, Form, Button, Alert, Badge } from 'react-bootstrap';
+import { Row, Col, Card, Form, Button, Alert } from 'react-bootstrap';
 import QuillEditor from '../ui/QuillEditor';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
-import { ArrowLeft, Save, Eye } from 'lucide-react';
+import { ArrowLeft, Save } from 'lucide-react';
 
 const EditBlog = ({ blogId, onBack }) => {
   const { user, token } = useAuth();

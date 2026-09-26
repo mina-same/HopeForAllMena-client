@@ -1,0 +1,90 @@
+{
+  "pageTitle": "Alexandria Bible College",
+  "crumbTitle": "Services",
+  "hero": {
+    "eyebrow": "Hope For All Ministry – Synod of the Nile",
+    "title": "Alexandria Bible College",
+    "titleEn": "أكاديمية الإسكندرية للدراسات الكتابية",
+    "lead": "A holistic learning system that empowers local church leaders in Egypt spiritually, biblically, administratively, and practically.",
+    "verse": "Teaching them to observe all things that I have commanded you.",
+    "verseRef": "(Matthew 28:20)",
+    "logoAlt": "Alexandria Bible College ABC logo with its motto: Formulate, Empower, Impact",
+    "logoTitle": "Alexandria Bible College – Formulate • Empower • Impact"
+  },
+  "pillars": {
+    "formulate": { "title": "Formulate", "titleEn": "تشكيل", "text": "Forming mind and character on a firm biblical foundation." },
+    "empower": { "title": "Empower", "titleEn": "تمكين", "text": "Equipping servants spiritually, biblically, and skillfully to serve with confidence." },
+    "impact": { "title": "Impact", "titleEn": "تأثير", "text": "Releasing ministry that reaches from the church into the community." }
+  },
+  "about": {
+    "badge": "Who We Are",
+    "title": "An academy of Hope For All Ministry",
+    "content": "We are a Christian educational and training academy dedicated to empowering leaders and servants of local churches in Egypt through a holistic learning system.",
+    "pillarsTitle": "Our learning system integrates",
+    "pillar1": "Biblical and spiritual formation",
+    "pillar2": "Administrative and leadership development",
+    "pillar3": "Practical and ministry skills",
+    "imageAlt": "Graduates and students of Alexandria Bible College gathered in a lecture hall for a group photo",
+    "imageTitle": "Students of Alexandria Bible College"
+  },
+  "goal": {
+    "title": "Our Mission",
+    "content": "To train church leaders spiritually, practically, and skillfully through specialized programs that equip them to teach and serve in ways that are effective, innovative, and deeply rooted in Scripture."
+  },
+  "vision": {
+    "title": "Our Vision",
+    "content": "To become a leading academy in empowering servants within the local church, equipping them to lead effectively and expand the church's impact in their communities."
+  },
+  "values": {
+    "badge": "Our Core Values",
+    "title": "What our ministry is built on",
+    "subtitle": "Four values that shape every programme and every lecture at the academy.",
+    "biblical": { "title": "Biblical Foundation", "content": "We rely on the Holy Bible as the primary reference for teaching and training." },
+    "teamwork": { "title": "Teamwork", "content": "We are committed to working as one integrated team, placing experience and knowledge at the service of the church." },
+    "empowerment": { "title": "Empowerment", "content": "We believe in empowering servants spiritually, biblically, and skillfully to lead with confidence and effectiveness." },
+    "partnership": { "title": "Partnership", "content": "We collaborate with churches and institutions to strengthen local church ministry and expand its impact." }
+  },
+  "programs": {
+    "badge": "Diplomas & Training Programs",
+    "title": "Four tracks for equipping",
+    "subtitle": "Specialized programs that meet each servant where they serve.",
+    "impact": { "name": "IMPACT", "title": "Diploma in Christian Education", "content": "Diploma in Christian Education for Sunday School servants." },
+    "access": { "name": "ACCESS", "title": "Middle & High School Servants", "content": "Specialized program for middle and high school servants." },
+    "care": { "name": "CARE", "title": "Child & Family Counseling", "content": "Diploma in child and family counseling." },
+    "shepherd": { "name": "SHEPHERD", "title": "Church Administration", "content": "Diploma in church administration and leadership." }
+  },
+  "gallery": {
+    "badge": "From the classroom",
+    "title": "Learning on campus and online",
+    "subtitle": "On-site lectures in Alexandria and Cairo, plus online classes that reach servants wherever they are.",
+    "photo1Alt": "Alexandria Bible College students from across Africa gathered in the lecture hall",
+    "photo1Title": "A class at Alexandria Bible College",
+    "photo2Alt": "Church servants at the closing session of an Alexandria Bible College training course",
+    "photo2Title": "Closing session of an Alexandria Bible College course",
+    "photo3Alt": "An online Alexandria Bible College lecture attended by dozens of church servants",
+    "photo3Title": "An online class at Alexandria Bible College",
+    "photo4Alt": "Teaching slide on respecting the child during an online Alexandria Bible College lecture",
+    "photo4Title": "Online lecture on respecting the child"
+  },
+  "addresses": {
+    "title": "Our Locations",
+    "alexandria": { "city": "Alexandria", "address": "Hope For All Office – 37 Sidi El-Metwally Street, Attarin" },
+    "cairo": { "city": "Cairo", "address": "Hope For All Office – 11 El-Masoud Street, Abbasiya" }
+  },
+  "cta": {
+    "title": "Start your journey at the academy",
+    "subtitle": "Browse the available courses, or contact us for application dates and admission requirements.",
+    "coursesButton": "View All Courses",
+    "contactButton": "Contact Us"
+  },
+  "partners": {
+    "title": "Ministry Partners",
+    "subtitle": "We work in partnership with churches and institutions to strengthen local church ministry.",
+    "hopeAlt": "Hope For All MENA ministry logo",
+    "hopeTitle": "Hope For All MENA",
+    "brand3Alt": "Logo of a partner institution of Alexandria Bible College",
+    "brand3Title": "Partner institution",
+    "brand4Alt": "Synod of the Nile logo, partner of Alexandria Bible College",
+    "brand4Title": "Synod of the Nile"
+  }
+}

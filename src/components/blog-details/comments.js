@@ -1,5 +1,4 @@
 import React from "react";
-import comment1 from "../../assets/images/blog/comment-1-1.jpg";
 
 const Comments = ({ comments = [], blogId }) => {
   const formatDate = (dateString) => {

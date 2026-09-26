@@ -21,7 +21,7 @@ const servicesData = [
     icon: "azino-icon-dove",
     image: discipleshipImage,
     extraClassName: "background-secondary",
-    title: "Evangelism and Discipleship",
+    title: "Evangelism & Discipleship Department",
     text: "A new generation that changes and brings change through the power of the Gospel.",
     link: "/evangelism-discipleship",
     features: ["Personal Evangelism", "Discipleship Training", "Community Outreach"]
@@ -36,9 +36,9 @@ const servicesData = [
   },
   {
     icon: "azino-icon-reading-book",
-    title: "Studies and Education",
-    text: "Our goal is the mindset of the pioneers through comprehensive education.",
-    link: "/studies-education",
+    title: "Alexandria Bible College",
+    text: "Empowering local church leaders in Egypt through biblical, leadership, and ministry training.",
+    link: "/alexandria-bible-college",
     extraClassName: "background-primary",
     features: ["Academic Excellence", "Theological Training", "Leadership Development"]
   },

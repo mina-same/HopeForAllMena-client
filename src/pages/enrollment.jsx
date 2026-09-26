@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCourses } from '../context/CourseContext';
-import { useI18next, useTranslation, Link, navigate } from 'gatsby-plugin-react-i18next';
+import { useI18next, useTranslation, navigate } from 'gatsby-plugin-react-i18next';
 import { graphql } from 'gatsby';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -9,7 +9,7 @@ import { Textarea } from '../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { Calendar, Clock, GraduationCap, MapPin, Users, Star, Award, User, Mail, Phone, Home, Church, BookOpen, Heart, FileText, ChevronRight, Tag } from 'lucide-react';
+import { Calendar, Clock, GraduationCap, Users, Star, Award, User, Mail, Phone, Church, BookOpen, Heart, FileText, ChevronRight, Tag } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import Layout from '../components/layout';
 import StickyHeader from '../components/header/sticky-header';

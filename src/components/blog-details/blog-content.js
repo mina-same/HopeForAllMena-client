@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { navigate } from "gatsby";
 import { Link, useTranslation } from "gatsby-plugin-react-i18next";
 import blogDetailsImage from "../../assets/images/blog/blog-d-1-1.jpg";
 import blogAPI from "../../services/blogAPI";

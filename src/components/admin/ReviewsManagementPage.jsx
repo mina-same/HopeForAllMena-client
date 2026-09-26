@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Star, Eye, Trash2, CheckCircle, Clock } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Card, CardContent } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Textarea } from '../ui/textarea';

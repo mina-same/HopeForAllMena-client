@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useBookstore } from '../../context/BookstoreContext';
-import { reviewsAPI, usersAPI } from '../../services/api';
+import { reviewsAPI } from '../../services/api';
 import blogAPI from '../../services/blogAPI';
-import { categoriesAPI, contactMessagesAPI } from '../../services/publishingAPI';
 import factCounterService from '../../services/factCounterService';
 import { 
   Book, 
@@ -24,7 +23,6 @@ import {
   BookMarked
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
-import { Badge } from '../ui/badge';
 
 const DashboardOverview = () => {
   const { t } = useTranslation('Admin');

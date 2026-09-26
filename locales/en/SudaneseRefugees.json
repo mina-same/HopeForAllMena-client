@@ -1,0 +1,86 @@
+{
+  "pageTitle": "Sudanese Refugees in Egypt Ministry",
+  "hero": {
+    "badge": "From Heart to Heart",
+    "title": "Sudanese Refugees in Egypt",
+    "titleHighlight": "Ministry",
+    "tagline": "Together We Serve… Together We Restore Hope",
+    "description": "Holistic care for Sudanese refugees in Egypt: spiritual care, leadership development, child discipleship, and compassionate relief.",
+    "imageAlt": "Serving Sudanese refugees in Egypt"
+  },
+  "whoWeAre": {
+    "title": "Who We Are",
+    "body": "To see Sudanese refugees spiritually and humanly empowered, living with dignity, connected to a loving faith community, and equipped to serve their families and communities—becoming living witnesses of God's grace amid hardship."
+  },
+  "vision": {
+    "title": "Our Vision",
+    "body": "To provide holistic care for Sudanese refugees in Egypt by integrating spiritual care, leadership development, child discipleship, and compassionate relief—through effective church partnerships and sustainable training programs.",
+    "imageAlt": "Holistic care for refugee families"
+  },
+  "mission": {
+    "title": "Our Mission",
+    "items": {
+      "support": "To support Sudanese refugees spiritually, emotionally, and socially.",
+      "leaders": "To equip pastors and leaders to shepherd churches and ministries within the refugee community.",
+      "children": "To raise a generation of children rooted in faith and shaped by the values of love and peace.",
+      "needs": "To meet essential needs that ease poverty and distress.",
+      "discipleship": "To promote Christian discipleship as a way of life, especially among children."
+    }
+  },
+  "goals": {
+    "title": "Our Goals",
+    "items": {
+      "support": "To support Sudanese refugees spiritually, emotionally, and socially.",
+      "leaders": "To equip pastors and leaders to shepherd churches and ministries within the refugee community.",
+      "children": "To raise a generation of children rooted in faith and shaped by the values of love and peace.",
+      "needs": "To meet essential needs that ease poverty and distress.",
+      "discipleship": "To promote Christian discipleship as a way of life, especially among children."
+    }
+  },
+  "why": {
+    "title": "Why This Ministry?",
+    "body": "Because displacement is not merely a geographical transition—it is a deep human wound.",
+    "bodySecondary": "And because the Church is called to be a home for the stranger, hope for the weary, and light in times of darkness."
+  },
+  "areas": {
+    "title": "Areas of Ministry",
+    "items": {
+      "pastors": {
+        "title": "Training Pastors and Ministry Leaders",
+        "intro": "We believe that effective ministry begins with equipped leaders. Therefore, we provide:",
+        "points": {
+          "one": "Biblical and theological training programs for pastors and servants.",
+          "two": "Workshops on pastoral leadership, trauma care, and crisis ministry.",
+          "three": "Spiritual mentoring and accompaniment for leaders serving in refugee contexts."
+        }
+      },
+      "sundaySchool": {
+        "title": "Training Sunday School Leaders in Evangelism and Discipleship",
+        "intro": "Because children are the future of the church and society:",
+        "points": {
+          "one": "We prepare Sunday School leaders with culturally and spiritually appropriate teaching materials.",
+          "two": "We train them in interactive teaching methods and biblical storytelling.",
+          "three": "We develop curricula focused on hope and inner healing for children."
+        }
+      },
+      "children": {
+        "title": "Children's Discipleship Programs",
+        "intro": "Our goal is to build the child from the inside out:",
+        "points": {
+          "one": "Discipleship groups based on storytelling, play, and spiritual formation.",
+          "two": "Nurturing Christian values: love, forgiveness, peace, and belonging.",
+          "three": "Creative and recreational activities that support emotional and spiritual growth."
+        }
+      },
+      "care": {
+        "title": "Compassionate and Pastoral Care",
+        "intro": "Practical love that can be felt on the ground:",
+        "points": {
+          "one": "Providing food assistance and clothing for the most vulnerable families.",
+          "two": "Supporting emergency cases (medical needs, rent, education).",
+          "three": "Pastoral home visits to strengthen a sense of safety and belonging."
+        }
+      }
+    }
+  }
+}

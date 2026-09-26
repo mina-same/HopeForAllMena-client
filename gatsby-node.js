@@ -57,6 +57,17 @@ exports.createPages = async ({ actions }) => {
     component: path.resolve('./src/pages/news-details.jsx'),
     matchPath: '/news-details/*',
   });
+
+  // The section was renamed to Alexandria Bible College; keep the old slug working.
+  const { createRedirect } = actions;
+  ['', ...languages.map((lang) => `/${lang}`)].forEach((prefix) => {
+    createRedirect({
+      fromPath: `${prefix}/studies-education`,
+      toPath: `${prefix}/alexandria-bible-college`,
+      isPermanent: true,
+      redirectInBrowser: true,
+    });
+  });
 };
 
 // Override development 404 behavior
@@ -76,7 +87,7 @@ exports.onCreateDevServer = ({ app }) => {
       '/cause-details', '/causes', '/color-test', '/contact', '/development-department',
       '/evangelism-discipleship', '/event-details', '/events', '/gallery', '/index-2',
       '/login', '/magazines', '/news-details', '/news', '/publishing-house', '/services', '/services/publishing',
-      '/studies-education', '/unauthorized', '/volunteers', '/magazines/request', '/courses', '/training',
+      '/alexandria-bible-college', '/studies-education', '/sudanese-refugees', '/unauthorized', '/volunteers', '/magazines/request', '/courses', '/training',
       '/enrollment', '/donate', '/map',
       '/calendar',
       '/TrainingFollowUpRequestPage', '/TrainingNewRequestPage', '/TrainingSelectionPage'

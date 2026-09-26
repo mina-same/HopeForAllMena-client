@@ -6,7 +6,6 @@ import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useToast } from '../../hooks/use-toast';
 import contactMessageService from '../../services/contactMessageService';
-import ConfirmationModal from '../ui/ConfirmationModal';
 import '../../styles/ContactMessages-rtl.css';
 import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';

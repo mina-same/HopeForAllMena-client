@@ -1,46 +1,53 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import { graphql } from "gatsby";
-import { Link, useI18next } from "gatsby-plugin-react-i18next";
-import { useTranslation } from "react-i18next";
+import { Container, Row, Col } from "react-bootstrap";
+import {
+  Building2,
+  Sparkles,
+  Compass,
+  Stethoscope,
+  Church,
+  Briefcase,
+  Globe,
+  GraduationCap,
+  HandHeart,
+  Lightbulb,
+  Users,
+  Eye,
+  Target,
+  Quote,
+  HeartHandshake,
+  ArrowRight,
+  ArrowLeft,
+} from "lucide-react";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";
 import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
-import BrandCarousel from "../components/brand-carousel";
-import { Button } from "../components/ui/button";
-import {
-  CheckCircle2,
-  ArrowRight,
-  Eye,
-  Target,
-  Building2,
-  GraduationCap,
-  Heart,
-  Stethoscope,
-  Globe,
-  Briefcase,
-  Users,
-  BookOpen,
-  Lightbulb,
-  HandHeart,
-} from "lucide-react";
+import { useTranslation, useI18next, Link } from "gatsby-plugin-react-i18next";
 
-import serviceBg from "../assets/images/backgrounds/service-hand-bg-1-1.png";
-import aboutImage from "../assets/images/resources/about-1-1.jpg";
-import "../assets/css/development-department-rtl.css";
+import devHall from "../assets/images/development/dev-community-gathering-hall.jpg";
+import devWomen from "../assets/images/development/dev-community-gathering-women.jpg";
+import devElderly from "../assets/images/development/dev-elderly-care-visit.jpg";
+import devYouth from "../assets/images/development/dev-inclusion-youth.jpg";
+import devParticipants from "../assets/images/development/dev-inclusion-participants.jpg";
+import brandSynod from "../assets/images/resources/brand-1-4.png";
+import brandPartner from "../assets/images/resources/brand-1-3.png";
+import hopeLogo from "../assets/images/logos/hope4AllMena.png";
+import "../assets/css/development-department.css";
 
-const SUPPORT_ICONS = [
+// One icon per entry in supportAreas.items, in order.
+const AREA_ICONS = [
   Building2,
-  GraduationCap,
-  Target,
+  Sparkles,
+  Compass,
   Stethoscope,
-  Globe,
+  Church,
   Briefcase,
+  Globe,
+  GraduationCap,
   HandHeart,
-  BookOpen,
-  Heart,
   Lightbulb,
 ];
 
@@ -48,466 +55,208 @@ const DevelopmentDepartment = () => {
   const { t } = useTranslation("DevelopmentDepartment");
   const { language: currentLanguage } = useI18next();
   const isRTL = currentLanguage === "ar";
+  const align = isRTL ? "text-right" : "text-left";
+  const arabicFont = isRTL ? "font-arabic" : "";
+  const Arrow = isRTL ? ArrowLeft : ArrowRight;
 
-  const supportItems = t("supportAreas.items", { returnObjects: true });
-  const requirementItems = t("requirements.items", { returnObjects: true });
-  const missionItems = t("mission.items", { returnObjects: true });
+  const missionItems = t("mission.items", { returnObjects: true }) || [];
+  const areaItems = t("supportAreas.items", { returnObjects: true }) || [];
+  const requirementItems = t("requirements.items", { returnObjects: true }) || [];
 
-  const dir = isRTL ? "rtl" : "ltr";
-  const textAlign = isRTL ? "text-right" : "";
-  const rowReverse = isRTL ? "flex-row-reverse" : "";
+  const gallery = [
+    { src: devElderly, key: "photo1" },
+    { src: devYouth, key: "photo2" },
+    { src: devParticipants, key: "photo3" },
+  ];
+
+  const partners = [
+    { src: hopeLogo, alt: t("partners.hopeAlt"), title: t("partners.hopeTitle") },
+    { src: brandSynod, alt: t("partners.brand4Alt"), title: t("partners.brand4Title") },
+    { src: brandPartner, alt: t("partners.brand3Alt"), title: t("partners.brand3Title") },
+  ];
 
   return (
     <Layout pageTitle={t("pageTitle")}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title={t("title")} crumbTitle={t("breadcrumb")} />
-      <div
-        className={isRTL ? "development-department-rtl" : ""}
-        dir={dir}
-      >
-        {/* ── Hero ─────────────────────────────────────────────────── */}
-        <section
-          className="position-relative overflow-hidden py-5"
-          style={{
-            backgroundImage: `url(${serviceBg})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            paddingTop: "5rem",
-            paddingBottom: "5rem",
-          }}
-        >
-          {/* overlay */}
-          <div
-            className="position-absolute top-0 start-0 w-100 h-100"
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(255,255,255,0.97) 50%, rgba(33,148,209,0.08) 100%)",
-              pointerEvents: "none",
-            }}
-          />
-          <Container className="position-relative" style={{ zIndex: 1 }}>
-            <Row className={`align-items-center g-5 ${isRTL ? "flex-row-reverse" : ""}`}>
-              {/* Text */}
+      <PageHeader title={t("title")} crumbTitle={t("breadcrumb")} image={devHall} />
+
+      <div className="tan" dir={isRTL ? "rtl" : "ltr"}>
+        {/* ---------------------------------------------------------------- Hero */}
+        <section className="tan-hero tan-hero--intro pt-24">
+          <div className="tan-hero__beam" />
+          <div className="tan-hero__grid" />
+          <Container className="relative z-10">
+            <Row className="align-items-center g-5">
               <Col lg={6}>
-                <div className={textAlign}>
-                  {/* pill badge */}
-                  <div
-                    className={`d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-4 ${rowReverse}`}
-                    style={{
-                      background: "rgba(33,148,209,0.1)",
-                      color: "#2194D1",
-                      fontSize: "0.8rem",
-                      fontWeight: 600,
-                    }}
-                  >
-                    <span
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: "50%",
-                        background: "#2194D1",
-                        display: "inline-block",
-                        animation: "pulse 2s infinite",
-                      }}
-                    />
-                    Hope for All MENA Ministries
+                <div className={align}>
+                  <span className="tan-wordmark mb-4">
+                    <span className="tan-wordmark__name">{t("wordmark.name")}</span>
+                    <span className="tan-wordmark__label">{t("wordmark.label")}</span>
+                  </span>
+                  <h1 className={`text-white text-4xl lg:text-[3rem] leading-tight font-bold mb-3 ${arabicFont}`}>
+                    {t("hero.title")}
+                  </h1>
+                  <span className="tan-rule mb-4" />
+                  <p className={`text-white/80 text-lg leading-relaxed mb-5 ${align}`}>{t("hero.intro")}</p>
+
+                  <div className="tan-verse rounded-xl p-5 mb-5">
+                    <Quote className="h-5 w-5 text-[#2194d1] mb-2" />
+                    <p className={`text-white text-lg leading-relaxed m-0 ${arabicFont}`}>{t("verse.text")}</p>
+                    <span className="text-[#5cb4e4] text-sm">{t("verse.ref")}</span>
                   </div>
 
-                  <h2
-                    className={`fw-black mb-4 ${isRTL ? "font-arabic" : ""}`}
-                    style={{
-                      fontSize: "clamp(2rem, 4vw, 2.8rem)",
-                      lineHeight: 1.2,
-                      color: "#111827",
-                    }}
-                  >
-                    {t("hero.title")}
-                  </h2>
-                  <p
-                    style={{
-                      fontSize: "1.05rem",
-                      lineHeight: 1.75,
-                      color: "#4B5563",
-                      marginBottom: "2rem",
-                    }}
-                  >
-                    {t("hero.intro")}
-                  </p>
-
-                  <div className={`d-flex flex-wrap gap-3 ${rowReverse}`}>
-                    <Link to="/development-project-request" style={{ textDecoration: "none" }}>
-                      <Button
-                        className={`d-inline-flex align-items-center gap-2 ${rowReverse}`}
-                        style={{
-                          background: "#2194D1",
-                          border: "none",
-                          padding: "0.7rem 1.75rem",
-                          fontWeight: 600,
-                          boxShadow: "0 8px 24px rgba(33,148,209,0.28)",
-                        }}
-                      >
-                        {t("hero.primaryCta")}
-                        <ArrowRight
-                          style={{ width: 16, height: 16, ...(isRTL ? { transform: "rotate(180deg)" } : {}) }}
-                        />
-                      </Button>
+                  <div className="flex flex-wrap gap-3">
+                    <Link to="/development-project-request" className="tan-btn tan-btn--amber">
+                      <HeartHandshake className="h-5 w-5" />
+                      {t("hero.primaryCta")}
                     </Link>
-                    <Link to="/contact" style={{ textDecoration: "none" }}>
-                      <Button
-                        variant="outline"
-                        style={{ padding: "0.7rem 1.75rem", fontWeight: 600 }}
-                      >
-                        {t("hero.secondaryCta")}
-                      </Button>
+                    <Link to="/contact" className="tan-btn tan-btn--ghost">
+                      {t("hero.secondaryCta")}
                     </Link>
                   </div>
                 </div>
               </Col>
-
-              {/* Image */}
               <Col lg={6}>
-                <div className="position-relative">
-                  {/* glow ring */}
-                  <div
-                    className="position-absolute"
-                    style={{
-                      inset: -16,
-                      borderRadius: "1.5rem",
-                      background:
-                        "linear-gradient(135deg, rgba(33,148,209,0.18), rgba(255,90,60,0.1))",
-                      filter: "blur(20px)",
-                    }}
-                  />
-                  <div
-                    className="position-relative overflow-hidden"
-                    style={{ borderRadius: "1.25rem", boxShadow: "0 24px 64px rgba(0,0,0,0.15)" }}
-                  >
-                    <img
-                      src={aboutImage}
-                      alt={t("hero.imageAlt")}
-                      className="img-fluid w-100"
-                      style={{ display: "block", aspectRatio: "4/3", objectFit: "cover" }}
-                    />
-                    {/* floating badge */}
-                    <div
-                      className="position-absolute bottom-0 start-0 end-0 m-3"
-                    >
-                      <div
-                        className={`d-flex align-items-center gap-3 ${rowReverse}`}
-                        style={{
-                          background: "rgba(255,255,255,0.92)",
-                          backdropFilter: "blur(8px)",
-                          borderRadius: "0.875rem",
-                          padding: "0.75rem 1rem",
-                          boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                        }}
-                      >
-                        <div
-                          style={{
-                            width: 36,
-                            height: 36,
-                            borderRadius: "0.5rem",
-                            background: "#2194D1",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexShrink: 0,
-                          }}
-                        >
-                          <Users style={{ width: 18, height: 18, color: "#fff" }} />
-                        </div>
-                        <div className={textAlign}>
-                          <div style={{ fontWeight: 700, fontSize: "0.85rem", color: "#111827" }}>
-                            Matching Fund Model
-                          </div>
-                          <div style={{ fontSize: "0.75rem", color: "#6B7280" }}>
-                            50% Ministry · 50% Church
-                          </div>
-                        </div>
-                      </div>
+                <img
+                  src={devWomen}
+                  alt={t("heroImageAlt")}
+                  title={t("heroImageTitle")}
+                  className="tan-hero__image"
+                  width="1280"
+                  height="720"
+                />
+              </Col>
+            </Row>
+          </Container>
+        </section>
+
+        {/* ------------------------------------------------- Highlight over hero */}
+        <section className="bg-[#f5f8fb] pb-20">
+          <Container>
+            <div className={`tan-highlight p-4 p-lg-5 ${align}`}>
+              <Row className="align-items-center g-4">
+                <Col lg={7}>
+                  <p className={`tan-highlight__figure mb-2 ${arabicFont}`}>{t("about.highlight")}</p>
+                  <p className={`text-muted-foreground text-lg leading-relaxed m-0 ${align}`}>
+                    {t("matchingFund.quote")}
+                  </p>
+                </Col>
+                <Col lg={5}>
+                  <div className={align}>
+                    <div className="tan-split mb-3">
+                      <span className="tan-split__ministry" />
+                      <span className="tan-split__church" />
+                    </div>
+                    <div className={`flex items-center justify-between gap-3 ${isRTL ? "flex-row" : ""}`}>
+                      <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span className="h-3 w-3 rounded-full bg-[#32669c] flex-shrink-0" />
+                        {t("matchingFund.ministryShare")} <strong className="text-[#050517]">50%</strong>
+                      </span>
+                      <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span className="h-3 w-3 rounded-full bg-[#2194d1] flex-shrink-0" />
+                        {t("matchingFund.churchShare")} <strong className="text-[#050517]">50%</strong>
+                      </span>
                     </div>
                   </div>
+                </Col>
+              </Row>
+            </div>
+          </Container>
+        </section>
+
+        {/* ---------------------------------------------------------- Who We Are */}
+        <section className="py-20 bg-background">
+          <Container>
+            <Row className="align-items-center g-5">
+              <Col lg={6}>
+                <div className="tan-frame">
+                  <img
+                    src={devHall}
+                    alt={t("about.imageAlt")}
+                    title={t("about.imageTitle")}
+                    loading="lazy"
+                  />
+                </div>
+              </Col>
+              <Col lg={6}>
+                <div className={align}>
+                  <span className="inline-flex items-center gap-2 text-[#32669c] font-semibold text-sm px-4 py-2 bg-[#32669c]/10 rounded-full mb-4">
+                    <Users className="h-4 w-4" />
+                    <span className={arabicFont}>{t("about.badge")}</span>
+                  </span>
+                  <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] mb-4 ${align} ${arabicFont}`}>
+                    {t("about.title")}
+                  </h2>
+                  <span className="tan-rule mb-4" />
+                  <p className={`text-lg text-muted-foreground leading-relaxed mb-3 ${align}`}>{t("about.p1")}</p>
+                  <p className={`text-lg text-muted-foreground leading-relaxed m-0 ${align}`}>{t("about.p2")}</p>
                 </div>
               </Col>
             </Row>
           </Container>
         </section>
 
-        {/* ── Vision & Mission ─────────────────────────────────────── */}
-        <section style={{ padding: "5rem 0", background: "#F9FAFB" }}>
+        {/* --------------------------------------------------- Vision & Mission */}
+        <section className="py-20 bg-[#f5f8fb]">
           <Container>
             <Row className="g-4">
-              {/* Vision */}
               <Col lg={6}>
-                <div
-                  className={`h-100 ${textAlign}`}
-                  style={{
-                    borderRadius: "1.25rem",
-                    overflow: "hidden",
-                    border: "1px solid #E5E7EB",
-                    background: "#fff",
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-                  }}
-                >
-                  <div style={{ height: 5, background: "linear-gradient(90deg, #2194D1, rgba(33,148,209,0.3))" }} />
-                  <div style={{ padding: "2rem" }}>
-                    <div className={`d-flex align-items-center gap-3 mb-4 ${rowReverse}`}>
-                      <div
-                        style={{
-                          width: 48,
-                          height: 48,
-                          borderRadius: "0.75rem",
-                          background: "rgba(33,148,209,0.1)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                        }}
-                      >
-                        <Eye style={{ width: 22, height: 22, color: "#2194D1" }} />
-                      </div>
-                      <h3
-                        className={`m-0 fw-bold ${isRTL ? "font-arabic" : ""}`}
-                        style={{ fontSize: "1.35rem", color: "#111827" }}
-                      >
-                        {t("vision.title")}
-                      </h3>
-                    </div>
-                    <p style={{ color: "#4B5563", lineHeight: 1.75, margin: 0 }}>
-                      {t("vision.text")}
-                    </p>
-                  </div>
+                <div className={`tan-panel p-4 p-lg-5 ${align}`}>
+                  <span className="tan-chip tan-chip--amber mb-4">
+                    <Eye className="h-6 w-6" />
+                  </span>
+                  <h3 className={`text-2xl font-bold text-white mb-3 ${arabicFont}`}>{t("vision.title")}</h3>
+                  <p className={`text-white/75 text-lg leading-relaxed m-0 ${align}`}>{t("vision.text")}</p>
                 </div>
               </Col>
-
-              {/* Mission */}
               <Col lg={6}>
-                <div
-                  className={`h-100 ${textAlign}`}
-                  style={{
-                    borderRadius: "1.25rem",
-                    overflow: "hidden",
-                    border: "1px solid #E5E7EB",
-                    background: "#fff",
-                    boxShadow: "0 2px 12px rgba(0,0,0,0.06)",
-                  }}
-                >
-                  <div style={{ height: 5, background: "linear-gradient(90deg, #FF5A3C, rgba(255,90,60,0.3))" }} />
-                  <div style={{ padding: "2rem" }}>
-                    <div className={`d-flex align-items-center gap-3 mb-4 ${rowReverse}`}>
-                      <div
-                        style={{
-                          width: 48,
-                          height: 48,
-                          borderRadius: "0.75rem",
-                          background: "rgba(255,90,60,0.1)",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                        }}
-                      >
-                        <Target style={{ width: 22, height: 22, color: "#FF5A3C" }} />
-                      </div>
-                      <h3
-                        className={`m-0 fw-bold ${isRTL ? "font-arabic" : ""}`}
-                        style={{ fontSize: "1.35rem", color: "#111827" }}
-                      >
-                        {t("mission.title")}
-                      </h3>
-                    </div>
-                    <ul className="list-unstyled m-0" style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-                      {missionItems.map((item, index) => (
-                        <li
-                          key={index}
-                          className={`d-flex align-items-start gap-3 ${rowReverse}`}
-                        >
-                          <CheckCircle2
-                            style={{ width: 18, height: 18, color: "#FF5A3C", marginTop: 2, flexShrink: 0 }}
-                          />
-                          <span style={{ color: "#4B5563", lineHeight: 1.7 }}>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                <div className={`tan-panel p-4 p-lg-5 ${align}`}>
+                  <span className="tan-chip tan-chip--amber mb-4">
+                    <Target className="h-6 w-6" />
+                  </span>
+                  <h3 className={`text-2xl font-bold text-white mb-3 ${arabicFont}`}>{t("mission.title")}</h3>
+                  <ul className="list-none p-0 m-0 space-y-3">
+                    {missionItems.map((item, i) => (
+                      <li key={i} className={`flex items-start gap-3 ${isRTL ? "flex-row" : ""}`}>
+                        <span className="h-2 w-2 rounded-full bg-[#5cb4e4] flex-shrink-0 mt-2" />
+                        <span className={`text-white/75 leading-relaxed ${align}`}>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </Col>
             </Row>
           </Container>
         </section>
 
-        {/* ── Matching Fund / Goals ─────────────────────────────────── */}
-        <section style={{ padding: "5rem 0", background: "#fff" }}>
+        {/* ------------------------------------------------------ Support areas */}
+        <section className="py-20 bg-background">
           <Container>
-            <div
-              className={textAlign}
-              style={{
-                borderRadius: "1.5rem",
-                border: "1px solid rgba(33,148,209,0.15)",
-                background: "linear-gradient(135deg, rgba(33,148,209,0.04) 0%, #fff 60%)",
-                boxShadow: "0 2px 16px rgba(33,148,209,0.08)",
-                padding: "2.5rem",
-              }}
-            >
-              {/* header */}
-              <div style={{ marginBottom: "2rem" }}>
-                <div
-                  className={`d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3 ${rowReverse}`}
-                  style={{ background: "rgba(33,148,209,0.1)", color: "#2194D1", fontSize: "0.8rem", fontWeight: 600 }}
-                >
-                  <Users style={{ width: 14, height: 14 }} />
-                  Partnership Model
-                </div>
-                <h3
-                  className={`fw-bold m-0 mb-3 ${isRTL ? "font-arabic" : ""}`}
-                  style={{ fontSize: "1.65rem", color: "#111827" }}
-                >
-                  {t("matchingFund.title")}
-                </h3>
-                <p style={{ color: "#4B5563", lineHeight: 1.75, margin: 0, maxWidth: "680px" }}>
-                  {t("matchingFund.text")}
-                </p>
-              </div>
-
-              {/* split bar + stats */}
-              <div style={{ marginBottom: "1.75rem" }}>
-                <div
-                  style={{
-                    height: 10,
-                    borderRadius: 999,
-                    overflow: "hidden",
-                    display: "flex",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  <div style={{ flex: 1, background: "#2194D1" }} />
-                  <div style={{ flex: 1, background: "#FF5A3C" }} />
-                </div>
-                <Row className="g-3">
-                  <Col xs={6}>
-                    <div
-                      style={{
-                        borderRadius: "1rem",
-                        border: "1px solid rgba(33,148,209,0.2)",
-                        background: "rgba(33,148,209,0.06)",
-                        padding: "1.25rem 1.5rem",
-                      }}
-                    >
-                      <div style={{ fontSize: "3rem", fontWeight: 900, color: "#2194D1", lineHeight: 1 }}>
-                        50%
-                      </div>
-                      <div style={{ color: "#4B5563", fontSize: "0.85rem", marginTop: "0.5rem", fontWeight: 500 }}>
-                        {t("matchingFund.ministryShare")}
-                      </div>
-                    </div>
-                  </Col>
-                  <Col xs={6}>
-                    <div
-                      style={{
-                        borderRadius: "1rem",
-                        border: "1px solid rgba(255,90,60,0.2)",
-                        background: "rgba(255,90,60,0.06)",
-                        padding: "1.25rem 1.5rem",
-                      }}
-                    >
-                      <div style={{ fontSize: "3rem", fontWeight: 900, color: "#FF5A3C", lineHeight: 1 }}>
-                        50%
-                      </div>
-                      <div style={{ color: "#4B5563", fontSize: "0.85rem", marginTop: "0.5rem", fontWeight: 500 }}>
-                        {t("matchingFund.churchShare")}
-                      </div>
-                    </div>
-                  </Col>
-                </Row>
-              </div>
-
-              {/* quote */}
-              <div
-                style={{
-                  borderRadius: "0.875rem",
-                  border: "1px solid #E5E7EB",
-                  borderLeft: isRTL ? "1px solid #E5E7EB" : "4px solid #2194D1",
-                  borderRight: isRTL ? "4px solid #2194D1" : "1px solid #E5E7EB",
-                  background: "#fff",
-                  padding: "1.25rem 1.5rem",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
-                }}
-              >
-                <p style={{ margin: 0, color: "#374151", fontWeight: 500, lineHeight: 1.7, fontStyle: "italic" }}>
-                  &ldquo;{t("matchingFund.quote")}&rdquo;
-                </p>
-              </div>
-            </div>
-          </Container>
-        </section>
-
-        {/* ── Support Areas ─────────────────────────────────────────── */}
-        <section style={{ padding: "5rem 0", background: "#F9FAFB" }}>
-          <Container>
-            {/* section header */}
-            <div className="text-center mb-5">
-              <div
-                className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3"
-                style={{ background: "rgba(33,148,209,0.1)", color: "#2194D1", fontSize: "0.8rem", fontWeight: 600 }}
-              >
-                <Globe style={{ width: 14, height: 14 }} />
-                What We Support
-              </div>
-              <h3
-                className={`fw-bold m-0 ${isRTL ? "font-arabic" : ""}`}
-                style={{ fontSize: "1.75rem", color: "#111827" }}
-              >
+            <div className="text-center mb-12">
+              <span className="inline-flex items-center gap-2 text-[#2194d1] font-semibold text-sm px-4 py-2 bg-[#2194d1]/10 rounded-full mb-4">
+                <Compass className="h-4 w-4" />
+                <span className={arabicFont}>{t("matchingFund.title")}</span>
+              </span>
+              <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] text-center mb-3 ${arabicFont}`}>
                 {t("supportAreas.title")}
-              </h3>
-              <p style={{ color: "#6B7280", marginTop: "0.75rem", marginBottom: 0, maxWidth: 480, marginInline: "auto" }}>
-                {t("supportAreas.subtitle")}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-3xl mx-auto text-center m-0">
+                {t("matchingFund.text")}
               </p>
             </div>
-
-            <Row className="g-3">
-              {supportItems.map((item, index) => {
-                const Icon = SUPPORT_ICONS[index % SUPPORT_ICONS.length];
+            <Row className="g-4">
+              {areaItems.map((item, i) => {
+                const Icon = AREA_ICONS[i] || Sparkles;
                 return (
-                  <Col key={index} sm={6} lg={4}>
-                    <div
-                      className={`h-100 ${textAlign}`}
-                      style={{
-                        borderRadius: "1rem",
-                        border: "1px solid #E5E7EB",
-                        background: "#fff",
-                        padding: "1.25rem",
-                        boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
-                        transition: "box-shadow 0.2s, border-color 0.2s",
-                        cursor: "default",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow = "0 6px 20px rgba(33,148,209,0.12)";
-                        e.currentTarget.style.borderColor = "rgba(33,148,209,0.3)";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow = "0 1px 6px rgba(0,0,0,0.05)";
-                        e.currentTarget.style.borderColor = "#E5E7EB";
-                      }}
-                    >
-                      <div className={`d-flex align-items-start gap-3 ${rowReverse}`}>
-                        <div
-                          style={{
-                            width: 40,
-                            height: 40,
-                            borderRadius: "0.625rem",
-                            background: "rgba(33,148,209,0.1)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexShrink: 0,
-                          }}
-                        >
-                          <Icon style={{ width: 18, height: 18, color: "#2194D1" }} />
-                        </div>
-                        <p style={{ margin: 0, color: "#374151", lineHeight: 1.65, fontSize: "0.9rem", flex: 1 }}>
-                          {item}
-                        </p>
+                  <Col md={6} lg={4} key={i}>
+                    <div className={`tan-area ${align}`}>
+                      <span className="tan-area__num">{i + 1}</span>
+                      <div className="flex-1">
+                        <span className="tan-chip tan-chip--sm mb-3">
+                          <Icon className="h-5 w-5" />
+                        </span>
+                        <p className={`text-muted-foreground leading-relaxed m-0 ${align}`}>{item}</p>
                       </div>
                     </div>
                   </Col>
@@ -517,80 +266,31 @@ const DevelopmentDepartment = () => {
           </Container>
         </section>
 
-        {/* ── Requirements ─────────────────────────────────────────── */}
-        <section style={{ padding: "5rem 0", background: "#fff" }}>
+        {/* ------------------------------------------------------- Requirements */}
+        <section className="py-20 bg-[#f5f8fb]">
           <Container>
-            {/* section header */}
-            <div className="text-center mb-5">
-              <div
-                className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3"
-                style={{ background: "rgba(255,90,60,0.1)", color: "#FF5A3C", fontSize: "0.8rem", fontWeight: 600 }}
-              >
-                <CheckCircle2 style={{ width: 14, height: 14 }} />
-                Criteria &amp; Eligibility
-              </div>
-              <h3
-                className={`fw-bold m-0 ${isRTL ? "font-arabic" : ""}`}
-                style={{ fontSize: "1.75rem", color: "#111827" }}
-              >
+            <div className="text-center mb-12">
+              <span className="inline-flex items-center gap-2 text-[#32669c] font-semibold text-sm px-4 py-2 bg-[#32669c]/10 rounded-full mb-4">
+                <Building2 className="h-4 w-4" />
+                <span className="tracking-[0.2em] text-xs">{t("wordmark.label")}</span>
+              </span>
+              <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] text-center mb-3 ${arabicFont}`}>
                 {t("requirements.title")}
-              </h3>
-              <p style={{ color: "#6B7280", marginTop: "0.75rem", marginBottom: 0, maxWidth: 480, marginInline: "auto" }}>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-center m-0">
                 {t("requirements.subtitle")}
               </p>
             </div>
-
-            <Row className="g-3">
-              {requirementItems.map((reqItem, index) => (
-                <Col key={index} sm={6} lg={4}>
-                  <div
-                    className={`h-100 ${textAlign}`}
-                    style={{
-                      borderRadius: "1rem",
-                      border: "1px solid #E5E7EB",
-                      background: "#fff",
-                      overflow: "hidden",
-                      boxShadow: "0 1px 6px rgba(0,0,0,0.05)",
-                      transition: "box-shadow 0.2s",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.09)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 6px rgba(0,0,0,0.05)";
-                    }}
-                  >
-                    {/* colored top bar */}
-                    <div style={{ height: 4, background: "linear-gradient(90deg, #2194D1, rgba(33,148,209,0.3))" }} />
-                    <div style={{ padding: "1.25rem" }}>
-                      <div className={`d-flex align-items-center gap-3 mb-2 ${rowReverse}`}>
-                        <div
-                          style={{
-                            width: 32,
-                            height: 32,
-                            borderRadius: "0.5rem",
-                            background: "rgba(33,148,209,0.1)",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flexShrink: 0,
-                            fontWeight: 700,
-                            fontSize: "0.8rem",
-                            color: "#2194D1",
-                          }}
-                        >
-                          {String(index + 1).padStart(2, "0")}
-                        </div>
-                        <h4
-                          className={`m-0 fw-bold ${isRTL ? "font-arabic" : ""}`}
-                          style={{ fontSize: "1rem", color: "#111827" }}
-                        >
-                          {reqItem.title}
-                        </h4>
-                      </div>
-                      <p style={{ margin: 0, color: "#4B5563", lineHeight: 1.7, fontSize: "0.875rem" }}>
-                        {reqItem.text}
-                      </p>
+            <Row className="g-4">
+              {requirementItems.map((item, i) => (
+                <Col md={6} lg={4} key={i}>
+                  <div className={`tan-req p-4 p-lg-5 ${align}`}>
+                    <span className="tan-req__ghost" aria-hidden="true">
+                      {i + 1}
+                    </span>
+                    <div className="relative z-10">
+                      <h4 className={`text-xl font-bold text-[#050517] mb-2 ${arabicFont}`}>{item.title}</h4>
+                      <p className={`text-muted-foreground leading-relaxed m-0 ${align}`}>{item.text}</p>
                     </div>
                   </div>
                 </Col>
@@ -599,94 +299,87 @@ const DevelopmentDepartment = () => {
           </Container>
         </section>
 
-        {/* ── Bottom CTA ───────────────────────────────────────────── */}
-        <section
-          className="position-relative overflow-hidden"
-          style={{
-            padding: "5rem 0",
-            background: "linear-gradient(135deg, #2194D1 0%, #1a7ab8 50%, #1560a0 100%)",
-          }}
-        >
-          {/* subtle texture overlay */}
-          <div
-            className="position-absolute top-0 start-0 w-100 h-100"
-            style={{
-              backgroundImage: `url(${serviceBg})`,
-              backgroundSize: "cover",
-              opacity: 0.06,
-              pointerEvents: "none",
-            }}
-          />
-          {/* decorative circles */}
-          <div
-            className="position-absolute top-0 end-0"
-            style={{
-              width: 320,
-              height: 320,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.06)",
-              transform: "translate(30%, -50%)",
-            }}
-          />
-          <div
-            className="position-absolute bottom-0 start-0"
-            style={{
-              width: 220,
-              height: 220,
-              borderRadius: "50%",
-              background: "rgba(255,255,255,0.05)",
-              transform: "translate(-30%, 50%)",
-            }}
-          />
-
-          <Container className="position-relative" style={{ zIndex: 1 }}>
-            <Row className={`align-items-center g-4 ${isRTL ? "flex-row-reverse" : ""}`}>
-              <Col lg={8}>
-                <div className={textAlign}>
-                  <h3
-                    className={`fw-bold m-0 ${isRTL ? "font-arabic" : ""}`}
-                    style={{ fontSize: "1.85rem", color: "#fff" }}
-                  >
-                    {t("bottomCta.title")}
-                  </h3>
-                  <p style={{ color: "rgba(255,255,255,0.82)", marginTop: "0.75rem", marginBottom: 0, fontSize: "1.05rem", lineHeight: 1.7 }}>
-                    {t("bottomCta.text")}
-                  </p>
-                </div>
-              </Col>
-              <Col lg={4}>
-                <div className={isRTL ? "text-start" : "text-lg-end"}>
-                  <Link to="/development-project-request" style={{ textDecoration: "none" }}>
-                    <Button
-                      className={`d-inline-flex align-items-center gap-2 ${rowReverse}`}
-                      style={{
-                        background: "#fff",
-                        color: "#2194D1",
-                        border: "none",
-                        padding: "0.75rem 2rem",
-                        fontWeight: 700,
-                        fontSize: "1rem",
-                        boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
-                      }}
-                    >
-                      {t("bottomCta.button")}
-                      <ArrowRight
-                        style={{ width: 16, height: 16, ...(isRTL ? { transform: "rotate(180deg)" } : {}) }}
-                      />
-                    </Button>
-                  </Link>
-                </div>
-              </Col>
+        {/* ------------------------------------------------------------ Gallery */}
+        <section className="py-20 bg-background">
+          <Container>
+            <div className="text-center mb-12">
+              <span className="inline-flex items-center gap-2 text-[#32669c] font-semibold text-sm px-4 py-2 bg-[#32669c]/10 rounded-full mb-4">
+                <HandHeart className="h-4 w-4" />
+                <span className={arabicFont}>{t("gallery.badge")}</span>
+              </span>
+              <h2 className={`text-3xl lg:text-4xl font-bold text-[#050517] text-center mb-3 ${arabicFont}`}>
+                {t("gallery.title")}
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-center m-0">
+                {t("gallery.subtitle")}
+              </p>
+            </div>
+            <Row className="g-4">
+              {gallery.map(({ src, key }) => (
+                <Col md={4} key={key}>
+                  <figure className="tan-shot m-0">
+                    <img
+                      src={src}
+                      alt={t(`gallery.${key}Alt`)}
+                      title={t(`gallery.${key}Title`)}
+                      loading="lazy"
+                    />
+                    <figcaption className={`tan-shot__caption ${align}`}>{t(`gallery.${key}Title`)}</figcaption>
+                  </figure>
+                </Col>
+              ))}
             </Row>
           </Container>
         </section>
 
-        <BrandCarousel extraClass="client-carousel__has-border-top" />
+        {/* ---------------------------------------------------------------- CTA */}
+        <section className="tan-hero py-20">
+          <div className="tan-hero__beam" />
+          <Container className="relative z-10">
+            <div className="text-center max-w-3xl mx-auto">
+              <h2 className={`text-3xl lg:text-4xl font-bold text-white text-center mb-3 ${arabicFont}`}>
+                {t("bottomCta.title")}
+              </h2>
+              <p className="text-lg text-white/75 text-center mb-4">{t("bottomCta.text")}</p>
+              <div className="flex flex-wrap justify-center gap-3">
+                <Link to="/development-project-request" className="tan-btn tan-btn--amber">
+                  {t("bottomCta.button")}
+                  <Arrow className="h-4 w-4" />
+                </Link>
+                <Link to="/contact" className="tan-btn tan-btn--ghost">
+                  {t("hero.secondaryCta")}
+                </Link>
+              </div>
+            </div>
+          </Container>
+        </section>
+
+        {/* ----------------------------------------------------------- Partners */}
+        <section className="py-16 bg-background border-t">
+          <Container>
+            <div className="text-center mb-10">
+              <h3 className={`text-2xl font-bold text-[#050517] text-center mb-2 ${arabicFont}`}>
+                {t("partners.title")}
+              </h3>
+              <p className="text-muted-foreground text-center m-0">{t("partners.subtitle")}</p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-20">
+              {partners.map((brand) => (
+                <div className="tan-partner" key={brand.alt}>
+                  <img src={brand.src} alt={brand.alt} title={brand.title} loading="lazy" />
+                </div>
+              ))}
+            </div>
+          </Container>
+        </section>
       </div>
+
       <Footer />
     </Layout>
   );
 };
+
+export default DevelopmentDepartment;
 
 export const query = graphql`
   query ($language: String!) {
@@ -701,5 +394,3 @@ export const query = graphql`
     }
   }
 `;
-
-export default DevelopmentDepartment;

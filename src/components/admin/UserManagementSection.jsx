@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Plus, Edit, Trash2, Shield, ShieldCheck, Eye, EyeOff, RefreshCw, AlertCircle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
@@ -11,7 +10,7 @@ import { Avatar, AvatarFallback } from '../ui/avatar';
 import { usersAPI } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import Layout from '../layout';
-import { formatValidationError, getFieldError, getFieldSuggestion, hasFieldError, VALIDATION_MESSAGES } from '../../lib/validation';
+import { VALIDATION_MESSAGES } from '../../lib/validation';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';

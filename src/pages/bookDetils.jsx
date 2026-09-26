@@ -3,17 +3,12 @@ import { Link, graphql } from "gatsby"
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Autoplay } from "swiper/modules"
 import { Button } from "../components/ui/button"
-import { Badge } from "../components/ui/badge"
-import { Card, CardContent } from '../components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs'
-import { Star, Heart, ShoppingCart, Minus, Plus, ChevronLeft, ChevronRight, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react'
+import { Star, ChevronLeft, ChevronRight, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react'
 import Layout from '../components/layout'
 import HeaderTwo from '../components/header/header-two'
 import StickyHeader from '../components/header/sticky-header'
 import Footer from '../components/footer'
-import { useBookstore } from '../context/BookstoreContext'
 import { booksAPI, reviewsAPI } from '../services/api'
-import { useToast } from '../hooks/use-toast'
 import { navigate } from 'gatsby'
 import { useTranslation } from 'react-i18next'
 import { useI18next } from 'gatsby-plugin-react-i18next'

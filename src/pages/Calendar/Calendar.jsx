@@ -3,10 +3,9 @@ import React from 'react';
 import { Button, useMediaQuery, useTheme } from '@mui/material';
 import { CardContent } from '../../components/ui/card';
 import { Dialog, DialogContent, DialogActions, Drawer, AppBar, Toolbar, IconButton } from '@mui/material';
-import Fab from '@mui/material/Fab';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
 // Removed MUI date pickers - using native HTML date inputs instead
 import moment from 'moment';
 import eventService from '../../services/eventService';

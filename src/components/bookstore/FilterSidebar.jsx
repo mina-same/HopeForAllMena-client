@@ -1,8 +1,6 @@
 import React from 'react';
 import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
-import { X } from 'lucide-react';
 import { Checkbox } from '../ui/checkbox';
-import { Slider } from '../ui/slider';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../ui/sheet';
 
 

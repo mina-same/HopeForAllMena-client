@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Filter, MessageCircle, Check, Trash2, Eye, MoreVertical, Calendar, User, ExternalLink, Users, Clock, CheckCircle } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { MessageCircle, Check, Trash2, Clock, CheckCircle } from 'lucide-react';
+import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';

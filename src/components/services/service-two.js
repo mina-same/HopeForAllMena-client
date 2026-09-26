@@ -25,7 +25,7 @@ const getServiceTwoData = (t) => [
     hoverImage: hoverImage2,
     titleKey: "serviceTwo.items.preaching.title",
     textKey: "serviceTwo.items.preaching.text",
-    link: "/studies-education"
+    link: "/alexandria-bible-college"
   },
   {
     extraClassName: "background-base",

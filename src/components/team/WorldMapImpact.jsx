@@ -2,7 +2,6 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import heartImage from "../../assets/images/shapes/heart-2-1.png";
-import bgImage from "../../assets/images/team/team-map-1-1.png";
 import WorldVectorMap from "../map/WorldVectorMap";
 
 const WorldMapImpact = () => {

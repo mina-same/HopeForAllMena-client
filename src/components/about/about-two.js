@@ -4,7 +4,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import heart from "../../assets/images/shapes/heart-2-1.png";
 import welcomeImage from "../../assets/images/resources/welcome-1-1.png";
-import aboutImage from "../../assets/images/shapes/about-bag-1-2.png";
 
 const AboutTwo = () => {
   const { t } = useTranslation('About');

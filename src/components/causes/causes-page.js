@@ -1,6 +1,6 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { Link, navigate } from "gatsby";
+import { Container } from "react-bootstrap";
+import { Link } from "gatsby";
 import PostPaginations from "../post-paginations";
 
 import causeImage1 from "../../assets/images/causes/cause-1-1.jpg";

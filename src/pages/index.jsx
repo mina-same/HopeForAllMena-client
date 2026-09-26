@@ -11,7 +11,6 @@ import GalleryTestimonials from "../components/gallery/gallery-testimonials";
 import GalleryHome from "../components/gallery/gallery-home";
 import TestimonialsTwo from "../components/testimonials/testimonials-two";
 import BlogHome from "../components/blog/blog-home";
-import CallToAction from "../components/call-to-action/call-to-action";
 import GoogleMap from "../components/google-map";
 import BrandCarousel from "../components/brand-carousel";
 import Footer from "../components/footer";
@@ -20,9 +19,7 @@ import AboutTwo from "../components/about/about-two";
 import ServiceTwo from "../components/services/service-two";
 import VideoCard from "../components/videos/video-card";
 import FactCounter from "../components/fact-counter";
-import PriceOne from "../components/price-one";
 import TrendingProducts from "../components/bookstore/TrendingProducts";
-import AboutCounter from "../components/about/about-counter";
 import CausesHome from "../components/causes/featured-events";
 
 const HomeOne = () => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link, navigate } from "gatsby";
+import { navigate } from "gatsby";
 import causeImage1 from "../../assets/images/causes/cause-d-1-1.jpg";
 import comment1 from "../../assets/images/blog/comment-1-1.jpg";
 import comment2 from "../../assets/images/blog/comment-1-2.jpg";

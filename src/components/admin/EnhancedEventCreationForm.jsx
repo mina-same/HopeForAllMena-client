@@ -15,7 +15,6 @@ import {
   CalendarCheck, Plane, Heart, Coffee, AlertCircle, X
 } from 'lucide-react';
 import { format, addHours } from 'date-fns';
-import { cn } from '../../lib/utils';
 import { useCalendar } from '../../context/CalendarContext';
 import { useToast } from '../../hooks/use-toast';
 

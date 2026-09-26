@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Container, Row, Col, Spinner, Alert, Button } from "react-bootstrap";
+import React, { useState, useEffect, useCallback } from "react";
+import { Container, Spinner, Alert, Button } from "react-bootstrap";
 import { useTranslation } from "gatsby-plugin-react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
 import { useLocation } from "@reach/router";

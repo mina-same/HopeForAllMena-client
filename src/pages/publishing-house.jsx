@@ -7,7 +7,6 @@ import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";
 import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
-import CallToAction from "../components/call-to-action/call-to-action";
 import BrandCarousel from "../components/brand-carousel";
 
 import serviceBg from "../assets/images/backgrounds/service-hand-bg-1-1.png";

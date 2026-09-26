@@ -28,7 +28,7 @@ const getServiceOneData = (t) => [
     icon: "azino-icon-reading-book",
     titleKey: "serviceOne.items.education.title",
     textKey: "serviceOne.items.education.text",
-    link: "/studies-education",
+    link: "/alexandria-bible-college",
     extraClassName: "background-primary"
   },
   {

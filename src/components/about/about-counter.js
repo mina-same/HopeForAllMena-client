@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import VisibilitySensor from "react-visibility-sensor";
-import CountUp from "react-countup";
 import { navigate } from "gatsby";
 import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import heartImage from "../../assets/images/shapes/heart-2-1.png";
