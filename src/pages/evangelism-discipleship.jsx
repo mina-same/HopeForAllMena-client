@@ -82,6 +82,18 @@ const EvangelismDiscipleship = () => {
                   {t("heroSection.title")} {t("heroSection.titleHighlight")}
                 </h1>
                 <p className="dept-text">{t("heroSection.description")}</p>
+                <div className="dept-actions">
+                  {PAGE_ACTIONS.map((action, i) => (
+                    <Link
+                      key={action.key}
+                      to={action.link}
+                      className={`dept-btn ${i === 0 ? "dept-btn--primary" : "dept-btn--outline"}`}
+                    >
+                      <action.icon />
+                      {t(`actions.${action.key}`)}
+                    </Link>
+                  ))}
+                </div>
               </Col>
               <Col lg={6}>
                 <img
