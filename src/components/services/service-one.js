@@ -38,6 +38,13 @@ const getServiceOneData = (t) => [
     extraClassName: "background-special",
     textKey: "serviceOne.items.publishing.text",
     link: "/publishing-house"
+  },
+  {
+    icon: "azino-icon-family",
+    titleKey: "serviceOne.items.refugees.title",
+    extraClassName: "background-base",
+    textKey: "serviceOne.items.refugees.text",
+    link: "/sudanese-refugees"
   }
 ];
 
@@ -84,10 +91,10 @@ const ServiceOne = () => {
               {t('serviceOne.header.title')}
             </h3>
           </div>
-          <Row>
+          <Row className="justify-content-center">
             {serviceData.map(
               ({ icon, image, titleKey, textKey, link, extraClassName }, index) => (
-                <Col md={6} lg={3} key={`service-one-key-${index}`}>
+                <Col md={6} lg={4} key={`service-one-key-${index}`}>
                   <div className={`service-one__box`}>
                     <div className={`service-one__icon ${extraClassName}`}>
                       <div className="service-one__icon-inner">

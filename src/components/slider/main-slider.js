@@ -10,6 +10,7 @@ import banner1 from "../../assets/images/main-slider/slider-1-1.jpg";
 import banner2 from "../../assets/images/main-slider/dev.png";
 import banner3 from "../../assets/images/main-slider/study.jpg";
 import banner4 from "../../assets/images/main-slider/allBooks.png";
+import banner5 from "../../assets/images/main-slider/slider-2-1.jpg";
 import "./main-slider-rtl.css";
 // Swiper v11 uses modules via props
 
@@ -37,7 +38,8 @@ const MainSlider = () => {
     evangelism: "/services/evangelism",
     development: "/services/development", 
     education: "/services/education",
-    publishing: "/services/publishing"
+    publishing: "/services/publishing",
+    refugees: "/sudanese-refugees"
   };
   return (
     <section className={`main-slider ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
@@ -129,6 +131,29 @@ const MainSlider = () => {
                   className="thm-btn"
                 >
                   {t('slides.publishing.button')}
+                </Link>
+              </Col>
+            </Row>
+          </Container>
+        </SwiperSlide>
+        <SwiperSlide>
+          <div
+            className="image-layer"
+            style={{ backgroundImage: `url(${banner5})` }}
+          ></div>
+
+          <Container>
+            <Row className={`${currentLanguage === 'ar' ? 'justify-content-start' : 'justify-content-end'}`}>
+              <Col lg={7} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-right'}`}>
+                <p>{t('slides.refugees.title')}</p>
+                <h2>
+                  {t('slides.refugees.description')}
+                </h2>
+                <Link
+                  to={serviceLinks.refugees}
+                  className="thm-btn"
+                >
+                  {t('slides.refugees.button')}
                 </Link>
               </Col>
             </Row>
