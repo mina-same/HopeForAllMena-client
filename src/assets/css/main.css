@@ -6435,6 +6435,10 @@ h6 {
   position: relative;
 }
 
+.gallery-testimonials-parallax .gallery-home-one .container-fluid {
+  margin-bottom: 0;
+}
+
 /*--------------------------------------------------------------
 # Call to Action
 --------------------------------------------------------------*/

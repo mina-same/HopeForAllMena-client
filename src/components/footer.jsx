@@ -97,7 +97,7 @@ const Footer = () => {
                           right: currentLanguage === 'ar' ? '0' : 'auto'
                         }}
                       ></i>
-                      +20 155 510 3774 <small>(Alexandria)</small>
+                      <span dir="ltr">+20 155 510 3774</span> <small>(Alexandria)</small>
                     </a>
                   </li>
                   <li>
@@ -122,7 +122,7 @@ const Footer = () => {
                           right: currentLanguage === 'ar' ? '0' : 'auto'
                         }}
                       ></i>
-                      +20 128 141 6629 <small>(Cairo)</small>
+                      <span dir="ltr">+20 128 141 6629</span> <small>(Cairo)</small>
                     </a>
                   </li>
                   <li>

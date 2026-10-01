@@ -147,13 +147,13 @@ const MobileNav = () => {
           <li className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
             <i className="azino-icon-telephone"></i>
             <a href="tel:+201555103774">
-              {currentLanguage === 'ar' ? '+20 155 510 3774 (الإسكندرية)' : '+20 155 510 3774 (Alexandria)'}
+              <span dir="ltr">+20 155 510 3774</span> ({currentLanguage === 'ar' ? 'الإسكندرية' : 'Alexandria'})
             </a>
           </li>
           <li className={currentLanguage === 'ar' ? 'text-right' : 'text-left'}>
             <i className="azino-icon-telephone"></i>
             <a href="tel:+20128141662">
-              {currentLanguage === 'ar' ? '+20 128 141 6629 (القاهرة)' : '+20 128 141 6629 (Cairo)'}
+              <span dir="ltr">+20 128 141 6629</span> ({currentLanguage === 'ar' ? 'القاهرة' : 'Cairo'})
             </a>
           </li>
         </ul>

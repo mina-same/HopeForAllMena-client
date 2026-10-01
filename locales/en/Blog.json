@@ -12,7 +12,8 @@
     "loading": "Loading blog posts...",
     "empty": "No blog posts available at the moment.",
     "readMore": "Read More",
-    "comments": "Comments"
+    "comments": "Comments",
+    "viewAll": "View All"
   },
   "card": {
     "readMore": "Read More",

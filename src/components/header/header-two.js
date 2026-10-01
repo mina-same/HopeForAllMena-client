@@ -55,7 +55,7 @@ const HeaderTwo = () => {
                 <h3 style={{ fontSize: '14px', marginBottom: '4px' }}>{t('header.phone')}</h3>
                 <p style={{ fontSize: '13px' }}>
                   <a href="tel:+201281416629" style={{ marginBottom: '5px', display: 'block' }}>
-                    <span>+20 128 141 6629</span>
+                    <span dir="ltr">+20 128 141 6629</span>
                     <span style={{ 
                       fontSize: '11px', 
                       color: '#666', 
@@ -64,7 +64,7 @@ const HeaderTwo = () => {
                     }}>({t('header.locations.alexandria')})</span>
                   </a>
                   <a href="tel:+201555103774">
-                    <span>+20 155 510 3774</span>
+                    <span dir="ltr">+20 155 510 3774</span>
                     <span style={{ 
                       fontSize: '11px', 
                       color: 'var(--thm-color)', 

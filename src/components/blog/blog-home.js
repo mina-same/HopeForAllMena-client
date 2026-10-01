@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useTranslation } from "gatsby-plugin-react-i18next";
+import { useTranslation, Link } from "gatsby-plugin-react-i18next";
 import { useI18next } from "gatsby-plugin-react-i18next";
 
 import BlockTitle from "../block-title";
@@ -154,6 +154,13 @@ const BlogHome = () => {
         ) : (
           <div className="text-center">
             <p>{t('home.empty')}</p>
+          </div>
+        )}
+        {blogs.length > 0 && (
+          <div className="text-center mt-5">
+            <Link to="/news" className="thm-btn">
+              {t('home.viewAll')}
+            </Link>
           </div>
         )}
       </Container>

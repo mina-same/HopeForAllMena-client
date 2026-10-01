@@ -67,8 +67,8 @@ const ContactCardCarousel = () => {
               <i aria-label="contact icon" className="azino-icon-calling"></i>
               <h3>{t('contactCards.phone.title')}</h3>
               <p>
-                <a href="tel:+201281416629">+20 128 141 6629</a> <br />
-                <a href="tel:+201555103774">+20 155 510 3774</a>
+                <a href="tel:+201281416629" dir="ltr">+20 128 141 6629</a> <br />
+                <a href="tel:+201555103774" dir="ltr">+20 155 510 3774</a>
               </p>
             </div>
           </SwiperSlide>

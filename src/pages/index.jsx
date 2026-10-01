@@ -9,7 +9,6 @@ import WorldMapImpact from "../components/team/WorldMapImpact";
 import CallToActionTwo from "../components/call-to-action/call-to-action-two";
 import GalleryTestimonials from "../components/gallery/gallery-testimonials";
 import GalleryHome from "../components/gallery/gallery-home";
-import TestimonialsTwo from "../components/testimonials/testimonials-two";
 import BlogHome from "../components/blog/blog-home";
 import GoogleMap from "../components/google-map";
 import BrandCarousel from "../components/brand-carousel";
@@ -41,7 +40,6 @@ const HomeOne = () => {
       <WorldMapImpact />
       <GalleryTestimonials>
         <GalleryHome />
-        <TestimonialsTwo />
       </GalleryTestimonials>
       {/* <PriceOne /> */}
       <BlogHome />

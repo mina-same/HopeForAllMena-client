@@ -10,30 +10,6 @@ import Footer from '../components/footer';
 import Layout from '../components/layout';
 import { booksAPI } from '../services/api';
 
-const getTestimonials = (t) => [
-  {
-    id: 1,
-    title: t('testimonials.title'),
-    content: t('testimonials.items.0.content'),
-    name: t('testimonials.items.0.name'),
-    location: t('testimonials.items.0.location')
-  },
-  {
-    id: 2,
-    title: t('testimonials.title'),
-    content: t('testimonials.items.1.content'),
-    name: t('testimonials.items.1.name'),
-    location: t('testimonials.items.1.location')
-  },
-  {
-    id: 3,
-    title: t('testimonials.title'),
-    content: t('testimonials.items.2.content'),
-    name: t('testimonials.items.2.name'),
-    location: t('testimonials.items.2.location')
-  }
-];
-
 const StarRating = ({ rating, reviews }) => {
   const { t } = useTranslation('Books');
   const { i18n } = useI18next();
@@ -63,112 +39,6 @@ const StarRating = ({ rating, reviews }) => {
       </div>
       <span className={`text-xs sm:text-sm text-gray-600 ${currentLanguage === 'ar' ? 'mr-1' : 'ml-1'}`}>({reviews} {t('trending.reviews')})</span>
     </div>
-  );
-};
-
-const TestimonialsCarousel = () => {
-  const { t } = useTranslation('Books');
-  const { i18n } = useI18next();
-  const currentLanguage = i18n?.resolvedLanguage || 'en';
-  
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const testimonials = getTestimonials(t);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const goToSlide = (index) => {
-    setCurrentSlide(index);
-  };
-
-  return (
-    <>
-      {/* RTL-specific styles for Arabic */}
-      {currentLanguage === 'ar' && (
-        <style jsx>{`
-          .testimonials-carousel h3,
-          .testimonials-carousel p,
-          .testimonials-carousel span {
-            text-align: center;
-            direction: rtl;
-          }
-          .testimonials-carousel [dir="rtl"] .space-x-2,
-          .testimonials-carousel [dir="rtl"] .space-x-3 {
-            --tw-space-x-reverse: 1;
-          }
-        `}</style>
-      )}
-      <section
-        className="testimonials-carousel relative w-full h-[350px] xs:h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] overflow-hidden"
-        style={{
-          backgroundImage: `url('https://demo2.pavothemes.com/bookory/wp-content/uploads/2022/02/h1-bg2.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-        dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}
-      >
-      <div className="relative z-10 h-full flex items-center">
-        <div className="w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 md:px-8">
-          <div className="absolute top-[180px] xs:top-[180px] sm:top-[180px] md:top-[180px] h-full w-full">
-            <div className="flex items-center justify-center md:justify-start md:pl-8 lg:pl-16">
-              <div className="w-full max-w-xs xs:max-w-sm md:max-w-md lg:max-w-lg">
-                <div className="bg-white rounded-xl xs:rounded-2xl md:rounded-br-none md:rounded-bl-none shadow-2xl px-4 xs:px-6 sm:px-8 md:px-10 py-6 xs:py-8 sm:py-10 md:py-12 text-center transform transition-all duration-500 ease-in-out">
-                  <div className="mb-4 xs:mb-6 md:mb-8">
-                    <h3 className="text-gray-500 text-sm xs:text-base sm:text-lg md:text-xl font-normal mb-2 md:mb-3">
-                      {testimonials[currentSlide].title}
-                    </h3>
-                    <div className="w-8 xs:w-12 sm:w-16 h-0.5 bg-gray-300 mx-auto"></div>
-                  </div>
-                  <div className="mb-4 xs:mb-6 md:mb-8">
-                    <p className="text-gray-900 text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed font-medium px-2 xs:px-0">
-                      "{testimonials[currentSlide].content}"
-                    </p>
-                  </div>
-                  <div className="mb-4 xs:mb-6 md:mb-8">
-                    <div className="text-xs sm:text-sm md:text-base font-semibold text-gray-600 tracking-wider">
-                      <span className="block">{testimonials[currentSlide].name}</span>
-                      <span className="text-gray-400 font-normal text-xs sm:text-sm">/ {testimonials[currentSlide].location}</span>
-                    </div>
-                  </div>
-                  <div className={`flex justify-center ${currentLanguage === 'ar' ? 'flex-row-reverse gap-1.5 xs:gap-2 md:gap-3' : 'space-x-1.5 xs:space-x-2 md:space-x-3'}`}>
-                    {testimonials.map((_, index) => (
-                      <div
-                        key={index}
-                        onClick={() => goToSlide(index)}
-                        className={`transition-all duration-300 cursor-pointer touch-manipulation ${currentSlide === index
-                            ? 'w-4 xs:w-5 sm:w-6 md:w-8 h-1.5 md:h-2 bg-[#2194D1] rounded-full'
-                            : 'w-1.5 md:w-2 h-1.5 md:h-2 bg-gray-300 rounded-full hover:bg-gray-400 active:bg-gray-500'
-                          }`}
-                        role="button"
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="relative hidden md:block">
-              <div className="absolute top-16 left-8 w-3 h-3 md:w-4 md:h-4 bg-white rounded-full opacity-60"></div>
-              <div className="absolute top-32 right-12 w-4 h-4 md:w-6 md:h-6 bg-white rounded-full opacity-40"></div>
-              <div className="absolute bottom-20 left-16 w-2 h-2 md:w-3 md:h-3 bg-white rounded-full opacity-70"></div>
-              <div className="absolute bottom-32 right-8 w-3 h-3 md:w-5 md:h-5 bg-white rounded-full opacity-50"></div>
-              <div className="absolute top-12 left-12">
-                <div className="relative w-4 h-4 md:w-6 md:h-6">
-                  <div className="absolute top-1/2 left-0 w-4 md:w-6 h-0.5 bg-white opacity-80 transform -translate-y-1/2"></div>
-                  <div className="absolute top-0 left-1/2 w-0.5 h-4 md:h-6 bg-white opacity-80 transform -translate-x-1/2"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    </>
   );
 };
 
@@ -572,7 +442,6 @@ const TrendingPage = () => {
 
         {/* Trending Products */}
         <TrendingProducts />
-        <TestimonialsCarousel />
 
         {/* Shop Section */}
         <section className="container pt-8 xs:pt-12 sm:py-12 md:py-16 bg-background">

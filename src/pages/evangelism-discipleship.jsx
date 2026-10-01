@@ -114,6 +114,15 @@ const EvangelismDiscipleship = () => {
                   <h2>{t("vision.title")}</h2>
                 </div>
                 <p className="dept-text">{t("vision.body")}</p>
+                <blockquote className="dept-verse">
+                  <p>{t("vision.verse1")}</p>
+                  <cite>{t("vision.verse1Ref")}</cite>
+                </blockquote>
+                <p style={{ margin: "1.5rem 0", fontSize: "1.4rem", fontWeight: 700, color: "var(--dept-ink)" }}>{t("vision.motto")}</p>
+                <blockquote className="dept-verse">
+                  <p>{t("vision.verse2")}</p>
+                  <cite>{t("vision.verse2Ref")}</cite>
+                </blockquote>
                 {philosophyBody ? (
                   <blockquote className="dept-verse">
                     <p className="font-semibold">{t("philosophy.title")}</p>

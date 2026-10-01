@@ -9,10 +9,10 @@
     "contact": "اتصل بنا",
     "admin": "الإدارة",
     "developmentDepartment": "قسم التنمية",
-    "evangelismDiscipleship": "قسم التعليم والكرازة",
+    "evangelismDiscipleship": "قسم التلمذة والكرازة",
     "alexandriaBibleCollege": "أكاديمية الإسكندرية للدراسات الكتابية",
-    "publishingHouse": "قسم دار النشر واللترجمه و التوزيع",
-    "sudaneseRefugees": "خدمة اللاجئين السودانيين في مصر"
+    "publishingHouse": "قسم دار النشر للترجمه والتوزيع",
+    "sudaneseRefugees": "خدمه السودانيين"
   },
   "footer": {
     "organizationName": "الرجاء للجميع الشرق الأوسط وشمال أفريقيا",
@@ -44,7 +44,7 @@
     "defaultTitle2": "جمع تبرعات للطعام الصحي"
   },
   "header": {
-    "welcome": "مرحباً بكم في خدمة رجاء لجميع الشرق الأوسط وشمال أفريقيا",
+    "welcome": "مرحباً بكم في خدمة رجاء للجميع (الشرق الأوسط وشمال أفريقيا)",
     "email": "البريد الإلكتروني",
     "phone": "الهاتف",
     "visit": "العنوان",
