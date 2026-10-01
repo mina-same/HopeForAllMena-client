@@ -18,8 +18,11 @@ const BlogDetails = ({ slug }) => {
 
   useEffect(() => {
     const fetchBlogData = async () => {
-      if (!slug) return;
-      
+      if (!slug) {
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         // First fetch the blog data

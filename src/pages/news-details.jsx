@@ -37,6 +37,10 @@ const NewsDetails = ({ location, pageContext }) => {
   
   useEffect(() => {
     const fetchBlogTitle = async () => {
+      if (!slug) {
+        setBlogTitle(t('details.notFound'));
+        return;
+      }
       if (slug) {
         try {
           const blog = await blogAPI.getBlogBySlug(slug);

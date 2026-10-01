@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "gatsby-plugin-react-i18next";
 
 const Comments = ({ comments = [], blogId }) => {
+  const { t } = useTranslation('Blog');
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -21,8 +23,8 @@ const Comments = ({ comments = [], blogId }) => {
   if (comments.length === 0) {
     return (
       <div>
-        <h3 className="blog-details__title">No comments yet</h3>
-        <p>Be the first to share your thoughts!</p>
+        <h3 className="blog-details__title">{t('comments.title')}</h3>
+        <p>{t('comments.noComments')}</p>
       </div>
     );
   }

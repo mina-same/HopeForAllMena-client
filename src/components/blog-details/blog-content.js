@@ -91,9 +91,9 @@ const BlogContent = ({ blog, currentLanguage }) => {
             <li>
               <span>{t('details.tags')}:</span>
             </li>
-            {(currentLanguage === 'ar' && blog.tagsAr ? blog.tagsAr : blog.tags || []).map((tag, index) => (
+            {(currentLanguage === 'ar' && blog.tagsAr ? blog.tagsAr : blog.tags || []).map((tag, index, list) => (
               <li key={index}>
-                <span>{tag}</span>
+                <span>{tag}{index < list.length - 1 ? (currentLanguage === 'ar' ? '،' : ',') : ''}</span>
               </li>
             ))}
           </ul>

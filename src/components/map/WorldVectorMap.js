@@ -1,6 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import './jquery-jvectormap.css';
 
+// Countries where the ministry is active, keyed by world_mill region code.
+// Bahrain has no shape in world_mill (too small), so it can't be highlighted.
+const ACTIVE_COUNTRIES = {
+  EG: { name: 'Egypt', color: '#ff6b6b' },
+  SD: { name: 'Sudan', color: '#ff7675' },
+  SS: { name: 'South Sudan', color: '#55a3ff' },
+  ER: { name: 'Eritrea', color: '#ffd3b6' },
+  SO: { name: 'Somalia', color: '#a8e6cf' },
+  XS: { name: 'Somaliland', color: '#aa96da' },
+  DJ: { name: 'Djibouti', color: '#fcbad3' },
+  TD: { name: 'Chad', color: '#74b9ff' },
+  LY: { name: 'Libya', color: '#00b894' },
+  TN: { name: 'Tunisia', color: '#fdcb6e' },
+  MA: { name: 'Morocco', color: '#fd79a8' },
+  DZ: { name: 'Algeria', color: '#e17055' },
+  MR: { name: 'Mauritania', color: '#f38181' },
+  ML: { name: 'Mali', color: '#ffd3b6' },
+  IQ: { name: 'Iraq', color: '#98d8c8' },
+  SY: { name: 'Syria', color: '#dda0dd' },
+  LB: { name: 'Lebanon', color: '#ffeaa7' },
+  JO: { name: 'Jordan', color: '#96ceb4' },
+  KW: { name: 'Kuwait', color: '#fd79a8' },
+  SA: { name: 'Saudi Arabia', color: '#95e1d3' },
+  AE: { name: 'United Arab Emirates', color: '#45b7d1' },
+  BH: { name: 'Bahrain', color: '#fdcb6e' },
+  QA: { name: 'Qatar', color: '#fab1a0' },
+  OM: { name: 'Oman', color: '#6c5ce7' },
+  YE: { name: 'Yemen', color: '#a29bfe' },
+  IR: { name: 'Iran', color: '#4ecdc4' },
+  TR: { name: 'Turkey', color: '#ffaaa5' },
+  CY: { name: 'Cyprus', color: '#74b9ff' },
+  PK: { name: 'Pakistan', color: '#f38181' },
+  IN: { name: 'India', color: '#ff6b9d' },
+  AF: { name: 'Afghanistan', color: '#aa96da' }
+};
+
 const WorldVectorMap = () => {
   const [isClient, setIsClient] = useState(false);
   const [VectorMap, setVectorMap] = useState(null);
@@ -67,71 +103,15 @@ const WorldVectorMap = () => {
         regionsSelectable={true}
         series={{
           regions: [{
-            values: {
-              EG: '#ff6b6b', // Egypt
-              AE: '#45b7d1', // UAE
-              JO: '#96ceb4', // Jordan
-              LB: '#ffeaa7', // Lebanon
-              SY: '#dda0dd', // Syria
-              IQ: '#98d8c8', // Iraq
-              QA: '#fab1a0', // Qatar
-              KW: '#fd79a8', // Kuwait
-              BH: '#fdcb6e', // Bahrain
-              OM: '#6c5ce7', // Oman
-              YE: '#a29bfe', // Yemen
-              MA: '#fd79a8', // Morocco
-              TN: '#fdcb6e', // Tunisia
-              DZ: '#e17055', // Algeria
-              LY: '#00b894', // Libya
-              SD: '#ff7675', // Sudan
-              TD: '#74b9ff', // Chad
-              SS: '#55a3ff', // South Sudan
-              IN: '#ff6b9d', // India
-              PA: '#4ecdc4', // Panama
-              US: '#95e1d3', // USA
-              CA: '#f38181', // Canada
-              KR: '#aa96da', // South Korea
-              FJ: '#fcbad3', // Fiji
-              ZA: '#a8e6cf', // South Africa
-              ML: '#ffd3b6', // Mali
-              NG: '#ffaaa5'  // Nigeria
-            },
+            values: Object.fromEntries(
+              Object.entries(ACTIVE_COUNTRIES).map(([code, { color }]) => [code, color])
+            ),
             attribute: 'fill'
           }]
         }}
         onRegionClick={(e, code) => {
-          const countryNames = {
-            EG: 'Egypt',
-            AE: 'United Arab Emirates',
-            JO: 'Jordan',
-            LB: 'Lebanon',
-            SY: 'Syria',
-            IQ: 'Iraq',
-            QA: 'Qatar',
-            KW: 'Kuwait',
-            BH: 'Bahrain',
-            OM: 'Oman',
-            YE: 'Yemen',
-            MA: 'Morocco',
-            TN: 'Tunisia',
-            DZ: 'Algeria',
-            LY: 'Libya',
-            SD: 'Sudan',
-            TD: 'Chad',
-            SS: 'South Sudan',
-            IN: 'India',
-            PA: 'Panama',
-            US: 'United States',
-            CA: 'Canada',
-            KR: 'South Korea',
-            FJ: 'Fiji',
-            ZA: 'South Africa',
-            ML: 'Mali',
-            NG: 'Nigeria'
-          };
-          
-          if (countryNames[code]) {
-            alert(`Hope For All MENA serves in ${countryNames[code]}`);
+          if (ACTIVE_COUNTRIES[code]) {
+            alert(`Hope For All MENA serves in ${ACTIVE_COUNTRIES[code].name}`);
           }
         }}
       />

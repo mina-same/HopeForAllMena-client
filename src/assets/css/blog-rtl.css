@@ -207,3 +207,16 @@
   direction: rtl;
   text-align: right;
 }
+
+/* Tag separators in RTL: Arabic comma, spaced before the next tag.
+   Undo the generic .rtl-sidebar li flex row-reverse, which pushes the comma before the tag. */
+.blog-sidebar__tags.rtl-sidebar li {
+  display: block;
+  margin-bottom: 0;
+}
+
+.blog-sidebar__tags.rtl-sidebar li:not(:last-of-type)::after {
+  content: "،";
+  margin-right: 0;
+  margin-left: 8px;
+}

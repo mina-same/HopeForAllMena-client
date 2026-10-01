@@ -87,12 +87,13 @@ const BlogPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalBlogs, setTotalBlogs] = useState(0);
   const [category, setCategory] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(() => new URLSearchParams(location.search).get('search') || '');
   
   // Get category from URL params
   const urlParams = new URLSearchParams(location.search);
   const urlCategory = urlParams.get('category') || 'all';
-  
+  const urlSearch = urlParams.get('search') || '';
+
   // Fallback images array
   const fallbackImages = [blogImage1, blogImage2, blogImage3, blogImage4, blogImage5, blogImage6];
 
@@ -121,8 +122,9 @@ const BlogPage = () => {
 
       const response = await blogAPI.getPublishedBlogs(params);
       
-      if (response.status === 'success') {
-        const transformedBlogs = response.data.blogs.map((blog, index) => ({
+      // API shape: { blogs, totalPages, currentPage, total }
+      if (Array.isArray(response.blogs)) {
+        const transformedBlogs = response.blogs.map((blog, index) => ({
           id: blog._id,
           image: blog.image || fallbackImages[index % fallbackImages.length],
           title: currentLanguage === 'ar' && blog.titleAr ? blog.titleAr : blog.title,
@@ -140,8 +142,8 @@ const BlogPage = () => {
         }));
 
         setBlogs(transformedBlogs);
-        setTotalPages(response.data.pagination.totalPages);
-        setTotalBlogs(response.data.pagination.totalBlogs);
+        setTotalPages(response.totalPages);
+        setTotalBlogs(response.total);
         setCurrentPage(page);
       } else {
         throw new Error(response.message || 'Failed to fetch blogs');
@@ -157,6 +159,11 @@ const BlogPage = () => {
       setLoading(false);
     }
   }, [currentLanguage, t]);
+
+  // Apply ?search= from the URL (e.g. tag links in the blog sidebar)
+  useEffect(() => {
+    setSearchTerm(urlSearch);
+  }, [urlSearch]);
 
   // Load blogs on component mount and when dependencies change
   useEffect(() => {
