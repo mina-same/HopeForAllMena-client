@@ -15,13 +15,11 @@ import PageHeader from "../components/page-header";
 import Footer from "../components/footer";
 import Layout from "../components/layout";
 import heroImage from "../assets/images/resources/service-1-2.jpg";
-import visionImage from "../assets/images/resources/service-1-3.jpg";
-import brandSynod from "../assets/images/resources/brand-1-4.png";
-import brandPartner from "../assets/images/resources/brand-1-3.png";
-import hopeLogo from "../assets/images/logos/hope4AllMena.png";
+import introImage from "../assets/images/قسم التعليم و الكرازه/IMG-20250513-WA0075.jpg";
+import visionImage from "../assets/images/gallery/EvangelismDiscipleship.jpg";
 import "../assets/css/department-pages.css";
 
-const STATEMENT_KEYS = [
+const GOAL_KEYS = [
   "support",
   "leaders",
   "children",
@@ -43,12 +41,6 @@ const SudaneseRefugees = () => {
   const { language: currentLanguage } = useI18next();
   const isRTL = currentLanguage === "ar";
 
-  const partners = [
-    { src: hopeLogo, alt: t("partners.hopeAlt"), title: t("partners.hopeTitle") },
-    { src: brandSynod, alt: t("partners.brand4Alt"), title: t("partners.brand4Title") },
-    { src: brandPartner, alt: t("partners.brand3Alt"), title: t("partners.brand3Title") },
-  ];
-
   return (
     <Layout pageTitle={`${t("pageTitle")} || Hope for All Mena`}>
       <HeaderTwo />
@@ -61,32 +53,22 @@ const SudaneseRefugees = () => {
           <Container>
             <Row className="align-items-center g-5">
               <Col lg={6}>
-                <span className="dept-intro__eyebrow">{t("hero.badge")}</span>
-                <h1>
-                  {t("hero.title")} {t("hero.titleHighlight")}
-                </h1>
-                <p className="dept-intro__sub">{t("hero.tagline")}</p>
-                <p className="dept-text">{t("hero.description")}</p>
+                <h1>{t("intro.title")}</h1>
+                <p className="dept-text">{t("intro.body")}</p>
+                <blockquote className="dept-verse">
+                  <p>{t("intro.verse")}</p>
+                  <cite>{t("intro.verseRef")}</cite>
+                </blockquote>
               </Col>
               <Col lg={6}>
-                <img src={heroImage} alt={t("hero.imageAlt")} className="dept-intro__img" />
+                <img src={introImage} alt={t("intro.imageAlt")} className="dept-intro__img" />
               </Col>
             </Row>
           </Container>
         </section>
 
-        {/* Who we are */}
+        {/* Vision & mission */}
         <section className="dept-section dept-section--alt">
-          <Container>
-            <div className="dept-heading dept-heading--center">
-              <h2>{t("whoWeAre.title")}</h2>
-              <p>{t("whoWeAre.body")}</p>
-            </div>
-          </Container>
-        </section>
-
-        {/* Vision */}
-        <section className="dept-section">
           <Container>
             <Row className="align-items-center g-5">
               <Col lg={6}>
@@ -94,6 +76,10 @@ const SudaneseRefugees = () => {
                   <h2>{t("vision.title")}</h2>
                 </div>
                 <p className="dept-text">{t("vision.body")}</p>
+                <div className="dept-heading mb-4 mt-5">
+                  <h2>{t("mission.title")}</h2>
+                </div>
+                <p className="dept-text">{t("mission.body")}</p>
               </Col>
               <Col lg={6}>
                 <img src={visionImage} alt={t("vision.imageAlt")} className="dept-img" loading="lazy" />
@@ -102,42 +88,25 @@ const SudaneseRefugees = () => {
           </Container>
         </section>
 
-        {/* Mission & goals */}
-        <section className="dept-section dept-section--alt">
+        {/* Goals */}
+        <section className="dept-section">
           <Container>
-            <Row className="g-5">
-              <Col lg={6}>
-                <div className="dept-heading mb-4">
-                  <h2>{t("mission.title")}</h2>
-                </div>
-                <ul className="dept-rows">
-                  {STATEMENT_KEYS.map((key) => (
-                    <li key={key}>
-                      <CheckCircle2 />
-                      <p>{t(`mission.items.${key}`)}</p>
-                    </li>
-                  ))}
-                </ul>
-              </Col>
-              <Col lg={6}>
-                <div className="dept-heading mb-4">
-                  <h2>{t("goals.title")}</h2>
-                </div>
-                <ul className="dept-rows">
-                  {STATEMENT_KEYS.map((key) => (
-                    <li key={key}>
-                      <CheckCircle2 />
-                      <p>{t(`goals.items.${key}`)}</p>
-                    </li>
-                  ))}
-                </ul>
-              </Col>
-            </Row>
+            <div className="dept-heading mb-4">
+              <h2>{t("goals.title")}</h2>
+            </div>
+            <ul className="dept-rows">
+              {GOAL_KEYS.map((key) => (
+                <li key={key}>
+                  <CheckCircle2 />
+                  <p>{t(`goals.items.${key}`)}</p>
+                </li>
+              ))}
+            </ul>
           </Container>
         </section>
 
         {/* Why this ministry */}
-        <section className="dept-section">
+        <section className="dept-section dept-section--alt">
           <Container>
             <div className="dept-heading">
               <h2>{t("why.title")}</h2>
@@ -145,6 +114,20 @@ const SudaneseRefugees = () => {
             <blockquote className="dept-verse" style={{ maxWidth: 820 }}>
               <p>{t("why.body")}</p>
               <p>{t("why.bodySecondary")}</p>
+            </blockquote>
+          </Container>
+        </section>
+
+        {/* Together */}
+        <section className="dept-section">
+          <Container>
+            <div className="dept-heading">
+              <h2>{t("together.title")}</h2>
+            </div>
+            <p className="dept-text" style={{ maxWidth: 820 }}>{t("together.body")}</p>
+            <blockquote className="dept-verse" style={{ maxWidth: 820 }}>
+              <p>{t("together.verse")}</p>
+              <cite>{t("together.verseRef")}</cite>
             </blockquote>
           </Container>
         </section>
@@ -176,28 +159,6 @@ const SudaneseRefugees = () => {
                 </Col>
               ))}
             </Row>
-          </Container>
-        </section>
-
-        {/* Closing */}
-        <section className="dept-band">
-          <Container>
-            <h2>{t("hero.tagline")}</h2>
-            <p>{t("hero.badge")}</p>
-          </Container>
-        </section>
-        {/* Partners */}
-        <section className="dept-section">
-          <Container>
-            <div className="dept-heading dept-heading--center">
-              <h2>{t("partners.title")}</h2>
-              <p>{t("partners.subtitle")}</p>
-            </div>
-            <div className="dept-partners">
-              {partners.map((brand) => (
-                <img key={brand.alt} src={brand.src} alt={brand.alt} title={brand.title} loading="lazy" />
-              ))}
-            </div>
           </Container>
         </section>
       </div>

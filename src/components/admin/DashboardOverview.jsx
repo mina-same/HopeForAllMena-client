@@ -363,10 +363,10 @@ const DashboardOverview = () => {
           const IconComponent = stat.icon;
           return (
             <Card key={index} className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-              <CardContent className="p-5">
-                <div className={`flex items-start justify-between gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <CardContent className="p-4 sm:p-5">
+                <div className={`flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:justify-between ${isRTL ? 'items-end sm:flex-row-reverse' : 'items-start'}`}>
                   <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide sm:tracking-widest text-muted-foreground mb-2">
                       {stat.title}
                     </p>
                     <p className="text-3xl font-bold text-foreground tabular-nums leading-none">
@@ -390,10 +390,10 @@ const DashboardOverview = () => {
           const IconComponent = stat.icon;
           return (
             <Card key={index} className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
-              <CardContent className="p-5">
-                <div className={`flex items-start justify-between gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <CardContent className="p-4 sm:p-5">
+                <div className={`flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:justify-between ${isRTL ? 'items-end sm:flex-row-reverse' : 'items-start'}`}>
                   <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
-                    <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-wide sm:tracking-widest text-muted-foreground mb-2">
                       {stat.title}
                     </p>
                     <p className="text-3xl font-bold text-foreground tabular-nums leading-none">

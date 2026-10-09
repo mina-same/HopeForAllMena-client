@@ -345,7 +345,7 @@ const EnrollmentPage = ({ location }) => {
                                             })}
                                         </div>
                                     </CardHeader>
-                                    <CardContent className="pt-8 px-8 pb-8">
+                                    <CardContent className="pt-6 px-4 pb-6 sm:pt-8 sm:px-8 sm:pb-8">
                                         <form onSubmit={handleSubmit} className="space-y-8">
                                             {/* Section 0: Course Selection */}
                                             {currentSection === 0 && (

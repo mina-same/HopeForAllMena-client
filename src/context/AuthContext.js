@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { authAPI } from '../services/api';
+import { authStorage } from '../utils/storage';
 
 const AuthContext = createContext(null);
 
@@ -10,73 +12,103 @@ export const useAuth = () => {
   return context;
 };
 
-// Guest user for when auth is disabled
-const GUEST_USER = {
-  _id: '000000000000000000000000',
-  username: 'guest',
-  name: 'Guest User',
-  email: 'guest@hopeforallmena.org',
-  role: 'admin',
-  status: 'active',
-  permissions: [
-    'books', 'authors', 'categories', 'reviews', 'courses',
-    'enrollments', 'magazines', 'training', 'analytics', 'settings',
-    'users', 'user-management', 'contact-messages', 'training-books',
-    'training-requests', 'training-followup-requests', 'calendar',
-    'generate-ids', 'blogs', 'admin_access', 'admin'
-  ]
+const isAdminUser = (user) => {
+  if (!user) return false;
+  const role = (user.role || '').toLowerCase();
+  const permissions = user.permissions || [];
+  return role.includes('admin') || permissions.includes('user-management') || permissions.includes('users');
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(GUEST_USER);
-  const [token, setToken] = useState('guest-token');
-  const [loading, setLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check if user is authenticated on app load
-  useEffect(() => {
-    // Keep it always authenticated for guest
-    setIsAuthenticated(true);
-    if (!user) {
-      setUser(GUEST_USER);
-      setToken('guest-token');
+  const clearSession = useCallback(() => {
+    authStorage.clearAuth();
+    setUser(null);
+    setToken(null);
+    setIsAuthenticated(false);
+  }, []);
+
+  // Confirm the stored token with the server; never trust local data alone
+  const checkAuthStatus = useCallback(async () => {
+    const storedToken = authStorage.getToken();
+    if (!storedToken) {
+      clearSession();
+      setLoading(false);
+      return;
     }
-    setLoading(false);
-  }, [user]);
 
-  const checkAuthStatus = async () => {
-    setIsAuthenticated(true);
-    setLoading(false);
-  };
+    try {
+      const response = await authAPI.getProfile();
+      const profile = response?.data?.user;
+      if (response?.status === 'success' && profile) {
+        setUser(profile);
+        setToken(storedToken);
+        setIsAuthenticated(true);
+        authStorage.setUser(profile);
+      } else {
+        clearSession();
+      }
+    } catch (error) {
+      clearSession();
+    } finally {
+      setLoading(false);
+    }
+  }, [clearSession]);
+
+  useEffect(() => {
+    checkAuthStatus();
+  }, [checkAuthStatus]);
 
   const login = async (credentials) => {
-    setUser(GUEST_USER);
-    setToken('guest-token');
-    setIsAuthenticated(true);
-    return { success: true, user: GUEST_USER };
+    try {
+      const response = await authAPI.login(credentials);
+      const loggedInUser = response?.data?.user;
+      const newToken = response?.data?.token;
+
+      if (response?.status !== 'success' || !loggedInUser || !newToken) {
+        return { success: false, error: response?.message };
+      }
+
+      authStorage.setToken(newToken);
+      authStorage.setUser(loggedInUser);
+      setToken(newToken);
+      setUser(loggedInUser);
+      setIsAuthenticated(true);
+      return { success: true, user: loggedInUser };
+    } catch (error) {
+      return { success: false, error: error.response?.data?.message };
+    }
   };
 
   const logout = async () => {
-    // Optionally allow "logout" but it will just reset to guest or we can just do nothing
-    // For "disable login", let's make it do nothing or just keep guest
-    return;
+    try {
+      await authAPI.logout();
+    } catch (error) {
+      // The local session is cleared below even if the server call fails
+    }
+    clearSession();
   };
 
   const updateUser = (userData) => {
     setUser(userData);
+    authStorage.setUser(userData);
   };
 
   const hasPermission = (permission) => {
-    return true; // Always true when auth is disabled
+    if (!user) return false;
+    return isAdminUser(user) || (user.permissions || []).includes(permission);
   };
 
   const hasAnyPermission = (permissions) => {
-    return true; // Always true when auth is disabled
+    if (!user) return false;
+    return isAdminUser(user) || permissions.some((permission) => (user.permissions || []).includes(permission));
   };
 
-  const isAdmin = () => {
-    return true; // Always true when auth is disabled
-  };
+  const isAdmin = () => isAdminUser(user);
 
   const value = {
     user,

@@ -1,323 +1,121 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link, graphql } from 'gatsby';
+import React from 'react';
+import { graphql } from 'gatsby';
+import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
+import { Home, Mail, ArrowLeft, ArrowRight, Users, GraduationCap, BookOpen, Heart } from 'lucide-react';
 import Layout from '../components/layout';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
 import Footer from '../components/footer';
-import { useTranslation } from 'gatsby-plugin-react-i18next';
-import { useI18next } from 'gatsby-plugin-react-i18next';
-import '../assets/css/404-rtl.css';
+import '../assets/css/not-found.css';
+
+const quickLinks = [
+  { key: 'about', to: '/about', Icon: Users },
+  { key: 'training', to: '/training', Icon: GraduationCap },
+  { key: 'books', to: '/books', Icon: BookOpen },
+  { key: 'donate', to: '/donate', Icon: Heart },
+];
+
+// "0" of the 404, drawn as a compass whose needle searches for the way home
+const CompassZero = () => (
+  <svg className="nf-compass" viewBox="0 0 120 120" aria-hidden="true">
+    <circle cx="60" cy="60" r="54" className="nf-compass__ring" />
+    <circle cx="60" cy="60" r="42" className="nf-compass__inner" />
+    {[0, 90, 180, 270].map((deg) => (
+      <line key={deg} x1="60" y1="10" x2="60" y2="20" className="nf-compass__tick" transform={`rotate(${deg} 60 60)`} />
+    ))}
+    {[45, 135, 225, 315].map((deg) => (
+      <line key={deg} x1="60" y1="12" x2="60" y2="17" className="nf-compass__tick nf-compass__tick--minor" transform={`rotate(${deg} 60 60)`} />
+    ))}
+    <g className="nf-compass__needle">
+      <path d="M60 24 L68 60 L52 60 Z" className="nf-compass__needle-north" />
+      <path d="M60 96 L68 60 L52 60 Z" className="nf-compass__needle-south" />
+    </g>
+    <circle cx="60" cy="60" r="5" className="nf-compass__pin" />
+  </svg>
+);
 
 const NotFoundPage = () => {
   const { t } = useTranslation('NotFound');
-  const { language: currentLanguage } = useI18next();
-  const isRTL = currentLanguage === 'ar';
-  
-  const [isVisible, setIsVisible] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const brandPrimary = '#2194D1';
+  const { language } = useI18next();
+  const isRTL = language === 'ar';
+  const ForwardArrow = isRTL ? ArrowLeft : ArrowRight;
+  const BackArrow = isRTL ? ArrowRight : ArrowLeft;
 
-  useEffect(() => {
-    // Trigger animations after component mounts
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handleButtonClick = () => {
-    setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), 300);
+  const goBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      window.history.back();
+    }
   };
 
   return (
     <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena`}>
       <HeaderTwo />
       <StickyHeader />
-      
-      {/* Background decorative elements */}
-      <div 
-        className={isRTL ? 'decorative-right' : ''}
-        style={{
-          position: 'absolute',
-          top: '10%',
-          left: isRTL ? 'auto' : '5%',
-          right: isRTL ? '5%' : 'auto',
-          width: '200px',
-          height: '200px',
-          background: `radial-gradient(circle, ${brandPrimary}20 0%, transparent 70%)`,
-          borderRadius: '50%',
-          animation: 'float 6s ease-in-out infinite',
-          zIndex: 0
-        }}
-      />
-      <div 
-        className={isRTL ? 'decorative-left' : ''}
-        style={{
-          position: 'absolute',
-          bottom: '20%',
-          right: isRTL ? 'auto' : '10%',
-          left: isRTL ? '10%' : 'auto',
-          width: '150px',
-          height: '150px',
-          background: `radial-gradient(circle, ${brandPrimary}15 0%, transparent 70%)`,
-          borderRadius: '50%',
-          animation: 'float 8s ease-in-out infinite reverse',
-          zIndex: 0
-        }}
-      />
 
-      <div 
-        className="d-flex align-items-center min-vh-100 position-relative"
-        style={{
-          background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
-          overflow: 'hidden'
-        }}
-        dir={isRTL ? 'rtl' : 'ltr'}
-      >
-        <Container className="py-5 position-relative" style={{ zIndex: 1 }}>
-          <Row className="justify-content-center text-center">
-            <Col lg={8} md={10}>
-              {/* Main 404 Content */}
-              <div 
-                className={`mb-5 ${isVisible ? 'fade-in' : 'opacity-0'} ${isRTL ? 'rtl-layout' : ''}`}
-                style={{
-                  transition: 'all 0.8s ease-out',
-                  transform: isVisible ? 'translateY(0)' : 'translateY(30px)'
-                }}
-              >
-                {/* Animated 404 Number */}
-                <div className="position-relative mb-4">
-                  <h1 
-                    className="display-1 fw-bold mb-0 number-display" 
-                    style={{ 
-                      color: brandPrimary,
-                      fontSize: 'clamp(6rem, 20vw, 15rem)',
-                      textShadow: '0 8px 32px rgba(33, 148, 209, 0.3)',
-                      lineHeight: 0.8,
-                      fontFamily: 'Jost, sans-serif',
-                      fontWeight: 900,
-                      animation: isVisible ? 'bounceIn 1s ease-out' : 'none'
-                    }}
-                    dir="ltr"
-                  >
-                    {t('errorCode')}
-                  </h1>
-                </div>
-
-                {/* Error Message */}
-                <h2 
-                  className={`h2 fw-bold mb-3 ${isRTL ? 'font-arabic' : ''}`}
-                  style={{ 
-                    color: '#211F2D',
-                    fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
-                    fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'Jost, sans-serif',
-                    animation: isVisible ? 'slideInUp 0.8s ease-out 0.3s both' : 'none'
-                  }}
-                >
-                  {t('title')}
-                </h2>
-                
-                <p 
-                  className={`lead text-muted mb-4 ${isRTL ? 'font-arabic' : ''}`}
-                  style={{
-                    fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
-                    lineHeight: 1.6,
-                    animation: isVisible ? 'slideInUp 0.8s ease-out 0.5s both' : 'none',
-                    fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
-                  }}
-                >
-                  {t('description')}
-                </p>
-
-                {/* Fun illustration */}
-                <div 
-                  className="mb-4"
-                  style={{
-                    fontSize: '4rem',
-                    animation: isVisible ? 'fadeIn 1s ease-out 0.7s both' : 'none'
-                  }}
-                >
-                  🗺️
-                </div>
-
-                {/* Action Buttons */}
-                <div 
-                  className={`d-flex flex-column flex-sm-row gap-3 justify-content-center mb-5 ${isRTL ? 'rtl-button-group' : ''}`}
-                  style={{
-                    animation: isVisible ? 'fadeIn 1s ease-out 0.9s both' : 'none'
-                  }}
-                >
-                  <Link to="/">
-                    <Button
-                      variant="primary"
-                      size="lg"
-                      onClick={handleButtonClick}
-                      className={`px-5 py-3 ${isAnimating ? 'scale-95' : ''} ${isRTL ? 'font-arabic' : ''}`}
-                      style={{
-                        backgroundColor: brandPrimary,
-                        borderColor: brandPrimary,
-                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'Jost, sans-serif',
-                        fontWeight: 600,
-                        transition: 'all 0.3s ease',
-                        boxShadow: '0 4px 15px rgba(33, 148, 209, 0.3)'
-                      }}
-                    >
-                      {t('homeButton')}
-                    </Button>
-                  </Link>
-                  <Link to="/contact">
-                    <Button
-                      variant="outline-primary"
-                      size="lg"
-                      onClick={handleButtonClick}
-                      className={`px-5 py-3 ${isAnimating ? 'scale-95' : ''} ${isRTL ? 'font-arabic' : ''}`}
-                      style={{
-                        borderColor: brandPrimary,
-                        color: brandPrimary,
-                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'Jost, sans-serif',
-                        fontWeight: 600,
-                        transition: 'all 0.3s ease'
-                      }}
-                    >
-                      {t('contactButton')}
-                    </Button>
-                  </Link>
-                </div>
-
-                {/* Helpful Links */}
-                <div 
-                  className={`mt-5 pt-4 border-top ${isRTL ? 'rtl-links' : ''}`}
-                  style={{
-                    animation: isVisible ? 'fadeIn 1s ease-out 1.1s both' : 'none'
-                  }}
-                >
-                  <h5 
-                    className={`mb-3 ${isRTL ? 'font-arabic' : ''}`}
-                    style={{
-                      color: '#211F2D',
-                      fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'Jost, sans-serif'
-                    }}
-                  >
-                    {t('helpfulLinks')}
-                  </h5>
-                  <div className={`d-flex flex-wrap gap-3 justify-content-center ${isRTL ? 'rtl-grid' : ''}`}>
-                    <Link 
-                      to="/" 
-                      className={isRTL ? 'font-arabic' : ''}
-                      style={{ 
-                        color: brandPrimary, 
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
-                      }}
-                    >
-                      {t('links.home')}
-                    </Link>
-                    <span style={{ color: '#dee2e6' }}>•</span>
-                    <Link 
-                      to="/about-us" 
-                      className={isRTL ? 'font-arabic' : ''}
-                      style={{ 
-                        color: brandPrimary, 
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
-                      }}
-                    >
-                      {t('links.about')}
-                    </Link>
-                    <span style={{ color: '#dee2e6' }}>•</span>
-                    <Link 
-                      to="/evangelism-discipleship" 
-                      className={isRTL ? 'font-arabic' : ''}
-                      style={{ 
-                        color: brandPrimary, 
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
-                      }}
-                    >
-                      {t('links.ministries')}
-                    </Link>
-                    <span style={{ color: '#dee2e6' }}>•</span>
-                    <Link 
-                      to="/contact" 
-                      className={isRTL ? 'font-arabic' : ''}
-                      style={{ 
-                        color: brandPrimary, 
-                        textDecoration: 'none',
-                        fontWeight: 500,
-                        fontFamily: isRTL ? 'Cairo, Noto Sans Arabic, sans-serif' : 'inherit'
-                      }}
-                    >
-                      {t('links.contact')}
-                    </Link>
-                  </div>
-                </div>
+      <main className={`nf-page ${isRTL ? 'nf-page--rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+        <section className="nf-hero">
+          <div className="nf-container nf-hero__grid">
+            <div className="nf-hero__art">
+              <div className="nf-code" dir="ltr" aria-label={t('errorCode')} role="img">
+                <span className="nf-code__digit">4</span>
+                <CompassZero />
+                <span className="nf-code__digit">4</span>
               </div>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+              <svg className="nf-path" viewBox="0 0 320 60" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M4 40 C 60 4, 110 58, 160 30 S 260 6, 316 34" />
+              </svg>
+            </div>
 
-      {/* Custom CSS for animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes bounceIn {
-          0% { 
-            transform: scale(0.3);
-            opacity: 0;
-          }
-          50% { 
-            transform: scale(1.05);
-          }
-          70% { 
-            transform: scale(0.9);
-          }
-          100% { 
-            transform: scale(1);
-            opacity: 1;
-          }
-        }
-        
-        @keyframes slideInUp {
-          0% {
-            transform: translateY(30px);
-            opacity: 0;
-          }
-          100% {
-            transform: translateY(0);
-            opacity: 1;
-          }
-        }
-        
-        @keyframes fadeIn {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-        
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-          40% { transform: translateY(-10px); }
-          60% { transform: translateY(-5px); }
-        }
-        
-        .fade-in {
-          opacity: 1;
-        }
-      `}</style>
+            <div className="nf-hero__content">
+              <span className="nf-eyebrow">{t('eyebrow')}</span>
+              <h1 className="nf-title">{t('title')}</h1>
+              <p className="nf-lead">{t('description')}</p>
+
+              <blockquote className="nf-verse">
+                <p>{t('verse')}</p>
+                <cite>{t('verseRef')}</cite>
+              </blockquote>
+
+              <div className="nf-actions">
+                <Link to="/" className="nf-btn nf-btn--primary">
+                  <Home size={18} aria-hidden="true" />
+                  {t('homeButton')}
+                </Link>
+                <Link to="/contact" className="nf-btn nf-btn--outline">
+                  <Mail size={18} aria-hidden="true" />
+                  {t('contactButton')}
+                </Link>
+                <button type="button" onClick={goBack} className="nf-btn nf-btn--ghost">
+                  <BackArrow size={18} aria-hidden="true" />
+                  {t('backButton')}
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="nf-explore">
+          <div className="nf-container">
+            <h2 className="nf-explore__title">{t('exploreTitle')}</h2>
+            <ul className="nf-cards">
+              {quickLinks.map(({ key, to, Icon }) => (
+                <li key={key}>
+                  <Link to={to} className="nf-card">
+                    <span className="nf-card__icon">
+                      <Icon size={22} aria-hidden="true" />
+                    </span>
+                    <span className="nf-card__text">
+                      <span className="nf-card__title">{t(`cards.${key}.title`)}</span>
+                      <span className="nf-card__desc">{t(`cards.${key}.desc`)}</span>
+                    </span>
+                    <ForwardArrow size={18} className="nf-card__arrow" aria-hidden="true" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      </main>
 
       <Footer />
     </Layout>

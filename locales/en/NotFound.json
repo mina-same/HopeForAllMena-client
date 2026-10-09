@@ -1,17 +1,19 @@
 {
   "pageTitle": "Page Not Found",
   "errorCode": "404",
-  "title": "Oops! Page Not Found",
-  "description": "The page you're looking for seems to have wandered off into the digital wilderness. Don't worry, we'll help you find your way back!",
+  "eyebrow": "Error 404 · Page not found",
+  "title": "This page has wandered off",
+  "description": "The page you're looking for may have moved, been renamed, or never existed. Let's help you find your way back.",
+  "verse": "“For the Son of Man came to seek and to save the lost.”",
+  "verseRef": "Luke 19:10",
   "homeButton": "Back to Home",
   "contactButton": "Contact Us",
-  "searchPlaceholder": "Search our website...",
-  "helpfulLinks": "Helpful Links",
-  "links": {
-    "home": "Home",
-    "about": "About Us",
-    "ministries": "Ministries",
-    "contact": "Contact"
+  "backButton": "Go back",
+  "exploreTitle": "Where would you like to go?",
+  "cards": {
+    "about": { "title": "About Us", "desc": "Our story, vision and mission" },
+    "training": { "title": "Training", "desc": "Equipping local church leaders" },
+    "books": { "title": "Books", "desc": "Resources from our publishing house" },
+    "donate": { "title": "Donate", "desc": "Partner with us in ministry" }
   }
 }
-

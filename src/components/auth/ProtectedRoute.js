@@ -1,3 +1,6 @@
+import React, { useEffect } from 'react';
+import { navigate } from 'gatsby';
+import { useAuth } from '../../context/AuthContext';
 
 const ProtectedRoute = ({
   children,
@@ -6,7 +9,28 @@ const ProtectedRoute = ({
   requireAdmin = false,
   fallbackPath = '/login'
 }) => {
-  // Always allow access when auth is disabled
+  const { isAuthenticated, loading, hasAnyPermission, isAdmin } = useAuth();
+
+  const allowed =
+    !requireAuth ||
+    (isAuthenticated &&
+      (requiredPermissions.length === 0 || hasAnyPermission(requiredPermissions)) &&
+      (!requireAdmin || isAdmin()));
+
+  useEffect(() => {
+    if (loading || allowed) return;
+    navigate(isAuthenticated ? '/unauthorized' : fallbackPath, { replace: true });
+  }, [loading, allowed, isAuthenticated, fallbackPath]);
+
+  // Render nothing protected until the server has confirmed the login
+  if (loading || !allowed) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="spinner-border text-primary" role="status" aria-label="Loading" />
+      </div>
+    );
+  }
+
   return children;
 };
 

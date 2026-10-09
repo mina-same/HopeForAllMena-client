@@ -4,8 +4,16 @@ const { languages } = require('./languages');
 exports.onCreatePage = ({ page, actions }) => {
   const { createPage, deletePage } = actions;
 
-  // Don't modify the 404 page - let it be handled normally
-  if (page.path === '/404/') {
+  // Make the 404 page a catch-all (/* or /ar/*) so any unknown URL renders the
+  // custom 404 component — in `gatsby develop` too, instead of Gatsby's dev 404 page.
+  const notFoundMatch = page.path.match(/^(\/[a-z]{2})?\/404\/$/);
+  if (notFoundMatch) {
+    const langPrefix = notFoundMatch[1] || '';
+    deletePage(page);
+    createPage({
+      ...page,
+      matchPath: `${langPrefix}/*`,
+    });
     return;
   }
 
@@ -67,61 +75,6 @@ exports.createPages = async ({ actions }) => {
       isPermanent: true,
       redirectInBrowser: true,
     });
-  });
-};
-
-// Override development 404 behavior
-exports.onCreateDevServer = ({ app }) => {
-  app.get('*', (req, res, next) => {
-    // Skip Gatsby internal routes and static files
-    if (req.url.startsWith('/__') ||
-      req.url.startsWith('/static/') ||
-      req.url.startsWith('/page-data/') ||
-      req.url.includes('.')) {
-      return next();
-    }
-
-    // List of valid pages (from your pages directory)
-    const validPages = [
-      '/', '/404', '/about', '/admin', '/become-volunteer', '/bookDetails', '/books', '/bookstore',
-      '/cause-details', '/causes', '/color-test', '/contact', '/development-department',
-      '/evangelism-discipleship', '/event-details', '/events', '/gallery', '/index-2',
-      '/login', '/magazines', '/news-details', '/news', '/publishing-house', '/services', '/services/publishing',
-      '/alexandria-bible-college', '/studies-education', '/sudanese-refugees', '/unauthorized', '/volunteers', '/magazines/request', '/courses', '/training',
-      '/enrollment', '/donate', '/map',
-      '/calendar',
-      '/TrainingFollowUpRequestPage', '/TrainingNewRequestPage', '/TrainingSelectionPage'
-    ];
-
-    // Check if the requested URL is a valid page or language-prefixed page
-    const isValidPage = validPages.some(page => {
-      // Check direct page match
-      if (req.url === page || req.url.startsWith(page + '/')) {
-        return true;
-      }
-      
-      // Check language-prefixed pages
-      return languages.some(lang => {
-        const langPage = `/${lang}${page === '/' ? '' : page}`;
-        return req.url === langPage || req.url.startsWith(langPage + '/');
-      });
-    });
-
-    // Check for language-prefixed dynamic routes
-    const isDynamicRoute = languages.some(lang => 
-      req.url.startsWith(`/${lang}/admin/`) ||
-      req.url.startsWith(`/${lang}/book/`) ||
-      req.url.startsWith(`/${lang}/news-details/`)
-    ) || req.url.startsWith('/admin/') ||
-        req.url.startsWith('/book/') ||
-        req.url.startsWith('/news-details/');
-
-    // If not a valid page, redirect to 404
-    if (!isValidPage && !isDynamicRoute) {
-      return res.redirect('/404/');
-    }
-
-    next();
   });
 };
 

@@ -1,31 +1,20 @@
 {
   "pageTitle": "Sudanese Refugees in Egypt Ministry",
-  "hero": {
-    "badge": "From Heart to Heart",
-    "title": "Sudanese Refugees in Egypt",
-    "titleHighlight": "Ministry",
-    "tagline": "Together We Serve… Together We Restore Hope",
-    "description": "Holistic care for Sudanese refugees in Egypt: spiritual care, leadership development, child discipleship, and compassionate relief.",
+  "intro": {
+    "title": "From Heart to Heart",
+    "body": "In the midst of the harsh circumstances faced by our Sudanese refugee brothers and sisters in Egypt, this ministry was born as a response to the Christian call of love. We seek to be an outstretched hand, a voice of hope, and a safe spiritual and human space—where pain is transformed into hope, and need becomes an opportunity for a dignified life.",
+    "verse": "“I was a stranger and you invited me in.”",
+    "verseRef": "(Matthew 25:35)",
     "imageAlt": "Serving Sudanese refugees in Egypt"
-  },
-  "whoWeAre": {
-    "title": "Who We Are",
-    "body": "To see Sudanese refugees spiritually and humanly empowered, living with dignity, connected to a loving faith community, and equipped to serve their families and communities—becoming living witnesses of God's grace amid hardship."
   },
   "vision": {
     "title": "Our Vision",
-    "body": "To provide holistic care for Sudanese refugees in Egypt by integrating spiritual care, leadership development, child discipleship, and compassionate relief—through effective church partnerships and sustainable training programs.",
+    "body": "To see Sudanese refugees spiritually and humanly empowered, living with dignity, connected to a loving faith community, and equipped to serve their families and communities—becoming living witnesses of God’s grace amid hardship.",
     "imageAlt": "Holistic care for refugee families"
   },
   "mission": {
     "title": "Our Mission",
-    "items": {
-      "support": "To support Sudanese refugees spiritually, emotionally, and socially.",
-      "leaders": "To equip pastors and leaders to shepherd churches and ministries within the refugee community.",
-      "children": "To raise a generation of children rooted in faith and shaped by the values of love and peace.",
-      "needs": "To meet essential needs that ease poverty and distress.",
-      "discipleship": "To promote Christian discipleship as a way of life, especially among children."
-    }
+    "body": "To provide holistic care for Sudanese refugees in Egypt by integrating spiritual care, leadership development, child discipleship, and compassionate relief—through effective church partnerships and sustainable training programs."
   },
   "goals": {
     "title": "Our Goals",
@@ -41,6 +30,12 @@
     "title": "Why This Ministry?",
     "body": "Because displacement is not merely a geographical transition—it is a deep human wound.",
     "bodySecondary": "And because the Church is called to be a home for the stranger, hope for the weary, and light in times of darkness."
+  },
+  "together": {
+    "title": "Together, We Can Make a Difference",
+    "body": "We welcome every partnership, every prayer, and every act of support— because ministry is not the work of individuals, but the journey of one body.",
+    "verse": "“Let us do good to all people, especially to those who belong to the family of believers.”",
+    "verseRef": "(Galatians 6:10)"
   },
   "areas": {
     "title": "Areas of Ministry",
@@ -64,7 +59,7 @@
         }
       },
       "children": {
-        "title": "Children's Discipleship Programs",
+        "title": "Children’s Discipleship Programs",
         "intro": "Our goal is to build the child from the inside out:",
         "points": {
           "one": "Discipleship groups based on storytelling, play, and spiritual formation.",
@@ -82,15 +77,5 @@
         }
       }
     }
-  },
-  "partners": {
-    "title": "Ministry Partners",
-    "subtitle": "We work in partnership with churches and institutions to strengthen local church ministry.",
-    "hopeAlt": "Hope For All MENA ministry logo",
-    "hopeTitle": "Hope For All MENA",
-    "brand3Alt": "Logo of a partner institution of the Sudanese Refugees in Egypt Ministry",
-    "brand3Title": "Partner institution",
-    "brand4Alt": "Synod of the Nile logo, partner of the Sudanese Refugees in Egypt Ministry",
-    "brand4Title": "Synod of the Nile"
   }
 }

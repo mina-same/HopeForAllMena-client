@@ -128,7 +128,7 @@ const TrainingPage = () => {
       <div className="min-h-screen bg-background" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
 
         {/* Hero Section */}
-        <section className="relative h-[80vh] py-20 lg:py-32 overflow-hidden">
+        <section className="relative min-h-[80vh] py-20 lg:py-32 overflow-hidden">
           <TrainingHeroSlider />
 
           <div className="container mx-auto px-4 relative z-10">
@@ -145,22 +145,22 @@ const TrainingPage = () => {
                 </span>
               </h1>
 
-              <p className="text-xl md:text-2xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-lg md:text-2xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
                 {t('hero.description')}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <div className="flex items-center gap-4 text-white/80">
+                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 text-white/80">
                   <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-white" />
                     <span className="font-medium">{t('hero.features.localChurches')}</span>
                   </div>
-                  <div className="w-px h-6 bg-white/30"></div>
+                  <div className="hidden sm:block w-px h-6 bg-white/30"></div>
                   <div className="flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-accent" />
                     <span className="font-medium">{t('hero.features.provenCurricula')}</span>
                   </div>
-                  <div className="w-px h-6 bg-white/30"></div>
+                  <div className="hidden sm:block w-px h-6 bg-white/30"></div>
                   <div className="flex items-center gap-2">
                     <GraduationCap className="w-5 h-5 text-white" />
                     <span className="font-medium">{t('hero.features.expertTraining')}</span>
