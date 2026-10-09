@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { navigate } from "gatsby";
 import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import heartImage from "../../assets/images/shapes/heart-2-1.png";
 import aboutImage from "../../assets/images/resources/about-counter-1-1.png";
@@ -8,7 +7,7 @@ import aboutHeart from "../../assets/images/shapes/about-count-heart-1-1.png";
 
 const AboutCounter = () => {
   const { t } = useTranslation('About');
-  const { i18n } = useI18next();
+  const { i18n, navigate } = useI18next();
   const currentLanguage = i18n?.resolvedLanguage || 'en';
   
   const [counter, setCounter] = useState({

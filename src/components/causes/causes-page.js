@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "react-bootstrap";
-import { Link } from "gatsby";
+import { Link } from "gatsby-plugin-react-i18next";
 import PostPaginations from "../post-paginations";
 
 import causeImage1 from "../../assets/images/causes/cause-1-1.jpg";
@@ -111,9 +111,9 @@ const CausesPage = () => {
                       <Link className="thm-btn " to={link}>
                         Donate Now
                       </Link>
-                      <Link className="cause-card__share" to="#">
+                      <a className="cause-card__share" href="#">
                         <i className="azino-icon-share"></i>
-                      </Link>
+                      </a>
                     </div>
                   </div>
                 </div>

@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { Link } from 'gatsby';
+import { Link } from 'gatsby-plugin-react-i18next';
 
 import breadcrumbImg from "../../assets/images/ChatBc.png";
 import { IconCircle } from '@tabler/icons-react';

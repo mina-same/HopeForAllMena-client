@@ -1,10 +1,9 @@
 import React from "react";
-import { Link } from "gatsby";
 import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
 import { useTranslation } from "react-i18next";
-import { useI18next } from "gatsby-plugin-react-i18next";
+import { Link, useI18next } from "gatsby-plugin-react-i18next";
 
 import banner1 from "../../assets/images/main-slider/slider-1-1.jpg";
 import banner2 from "../../assets/images/main-slider/dev.png";

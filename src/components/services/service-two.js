@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "gatsby";
 import { Container } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
+import { Link, useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import image1 from "../../assets/images/resources/service-1-1.jpg";
 import image2 from "../../assets/images/resources/service-1-2.jpg";
 import image3 from "../../assets/images/resources/service-1-3.jpg";

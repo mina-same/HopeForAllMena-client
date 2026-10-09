@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "gatsby";
+import { Link } from "gatsby-plugin-react-i18next";
 import { Container, Row, Col } from "react-bootstrap";
 import heart from "../assets/images/shapes/heart-2-1.png";
 import priceBox from "../assets/images/resources/price-box-1-1.jpg";
@@ -106,9 +106,15 @@ const PriceOne = () => {
                           <li key={`price-one-list-key-${index}`}>{text}</li>
                         ))}
                       </ul>
-                      <Link className="thm-btn dynamic-radius" to={button.link}>
-                        {button.label}
-                      </Link>
+                      {button.link.startsWith("#") ? (
+                        <a className="thm-btn dynamic-radius" href={button.link}>
+                          {button.label}
+                        </a>
+                      ) : (
+                        <Link className="thm-btn dynamic-radius" to={button.link}>
+                          {button.label}
+                        </Link>
+                      )}
                     </div>
                   </Col>
                 )

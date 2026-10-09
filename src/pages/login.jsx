@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
-import { Link, navigate, graphql } from 'gatsby';
-import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
+import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import Layout from '../components/layout';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
@@ -11,7 +11,7 @@ import { useAuth } from '../context/AuthContext';
 
 const LoginPage = () => {
     const { t } = useTranslation('Login');
-    const { i18n } = useI18next();
+    const { i18n, navigate } = useI18next();
     const currentLanguage = i18n?.resolvedLanguage || 'en';
     
     const [formData, setFormData] = useState({

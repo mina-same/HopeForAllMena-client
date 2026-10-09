@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link, graphql } from "gatsby";
+import { graphql } from "gatsby";
+import { Link } from "gatsby-plugin-react-i18next";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";

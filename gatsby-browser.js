@@ -4,6 +4,7 @@ import { AuthProvider } from './src/context/AuthContext';
 import { CourseProvider } from './src/context/CourseContext';
 import './src/assets/css/tailwind.css';
 import './src/i18n';
+import { languageFromPath, rememberLanguage } from './src/i18n/language';
 
 // Development only: while `gatsby develop` rebuilds a page (e.g. right after a file is edited),
 // a client-side navigation can briefly get "not found" for that page's data and the open tab
@@ -25,6 +26,14 @@ const Dev404Recovery = ({ isDev404, pathname, children }) => {
     window.location.reload();
   }, [isDev404, pathname]);
   return children;
+};
+
+// Remember the language of any /ar/... page the visitor reaches (via a link, a bookmark or
+// a shared URL), so the i18n plugin redirects any un-prefixed internal link back to Arabic.
+// Switching to English goes through the language switcher, which stores 'en' itself.
+export const onRouteUpdate = ({ location }) => {
+  const language = languageFromPath(location?.pathname);
+  if (language) rememberLanguage(language);
 };
 
 export const wrapPageElement = ({ element, props }) => {

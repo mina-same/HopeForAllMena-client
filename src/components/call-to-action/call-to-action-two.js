@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "gatsby";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useI18next } from "gatsby-plugin-react-i18next";
+import { Link, useI18next } from "gatsby-plugin-react-i18next";
 import bgImage from "../../assets/images/backgrounds/page-header-1-1.jpg";
 import HeartImage from "../../assets/images/shapes/heart-2-1.png";
 import "./call-to-action-two-rtl.css";

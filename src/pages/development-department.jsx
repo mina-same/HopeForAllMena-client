@@ -16,8 +16,6 @@ import {
   Target,
   CheckCircle2,
   HeartHandshake,
-  ArrowRight,
-  ArrowLeft,
 } from "lucide-react";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
@@ -54,7 +52,6 @@ const DevelopmentDepartment = () => {
   const { t } = useTranslation("DevelopmentDepartment");
   const { language: currentLanguage } = useI18next();
   const isRTL = currentLanguage === "ar";
-  const Arrow = isRTL ? ArrowLeft : ArrowRight;
 
   const missionItems = t("mission.items", { returnObjects: true }) || [];
   const areaItems = t("supportAreas.items", { returnObjects: true }) || [];
@@ -79,18 +76,14 @@ const DevelopmentDepartment = () => {
       <PageHeader title={t("title")} crumbTitle={t("breadcrumb")} image={devHall} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
-        {/* Intro */}
+        {/* Who we are */}
         <section className="dept-section dept-intro">
           <Container>
             <Row className="align-items-center g-5">
               <Col lg={6}>
-                <span className="dept-intro__eyebrow">{t("wordmark.name")}</span>
-                <h1>{t("hero.title")}</h1>
-                <p className="dept-text">{t("hero.intro")}</p>
-                <blockquote className="dept-verse">
-                  <p>{t("verse.text")}</p>
-                  <cite>{t("verse.ref")}</cite>
-                </blockquote>
+                {t("about.title") && <h1>{t("about.title")}</h1>}
+                <p className="dept-text">{t("about.p1")}</p>
+                {t("about.p2") && <p className="dept-text">{t("about.p2")}</p>}
                 <div className="dept-actions">
                   <Link to="/development-project-request" className="dept-btn dept-btn--primary">
                     <HeartHandshake />
@@ -115,55 +108,6 @@ const DevelopmentDepartment = () => {
           </Container>
         </section>
 
-        {/* Matching fund */}
-        <section className="dept-section dept-section--alt">
-          <Container>
-            <Row className="align-items-center g-5">
-              <Col lg={7}>
-                <p className="dept-figure">{t("about.highlight")}</p>
-                <p className="dept-text">{t("matchingFund.quote")}</p>
-              </Col>
-              <Col lg={5}>
-                <div className="dept-split" aria-hidden="true">
-                  <span />
-                  <span />
-                </div>
-                <div className="dept-split-legend">
-                  <span>
-                    {t("matchingFund.ministryShare")} <strong>50%</strong>
-                  </span>
-                  <span>
-                    {t("matchingFund.churchShare")} <strong>50%</strong>
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </section>
-
-        {/* Who we are */}
-        <section className="dept-section">
-          <Container>
-            <Row className="align-items-center g-5">
-              <Col lg={6}>
-                <div className="dept-heading mb-4">
-                  <h2>{t("about.title")}</h2>
-                </div>
-                <p className="dept-text">{t("about.p1")}</p>
-              </Col>
-              <Col lg={6}>
-                <img
-                  src={devHall}
-                  alt={t("about.imageAlt")}
-                  title={t("about.imageTitle")}
-                  className="dept-img"
-                  loading="lazy"
-                />
-              </Col>
-            </Row>
-          </Container>
-        </section>
-
         {/* Vision & mission */}
         <section className="dept-section dept-section--alt">
           <Container>
@@ -182,7 +126,6 @@ const DevelopmentDepartment = () => {
                   <span className="dept-icon">
                     <Target />
                   </span>
-                  <p className="dept-text font-semibold" style={{ marginBottom: "1.25rem" }}>{t("about.p2")}</p>
                   <h3>{t("mission.title")}</h3>
                   <ul className="dept-checks">
                     {missionItems.map((item) => (
@@ -192,19 +135,23 @@ const DevelopmentDepartment = () => {
                       </li>
                     ))}
                   </ul>
+                  {t("mission.closing") && (
+                    <p className="dept-text font-semibold" style={{ marginTop: "1.25rem" }}>{t("mission.closing")}</p>
+                  )}
                 </div>
               </Col>
             </Row>
           </Container>
         </section>
 
-        {/* Support areas */}
+        {/* Goals & support areas */}
         <section className="dept-section">
           <Container>
             <div className="dept-heading">
-              <h2>{t("supportAreas.title")}</h2>
-              <p>{t("matchingFund.text")}</p>
+              <h2>{t("goals.title")}</h2>
+              <p>{t("goals.text")}</p>
             </div>
+            {t("supportAreas.title") && <h3 className="mb-4">{t("supportAreas.title")}</h3>}
             <Row className="g-4">
               {areaItems.map((item, i) => {
                 const Icon = AREA_ICONS[i] || Sparkles;
@@ -228,7 +175,6 @@ const DevelopmentDepartment = () => {
           <Container>
             <div className="dept-heading">
               <h2>{t("requirements.title")}</h2>
-              <p>{t("requirements.subtitle")}</p>
             </div>
             <ol className="dept-rows dept-rows--cols">
               {requirementItems.map((item, i) => (
@@ -241,54 +187,23 @@ const DevelopmentDepartment = () => {
                 </li>
               ))}
             </ol>
+            {t("requirements.closing") && <p className="dept-text mt-4">{t("requirements.closing")}</p>}
           </Container>
         </section>
 
         {/* Gallery */}
         <section className="dept-section">
           <Container>
-            <div className="dept-heading">
-              <h2>{t("gallery.title")}</h2>
-              <p>{t("gallery.subtitle")}</p>
-            </div>
             <Row className="g-4">
               {gallery.map(({ src, key }) => (
                 <Col md={4} key={key}>
                   <figure className="dept-shot">
                     <img src={src} alt={t(`gallery.${key}Alt`)} loading="lazy" />
-                    <figcaption>{t(`gallery.${key}Title`)}</figcaption>
                   </figure>
                 </Col>
               ))}
             </Row>
-          </Container>
-        </section>
-
-        {/* Call to action */}
-        <section className="dept-band">
-          <Container>
-            <h2>{t("bottomCta.title")}</h2>
-            <p>{t("bottomCta.text")}</p>
-            <div className="dept-actions dept-actions--center">
-              <Link to="/development-project-request" className="dept-btn dept-btn--light">
-                {t("bottomCta.button")}
-                <Arrow />
-              </Link>
-              <Link to="/contact" className="dept-btn dept-btn--ghost">
-                {t("hero.secondaryCta")}
-              </Link>
-            </div>
-          </Container>
-        </section>
-
-        {/* Partners */}
-        <section className="dept-section">
-          <Container>
-            <div className="dept-heading dept-heading--center">
-              <h2>{t("partners.title")}</h2>
-              <p>{t("partners.subtitle")}</p>
-            </div>
-            <div className="dept-partners">
+            <div className="dept-partners mt-5">
               {partners.map((brand) => (
                 <img key={brand.alt} src={brand.src} alt={brand.alt} title={brand.title} loading="lazy" />
               ))}

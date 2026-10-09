@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { navigate, graphql } from 'gatsby';
+import { graphql } from 'gatsby';
 import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -48,16 +48,9 @@ const formSchema = z.object({
 
 const MagazineRequestPage = () => {
   const { t } = useTranslation('Magazines');
-  const { i18n } = useI18next();
+  const { navigate } = useI18next();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Helper function for language-aware navigation
-  const navigateWithLanguage = (path) => {
-    const currentLanguage = i18n?.resolvedLanguage || 'en';
-    const languagePath = currentLanguage === 'en' ? path : `/${currentLanguage}${path}`;
-    navigate(languagePath);
-  };
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -122,7 +115,7 @@ const MagazineRequestPage = () => {
       });
 
       setTimeout(() => {
-        navigateWithLanguage('/magazines');
+        navigate('/magazines');
       }, 2000);
 
     } catch (error) {

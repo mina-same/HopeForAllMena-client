@@ -47,10 +47,11 @@ api.interceptors.response.use(
         (error.config?.url?.includes('/enrollments') && method === 'get') ||
         (error.config?.url?.includes('/reviews') && method === 'post');
 
-      if (currentPath !== '/login' && !isLoginAttempt && !isPublicEndpoint) {
+      if (!/^(\/ar)?\/login\/?$/.test(currentPath) && !isLoginAttempt && !isPublicEndpoint) {
         // Token expired or invalid - redirect to login
         authStorage.clearAuth();
-        window.location.href = '/login';
+        const langPrefix = /^\/ar(\/|$)/.test(currentPath) ? '/ar' : '';
+        window.location.href = `${langPrefix}/login`;
       }
     }
     return Promise.reject(error);

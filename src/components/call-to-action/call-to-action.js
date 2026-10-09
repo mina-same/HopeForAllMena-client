@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "gatsby";
+import { Link } from "gatsby-plugin-react-i18next";
 
 const CallToAction = () => {
   return (

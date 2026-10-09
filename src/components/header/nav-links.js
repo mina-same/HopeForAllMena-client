@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useI18next, useTranslation } from "gatsby-plugin-react-i18next";
+import { rememberLanguage } from "../../i18n/language";
 import flag1 from "../../assets/images/resources/flag-1-1.jpg";
 import flagAr from "../../assets/images/resources/flag-1-2.jpg"; // You can add Arabic flag image later
 
@@ -34,6 +35,7 @@ const NavLinks = ({ extraClassName, hideControls = false }) => {
         }
       }
 
+      rememberLanguage(newLanguage);
       window.location.href = newPath + queryString;
     }
   };

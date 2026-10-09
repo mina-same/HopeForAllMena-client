@@ -16,7 +16,7 @@ import { SectionShell, SearchInput } from '../ui/SectionShell';
 const AllBlogs = () => {
   const { token } = useAuth();
   const { t } = useTranslation('BlogsManagement');
-  const { language: currentLanguage } = useI18next();
+  const { language: currentLanguage, navigate } = useI18next();
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState({ type: '', text: '' });
@@ -73,8 +73,7 @@ const AllBlogs = () => {
   };
 
   const handleEdit = (blog) => {
-    // Navigate to edit blog page using Gatsby Link
-    window.location.href = `/admin/blog/edit/${blog._id}`;
+    navigate(`/admin/blog/edit/${blog._id}`);
   };
 
   const handleDeleteClick = (blog) => {
@@ -204,7 +203,7 @@ const AllBlogs = () => {
       dir={dir}
       actions={
         <Button
-          onClick={() => window.location.href = '/admin/new-blog'}
+          onClick={() => navigate('/admin/new-blog')}
           className="bg-primary hover:bg-primary/90"
         >
           <Plus className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />

@@ -1,7 +1,6 @@
 import React from "react";
-import { Link } from "gatsby";
 import { Container, Row, Col } from "react-bootstrap";
-import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
+import { Link, useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import serviceBg from "../../assets/images/backgrounds/service-hand-bg-1-1.png";
 import serviceLine from "../../assets/images/shapes/service-line-1-1.png";
 import blockTitleHeart from "../../assets/images/shapes/heart-2-1.png";

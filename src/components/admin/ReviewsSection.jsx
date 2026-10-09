@@ -7,8 +7,8 @@ import { useToast } from '../../hooks/use-toast';
 import { reviewsAPI } from '../../services/api';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
-import { useI18next } from 'gatsby-plugin-react-i18next';
-import { Link } from 'gatsby';
+import { Link, useI18next } from 'gatsby-plugin-react-i18next';
+
 import '../../styles/ReviewsManagement-rtl.css';
 import { DataTable } from '../ui/DataTable';
 import { SectionShell, SearchInput } from '../ui/SectionShell';

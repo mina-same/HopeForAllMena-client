@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
-import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
-import { Link } from "gatsby";
+import { Link, useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import { booksAPI } from "../../services/api";
 
 import banner1 from "../../assets/images/2024/2024books.png";

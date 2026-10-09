@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { navigate, graphql } from 'gatsby';
+import { graphql } from 'gatsby';
+import { useI18next } from 'gatsby-plugin-react-i18next';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
@@ -175,6 +176,7 @@ const MagazineSelect = ({ value, onValueChange, placeholder = "Choose a magazine
 };
 
 const MagazineRequestPage = () => {
+  const { navigate } = useI18next();
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({

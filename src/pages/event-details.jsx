@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link, graphql } from "gatsby";
+import { graphql } from "gatsby";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";
 import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
 import eventService from "../services/eventService";
-import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
+import { Link, useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
 
 import detailsImage from "../assets/images/events/event-details-1-1.jpg";
 
@@ -117,7 +117,7 @@ const EventDetails = ({ location }) => {
               <h3>{t('notFound')}</h3>
               <p>{error || t('errorMessage')}</p>
               <Link 
-                to={language === 'ar' ? '/ar/events' : '/events'}
+                to="/events"
                 className="thm-btn dynamic-radius"
               >
                 {t('backToEvents')}

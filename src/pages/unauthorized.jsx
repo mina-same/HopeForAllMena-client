@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link, navigate, graphql } from 'gatsby';
+import { graphql } from 'gatsby';
+import { Link, useI18next } from 'gatsby-plugin-react-i18next';
 import Layout from '../components/layout';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
@@ -9,6 +10,7 @@ import { useAuth } from '../context/AuthContext';
 import ConfirmationModal from '../components/ui/ConfirmationModal';
 
 const UnauthorizedPage = () => {
+  const { navigate } = useI18next();
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);

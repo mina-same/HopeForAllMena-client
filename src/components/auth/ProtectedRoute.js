@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { navigate } from 'gatsby';
+import { useI18next } from 'gatsby-plugin-react-i18next';
 import { useAuth } from '../../context/AuthContext';
 
 const ProtectedRoute = ({
@@ -10,6 +10,7 @@ const ProtectedRoute = ({
   fallbackPath = '/login'
 }) => {
   const { isAuthenticated, loading, hasAnyPermission, isAdmin } = useAuth();
+  const { navigate } = useI18next();
 
   const allowed =
     !requireAuth ||

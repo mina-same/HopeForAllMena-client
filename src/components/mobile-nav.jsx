@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "gatsby";
-import { useI18next } from "gatsby-plugin-react-i18next";
+import { Link, useI18next } from "gatsby-plugin-react-i18next";
 import NavLinks from "./header/nav-links";
+import { rememberLanguage } from "../i18n/language";
 import './mobile-nav.css';
 
 import logoLight from "../assets/images/logos/hope4AllMena.png";
@@ -108,6 +108,7 @@ const MobileNav = () => {
                         newPath = currentPath === '/' ? `/${newLanguage}` : `/${newLanguage}${currentPath}`;
                       }
                     }
+                    rememberLanguage(newLanguage);
                     window.location.href = newPath + queryString;
                   }
                 }}

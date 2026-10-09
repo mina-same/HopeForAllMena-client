@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { navigate, graphql } from 'gatsby';
-import { useTranslation } from 'gatsby-plugin-react-i18next';
+import { graphql } from 'gatsby';
+import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import {
   LogOut,
   Menu,
@@ -50,6 +50,7 @@ import '../styles/admin-rtl.css';
 
 const AdminDashboardInner = () => {
   const { t, i18n } = useTranslation('Admin');
+  const { navigate } = useI18next();
   const currentLanguage = i18n.language;
   // Use the sidebar context for proper mobile handling
   const { openMobile, setOpenMobile, isMobile } = useSidebar();

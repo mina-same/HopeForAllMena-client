@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby";
 import { Swiper, SwiperSlide } from "swiper/react"
 import { Navigation, Autoplay } from "swiper/modules"
 import { Button } from "../components/ui/button"
@@ -9,14 +9,13 @@ import HeaderTwo from '../components/header/header-two'
 import StickyHeader from '../components/header/sticky-header'
 import Footer from '../components/footer'
 import { booksAPI, reviewsAPI } from '../services/api'
-import { navigate } from 'gatsby'
 import { useTranslation } from 'react-i18next'
-import { useI18next } from 'gatsby-plugin-react-i18next'
+import { Link, useI18next } from 'gatsby-plugin-react-i18next';
 import '../assets/css/book-details-rtl.css'
 
 export default function BookDetail({ location, params }) {
   const { t } = useTranslation('BookDetails')
-  const { language: currentLanguage, changeLanguage } = useI18next()
+  const { language: currentLanguage, changeLanguage, navigate } = useI18next()
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState("reviews")
   const [book, setBook] = useState(null)
@@ -373,9 +372,9 @@ export default function BookDetail({ location, params }) {
                   {currentLanguage === 'ar' ? (book.titleAr || book.title) : book.title}
                 </h1>
                 <div className="text-muted-foreground">
-                  {t('bookDetails.author')} <Link to="#" className="text-[#2194D1] hover:underline author-link">
+                  {t('bookDetails.author')} <a href="#" className="text-[#2194D1] hover:underline author-link">
                     {currentLanguage === 'ar' ? (book.author?.nameAr || book.author?.name || t('bookDetails.unknownAuthor')) : (book.author?.name || book.author || t('bookDetails.unknownAuthor'))}
-                  </Link>
+                  </a>
                 </div>
 
                 {/* Rating */}
@@ -386,11 +385,11 @@ export default function BookDetail({ location, params }) {
                       {t('bookDetails.ratedOutOf', { rating: book.averageRating || book.rating || 0 })}
                     </span>
                   </div>
-                  <Link to="#reviews" className="text-sm text-[#2194D1] hover:underline">
+                  <a href="#reviews" className="text-sm text-[#2194D1] hover:underline">
                     <span className="bg-[#2194D1] text-white px-2 py-1 rounded text-xs">
                       {book.totalReviews || book.reviews || 0}
                     </span>
-                  </Link>
+                  </a>
                 </div>
               </div>
 
@@ -426,16 +425,16 @@ export default function BookDetail({ location, params }) {
                 <div>
                   <span className="text-muted-foreground">{t('bookDetails.category')} </span>
                   {book.category && (
-                    <Link to="#" className="text-[#2194D1] hover:underline category-link">
+                    <a href="#" className="text-[#2194D1] hover:underline category-link">
                       {currentLanguage === 'ar' ? (book.category.name_ar || book.category.name_en || book.category.name || t('bookDetails.unknownCategory')) : (book.category.name_en || book.category.name || t('bookDetails.unknownCategory'))}
-                    </Link>
+                    </a>
                   )}
                 </div>
                 <div>
                   <span className="text-muted-foreground">{t('bookDetails.tags')} </span>
                   {(book.tags || []).map((tag, index) => (
                     <span key={tag}>
-                      <Link to="#" className="text-[#2194D1] hover:underline tag-link">{tag}</Link>
+                      <a href="#" className="text-[#2194D1] hover:underline tag-link">{tag}</a>
                       {index < (book.tags || []).length - 1 && ", "}
                     </span>
                   ))}
@@ -446,22 +445,22 @@ export default function BookDetail({ location, params }) {
               <div className={`flex items-center gap-4 border-t border-border pt-6 social-share ${currentLanguage === 'ar' ? '' : ''}`}>
                 <span className="text-sm font-medium">{t('bookDetails.share')}</span>
                 <div className={`flex items-center gap-3 social-links ${currentLanguage === 'ar' ? '' : ''}`}>
-                  <Link to="#" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors social-link ${currentLanguage === 'ar' ? '' : ''}`}>
+                  <a href="#" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors social-link ${currentLanguage === 'ar' ? '' : ''}`}>
                     <Facebook className="w-4 h-4" />
                     <span>{t('social.facebook')}</span>
-                  </Link>
-                  <Link to="#" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors social-link ${currentLanguage === 'ar' ? '' : ''}`}>
+                  </a>
+                  <a href="#" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors social-link ${currentLanguage === 'ar' ? '' : ''}`}>
                     <Twitter className="w-4 h-4" />
                     <span>{t('social.twitter')}</span>
-                  </Link>
-                  <Link to="#" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors social-link ${currentLanguage === 'ar' ? '' : ''}`}>
+                  </a>
+                  <a href="#" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors social-link ${currentLanguage === 'ar' ? '' : ''}`}>
                     <Linkedin className="w-4 h-4" />
                     <span>{t('social.linkedin')}</span>
-                  </Link>
-                  <Link to="#" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors social-link ${currentLanguage === 'ar' ? '' : ''}`}>
+                  </a>
+                  <a href="#" className={`flex items-center gap-2 text-sm text-muted-foreground hover:text-[#2194D1] transition-colors social-link ${currentLanguage === 'ar' ? '' : ''}`}>
                     <Instagram className="w-4 h-4" />
                     <span>{t('social.pinterest')}</span>
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
