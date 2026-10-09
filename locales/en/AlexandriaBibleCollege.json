@@ -18,12 +18,13 @@
   },
   "about": {
     "badge": "Who We Are",
-    "title": "An academy of Hope For All Ministry",
+    "title": "Who We Are",
     "content": "We are a Christian educational and training academy dedicated to empowering leaders and servants of local churches in Egypt through a holistic learning system.",
     "pillarsTitle": "Our learning system integrates",
     "pillar1": "Biblical and spiritual formation",
     "pillar2": "Administrative and leadership development",
     "pillar3": "Practical and ministry skills",
+    "closing": "We believe that investing in a servant is a direct investment in the church and the community it serves.",
     "imageAlt": "Graduates and students of Alexandria Bible College gathered in a lecture hall for a group photo",
     "imageTitle": "Students of Alexandria Bible College"
   },

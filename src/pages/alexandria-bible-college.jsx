@@ -121,7 +121,6 @@ const AlexandriaBibleCollege = () => {
                     </span>
                     <h3>{t(`pillars.${key}.title`)}</h3>
                     <p className="dept-card__sub">{t(`pillars.${key}.titleEn`)}</p>
-                    <p>{t(`pillars.${key}.text`)}</p>
                   </div>
                 </Col>
               ))}
@@ -147,6 +146,7 @@ const AlexandriaBibleCollege = () => {
                     </li>
                   ))}
                 </ul>
+                <p className="dept-text font-semibold mt-3">{t("about.closing")}</p>
               </Col>
               <Col lg={6}>
                 <img

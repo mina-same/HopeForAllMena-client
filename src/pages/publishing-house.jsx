@@ -17,7 +17,7 @@ import PageHeader from "../components/page-header";
 import Footer from "../components/footer";
 import HeaderTwo from "../components/header/header-two";
 
-import publishingHouseWhite from "../assets/images/publishing-house-white.png";
+import publishingHouseLogo from "../assets/images/image.png";
 import brandSynod from "../assets/images/resources/brand-1-4.png";
 import brandPartner from "../assets/images/resources/brand-1-3.png";
 import hopeLogo from "../assets/images/logos/hope4AllMena.png";
@@ -87,8 +87,8 @@ const PublishingHouse = () => {
                 </div>
               </Col>
               <Col lg={6}>
-                <div className="dept-intro__logo">
-                  <img src={publishingHouseWhite} alt={t("pageTitle")} />
+                <div className="dept-intro__logo" style={{ background: "#fff", border: "1px solid #e5e9f0" }}>
+                  <img src={publishingHouseLogo} alt={t("pageTitle")} style={{ width: "75%" }} />
                 </div>
               </Col>
             </Row>

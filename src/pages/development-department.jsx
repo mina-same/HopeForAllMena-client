@@ -150,7 +150,6 @@ const DevelopmentDepartment = () => {
                   <h2>{t("about.title")}</h2>
                 </div>
                 <p className="dept-text">{t("about.p1")}</p>
-                <p className="dept-text">{t("about.p2")}</p>
               </Col>
               <Col lg={6}>
                 <img
@@ -183,6 +182,7 @@ const DevelopmentDepartment = () => {
                   <span className="dept-icon">
                     <Target />
                   </span>
+                  <p className="dept-text font-semibold" style={{ marginBottom: "1.25rem" }}>{t("about.p2")}</p>
                   <h3>{t("mission.title")}</h3>
                   <ul className="dept-checks">
                     {missionItems.map((item) => (
