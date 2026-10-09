@@ -19,8 +19,8 @@
   "about": {
     "badge": "Who We Are",
     "title": "Who We Are",
-    "content": "We are a Christian educational and training academy dedicated to empowering leaders and servants of local churches in Egypt through a holistic learning system.",
-    "pillarsTitle": "Our learning system integrates",
+    "content": "We are a Christian educational and training academy dedicated to empowering leaders and servant of local churches in Egypt through a holistic learning system that integrates:",
+    "pillarsTitle": "",
     "pillar1": "Biblical and spiritual formation",
     "pillar2": "Administrative and leadership development",
     "pillar3": "Practical and ministry skills",
@@ -30,29 +30,31 @@
   },
   "goal": {
     "title": "Our Mission",
-    "content": "To train church leaders spiritually, practically, and skillfully through specialized programs that equip them to teach and serve in ways that are effective, innovative, and deeply rooted in Scripture."
+    "content": "To train church leaders spiritually, practically, and skillfully through specialized programs that equip them to teach and serve in ways that are: Effective, Innovative, Deeply rooted in Scripture."
   },
   "vision": {
     "title": "Our Vision",
-    "content": "To become a leading academy in empowering servants within the local church, equipping them to lead effectively and expand the church's impact in their communities."
+    "content": "To become a leading academy in empowering servants within the local church, equipping them to lead effectively and expand the church’s impact in their communities."
   },
   "values": {
     "badge": "Our Core Values",
-    "title": "What our ministry is built on",
-    "subtitle": "Four values that shape every programme and every lecture at the academy.",
+    "title": "Our Core Values",
+    "subtitle": "",
+    "order": ["teamwork", "biblical", "empowerment", "partnership"],
     "biblical": { "title": "Biblical Foundation", "content": "We rely on the Holy Bible as the primary reference for teaching and training." },
     "teamwork": { "title": "Teamwork", "content": "We are committed to working as one integrated team, placing experience and knowledge at the service of the church." },
     "empowerment": { "title": "Empowerment", "content": "We believe in empowering servants spiritually, biblically, and skillfully to lead with confidence and effectiveness." },
-    "partnership": { "title": "Partnership", "content": "We collaborate with churches and institutions to strengthen local church ministry and expand its impact." }
+    "partnership": { "title": "Partnership", "content": "We collaborate with churches and institutions to strengthen local church ministry and expand its impact" }
   },
   "programs": {
     "badge": "Diplomas & Training Programs",
-    "title": "Four tracks for equipping",
-    "subtitle": "Specialized programs that meet each servant where they serve.",
-    "impact": { "name": "IMPACT", "title": "Diploma in Christian Education", "content": "Diploma in Christian Education for Sunday School servants." },
-    "access": { "name": "ACCESS", "title": "Middle & High School Servants", "content": "Specialized program for middle and high school servants." },
-    "care": { "name": "CARE", "title": "Child & Family Counseling", "content": "Diploma in child and family counseling." },
-    "shepherd": { "name": "SHEPHERD", "title": "Church Administration", "content": "Diploma in church administration and leadership." }
+    "title": "",
+    "subtitle": "",
+    "order": ["impact", "care", "shepherd", "access"],
+    "impact": { "name": "IMPACT", "title": "Diploma in Christian Education", "content": "Diploma in Christian Education for Sunday School Servants" },
+    "access": { "name": "ACCESS", "title": "Middle & High School Servants", "content": "Specialized Program for Middle & High School Servants" },
+    "care": { "name": "CARE", "title": "Child & Family Counseling", "content": "Diploma in Child and Family Counseling" },
+    "shepherd": { "name": "SHEPHERD", "title": "Church Administration", "content": "Diploma in Church Administration" }
   },
   "gallery": {
     "badge": "From the classroom",

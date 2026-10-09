@@ -47,8 +47,13 @@ const VALUES = [
 
 const PROGRAMS = ["impact", "access", "care", "shepherd"];
 
+// Sort items by the key order given in the translation file (falls back to the default order).
+const orderBy = (items, order, getKey) =>
+  Array.isArray(order) ? order.map((k) => items.find((item) => getKey(item) === k)).filter(Boolean) : items;
+
 const AlexandriaBibleCollege = () => {
   const { t } = useTranslation("AlexandriaBibleCollege");
+  const aboutPillars = ["pillar1", "pillar2", "pillar3"].map((k) => t(`about.${k}`)).filter(Boolean);
   const { language: currentLanguage } = useI18next();
   const isRTL = currentLanguage === "ar";
   const Arrow = isRTL ? ArrowLeft : ArrowRight;
@@ -137,16 +142,22 @@ const AlexandriaBibleCollege = () => {
                   <h2>{t("about.title")}</h2>
                 </div>
                 <p className="dept-text">{t("about.content")}</p>
-                <p className="font-semibold mb-2">{t("about.pillarsTitle")}</p>
-                <ul className="dept-checks mt-0">
-                  {["pillar1", "pillar2", "pillar3"].map((k) => (
-                    <li key={k}>
-                      <CheckCircle2 />
-                      <span>{t(`about.${k}`)}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="dept-text font-semibold mt-3">{t("about.closing")}</p>
+                {t("about.pillarsTitle") ? (
+                  <p className="font-semibold mb-2">{t("about.pillarsTitle")}</p>
+                ) : null}
+                {aboutPillars.length ? (
+                  <ul className="dept-checks mt-0">
+                    {aboutPillars.map((text) => (
+                      <li key={text}>
+                        <CheckCircle2 />
+                        <span>{text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {t("about.closing") ? (
+                  <p className="dept-text font-semibold mt-3">{t("about.closing")}</p>
+                ) : null}
               </Col>
               <Col lg={6}>
                 <img
@@ -188,10 +199,10 @@ const AlexandriaBibleCollege = () => {
           <Container>
             <div className="dept-heading">
               <h2>{t("values.title")}</h2>
-              <p>{t("values.subtitle")}</p>
+              {t("values.subtitle") ? <p>{t("values.subtitle")}</p> : null}
             </div>
             <Row className="g-4">
-              {VALUES.map(({ key, icon: Icon }) => (
+              {orderBy(VALUES, t("values.order", { returnObjects: true }), (v) => v.key).map(({ key, icon: Icon }) => (
                 <Col md={6} lg={3} key={key}>
                   <div className="dept-card">
                     <span className="dept-icon">
@@ -209,16 +220,19 @@ const AlexandriaBibleCollege = () => {
         {/* Programs */}
         <section className="dept-section dept-section--alt">
           <Container>
-            <div className="dept-heading">
-              <h2>{t("programs.title")}</h2>
-              <p>{t("programs.subtitle")}</p>
-            </div>
+            {t("programs.title") ? (
+              <div className="dept-heading">
+                <h2>{t("programs.title")}</h2>
+                {t("programs.subtitle") ? <p>{t("programs.subtitle")}</p> : null}
+              </div>
+            ) : null}
             <Row className="g-4">
-              {PROGRAMS.map((key) => (
+              {orderBy(PROGRAMS, t("programs.order", { returnObjects: true }), (k) => k).map((key, index) => (
                 <Col md={6} key={key}>
                   <div className="dept-card">
-                    <p className="dept-card__sub mt-0">{t(`programs.${key}.name`)}</p>
-                    <h3>{t(`programs.${key}.title`)}</h3>
+                    <h3>
+                      <bdi dir="ltr">{`${index + 1}. ${t(`programs.${key}.name`)}`}</bdi>
+                    </h3>
                     <p className="mb-3">{t(`programs.${key}.content`)}</p>
                     <Link to="/courses" className="dept-link">
                       {t("cta.coursesButton")}

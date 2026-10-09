@@ -49,6 +49,7 @@ const AboutOne = () => {
                   {t('aboutOne.tagLine')}
                 </p>
                 <h3>{t('aboutOne.title')}</h3>
+                <p style={{ marginTop: "10px", fontWeight: 600, color: "#32669C", whiteSpace: "nowrap", unicodeBidi: "isolate" }}>{t('aboutOne.verseRef')}</p>
               </div>
             </Col>
             <Col md={12} lg={4}>

@@ -5,13 +5,16 @@ import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import serviceBg from "../../assets/images/backgrounds/service-hand-bg-1-1.png";
 import serviceLine from "../../assets/images/shapes/service-line-1-1.png";
 import blockTitleHeart from "../../assets/images/shapes/heart-2-1.png";
-import publishingHouseWhite from "../../assets/images/publishing-house-white.png";
-import discipleshipImage from "../../assets/images/gallery/discipleship.png";
+import developmentLogo from "../../assets/images/logo/web/1.png";
+import evangelismLogo from "../../assets/images/logo/web/2.png";
+import abcLogo from "../../assets/images/logo/web/3.png";
+import publishingLogo from "../../assets/images/logo/web/4.png";
+import "./service-one-light.css";
 
 const getServiceOneData = (t) => [
   {
     icon: "azino-icon-dove",
-    image: discipleshipImage,
+    image: evangelismLogo,
     extraClassName: "background-secondary",
     titleKey: "serviceOne.items.evangelism.title",
     textKey: "serviceOne.items.evangelism.text",
@@ -19,6 +22,7 @@ const getServiceOneData = (t) => [
   },
   {
     icon: "azino-icon-charity",
+    image: developmentLogo,
     titleKey: "serviceOne.items.development.title",
     extraClassName: "background-base",
     textKey: "serviceOne.items.development.text",
@@ -26,6 +30,7 @@ const getServiceOneData = (t) => [
   },
   {
     icon: "azino-icon-reading-book",
+    image: abcLogo,
     titleKey: "serviceOne.items.education.title",
     textKey: "serviceOne.items.education.text",
     link: "/alexandria-bible-college",
@@ -33,7 +38,7 @@ const getServiceOneData = (t) => [
   },
   {
     icon: "",
-    image: publishingHouseWhite,
+    image: publishingLogo,
     titleKey: "serviceOne.items.publishing.title",
     extraClassName: "background-special",
     textKey: "serviceOne.items.publishing.text",
@@ -96,7 +101,10 @@ const ServiceOne = () => {
               ({ icon, image, titleKey, textKey, link, extraClassName }, index) => (
                 <Col md={6} lg={4} key={`service-one-key-${index}`}>
                   <div className={`service-one__box`}>
-                    <div className={`service-one__icon ${extraClassName}`}>
+                    <div
+                      className="service-one__icon service-one__icon--light"
+                      style={{ "--accent": `var(--thm-${extraClassName.replace("background-", "")})` }}
+                    >
                       <div className="service-one__icon-inner">
                         {image ? (
                           <img src={image} alt={t(titleKey)} width="100" />

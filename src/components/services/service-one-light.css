@@ -1,0 +1,41 @@
+/* Light variant of the service-one icon shape: white arch, card colour kept as an accent.
+   The accent colour comes from the --accent custom property set on the element. */
+.service-one__icon.service-one__icon--light {
+  background-color: #fff;
+  box-shadow: 0 10px 30px rgba(5, 5, 23, 0.08);
+}
+
+/* No hover animation: hide the decorative sticks and keep the corner circle still */
+.service-one__icon.service-one__icon--light::before,
+.service-one__icon.service-one__icon--light::after {
+  display: none;
+}
+
+.service-one__box:hover .service-one__icon--light .service-one__icon-inner::before {
+  -webkit-transform: translate(-30%, -30%);
+  transform: translate(-30%, -30%);
+}
+
+/* Soft accent-tinted circle in the corner */
+.service-one__icon--light .service-one__icon-inner::before {
+  background-color: var(--accent);
+  opacity: 0.08;
+}
+
+/* Accent strip along the bottom */
+.service-one__icon--light .service-one__icon-inner::after {
+  height: 5px;
+  background-color: var(--accent);
+  opacity: 1;
+}
+
+.service-one__icon--light .service-one__icon-inner img {
+  position: relative;
+  max-width: 88px;
+  height: auto;
+}
+
+.service-one__icon--light .service-one__icon-inner i {
+  position: relative;
+  color: #050517;
+}

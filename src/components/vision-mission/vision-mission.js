@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import { Card } from "../../components/ui/card";
 import { Badge } from "../../components/ui/badge";
-import { Heart, BookOpen, Users, Target, Globe, MessageCircle } from "lucide-react";
+import { Heart, BookOpen, Target, MessageCircle } from "lucide-react";
 import visionImage from "../../assets/images/resources/about-1-1.jpg";
 import missionImage from "../../assets/images/resources/about-1-2.jpg";
 
@@ -117,29 +117,10 @@ const VisionMission = () => {
                     </cite>
                   </div>
 
-                  <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                    {t('visionMission.vision.title')}
-                  </h3>
-
-                  <p className="text-lg text-gray-600 leading-relaxed mb-8">
+                  <p className="text-xl text-gray-800 leading-loose font-medium">
                     {t('visionMission.vision.description')}
                   </p>
 
-                  {/* Vision Statistics */}
-                  <div className="grid grid-cols-3 gap-6 pt-6 border-t border-gray-100">
-                    <div className={`flex items-center space-x-2 text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                      <div className="w-2 h-2 bg-[#2194D1] rounded-full"></div>
-                      <span className="text-sm font-medium">{t('visionMission.vision.stats.disciples')}</span>
-                    </div>
-                    <div className={`flex items-center space-x-2 text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                      <div className="w-2 h-2 bg-[#2194D1] rounded-full"></div>
-                      <span className="text-sm font-medium">{t('visionMission.vision.stats.churches')}</span>
-                    </div>
-                    <div className={`flex items-center space-x-2 text-gray-600 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
-                      <div className="w-2 h-2 bg-[#2194D1] rounded-full"></div>
-                      <span className="text-sm font-medium">{t('visionMission.vision.stats.nations')}</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </Card>
@@ -159,39 +140,9 @@ const VisionMission = () => {
                     <span className="text-[#32669C] font-semibold tracking-wide uppercase text-sm">{t('visionMission.mission.label')}</span>
                   </div>
 
-                  <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                    {t('visionMission.mission.title')}
-                  </h3>
-
-                  <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                    {t('visionMission.mission.description1')}
+                  <p className="text-xl text-gray-800 leading-loose font-medium">
+                    {t('visionMission.mission.statement')}
                   </p>
-
-                  <p className="text-lg text-gray-600 leading-relaxed mb-8">
-                    {t('visionMission.mission.description2')}
-                  </p>
-
-                  {/* Enhanced Mission Points */}
-                  <div className="space-y-4 mb-8">
-                    {[
-                      { icon: Users, textKey: "visionMission.mission.points.discipleship", color: "text-blue-600" },
-                      { icon: Heart, textKey: "visionMission.mission.points.communities", color: "text-red-500" },
-                      { icon: Globe, textKey: "visionMission.mission.points.societies", color: "text-green-600" }
-                    ].map((item, index) => (
-                      <div key={index} className={`flex items-center space-x-4 group/item ${currentLanguage === 'ar' ? '' : ''}`}>
-                        <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center transition-colors group-hover/item:bg-primary/5">
-                          <item.icon className={`w-6 h-6 ${item.color}`} />
-                        </div>
-                        <span className="text-lg text-gray-700 font-medium">{t(item.textKey)}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="p-6 bg-gray-50 rounded-xl">
-                    <p className="text-gray-700 italic text-center font-medium">
-                      {t('visionMission.mission.unity')}
-                    </p>
-                  </div>
                 </div>
                 
                 <div className="lg:col-span-2 relative overflow-hidden order-1 lg:order-2">
@@ -210,6 +161,28 @@ const VisionMission = () => {
                   </div>
                 </div>
               </div>
+            </Card>
+          </div>
+
+          {/* Strategies */}
+          <div>
+            <Card className="relative overflow-hidden shadow-xl border-0 bg-white/90 backdrop-blur-sm p-12 lg:p-16">
+              <div className="flex items-center space-x-3 mb-8 px-2">
+                <div className="w-8 h-8 rounded-lg bg-[#32669C]/10 flex items-center justify-center">
+                  <Target className="w-5 h-5 text-[#32669C]" />
+                </div>
+                <span className="text-[#32669C] font-semibold tracking-wide uppercase text-sm">{t('visionMission.strategies.label')}</span>
+              </div>
+              <ol className="grid md:grid-cols-2 gap-x-12 gap-y-6 list-none p-0 m-0">
+                {(t('visionMission.strategies.items', { returnObjects: true }) || []).map((item, index) => (
+                  <li key={index} className="flex items-start gap-4">
+                    <span className="flex-shrink-0 w-9 h-9 rounded-full bg-[#32669C] text-white font-bold flex items-center justify-center">
+                      {index + 1}
+                    </span>
+                    <span className="text-lg text-gray-800 leading-relaxed pt-1">{item}</span>
+                  </li>
+                ))}
+              </ol>
             </Card>
           </div>
         </div>
