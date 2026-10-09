@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link, navigate, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
+import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { Heart, Eye, ShoppingCart } from 'lucide-react';
 
 export const BookCard = ({ book, viewMode }) => {
   const { t } = useTranslation('Bookstore');
-  const { i18n } = useI18next();
+  const { i18n, navigate } = useI18next();
   const currentLanguage = i18n?.resolvedLanguage || 'en';
   
   const [isWishlisted, setIsWishlisted] = useState(false);

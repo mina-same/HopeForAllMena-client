@@ -14,6 +14,31 @@ import { useI18next } from 'gatsby-plugin-react-i18next';
 
 const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 
+// The request form stores nested sections (applicant, church, project_core, ...); this
+// screen was built for flat fields, so map each saved request onto the flat shape it uses.
+const toRow = (r) => {
+  const amount = r.project_core?.requested_amount_egp;
+  return {
+    ...r,
+    requesterName: r.requesterName || r.applicant?.full_name,
+    email: r.email || r.applicant?.email,
+    phoneNumber: r.phoneNumber || r.applicant?.phone,
+    churchName: r.churchName || r.church?.church_name,
+    churchAddress: r.churchAddress || r.church?.address,
+    denomination: r.denomination || r.church?.denomination,
+    city: r.city || r.church?.governorate,
+    projectTitle: r.projectTitle || r.project_core?.project_name,
+    problemStatement: r.problemStatement || r.project_details?.community_overview,
+    proposedSolution: r.proposedSolution || r.project_details?.project_summary,
+    projectPhases: r.projectPhases || r.project_details?.how_goals_will_be_achieved,
+    targetGroup: r.targetGroup || r.project_details?.beneficiaries_main_categories,
+    beneficiariesCount: r.beneficiariesCount ?? r.project_details?.beneficiaries_approximate_number,
+    sustainabilityPlan: r.sustainabilityPlan || r.project_details?.sustainability_plan,
+    teamInfo: r.teamInfo || r.project_details?.monitoring_responsible_name_or_committee,
+    budgetDetails: r.budgetDetails || (amount != null ? `${amount} EGP` : undefined),
+  };
+};
+
 const DevelopmentProjectRequestsSection = () => {
   const { t } = useTranslation('DevelopmentRequestsManagement');
   const { language: currentLanguage } = useI18next();
@@ -46,7 +71,7 @@ const DevelopmentProjectRequestsSection = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setRequests(data.requests || []);
+          setRequests((data.requests || []).map(toRow));
         } else if (response.status === 401) {
           console.log('Authentication failed - token may be invalid');
           setRequests([]);
@@ -136,7 +161,8 @@ const DevelopmentProjectRequestsSection = () => {
 
   // Filter requests based on search term and status
   const filteredRequests = requests.filter(request => {
-    const matchesSearch = request.requesterName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = !searchTerm.trim() ||
+                         request.requesterName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          request.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          request.phoneNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          request.churchName?.toLowerCase().includes(searchTerm.toLowerCase()) ||

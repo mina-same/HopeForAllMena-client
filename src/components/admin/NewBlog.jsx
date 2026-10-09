@@ -61,8 +61,11 @@ const NewBlog = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  // statusOverride: 'draft' from the Save Draft buttons. "Publish Post" (form submit)
+  // publishes unless another non-draft status was picked in the Status dropdown.
+  const handleSubmit = async (e, statusOverride) => {
     e.preventDefault();
+    const status = statusOverride || (formData.status === 'draft' ? 'published' : formData.status);
 
     if (!formData.title || !formData.content || !formData.excerpt) {
       setMessage({ type: 'danger', text: t('validation.requiredFields') });
@@ -80,6 +83,7 @@ const NewBlog = () => {
 
       const blogData = {
         ...formData,
+        status,
         image,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         tagsAr: formData.tagsAr.split(',').map(tag => tag.trim()).filter(tag => tag)
@@ -131,7 +135,12 @@ const NewBlog = () => {
               <Eye className="h-4 w-4" />
               {t('buttons.preview')}
             </button>
-            <button className={`flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
+            <button
+              type="button"
+              onClick={(e) => handleSubmit(e, 'draft')}
+              disabled={loading}
+              className={`flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}
+            >
               <Save className="h-4 w-4" />
               {t('buttons.saveDraft')}
             </button>
@@ -446,6 +455,7 @@ const NewBlog = () => {
                 <div className={`flex gap-3 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                   <button
                     type="button"
+                    onClick={(e) => handleSubmit(e, 'draft')}
                     disabled={loading}
                     className={`flex items-center gap-2 px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}
                   >

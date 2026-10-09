@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { graphql } from 'gatsby';
-import { Link, useTranslation, useI18next, navigate } from 'gatsby-plugin-react-i18next';
+import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -53,7 +53,7 @@ const formSchema = z.object({
 
 const TrainingNewRequestPage = () => {
   const { t } = useTranslation('TrainingNewRequest');
-  const { i18n } = useI18next();
+  const { i18n, navigate } = useI18next();
   const currentLanguage = i18n?.resolvedLanguage || 'en';
   
   const { filters, setFilters } = useBookstore();

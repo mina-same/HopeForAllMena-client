@@ -36,7 +36,10 @@ const availablePermissions = [
   { id: 'training-requests', label: 'Training Requests', description: 'Handle training requests' },
   { id: 'training-followup-requests', label: 'Training Follow-up', description: 'Manage training follow-up requests' },
   { id: 'calendar', label: 'Calendar Management', description: 'Manage calendar events and scheduling' },
-  { id: 'user-management', label: 'Advanced User Management', description: 'Advanced user management features' }
+  { id: 'user-management', label: 'Advanced User Management', description: 'Advanced user management features' },
+  { id: 'development-requests', label: 'Development Requests', description: 'Review church development project requests' },
+  { id: 'blogs', label: 'Blogs & Comments', description: 'Write blog posts and moderate comments' },
+  { id: 'generate-ids', label: 'Generate IDs', description: 'Generate member ID cards' }
 ];
 
 // Separate FormDialog component to prevent re-renders

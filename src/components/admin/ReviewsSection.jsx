@@ -75,7 +75,7 @@ export function ReviewsSection() {
 
     setIsModerating(true);
     try {
-      await reviewsAPI.moderateReview(reviewToModerate._id, moderationStatus, moderationNotes);
+      await reviewsAPI.moderateReview(reviewToModerate._id, { status: moderationStatus, notes: moderationNotes });
       toast({
         title: t('toast.reviewModerated'),
         description: t('toast.reviewModeratedDesc', { status: t(`status.${moderationStatus}`) }),

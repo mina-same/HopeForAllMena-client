@@ -4,7 +4,6 @@
   "addBook": "إضافة كتاب جديد",
   "searchPlaceholder": "البحث في الكتب...",
   "booksCount": "الكتب ({{count}})",
-  
   "form": {
     "createTitle": "إضافة كتاب جديد",
     "editTitle": "تعديل الكتاب",
@@ -51,7 +50,9 @@
       "missingFields": "يرجى ملء جميع الحقول المطلوبة: {{fields}}",
       "shortDescriptionMinLength": "الوصف المختصر بالعربية يجب أن يكون 10 أحرف على الأقل.",
       "invalidYear": "يرجى إدخال سنة نشر صحيحة بين 1000 و {{maxYear}}",
-      "invalidImageUrl": "رابط صورة الغلاف يجب أن يكون رابط صورة صحيح ينتهي بـ .jpg أو .jpeg أو .png أو .gif أو .webp"
+      "invalidImageUrl": "رابط صورة الغلاف يجب أن يكون رابط صورة صحيح ينتهي بـ .jpg أو .jpeg أو .png أو .gif أو .webp",
+      "coverRequired": "يرجى رفع صورة الغلاف",
+      "coverRequiredDescription": "صورة الغلاف مطلوبة قبل حفظ الكتاب."
     },
     "buttons": {
       "cancel": "إلغاء",
@@ -60,7 +61,6 @@
       "saving": "جاري الحفظ..."
     }
   },
-  
   "filters": {
     "status": {
       "all": "جميع الحالات",
@@ -79,19 +79,16 @@
       "notFeatured": "غير مميز"
     }
   },
-  
   "formats": {
     "paperback": "غلاف ورقي",
     "hardcover": "غلاف مقوى"
   },
-  
   "ageGroups": {
     "children": "أطفال",
     "youngAdult": "شباب",
     "adult": "بالغين",
     "allAges": "جميع الأعمار"
   },
-  
   "table": {
     "headers": {
       "book": "الكتاب",
@@ -111,45 +108,38 @@
     "reviewsCount": "{{count}} مراجعة",
     "reviewsCount_plural": "{{count}} مراجعة"
   },
-  
   "status": {
     "published": "منشور",
     "notPublished": "غير منشور"
   },
-  
   "actions": {
     "edit": "تعديل",
     "delete": "حذف",
     "toggleStatus": "تغيير الحالة"
   },
-  
   "deleteModal": {
     "title": "حذف الكتاب",
     "description": "هل أنت متأكد من حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف الكتاب نهائياً من النظام.",
     "confirmText": "حذف الكتاب",
     "cancelText": "إلغاء"
   },
-  
   "pagination": {
     "previous": "السابق",
     "next": "التالي",
     "page": "الصفحة {{current}} من {{total}}"
   },
-  
   "loading": {
     "books": "جاري تحميل الكتب...",
     "creating": "جاري إنشاء الكتاب...",
     "updating": "جاري تحديث الكتاب...",
     "deleting": "جاري حذف الكتاب..."
   },
-  
   "success": {
     "bookCreated": "تم إضافة {{title}} بنجاح.",
     "bookUpdated": "تم تحديث {{title}} بنجاح.",
     "bookDeleted": "تم حذف {{title}} بنجاح.",
     "statusUpdated": "تم تحديث حالة {{title}} إلى {{status}}."
   },
-  
   "errors": {
     "loadBooks": "فشل في تحميل الكتب. يرجى المحاولة مرة أخرى.",
     "createBook": "فشل في حفظ الكتاب. يرجى المحاولة مرة أخرى.",
@@ -159,7 +149,6 @@
     "loadAuthorsCategories": "فشل في تحميل المؤلفين والفئات.",
     "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
   },
-  
   "empty": {
     "noBooks": "لم يتم العثور على كتب. أضف كتابك الأول للبدء.",
     "noResults": "لا توجد كتب تطابق معايير البحث الخاصة بك."

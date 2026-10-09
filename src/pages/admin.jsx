@@ -258,13 +258,13 @@ const AdminDashboardInner = () => {
         return <BooksSection />;
       case 'courses':
         return (
-          <CourseProvider>
+          <CourseProvider includeDrafts>
             <CoursesSection />
           </CourseProvider>
         );
       case 'enrollments':
         return (
-          <CourseProvider>
+          <CourseProvider includeDrafts>
             <EnrollmentsSection />
           </CourseProvider>
         );

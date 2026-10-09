@@ -4,7 +4,6 @@
   "addBook": "Add New Book",
   "searchPlaceholder": "Search books...",
   "booksCount": "Books ({{count}})",
-  
   "form": {
     "createTitle": "Add New Book",
     "editTitle": "Edit Book",
@@ -51,7 +50,9 @@
       "missingFields": "Please fill in all required fields: {{fields}}",
       "shortDescriptionMinLength": "Arabic short description must be at least 10 characters long.",
       "invalidYear": "Please enter a valid publication year between 1000 and {{maxYear}}",
-      "invalidImageUrl": "Cover image URL must be a valid image URL ending with .jpg, .jpeg, .png, .gif, or .webp"
+      "invalidImageUrl": "Cover image URL must be a valid image URL ending with .jpg, .jpeg, .png, .gif, or .webp",
+      "coverRequired": "Please upload a cover image",
+      "coverRequiredDescription": "A cover image is required before the book can be saved."
     },
     "buttons": {
       "cancel": "Cancel",
@@ -60,7 +61,6 @@
       "saving": "Saving..."
     }
   },
-  
   "filters": {
     "status": {
       "all": "All Status",
@@ -79,19 +79,16 @@
       "notFeatured": "Not Featured"
     }
   },
-  
   "formats": {
     "paperback": "Paperback",
     "hardcover": "Hardcover"
   },
-  
   "ageGroups": {
     "children": "Children",
     "youngAdult": "Young Adult",
     "adult": "Adult",
     "allAges": "All Ages"
   },
-  
   "table": {
     "headers": {
       "book": "Book",
@@ -111,45 +108,38 @@
     "reviewsCount": "{{count}} review",
     "reviewsCount_plural": "{{count}} reviews"
   },
-  
   "status": {
     "published": "Published",
     "notPublished": "Not Published"
   },
-  
   "actions": {
     "edit": "Edit",
     "delete": "Delete",
     "toggleStatus": "Toggle Status"
   },
-  
   "deleteModal": {
     "title": "Delete Book",
     "description": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone and will permanently remove the book from the system.",
     "confirmText": "Delete Book",
     "cancelText": "Cancel"
   },
-  
   "pagination": {
     "previous": "Previous",
     "next": "Next",
     "page": "Page {{current}} of {{total}}"
   },
-  
   "loading": {
     "books": "Loading books...",
     "creating": "Creating book...",
     "updating": "Updating book...",
     "deleting": "Deleting book..."
   },
-  
   "success": {
     "bookCreated": "{{title}} has been added successfully.",
     "bookUpdated": "{{title}} has been updated successfully.",
     "bookDeleted": "{{title}} has been deleted successfully.",
     "statusUpdated": "{{title}} status has been updated to {{status}}."
   },
-  
   "errors": {
     "loadBooks": "Failed to fetch books. Please try again.",
     "createBook": "Failed to save book. Please try again.",
@@ -159,7 +149,6 @@
     "loadAuthorsCategories": "Failed to load authors and categories.",
     "unexpectedError": "An unexpected error occurred. Please try again."
   },
-  
   "empty": {
     "noBooks": "No books found. Add your first book to get started.",
     "noResults": "No books match your search criteria."

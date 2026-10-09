@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCourses } from '../context/CourseContext';
-import { useI18next, useTranslation, navigate } from 'gatsby-plugin-react-i18next';
+import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
 import { graphql } from 'gatsby';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -21,7 +21,7 @@ const EnrollmentPage = ({ location }) => {
     const searchParams = new URLSearchParams(location?.search || '');
     const { toast } = useToast();
     const { courses, addEnrollment } = useCourses();
-    const { language: currentLanguage } = useI18next();
+    const { language: currentLanguage, navigate } = useI18next();
     const { t } = useTranslation('Enrollment');
     const isRTL = currentLanguage === 'ar';
 

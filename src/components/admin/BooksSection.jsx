@@ -34,6 +34,7 @@ export function BooksSection() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalBooks, setTotalBooks] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isUploadingCover, setIsUploadingCover] = useState(false);
 
   // Delete confirmation modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -158,6 +159,16 @@ export function BooksSection() {
         toast({
           title: t('form.validation.missingFields', { fields: missingFields.join(', ') }),
           description: t('form.validation.missingFields', { fields: missingFields.join(', ') }),
+          variant: "destructive"
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!bookForm.coverImageUrl || !bookForm.coverImageUrl.trim()) {
+        toast({
+          title: t('form.validation.coverRequired', 'Please upload a cover image'),
+          description: t('form.validation.coverRequiredDescription', 'A cover image is required before the book can be saved.'),
           variant: "destructive"
         });
         setIsSubmitting(false);
@@ -600,7 +611,7 @@ export function BooksSection() {
             <Button
               type="submit"
               form="book-form"
-              disabled={isSubmitting}
+              disabled={isSubmitting || isUploadingCover}
             >
               {isSubmitting
                 ? t('form.buttons.saving')
@@ -742,6 +753,7 @@ export function BooksSection() {
             uploadType="book-cover"
             label={t('form.fields.coverImage')}
             disabled={isSubmitting}
+            onUploadingChange={setIsUploadingCover}
           />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

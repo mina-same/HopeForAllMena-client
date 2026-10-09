@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { graphql } from 'gatsby';
-import { Link, useTranslation, useI18next, Trans, navigate } from 'gatsby-plugin-react-i18next';
+import { Link, useTranslation, useI18next, Trans } from 'gatsby-plugin-react-i18next';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -75,7 +75,7 @@ const defaultBookPartsMapping = {
 
 const TrainingFollowUpRequestPage = () => {
   const { t } = useTranslation('TrainingFollowUpRequest');
-  const { i18n } = useI18next();
+  const { i18n, navigate } = useI18next();
   const currentLanguage = i18n?.resolvedLanguage || 'en';
   const isRTL = currentLanguage === 'ar';
   

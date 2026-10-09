@@ -7,9 +7,14 @@ const ImageUpload = ({
   uploadType = 'author-image', // 'author-image', 'book-cover', 'training-book-cover'
   className = '',
   disabled = false,
-  label = 'Upload Image'
+  label = 'Upload Image',
+  onUploadingChange // optional: lets a parent form block saving while an upload is in progress
 }) => {
-  const [isUploading, setIsUploading] = useState(false);
+  const [isUploading, setIsUploadingState] = useState(false);
+  const setIsUploading = (value) => {
+    setIsUploadingState(value);
+    if (onUploadingChange) onUploadingChange(value);
+  };
   const [preview, setPreview] = useState(currentImage || null);
   const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef(null);

@@ -2,7 +2,7 @@ import React, { useState } from "react"; // Added React import
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Star, ShoppingCart, Eye, Heart } from "lucide-react";
-import { Link, navigate } from "gatsby-plugin-react-i18next";
+import { Link, useI18next } from "gatsby-plugin-react-i18next";
 
 export function BookCard({
   id,
@@ -18,6 +18,7 @@ export function BookCard({
   onAddToCart,
 }) {
   const [isLoved, setIsLoved] = useState(false);
+  const { navigate } = useI18next();
 
   const handleOrderClick = () => {
     navigate("/order");

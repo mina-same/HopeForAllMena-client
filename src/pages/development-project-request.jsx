@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { graphql } from "gatsby";
-import { Link, useI18next, useTranslation, navigate } from "gatsby-plugin-react-i18next";
+import { Link, useI18next, useTranslation } from "gatsby-plugin-react-i18next";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -125,7 +125,7 @@ const formSchema = z.object({
 
 const DevelopmentProjectRequestPage = () => {
   const { t } = useTranslation("DevelopmentProjectRequest");
-  const { i18n } = useI18next();
+  const { i18n, navigate } = useI18next();
   const currentLanguage = i18n?.resolvedLanguage || "en";
   const isRTL = currentLanguage === "ar";
   const { toast } = useToast();

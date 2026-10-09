@@ -5,7 +5,9 @@ import { authStorage } from '../utils/storage';
 
 const CourseContext = createContext(null);
 
-export const CourseProvider = ({ children }) => {
+// includeDrafts: admin views list every course status, public pages only published ones
+export const CourseProvider = ({ children, includeDrafts = false }) => {
+  const listStatus = includeDrafts ? 'all' : 'published';
   const [courses, setCourses] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
@@ -36,7 +38,7 @@ export const CourseProvider = ({ children }) => {
         
         // Load courses, enrollments, and institutions in parallel
         const [coursesResponse, enrollmentsResponse, institutionsResponse] = await Promise.allSettled([
-          coursesAPI.getCourses({ status: 'published' }),
+          coursesAPI.getCourses({ status: listStatus, limit: 100 }),
           // Enrollments contain applicants' personal data and are admin-only
           authStorage.getToken() ? enrollmentsAPI.getEnrollments() : Promise.resolve({ data: { enrollments: [] } }),
           coursesAPI.getInstitutions()
@@ -163,7 +165,7 @@ export const CourseProvider = ({ children }) => {
       setEnrollments(prev => [newEnrollment, ...prev]);
       
       // Refresh courses to get updated enrollment counts
-      const coursesResponse = await coursesAPI.getCourses({ status: 'published' });
+      const coursesResponse = await coursesAPI.getCourses({ status: listStatus, limit: 100 });
       if (coursesResponse.data?.courses) {
         setCourses(coursesResponse.data.courses);
       }
@@ -197,7 +199,7 @@ export const CourseProvider = ({ children }) => {
       ));
       
       // Refresh courses to get updated enrollment counts
-      const coursesResponse = await coursesAPI.getCourses({ status: 'published' });
+      const coursesResponse = await coursesAPI.getCourses({ status: listStatus, limit: 100 });
       if (coursesResponse.data?.courses) {
         setCourses(coursesResponse.data.courses);
       }
@@ -219,7 +221,7 @@ export const CourseProvider = ({ children }) => {
       setEnrollments(prev => prev.filter(e => e._id !== id && e.id !== id));
       
       // Refresh courses to get updated enrollment counts
-      const coursesResponse = await coursesAPI.getCourses({ status: 'published' });
+      const coursesResponse = await coursesAPI.getCourses({ status: listStatus, limit: 100 });
       if (coursesResponse.data?.courses) {
         setCourses(coursesResponse.data.courses);
       }
