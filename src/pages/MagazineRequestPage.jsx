@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { navigate } from 'gatsby';
+import { navigate, graphql } from 'gatsby';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Label } from '../components/ui/label';
-import { useBookstore } from '../context/BookstoreContext';
+import { magazineRequestsAPI } from '../services/api';
 import { useToast } from '../hooks/use-toast';
 import { ArrowLeft, Send, BookOpenCheck, Plus, X } from 'lucide-react';
 
@@ -175,7 +175,6 @@ const MagazineSelect = ({ value, onValueChange, placeholder = "Choose a magazine
 };
 
 const MagazineRequestPage = () => {
-  const { addMagazineRequest } = useBookstore();
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -230,22 +229,24 @@ const MagazineRequestPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Create additional magazines string for submission
-      const additionalMagazinesText = additionalMagazines
+      // Send the main magazine plus any additional ones to the API
+      const magazines = [
+        { magazineName: formData.magazineName, numberOfCopies: formData.numberOfCopies },
+        ...additionalMagazines
+      ]
         .filter(mag => mag.magazineName && mag.numberOfCopies)
-        .map(mag => `${mag.magazineName} (${mag.numberOfCopies} copies)`)
-        .join(', ');
+        .map(mag => ({
+          magazineName: mag.magazineName,
+          numberOfCopies: parseInt(mag.numberOfCopies) || 1
+        }));
 
-      const finalAnotherBook = additionalMagazinesText ? `Additional Magazines: ${additionalMagazinesText}` : '';
-
-      addMagazineRequest({
+      await magazineRequestsAPI.createRequest({
         name: formData.name,
         churchName: formData.churchName,
         churchAddress: formData.churchAddress,
         phoneNumber: formData.phoneNumber,
-        magazineName: formData.magazineName,
-        numberOfCopies: parseInt(formData.numberOfCopies) || 1,
-        anotherBook: finalAnotherBook
+        magazines,
+        preferredContactMethod: 'phone'
       });
 
       toast({
@@ -272,7 +273,7 @@ const MagazineRequestPage = () => {
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to submit your request. Please try again.",
+        description: error.response?.data?.message || "Failed to submit your request. Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -559,3 +560,17 @@ const MagazineRequestPage = () => {
 };
 
 export default MagazineRequestPage;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

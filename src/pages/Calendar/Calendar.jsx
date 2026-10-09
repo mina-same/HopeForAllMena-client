@@ -1,5 +1,6 @@
 // 'use client';
 import React from 'react';
+import { graphql } from 'gatsby';
 import { Button, useMediaQuery, useTheme } from '@mui/material';
 import { CardContent } from '../../components/ui/card';
 import { Dialog, DialogContent, DialogActions, Drawer, AppBar, Toolbar, IconButton } from '@mui/material';
@@ -2051,3 +2052,17 @@ const BigCalendar = () => {
 };
 
 export default BigCalendar;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

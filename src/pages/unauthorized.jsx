@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link, navigate } from 'gatsby';
+import { Link, navigate, graphql } from 'gatsby';
 import Layout from '../components/layout';
 import HeaderTwo from '../components/header/header-two';
 import StickyHeader from '../components/header/sticky-header';
@@ -324,3 +324,17 @@ export const Head = () => (
     <meta name="robots" content="noindex, nofollow" />
   </>
 );
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;

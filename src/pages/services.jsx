@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Link } from "gatsby";
+import { Link, graphql } from "gatsby";
 import Layout from "../components/layout";
 import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";
@@ -149,3 +149,17 @@ const Services = () => {
 };
 
 export default Services;
+
+export const query = graphql`
+  query ($language: String!) {
+    locales: allLocale(filter: { language: { eq: $language } }) {
+      edges {
+        node {
+          ns
+          data
+          language
+        }
+      }
+    }
+  }
+`;
