@@ -16,19 +16,11 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    // Only add auth token for non-public endpoints
-    // Public endpoints are only GET requests for browsing content
-    const method = config.method?.toLowerCase();
-    const isPublicEndpoint = (config.url?.includes('/books') && method === 'get') ||
-      (config.url?.includes('/categories') && method === 'get') ||
-      (config.url?.includes('/authors') && method === 'get') ||
-      (config.url?.includes('/courses') && method === 'get') ||
-      (config.url?.includes('/enrollments') && method === 'get') ||
-      (config.url?.includes('/reviews') && method === 'post');
-
+    // Always send the token when logged in: public endpoints ignore it, and
+    // admin-only GETs under public paths (e.g. /books/stats) require it
     const token = authStorage.getToken();
-    
-    if (token && !isPublicEndpoint) {
+
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -327,12 +319,12 @@ export const reviewsAPI = {
   },
 
   markHelpful: async (id) => {
-    const response = await api.post(`/reviews/${id}/helpful`);
+    const response = await api.patch(`/reviews/${id}/helpful`);
     return response.data;
   },
 
   markNotHelpful: async (id) => {
-    const response = await api.post(`/reviews/${id}/not-helpful`);
+    const response = await api.patch(`/reviews/${id}/not-helpful`);
     return response.data;
   },
 };

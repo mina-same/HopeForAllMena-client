@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { coursesAPI, enrollmentsAPI } from '../services/api';
 import coursesData from '../data/courses.json';
+import { authStorage } from '../utils/storage';
 
 const CourseContext = createContext(null);
 
@@ -36,7 +37,8 @@ export const CourseProvider = ({ children }) => {
         // Load courses, enrollments, and institutions in parallel
         const [coursesResponse, enrollmentsResponse, institutionsResponse] = await Promise.allSettled([
           coursesAPI.getCourses({ status: 'published' }),
-          enrollmentsAPI.getEnrollments(),
+          // Enrollments contain applicants' personal data and are admin-only
+          authStorage.getToken() ? enrollmentsAPI.getEnrollments() : Promise.resolve({ data: { enrollments: [] } }),
           coursesAPI.getInstitutions()
         ]);
         
