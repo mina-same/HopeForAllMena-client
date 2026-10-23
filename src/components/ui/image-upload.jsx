@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { X, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { useTranslation } from 'gatsby-plugin-react-i18next';
 
 const ImageUpload = ({ 
   onImageUpload, 
@@ -10,6 +11,7 @@ const ImageUpload = ({
   label = 'Upload Image',
   onUploadingChange // optional: lets a parent form block saving while an upload is in progress
 }) => {
+  const { t } = useTranslation('common');
   const [isUploading, setIsUploadingState] = useState(false);
   const setIsUploading = (value) => {
     setIsUploadingState(value);
@@ -234,10 +236,10 @@ const ImageUpload = ({
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">
-                    <span className="font-medium text-blue-600">Click to upload</span> or drag and drop
+                    <span className="font-medium text-blue-600">{t('upload.click')}</span> {t('upload.drag')}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    PNG, JPG, GIF up to 10MB
+                    {t('upload.types')}
                   </p>
                 </div>
               </>

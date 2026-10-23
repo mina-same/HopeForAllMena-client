@@ -106,7 +106,9 @@
     "unknownCategory": "فئة غير معروفة",
     "pagesCount": "{{count}} صفحة",
     "reviewsCount": "{{count}} مراجعة",
-    "reviewsCount_plural": "{{count}} مراجعة"
+    "reviewsCount_plural": "{{count}} مراجعة",
+    "yearFormat": "السنة / النوع",
+    "rating": "التقييم"
   },
   "status": {
     "published": "منشور",

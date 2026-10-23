@@ -339,8 +339,10 @@ const AnalyticsManagement = () => {
   // Current totals for summary cards
 
   const calculateGrowthRate = (current, previous) => {
-    if (!previous || previous === 0) return 0;
-    return ((current - previous) / previous * 100).toFixed(1);
+    const cur = Number(current); const prev = Number(previous);
+    // Missing or non-numeric history would otherwise show "NaN%"
+    if (!Number.isFinite(cur) || !Number.isFinite(prev) || prev === 0) return 0;
+    return ((cur - prev) / prev * 100).toFixed(1);
   };
 
   // Doughnut chart for current distribution with modern styling
@@ -418,9 +420,9 @@ const AnalyticsManagement = () => {
         {/* Edit Statistics Form */}
         {isEditing && (
           <div className="control-section slide-up mb-4">
-            <div className={`d-flex justify-content-between align-items-center mb-3 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <div className={`d-flex justify-content-between align-items-center mb-3 ${''}`}>
               <h4 className="mb-0" style={{ color: '#1e293b', fontWeight: '700' }}>{t('icons.edit')} {t('statistics.editTitle')}</h4>
-              <div className={`d-flex gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className={`d-flex gap-2 ${''}`}>
                 <button 
                   className="modern-btn" 
                   onClick={handleCancelEdit}
@@ -524,7 +526,7 @@ const AnalyticsManagement = () => {
         {/* Modern Summary Cards */}
         <Row className="mb-4">
           <Col xs={12} className="mb-3">
-            <div className={`d-flex justify-content-between align-items-center ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+            <div className={`d-flex justify-content-between align-items-center ${''}`}>
               <h3 className={currentLanguage === 'ar' ? '' : 'text-left'} style={{ color: '#1e293b', fontWeight: '700', margin: 0 }}>{t('icons.analytics')} {t('statistics.title')}</h3>
               {user && !isEditing && (
                 <button 
@@ -679,9 +681,9 @@ const AnalyticsManagement = () => {
         <Row className="mb-4">
           <Col lg={8}>
             <div className="chart-card slide-up">
-              <div className={`d-flex justify-content-between align-items-center mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className={`d-flex justify-content-between align-items-center mb-4 ${''}`}>
                 <h4 className={`mb-0 ${currentLanguage === 'ar' ? '' : 'text-left'}`} style={{ color: '#1e293b', fontWeight: '700' }}>{t('charts.monthlyTrends')}</h4>
-                <div className={`d-flex align-items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`} style={{ color: '#64748b', fontSize: '0.875rem' }}>
+                <div className={`d-flex align-items-center gap-2 ${''}`} style={{ color: '#64748b', fontSize: '0.875rem' }}>
                   <span>{t('icons.analytics')}</span>
                   <span>{t('charts.lastMonths', { count: timeRange })}</span>
                 </div>
@@ -697,9 +699,9 @@ const AnalyticsManagement = () => {
           </Col>
           <Col lg={4}>
             <div className="chart-card slide-up" style={{ animationDelay: '0.2s' }}>
-              <div className={`d-flex justify-content-between align-items-center mb-4 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className={`d-flex justify-content-between align-items-center mb-4 ${''}`}>
                 <h4 className={`mb-0 ${currentLanguage === 'ar' ? '' : 'text-left'}`} style={{ color: '#1e293b', fontWeight: '700' }}>{t('charts.distribution')}</h4>
-                <div className={`d-flex align-items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`} style={{ color: '#64748b', fontSize: '0.875rem' }}>
+                <div className={`d-flex align-items-center gap-2 ${''}`} style={{ color: '#64748b', fontSize: '0.875rem' }}>
                   <span>{t('icons.distribution')}</span>
                   <span>{t('charts.currentTotals')}</span>
                 </div>

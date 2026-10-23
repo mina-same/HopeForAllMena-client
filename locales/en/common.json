@@ -80,5 +80,11 @@
     "no": "No",
     "ok": "OK",
     "close": "Close"
+  },
+  "upload": {
+    "click": "Click to upload",
+    "drag": "or drag and drop",
+    "types": "PNG, JPG, GIF up to 10MB",
+    "uploading": "Uploading..."
   }
 }

@@ -12,7 +12,7 @@ const CalendarSection = () => {
                 <title>{`${t('page.title')} - Hope For All Mena`}</title>
                 <meta name="description" content={t('page.description')} />
             </Helmet>
-            <Breadcrumb title="Calendar" subtitle="Admin Dashboard" />
+            <Breadcrumb title={t('page.title')} subtitle={t('page.breadcrumb')} />
             <BigCalendar />
         </div>
     );

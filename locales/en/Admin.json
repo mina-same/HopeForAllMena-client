@@ -132,6 +132,12 @@
     "stars": "{{count}} stars",
     "newMessage": "New message from {{name}}",
     "unknown": "Unknown",
-    "newBlog": "New blog: \"{{title}}\""
+    "newBlog": "New blog: \"{{title}}\"",
+    "accepted": "Accepted",
+    "approved": "Approved",
+    "unread": "Unread",
+    "drafts": "{{count}} draft",
+    "recentActivity": "Recent Activity",
+    "systemStatus": "System Status"
   }
 }

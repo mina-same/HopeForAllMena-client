@@ -5,6 +5,7 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useToast } from '../../hooks/use-toast';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import contactMessageService from '../../services/contactMessageService';
 import '../../styles/ContactMessages-rtl.css';
 import { DataTable } from '../ui/DataTable';
@@ -15,15 +16,12 @@ export function ContactMessagesSection() {
   const { t } = useTranslation('ContactMessages');
   const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalMessages, setTotalMessages] = useState(0);
 
   // Response modal state
   const [showResponseModal, setShowResponseModal] = useState(false);
@@ -31,41 +29,41 @@ export function ContactMessagesSection() {
   const [responseText, setResponseText] = useState('');
   const [isResponding, setIsResponding] = useState(false);
 
-  // Fetch messages
-  const fetchMessages = async () => {
-    try {
-      setLoading(true);
-      const params = {
-        page: currentPage,
-        limit: 10,
-        search: searchTerm,
-        type: typeFilter === 'all' ? '' : typeFilter,
-        status: statusFilter === 'all' ? '' : statusFilter,
-        priority: priorityFilter === 'all' ? '' : priorityFilter,
-        sortBy: 'createdAt',
-        sortOrder: 'desc',
-        language: currentLanguage
-      };
+  const messageParams = {
+    page: currentPage,
+    limit: 10,
+    search: searchTerm,
+    type: typeFilter === 'all' ? '' : typeFilter,
+    status: statusFilter === 'all' ? '' : statusFilter,
+    priority: priorityFilter === 'all' ? '' : priorityFilter,
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+    language: currentLanguage
+  };
 
-      const response = await contactMessageService.getContactMessages(params);
-      setMessages(response.data.messages || []);
-      setTotalPages(response.data.pagination?.totalPages || 1);
-      setTotalMessages(response.data.pagination?.totalMessages || 0);
-    } catch (error) {
-      console.error('Failed to fetch messages:', error);
+  const messagesQuery = useQuery({
+    queryKey: ['contact-messages', messageParams],
+    queryFn: () => contactMessageService.getContactMessages(messageParams).then(res => res.data),
+    placeholderData: keepPreviousData
+  });
+  const messages = messagesQuery.data?.messages || [];
+  const totalPages = messagesQuery.data?.pagination?.totalPages || 1;
+  const totalMessages = messagesQuery.data?.pagination?.totalMessages || 0;
+  const loading = messagesQuery.isLoading;
+
+  useEffect(() => {
+    if (messagesQuery.isError) {
+      console.error('Failed to fetch messages:', messagesQuery.error);
       toast({
         title: t('toast.error.title'),
         description: t('toast.error.fetchFailed'),
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [messagesQuery.isError]);
 
-  useEffect(() => {
-    fetchMessages();
-  }, [currentPage, searchTerm, typeFilter, statusFilter, priorityFilter, currentLanguage]);
+  // Also refreshes the sidebar unread count (['contact-messages', 'unread-count'])
+  const fetchMessages = () => queryClient.invalidateQueries({ queryKey: ['contact-messages'] });
 
   const handleRespond = (message) => {
     setMessageToRespond(message);

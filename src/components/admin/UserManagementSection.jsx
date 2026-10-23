@@ -18,7 +18,7 @@ import './UserManagement-rtl.css';
 import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
-import { cachedGet } from '../../lib/queryClient';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 
 const availablePermissions = [
   { id: 'books', label: 'Books & Publishing', description: 'Manage books, authors, categories, and reviews' },
@@ -498,15 +498,12 @@ export function UserManagementSection() {
   const { user: currentUser } = useAuth();
   const { t } = useTranslation('UserManagement');
   const { language: currentLanguage } = useI18next();
+  const queryClient = useQueryClient();
 
   // State for users data
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [pagination, setPagination] = useState({
+  const [pageState, setPageState] = useState({
     currentPage: 1,
-    totalPages: 1,
-    totalUsers: 0,
     limit: 10
   });
 
@@ -521,42 +518,36 @@ export function UserManagementSection() {
   const [userToDelete, setUserToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Memoize the fetchUsers function to prevent unnecessary re-renders
-  const fetchUsers = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError('');
+  const userParams = {
+    page: pageState.currentPage,
+    limit: pageState.limit,
+    search: searchTerm,
+    sortBy: 'createdAt',
+    sortOrder: 'desc'
+  };
 
-      const params = {
-        page: pagination.currentPage,
-        limit: pagination.limit,
-        search: searchTerm,
-        sortBy: 'createdAt',
-        sortOrder: 'desc'
-      };
+  const usersQuery = useQuery({
+    queryKey: ['users', userParams],
+    queryFn: () => usersAPI.getUsers(userParams),
+    placeholderData: keepPreviousData
+  });
+  const usersData = usersQuery.data?.status === 'success' ? usersQuery.data.data : null;
+  const users = usersData?.users ?? [];
+  const pagination = {
+    ...pageState,
+    totalPages: usersData?.pagination?.totalPages ?? 1,
+    totalUsers: usersData?.pagination?.totalUsers ?? 0
+  };
+  const loading = usersQuery.isLoading;
 
-      const response = await cachedGet(['users', params], () => usersAPI.getUsers(params));
-
-      if (response.status === 'success') {
-        setUsers(response.data.users);
-        setPagination(prev => ({
-          ...prev,
-          totalPages: response.data.pagination.totalPages,
-          totalUsers: response.data.pagination.totalUsers
-        }));
-      }
-    } catch (err) {
-      console.error('Failed to fetch users:', err);
-      setError('Failed to load users. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  }, [pagination.currentPage, pagination.limit, searchTerm]);
-
-  // Load users on component mount and when search/pagination changes
   useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+    if (usersQuery.isError) {
+      console.error('Failed to fetch users:', usersQuery.error);
+      setError('Failed to load users. Please try again.');
+    }
+  }, [usersQuery.isError]);
+
+  const fetchUsers = () => queryClient.invalidateQueries({ queryKey: ['users'] });
 
   // Memoize filtered users to prevent unnecessary re-renders
   const filteredUsers = useMemo(() => users, [users]);
@@ -685,11 +676,11 @@ export function UserManagementSection() {
   // Handle search with debounce
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    setPagination(prev => ({ ...prev, currentPage: 1 })); // Reset to first page
+    setPageState(prev => ({ ...prev, currentPage: 1 })); // Reset to first page
   };
 
   const handlePageChange = (newPage) => {
-    setPagination(prev => ({ ...prev, currentPage: newPage }));
+    setPageState(prev => ({ ...prev, currentPage: newPage }));
   };
 
   const isRTL = currentLanguage === 'ar';
@@ -718,7 +709,7 @@ export function UserManagementSection() {
       label: t('table.headers.role'),
       render: (user) => (
         <Badge variant="secondary" className="bg-theme-light text-theme-primary">
-          {user.role}
+          {t(`roles.${(user.role || '').toLowerCase()}`, user.role)}
         </Badge>
       )
     },

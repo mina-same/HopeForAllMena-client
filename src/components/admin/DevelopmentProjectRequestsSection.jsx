@@ -72,10 +72,6 @@ const DevelopmentProjectRequestsSection = () => {
   const loading = requestsQuery.isLoading;
 
   useEffect(() => {
-    if (!token) console.log('No authentication token found');
-  }, [token]);
-
-  useEffect(() => {
     if (!requestsQuery.isError) return;
     if (requestsQuery.error?.status === 401) {
       console.log('Authentication failed - token may be invalid');
@@ -91,7 +87,6 @@ const DevelopmentProjectRequestsSection = () => {
 
   const updateRequestStatus = async (requestId, newStatus) => {
     try {
-      const { authStorage } = require('../../utils/storage');
       const token = authStorage.getToken();
 
       const response = await fetch(`${API_URL}/development-project-requests/${requestId}/status`, {
@@ -124,7 +119,6 @@ const DevelopmentProjectRequestsSection = () => {
 
   const downloadAttachment = async (requestId, filename, originalName) => {
     try {
-      const { authStorage } = require('../../utils/storage');
       const token = authStorage.getToken();
 
       const response = await fetch(`${API_URL}/development-project-requests/${requestId}/attachments/${filename}`, {

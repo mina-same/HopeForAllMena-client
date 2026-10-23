@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { Eye, Trash2, Mail, User, Book, CheckCircle, AlertCircle, Calendar } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -10,73 +11,68 @@ import { SectionShell, SearchInput } from '../ui/SectionShell';
 import contactMessageService from '../../services/contactMessageService';
 import { useTranslation } from 'gatsby-plugin-react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
-import { cachedGet } from '../../lib/queryClient';
 
 
 const ContactMessagesPage = () => {
   const { t } = useTranslation('ContactMessages');
   const { language: currentLanguage } = useI18next();
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [replyText, setReplyText] = useState('');
-  const [pagination, setPagination] = useState({ currentPage: 1, totalPages: 1, totalMessages: 0 });
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // Fetch messages from API
+  const messageParams = {
+    page: currentPage,
+    limit: 20,
+    search: searchTerm,
+    status: statusFilter !== 'all' ? statusFilter : undefined,
+    type: typeFilter !== 'all' ? typeFilter : undefined
+  };
+
+  const messagesQuery = useQuery({
+    queryKey: ['contact-messages', messageParams],
+    queryFn: () => contactMessageService.getContactMessages(messageParams).then(res => res.data),
+    placeholderData: keepPreviousData
+  });
+  const loading = messagesQuery.isLoading;
+  const error = messagesQuery.isError ? 'Failed to load messages. Please try again.' : null;
+  const pagination = messagesQuery.data?.pagination || { currentPage, totalPages: 1, totalMessages: 0 };
+
+  // Transform API data to match component expectations
+  const messages = (messagesQuery.data?.messages || []).map(msg => ({
+    id: msg._id,
+    name: msg.name,
+    email: msg.email,
+    phone: msg.phone,
+    subject: msg.subject,
+    message: msg.message,
+    bookTitle: msg.bookTitle,
+    date: msg.createdAt,
+    status: msg.status === 'new' ? 'unread' : msg.status,
+    isNew: msg.status === 'new',
+    type: msg.type,
+    book: msg.book
+  }));
+
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const params = {
-          page: pagination.currentPage,
-          limit: 20,
-          search: searchTerm,
-          status: statusFilter !== 'all' ? statusFilter : undefined,
-          type: typeFilter !== 'all' ? typeFilter : undefined
-        };
-        const response = await cachedGet(['contact-messages', params], () => contactMessageService.getContactMessages(params));
+    if (messagesQuery.isError) {
+      console.error('Failed to fetch contact messages:', messagesQuery.error);
+    }
+  }, [messagesQuery.isError]);
 
-        // Transform API data to match component expectations
-        const transformedMessages = response.data.messages.map(msg => ({
-          id: msg._id,
-          name: msg.name,
-          email: msg.email,
-          phone: msg.phone,
-          subject: msg.subject,
-          message: msg.message,
-          bookTitle: msg.bookTitle,
-          date: msg.createdAt,
-          status: msg.status === 'new' ? 'unread' : msg.status,
-          isNew: msg.status === 'new',
-          type: msg.type,
-          book: msg.book
-        }));
-
-        setMessages(transformedMessages);
-        setPagination(response.data.pagination);
-      } catch (err) {
-        console.error('Failed to fetch contact messages:', err);
-        setError('Failed to load messages. Please try again.');
-        setMessages([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMessages();
-  }, [pagination.currentPage, searchTerm, statusFilter, typeFilter]);
+  // Prefix match also refreshes the sidebar unread count
+  const refreshMessages = () => queryClient.invalidateQueries({ queryKey: ['contact-messages'] });
 
   const filteredMessages = messages.filter(message => {
     const matchesSearch = message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          message.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          message.message.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || message.status === statusFilter;
+    // Rows map the API's 'new' status to 'unread' (see above)
+    const matchesStatus = statusFilter === 'all' || message.status === (statusFilter === 'new' ? 'unread' : statusFilter);
     const matchesType = typeFilter === 'all' || message.type === typeFilter;
     return matchesSearch && matchesStatus && matchesType;
   });
@@ -87,11 +83,11 @@ const ContactMessagesPage = () => {
   const handleStatusChange = async (messageId, newStatus) => {
     try {
       await contactMessageService.updateContactMessageStatus(messageId, newStatus);
-      setMessages(prev => prev.map(message =>
-        message.id === messageId
-          ? { ...message, status: newStatus, isNew: false }
-          : message
-      ));
+      queryClient.setQueryData(['contact-messages', messageParams], prev => prev && {
+        ...prev,
+        messages: prev.messages.map(msg => msg._id === messageId ? { ...msg, status: newStatus } : msg)
+      });
+      refreshMessages();
     } catch (error) {
       console.error('Failed to update message status:', error);
     }
@@ -100,7 +96,7 @@ const ContactMessagesPage = () => {
   const handleDelete = async (messageId) => {
     try {
       await contactMessageService.deleteContactMessage(messageId);
-      setMessages(prev => prev.filter(message => message.id !== messageId));
+      refreshMessages();
     } catch (error) {
       console.error('Failed to delete message:', error);
     }
@@ -325,7 +321,7 @@ const ContactMessagesPage = () => {
           emptyIcon={<Mail className="h-8 w-8 text-muted-foreground" />}
           currentPage={pagination.currentPage}
           totalPages={pagination.totalPages}
-          onPageChange={(page) => setPagination(prev => ({ ...prev, currentPage: page }))}
+          onPageChange={setCurrentPage}
           dir={dir}
         />
       )}

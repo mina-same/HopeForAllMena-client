@@ -165,11 +165,11 @@ export const MagazinesSection = () => {
       align: 'start',
       render: (request) => (
         <div className="space-y-1">
-          <div className={`flex items-center text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center text-sm ${''}`}>
             <Church className={`h-3 w-3 text-muted-foreground ${isRTL ? 'ml-1' : 'mr-1'}`} />
             <span className="font-medium">{request.churchName}</span>
           </div>
-          <div className={`flex items-start text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-start text-xs text-muted-foreground ${''}`}>
             <MapPin className={`h-3 w-3 mt-0.5 flex-shrink-0 ${isRTL ? 'ml-1' : 'mr-1'}`} />
             <span className="line-clamp-2">{request.churchAddress}</span>
           </div>
@@ -182,11 +182,11 @@ export const MagazinesSection = () => {
       align: 'start',
       render: (request) => (
         <div className="space-y-1">
-          <div className={`flex items-center text-sm font-medium ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center text-sm font-medium ${''}`}>
             <BookOpen className={`h-3 w-3 text-muted-foreground ${isRTL ? 'ml-1' : 'mr-1'}`} />
             {request.magazineName}
           </div>
-          <div className={`flex items-center text-xs text-muted-foreground ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center text-xs text-muted-foreground ${''}`}>
             <Hash className={`h-3 w-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
             {t('table.copiesCount', { count: request.numberOfCopies })}
           </div>
@@ -270,7 +270,7 @@ export const MagazinesSection = () => {
                   {t('deleteModal.description')}
                 </AlertDialogDescription>
               </AlertDialogHeader>
-              <AlertDialogFooter className={`${isRTL ? 'justify-start flex-row-reverse gap-3' : 'gap-3'}`}>
+              <AlertDialogFooter className={`${isRTL ? 'justify-start gap-3' : 'gap-3'}`}>
                 <AlertDialogCancel className="mt-0">{t('deleteModal.cancelText')}</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => handleDelete(request._id)}
@@ -384,7 +384,7 @@ export const MagazinesSection = () => {
         open={!!selectedRequest}
         onClose={setSelectedRequest}
         title={
-          <span className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <span className={`flex items-center gap-2 ${''}`}>
             <BookOpen className="h-5 w-5" />
             {t('modal.title')}
           </span>

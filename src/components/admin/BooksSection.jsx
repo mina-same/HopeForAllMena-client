@@ -423,7 +423,7 @@ export function BooksSection() {
     },
     {
       key: 'meta',
-      label: 'Year / Format',
+      label: t('table.yearFormat', 'Year / Format'),
       skeletonWidth: '80px',
       render: (book) => (
         <div className="space-y-1">
@@ -445,7 +445,7 @@ export function BooksSection() {
     },
     {
       key: 'rating',
-      label: 'Rating',
+      label: t('table.rating', 'Rating'),
       align: 'center',
       skeletonWidth: '50px',
       render: (book) => (
@@ -458,7 +458,7 @@ export function BooksSection() {
           ) : (
             <span className="text-xs text-muted-foreground">—</span>
           )}
-          <p className="text-[10px] text-muted-foreground mt-0.5 tabular-nums">{book.totalReviews || 0} reviews</p>
+          <p className="text-[10px] text-muted-foreground mt-0.5 tabular-nums">{t('table.reviewsCount', { count: book.totalReviews || 0 })}</p>
         </div>
       ),
     },

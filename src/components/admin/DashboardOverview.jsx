@@ -208,8 +208,8 @@ const DashboardOverview = () => {
           activity.push({
             id: `blog-${blog._id}`,
             type: 'blog',
-            title: t('dashboardUi.newBlog', { title: blog.title }),
-            description: (blog.excerpt || blog.content || '').substring(0, 50) + '...',
+            title: t('dashboardUi.newBlog', { title: (isRTL && blog.titleAr) || blog.title }),
+            description: ((isRTL && blog.excerptAr) || blog.excerpt || blog.content || '').substring(0, 50) + '...',
             time: new Date(blog.createdAt || blog.publishedAt).toLocaleDateString(),
             icon: FileText,
             color: 'text-blue-500',
@@ -266,7 +266,7 @@ const DashboardOverview = () => {
       color: 'text-purple-600',
       bgColor: 'bg-purple-50',
       borderColor: 'border-purple-200',
-      trend: 'Accepted'
+      trend: t('dashboardUi.accepted')
     },
     {
       title: t('dashboardUi.publishedBooks'),
@@ -284,7 +284,7 @@ const DashboardOverview = () => {
       color: 'text-orange-600',
       bgColor: 'bg-orange-50',
       borderColor: 'border-orange-200',
-      trend: 'Approved'
+      trend: t('dashboardUi.approved')
     }
   ];
 
@@ -325,7 +325,7 @@ const DashboardOverview = () => {
       color: 'text-red-600',
       bgColor: 'bg-red-50',
       borderColor: 'border-red-200',
-      trend: 'Unread'
+      trend: t('dashboardUi.unread')
     }
   ];
 
@@ -348,7 +348,7 @@ const DashboardOverview = () => {
 
       {/* ── Page Header ──────────────────────────────────────── */}
       <div className={isRTL ? 'text-right' : 'text-left'}>
-        <div className={`flex items-center gap-2.5 mb-1 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
+        <div className={`flex items-center gap-2.5 mb-1 ${isRTL ? 'justify-end' : ''}`}>
           <div className="w-1 h-6 rounded-full bg-brand flex-shrink-0" />
           <h1 className="text-2xl font-semibold text-foreground tracking-tight">
             {t('dashboard.title')}
@@ -366,7 +366,7 @@ const DashboardOverview = () => {
           return (
             <Card key={index} className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
               <CardContent className="p-4 sm:p-5">
-                <div className={`flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:justify-between ${isRTL ? 'items-end sm:flex-row-reverse' : 'items-start'}`}>
+                <div className={`flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:justify-between ${isRTL ? 'items-end' : 'items-start'}`}>
                   <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <p className="text-[11px] font-semibold uppercase tracking-wide sm:tracking-widest text-muted-foreground mb-2">
                       {stat.title}
@@ -393,7 +393,7 @@ const DashboardOverview = () => {
           return (
             <Card key={index} className="bg-card border border-border shadow-sm hover:shadow-md transition-shadow duration-200">
               <CardContent className="p-4 sm:p-5">
-                <div className={`flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:justify-between ${isRTL ? 'items-end sm:flex-row-reverse' : 'items-start'}`}>
+                <div className={`flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:justify-between ${isRTL ? 'items-end' : 'items-start'}`}>
                   <div className={`flex-1 min-w-0 ${isRTL ? 'text-right' : 'text-left'}`}>
                     <p className="text-[11px] font-semibold uppercase tracking-wide sm:tracking-widest text-muted-foreground mb-2">
                       {stat.title}
@@ -403,12 +403,12 @@ const DashboardOverview = () => {
                     </p>
                     <div className="mt-2">
                       {stat.published !== undefined ? (
-                        <div className={`flex gap-1.5 flex-wrap ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <div className={`flex gap-1.5 flex-wrap ${''}`}>
                           <span className="inline-flex items-center rounded-md bg-status-approved px-1.5 py-0.5 text-[10px] font-medium text-status-approved">
                             {stat.published}↑
                           </span>
                           <span className="inline-flex items-center rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                            {stat.draft} draft
+                            {t('dashboardUi.drafts', { count: stat.draft })}
                           </span>
                         </div>
                       ) : (
@@ -432,9 +432,9 @@ const DashboardOverview = () => {
         {/* Recent Activity */}
         <Card className="bg-card border border-border shadow-sm">
           <CardHeader className="pb-3">
-            <CardTitle className={`flex items-center gap-2 text-base font-semibold ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+            <CardTitle className={`flex items-center gap-2 text-base font-semibold ${isRTL ? 'text-right' : ''}`}>
               <Clock className="h-4 w-4 text-brand flex-shrink-0" />
-              Recent Activity
+              {t('dashboardUi.recentActivity')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
@@ -457,7 +457,7 @@ const DashboardOverview = () => {
                   return (
                     <div
                       key={activity.id}
-                      className={`flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+                      className={`flex items-start gap-3 px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors ${''}`}
                     >
                       <div className={`p-1.5 rounded-full flex-shrink-0 mt-0.5 ${activity.bgColor}`}>
                         <IconComponent className={`h-3.5 w-3.5 ${activity.color}`} />
@@ -483,9 +483,9 @@ const DashboardOverview = () => {
         {/* System Status */}
         <Card className="bg-card border border-border shadow-sm">
           <CardHeader className="pb-3">
-            <CardTitle className={`flex items-center gap-2 text-base font-semibold ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+            <CardTitle className={`flex items-center gap-2 text-base font-semibold ${isRTL ? 'text-right' : ''}`}>
               <BarChart3 className="h-4 w-4 text-brand flex-shrink-0" />
-              System Status
+              {t('dashboardUi.systemStatus')}
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
@@ -503,9 +503,9 @@ const DashboardOverview = () => {
               ].map(({ icon: Icon, label, status, ok }) => (
                 <div
                   key={label}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
+                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors ${''}`}
                 >
-                  <div className={`flex items-center gap-2.5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                  <div className={`flex items-center gap-2.5 ${''}`}>
                     <Icon className={`h-4 w-4 flex-shrink-0 ${ok ? 'text-status-approved' : 'text-status-pending'}`} />
                     <span className="text-sm text-foreground">{label}</span>
                   </div>

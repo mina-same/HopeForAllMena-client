@@ -48,7 +48,7 @@ export function DataTable({
 
       {/* Row count header */}
       {countLabel && (
-        <div className={`flex items-center px-5 py-3 border-b border-border ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex items-center px-5 py-3 border-b border-border ${''}`}>
           <p className="text-sm font-medium text-foreground">{countLabel}</p>
         </div>
       )}
@@ -127,7 +127,7 @@ export function DataTable({
       {/* Pagination */}
       {totalPages > 1 && (
         <div
-          className={`flex items-center justify-between px-5 py-3 border-t border-border ${isRTL ? 'flex-row-reverse' : ''}`}
+          className={`flex items-center justify-between px-5 py-3 border-t border-border ${''}`}
         >
           <p className="text-xs text-muted-foreground tabular-nums">
             {currentPage} / {totalPages}

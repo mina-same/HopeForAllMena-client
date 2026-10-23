@@ -4,7 +4,6 @@
   "addCategory": "إضافة فئة جديدة",
   "searchPlaceholder": "البحث في الفئات...",
   "categoriesCount": "الفئات ({{count}})",
-  
   "form": {
     "createTitle": "إضافة فئة جديدة",
     "editTitle": "تعديل الفئة",
@@ -37,9 +36,9 @@
       "create": "إضافة فئة",
       "update": "تحديث الفئة",
       "saving": "جاري الحفظ..."
-    }
+    },
+    "minChars": "{{count}} أحرف على الأقل"
   },
-  
   "table": {
     "status": "الحالة",
     "books": "الكتب",
@@ -58,46 +57,39 @@
     "sortOrder": "الترتيب: {{order}}",
     "subcategory": "فئة فرعية"
   },
-  
   "status": {
     "active": "نشط",
     "inactive": "غير نشط",
     "all": "جميع الحالات"
   },
-  
   "actions": {
     "edit": "تعديل",
     "delete": "حذف",
     "toggleStatus": "تغيير الحالة"
   },
-  
   "deleteModal": {
     "title": "حذف الفئة",
     "description": "هل أنت متأكد من حذف \"{{name}}\"؟ لا يمكن التراجع عن هذا الإجراء وسيتم حذف الفئة نهائياً من النظام.",
     "confirmText": "حذف الفئة",
     "cancelText": "إلغاء"
   },
-  
   "pagination": {
     "previous": "السابق",
     "next": "التالي",
     "page": "الصفحة {{current}} من {{total}}"
   },
-  
   "loading": {
     "categories": "جاري تحميل الفئات...",
     "creating": "جاري إنشاء الفئة...",
     "updating": "جاري تحديث الفئة...",
     "deleting": "جاري حذف الفئة..."
   },
-  
   "success": {
     "categoryAdded": "تم إضافة {{name}} بنجاح.",
     "categoryUpdated": "تم تحديث {{name}} بنجاح.",
     "categoryDeleted": "تم حذف {{name}} بنجاح.",
     "statusUpdated": "تم تحديث حالة {{name}} إلى {{status}}."
   },
-  
   "errors": {
     "loadCategories": "فشل في تحميل الفئات. يرجى المحاولة مرة أخرى.",
     "createCategory": "فشل في حفظ الفئة. يرجى المحاولة مرة أخرى.",
@@ -107,12 +99,10 @@
     "authError": "يرجى تسجيل الدخول مرة أخرى للوصول إلى الفئات.",
     "unexpectedError": "حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى."
   },
-  
   "empty": {
     "noCategories": "لم يتم العثور على فئات. أضف فئتك الأولى للبدء.",
     "noResults": "لا توجد فئات تطابق معايير البحث الخاصة بك."
   },
-  
   "colors": {
     "blue": "أزرق",
     "green": "أخضر",
@@ -123,7 +113,6 @@
     "indigo": "نيلي",
     "pink": "وردي"
   },
-  
   "icons": {
     "FolderOpen": "مجلد مفتوح",
     "Book": "كتاب",

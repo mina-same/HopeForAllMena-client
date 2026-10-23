@@ -115,6 +115,7 @@
   },
   "page": {
     "title": "Calendar",
-    "description": "Manage your events and schedule with our interactive calendar"
+    "description": "Manage your events and schedule with our interactive calendar",
+    "breadcrumb": "Admin Dashboard"
   }
 }

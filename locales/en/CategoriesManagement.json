@@ -4,7 +4,6 @@
   "addCategory": "Add New Category",
   "searchPlaceholder": "Search categories...",
   "categoriesCount": "Categories ({{count}})",
-  
   "form": {
     "createTitle": "Add New Category",
     "editTitle": "Edit Category",
@@ -37,9 +36,9 @@
       "create": "Add Category",
       "update": "Update Category",
       "saving": "Saving..."
-    }
+    },
+    "minChars": "min {{count}} characters"
   },
-  
   "table": {
     "status": "Status",
     "books": "Books",
@@ -58,46 +57,39 @@
     "sortOrder": "Sort: {{order}}",
     "subcategory": "Subcategory"
   },
-  
   "status": {
     "active": "Active",
     "inactive": "Inactive",
     "all": "All Status"
   },
-  
   "actions": {
     "edit": "Edit",
     "delete": "Delete",
     "toggleStatus": "Toggle Status"
   },
-  
   "deleteModal": {
     "title": "Delete Category",
     "description": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone and will permanently remove the category from the system.",
     "confirmText": "Delete Category",
     "cancelText": "Cancel"
   },
-  
   "pagination": {
     "previous": "Previous",
     "next": "Next",
     "page": "Page {{current}} of {{total}}"
   },
-  
   "loading": {
     "categories": "Loading categories...",
     "creating": "Creating category...",
     "updating": "Updating category...",
     "deleting": "Deleting category..."
   },
-  
   "success": {
     "categoryAdded": "{{name}} has been added successfully.",
     "categoryUpdated": "{{name}} has been updated successfully.",
     "categoryDeleted": "{{name}} has been deleted successfully.",
     "statusUpdated": "{{name}} status has been updated to {{status}}."
   },
-  
   "errors": {
     "loadCategories": "Failed to fetch categories. Please try again.",
     "createCategory": "Failed to save category. Please try again.",
@@ -107,15 +99,13 @@
     "authError": "Please log in again to access categories.",
     "unexpectedError": "An unexpected error occurred. Please try again."
   },
-  
   "empty": {
     "noCategories": "No categories found. Add your first category to get started.",
     "noResults": "No categories match your search criteria."
   },
-  
   "colors": {
     "blue": "Blue",
-    "green": "Green", 
+    "green": "Green",
     "purple": "Purple",
     "orange": "Orange",
     "red": "Red",
@@ -123,7 +113,6 @@
     "indigo": "Indigo",
     "pink": "Pink"
   },
-  
   "icons": {
     "FolderOpen": "Folder Open",
     "Book": "Book",

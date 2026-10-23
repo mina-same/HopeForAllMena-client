@@ -327,7 +327,7 @@ export function CategoriesSection() {
               {isRTL ? (category.name_ar || category.name_en || category.name) : (category.name_en || category.name)}
             </p>
             <p className="text-xs text-muted-foreground">
-              {isRTL ? (category.name_en || category.name) : (category.name_ar || '')}
+              {isRTL ? '' : (category.name_ar || '')}
             </p>
           </div>
         </div>
@@ -513,7 +513,7 @@ export function CategoriesSection() {
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="description_en">{t('form.fields.descriptionEn')} * (min 10 characters)</Label>
+              <Label htmlFor="description_en">{t('form.fields.descriptionEn')} * ({t('form.minChars', { count: 10 })})</Label>
               <Textarea
                 id="description_en"
                 name="description_en"
@@ -532,7 +532,7 @@ export function CategoriesSection() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description_ar">{t('form.fields.descriptionAr')} * (min 10 characters)</Label>
+              <Label htmlFor="description_ar">{t('form.fields.descriptionAr')} * ({t('form.minChars', { count: 10 })})</Label>
               <Textarea
                 id="description_ar"
                 name="description_ar"

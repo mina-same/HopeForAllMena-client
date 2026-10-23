@@ -118,7 +118,7 @@ export function ReviewsSection() {
 
   const getStatusBadge = (status) => {
     const iconClass = currentLanguage === 'ar' ? 'h-3 w-3 xs:h-3.5 xs:w-3.5 mr-1' : 'h-3 w-3 xs:h-3.5 xs:w-3.5 ml-1';
-    const baseClasses = `text-xs xs:text-sm font-medium px-2 xs:px-2.5 py-1 xs:py-1.5 rounded-full transition-all duration-200 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`;
+    const baseClasses = `text-xs xs:text-sm font-medium px-2 xs:px-2.5 py-1 xs:py-1.5 rounded-full transition-all duration-200 ${''}`;
 
     switch (status) {
       case 'approved':
@@ -215,7 +215,7 @@ export function ReviewsSection() {
       label: t('table.headers.rating') || 'Rating',
       align: 'start',
       render: (review) => (
-        <div className={`flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex items-center gap-1 ${''}`}>
           {renderStars(review.rating)}
         </div>
       )
@@ -269,7 +269,7 @@ export function ReviewsSection() {
       subtitle={t('description')}
       dir={dir}
       filters={
-        <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+        <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 ${''}`}>
           <SearchInput
             value={searchTerm}
             onChange={setSearchTerm}
@@ -277,7 +277,7 @@ export function ReviewsSection() {
             dir={dir}
           />
           <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className={`w-full sm:w-40 h-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <SelectTrigger className={`w-full sm:w-40 h-10 ${''}`}>
               <SelectValue placeholder={t('filters.status.all')} />
             </SelectTrigger>
             <SelectContent>
@@ -288,7 +288,7 @@ export function ReviewsSection() {
             </SelectContent>
           </Select>
           <Select value={ratingFilter} onValueChange={setRatingFilter}>
-            <SelectTrigger className={`w-full sm:w-40 h-10 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <SelectTrigger className={`w-full sm:w-40 h-10 ${''}`}>
               <SelectValue placeholder={t('filters.rating.all')} />
             </SelectTrigger>
             <SelectContent>

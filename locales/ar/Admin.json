@@ -132,6 +132,12 @@
     "stars": "{{count}} نجوم",
     "newMessage": "رسالة جديدة من {{name}}",
     "unknown": "غير معروف",
-    "newBlog": "مقال جديد: \"{{title}}\""
+    "newBlog": "مقال جديد: \"{{title}}\"",
+    "accepted": "مقبولة",
+    "approved": "معتمدة",
+    "unread": "غير مقروءة",
+    "drafts": "{{count}} مسودة",
+    "recentActivity": "النشاط الأخير",
+    "systemStatus": "حالة النظام"
   }
 }

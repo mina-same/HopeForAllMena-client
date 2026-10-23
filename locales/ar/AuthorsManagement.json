@@ -27,7 +27,9 @@
     "booksCount": "{{count}} كتاب",
     "booksCount_plural": "{{count}} كتب",
     "addedOn": "تمت الإضافة {{date}}",
-    "featured": "⭐ مميز"
+    "featured": "⭐ مميز",
+    "booksColumn": "الكتب",
+    "addedColumn": "تاريخ الإضافة"
   },
   "form": {
     "createTitle": "إضافة مؤلف جديد",

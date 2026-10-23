@@ -13,32 +13,6 @@ export const queryClient = new QueryClient({
   },
 });
 
-// Loads an admin list through the cache. Returns cached data when it is fresh,
-// otherwise runs `fetcher` (which must return the parsed data or throw).
-export const cachedGet = (key, fetcher) =>
-  queryClient.fetchQuery({ queryKey: ['admin', ...key], queryFn: fetcher, retry: false });
-
-// Drop-in replacement for `fetch` on JSON list loads: returns a Response-like
-// object so existing `response.ok` / `response.json()` code keeps working.
-export const cachedFetch = async (key, url, options) => {
-  try {
-    const data = await cachedGet(key, async () => {
-      const response = await fetch(url, options);
-      if (!response.ok) {
-        const error = new Error(`Request failed with status ${response.status}`);
-        error.status = response.status;
-        error.body = await response.text();
-        throw error;
-      }
-      return response.json();
-    });
-    return { ok: true, status: 200, json: async () => data, text: async () => JSON.stringify(data) };
-  } catch (error) {
-    if (!error.status) throw error;
-    return { ok: false, status: error.status, json: async () => JSON.parse(error.body || '{}'), text: async () => error.body || '' };
-  }
-};
-
 // Any successful write (POST/PUT/PATCH/DELETE) can change what lists show,
 // so mark all cached data stale; the next read fetches fresh data.
 export const invalidateAfterWrite = (method) => {

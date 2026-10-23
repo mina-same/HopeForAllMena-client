@@ -48,7 +48,7 @@ export function AdminModal({
       >
         {/* ── Header ────────────────────────────── */}
         <DialogHeader
-          className={`flex flex-row items-center gap-3 pb-4 border-b border-border ${isRTL ? 'flex-row-reverse' : ''}`}
+          className={`flex flex-row items-center gap-3 pb-4 border-b border-border ${''}`}
         >
           <DialogTitle
             className={`flex-1 text-base font-semibold text-foreground leading-snug ${isRTL ? 'text-right' : 'text-left'}`}
@@ -75,7 +75,7 @@ export function AdminModal({
         {/* ── Footer ────────────────────────────── */}
         {footer && (
           <div
-            className={`flex items-center gap-3 pt-4 border-t border-border ${isRTL ? 'flex-row-reverse' : 'justify-end'}`}
+            className={`flex items-center gap-3 pt-4 border-t border-border ${'justify-end'}`}
           >
             {footer}
           </div>

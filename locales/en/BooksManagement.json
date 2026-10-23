@@ -105,8 +105,10 @@
     "unknownAuthor": "Unknown Author",
     "unknownCategory": "Unknown Category",
     "pagesCount": "{{count}} pages",
-    "reviewsCount": "{{count}} review",
-    "reviewsCount_plural": "{{count}} reviews"
+    "reviewsCount": "{{count}} reviews",
+    "reviewsCount_plural": "{{count}} reviews",
+    "yearFormat": "Year / Format",
+    "rating": "Rating"
   },
   "status": {
     "published": "Published",

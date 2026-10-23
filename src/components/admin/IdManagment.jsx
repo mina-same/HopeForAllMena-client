@@ -57,7 +57,7 @@ const IDCardGenerator = () => {
           {/* CSV Upload Section */}
           <Card className="shadow-soft">
             <CardHeader className="p-4 xs:p-5 sm:p-6">
-              <CardTitle className={`flex items-center gap-2 text-base xs:text-lg sm:text-xl ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+              <CardTitle className={`flex items-center gap-2 text-base xs:text-lg sm:text-xl ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                 <Upload className="h-4 w-4 xs:h-5 xs:w-5 text-[#2194D1]" />
                 {t('upload.title')}
               </CardTitle>
@@ -79,7 +79,7 @@ const IDCardGenerator = () => {
               </div>
               {csvData.length > 0 && (
                 <div className="bg-secondary p-3 xs:p-4 rounded-lg">
-                  <div className={`flex items-center gap-2 text-secondary-foreground ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+                  <div className={`flex items-center gap-2 text-secondary-foreground ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                     <Users className="h-4 w-4" />
                     <span className="text-sm xs:text-base">{t('upload.loaded', { count: csvData.length })}</span>
                   </div>
@@ -97,7 +97,7 @@ const IDCardGenerator = () => {
           {/* Club and Church Input Section */}
           <Card className="shadow-soft">
             <CardHeader className="p-4 xs:p-5 sm:p-6">
-              <CardTitle className={`flex items-center gap-2 text-base xs:text-lg sm:text-xl ${currentLanguage === 'ar' ? 'flex-row-reverse text-right' : 'text-left'}`}>
+              <CardTitle className={`flex items-center gap-2 text-base xs:text-lg sm:text-xl ${currentLanguage === 'ar' ? 'text-right' : 'text-left'}`}>
                 <FileText className="h-4 w-4 xs:h-5 xs:w-5 text-[#2194D1]" />
                 {t('clubChurch.title')}
               </CardTitle>
@@ -191,15 +191,15 @@ const IDCardGenerator = () => {
                     disabled={loading}
                     variant="premium"
                     size="lg"
-                    className={`px-4 xs:px-6 sm:px-8 text-sm xs:text-base w-full xs:w-auto max-w-xs ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+                    className={`px-4 xs:px-6 sm:px-8 text-sm xs:text-base w-full xs:w-auto max-w-xs ${''}`}
                   >
                     {loading ? (
-                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-2 ${''}`}>
                         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current" />
                         <span className="text-sm xs:text-base">{t('generate.generating')}</span>
                       </div>
                     ) : (
-                      <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex items-center gap-2 ${''}`}>
                         <Download className="h-4 w-4 xs:h-5 xs:w-5" />
                         <span className="text-sm xs:text-base">{t('generate.button')}</span>
                       </div>
@@ -213,9 +213,9 @@ const IDCardGenerator = () => {
               disabled
               variant="premium"
               size="lg"
-              className={`px-4 xs:px-6 sm:px-8 text-sm xs:text-base w-full xs:w-auto max-w-xs ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}
+              className={`px-4 xs:px-6 sm:px-8 text-sm xs:text-base w-full xs:w-auto max-w-xs ${''}`}
             >
-              <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-center gap-2 ${''}`}>
                 <Download className="h-4 w-4 xs:h-5 xs:w-5" />
                 <span className="text-sm xs:text-base">{t('generate.button')}</span>
               </div>

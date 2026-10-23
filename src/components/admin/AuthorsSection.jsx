@@ -254,7 +254,7 @@ export function AuthorsSection() {
   };
 
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString(currentLanguage === 'ar' ? 'ar-EG' : 'en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric'
@@ -319,7 +319,7 @@ export function AuthorsSection() {
     },
     {
       key: 'booksCount',
-      label: 'Books',
+      label: t('table.booksColumn', 'Books'),
       align: 'center',
       skeletonWidth: '30px',
       render: (author) => (
@@ -328,7 +328,7 @@ export function AuthorsSection() {
     },
     {
       key: 'createdAt',
-      label: 'Added',
+      label: t('table.addedColumn', 'Added'),
       skeletonWidth: '80px',
       render: (author) => (
         <span className="text-xs text-muted-foreground">{formatDate(author.createdAt)}</span>
@@ -573,7 +573,7 @@ export function AuthorsSection() {
         {viewingAuthor && (
           <div className="space-y-5">
             {/* Avatar + name */}
-            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex items-center gap-4 ${''}`}>
               <Avatar className="h-16 w-16 border border-border flex-shrink-0">
                 <AvatarImage src={viewingAuthor.avatarUrl} alt={authorName(viewingAuthor)} />
                 <AvatarFallback className="bg-brand-light text-brand font-semibold text-xl">
@@ -582,7 +582,7 @@ export function AuthorsSection() {
               </Avatar>
               <div className={isRTL ? 'text-right' : 'text-left'}>
                 <h3 className="text-lg font-semibold text-foreground">{authorName(viewingAuthor)}</h3>
-                <div className={`flex items-center gap-2 mt-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex items-center gap-2 mt-1 ${''}`}>
                   {viewingAuthor.featured && (
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-700">
                       {t('table.featured')}

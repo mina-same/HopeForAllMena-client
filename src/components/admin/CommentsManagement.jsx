@@ -327,7 +327,7 @@ const CommentsManagement = () => {
       subtitle={t('description')}
       dir={dir}
       filters={
-        <div className={`flex flex-col ${isRTL ? 'sm:flex-row-reverse' : 'sm:flex-row'} gap-3 md:gap-4`}>
+        <div className={`flex flex-col ${'sm:flex-row'} gap-3 md:gap-4`}>
           <div className="flex-1">
             <SearchInput
               value={filters.search}
@@ -483,8 +483,8 @@ const CommentsManagement = () => {
           <Card key={comment._id} className="border border-border hover:shadow-md transition-shadow">
             <CardContent className="p-3 xs:p-4">
               {/* Comment Header */}
-              <div className={`flex flex-col xs:flex-row xs:items-start xs:justify-between gap-2 xs:gap-3 ${isRTL ? 'xs:flex-row-reverse' : ''}`}>
-                <div className={`flex items-center gap-2 xs:gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex flex-col xs:flex-row xs:items-start xs:justify-between gap-2 xs:gap-3 ${''}`}>
+                <div className={`flex items-center gap-2 xs:gap-3 ${''}`}>
                   <input
                     type="checkbox"
                     checked={selectedComments.includes(comment._id)}
@@ -500,7 +500,7 @@ const CommentsManagement = () => {
                     </p>
                   </div>
                 </div>
-                <div className={`flex items-center gap-2 ${isRTL ? 'self-end xs:self-start flex-row-reverse' : 'self-start'}`}>
+                <div className={`flex items-center gap-2 ${isRTL ? 'self-end xs:self-start' : 'self-start'}`}>
                   <Badge variant={
                     comment.status === 'approved' ? 'default' :
                     comment.status === 'pending' ? 'secondary' : 'destructive'
@@ -538,7 +538,7 @@ const CommentsManagement = () => {
               </div>
 
               {/* Actions */}
-              <div className={`flex flex-wrap items-center gap-1 xs:gap-2 mt-3 pt-3 border-t border-border ${isRTL ? 'justify-end flex-row-reverse' : 'justify-start'}`}>
+              <div className={`flex flex-wrap items-center gap-1 xs:gap-2 mt-3 pt-3 border-t border-border ${isRTL ? 'justify-end' : 'justify-start'}`}>
                 {comment.status === 'pending' && (
                   <>
                     <Button
@@ -615,7 +615,7 @@ const CommentsManagement = () => {
             <Button
               variant="destructive"
               onClick={handleDeleteConfirm}
-              className={isRTL ? 'flex-row-reverse' : ''}
+              className={''}
             >
               <Trash2 className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
               {t('deleteModal.confirmDelete')}

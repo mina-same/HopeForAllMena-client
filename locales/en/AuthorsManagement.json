@@ -27,7 +27,9 @@
     "booksCount": "{{count}} book",
     "booksCount_plural": "{{count}} books",
     "addedOn": "Added {{date}}",
-    "featured": "⭐ Featured"
+    "featured": "⭐ Featured",
+    "booksColumn": "Books",
+    "addedColumn": "Added"
   },
   "form": {
     "createTitle": "Add New Author",

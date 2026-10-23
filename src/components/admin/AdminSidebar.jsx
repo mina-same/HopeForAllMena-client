@@ -91,29 +91,29 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   // Notification badge counts, cached and polled every 30s by TanStack Query
   const canSeeReviews = hasSectionPermission('reviews');
   const canSeeMessages = hasSectionPermission('contact-messages');
-  const { data: counts } = useQuery({
-    queryKey: ['admin', 'notificationCounts', canSeeReviews, canSeeMessages],
-    enabled: !!user,
+  const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+  const fetchCountPayload = async (url) => {
+    const token = authStorage.getToken();
+    const headers = { 'Content-Type': 'application/json', ...(token && { Authorization: `Bearer ${token}` }) };
+    const response = await fetch(url, { headers });
+    if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+    return (await response.json()).data;
+  };
+  // Keys share the resource prefix, so invalidating ['reviews'] / ['contact-messages'] refreshes the badges
+  const pendingReviewsQuery = useQuery({
+    queryKey: ['reviews', 'pending-count'],
+    queryFn: () => fetchCountPayload(`${API_URL}/reviews?status=pending&limit=1`),
+    enabled: !!user && canSeeReviews,
     refetchInterval: 30000,
-    queryFn: async () => {
-      const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
-      const token = authStorage.getToken();
-      const headers = { 'Content-Type': 'application/json', ...(token && { Authorization: `Bearer ${token}` }) };
-      const getTotal = async (url, field) => {
-        const response = await fetch(url, { headers });
-        if (!response.ok) return 0;
-        const data = await response.json();
-        return data.data?.pagination?.[field] || 0;
-      };
-      const [reviews, messages] = await Promise.all([
-        canSeeReviews ? getTotal(`${API_URL}/reviews?status=pending&limit=1`, 'totalReviews') : 0,
-        canSeeMessages ? getTotal(`${API_URL}/contact-messages?status=new&limit=1`, 'totalMessages') : 0,
-      ]);
-      return { reviews, messages };
-    },
   });
-  const pendingReviews = counts?.reviews || 0;
-  const unreadMessages = counts?.messages || 0;
+  const unreadMessagesQuery = useQuery({
+    queryKey: ['contact-messages', 'unread-count'],
+    queryFn: () => fetchCountPayload(`${API_URL}/contact-messages?status=new&limit=1`),
+    enabled: !!user && canSeeMessages,
+    refetchInterval: 30000,
+  });
+  const pendingReviews = (canSeeReviews && pendingReviewsQuery.data?.pagination?.totalReviews) || 0;
+  const unreadMessages = (canSeeMessages && unreadMessagesQuery.data?.pagination?.totalMessages) || 0;
 
   // Filter main items based on permissions
   const mainItems = [

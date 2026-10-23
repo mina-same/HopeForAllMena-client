@@ -248,7 +248,7 @@ const TrainingBooksSection = () => {
             {isRTL && book.nameAr ? book.nameAr : book.name}
           </p>
           <p className="text-xs text-muted-foreground">
-            {isRTL ? book.name : (book.nameAr || '')}
+            {isRTL ? '' : (book.nameAr || '')}
           </p>
         </div>
       ),

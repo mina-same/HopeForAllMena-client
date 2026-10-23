@@ -187,5 +187,11 @@
     "general": "An error occurred. Please try again.",
     "emailTaken": "Email address is already taken",
     "usernameTaken": "Username is already taken"
+  },
+  "roles": {
+    "admin": "Admin",
+    "author": "Author",
+    "editor": "Editor",
+    "tester": "Tester"
   }
 }

@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { useToast } from '../../hooks/use-toast';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import eventService from '../../services/eventService';
 import { authStorage } from '../../utils/storage';
 import { DataTable } from '../ui/DataTable';
@@ -20,11 +21,11 @@ const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 
 export const EventsSection = () => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const { t } = useTranslation();
   const { language: currentLanguage } = useI18next();
 
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
@@ -82,28 +83,25 @@ export const EventsSection = () => {
     { value: 'cancelled', label: 'Cancelled' }
   ];
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  const eventsQuery = useQuery({
+    queryKey: ['events'],
+    queryFn: () => eventService.getAllEvents()
+  });
+  const events = eventsQuery.data?.success ? (eventsQuery.data.data || []) : [];
+  const loading = saving || eventsQuery.isLoading;
 
-  const fetchEvents = async () => {
-    try {
-      setLoading(true);
-      const response = await eventService.getAllEvents();
-      if (response.success) {
-        setEvents(response.data || []);
-      }
-    } catch (error) {
-      console.error('Error fetching events:', error);
+  useEffect(() => {
+    if (eventsQuery.isError) {
+      console.error('Error fetching events:', eventsQuery.error);
       toast({
         title: 'Error',
         description: 'Failed to fetch events',
         variant: 'destructive'
       });
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [eventsQuery.isError]);
+
+  const fetchEvents = () => queryClient.invalidateQueries({ queryKey: ['events'] });
 
   const filteredEvents = events.filter(event => {
     const matchesSearch = event.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -201,14 +199,14 @@ export const EventsSection = () => {
     e.preventDefault();
 
     try {
-      setLoading(true);
+      setSaving(true);
 
       let imageData = { url: eventForm.image, publicId: eventForm.imagePublicId };
 
       if (imageFile) {
         imageData = await uploadImage();
         if (!imageData) {
-          setLoading(false);
+          setSaving(false);
           return;
         }
       }
@@ -252,7 +250,7 @@ export const EventsSection = () => {
         variant: 'destructive'
       });
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
 
@@ -285,7 +283,7 @@ export const EventsSection = () => {
   const handleDelete = async (eventId) => {
     if (window.confirm('Are you sure you want to delete this event?')) {
       try {
-        setLoading(true);
+        setSaving(true);
         const response = await eventService.deleteEvent(eventId);
         if (response.success) {
           toast({
@@ -302,7 +300,7 @@ export const EventsSection = () => {
           variant: 'destructive'
         });
       } finally {
-        setLoading(false);
+        setSaving(false);
       }
     }
   };

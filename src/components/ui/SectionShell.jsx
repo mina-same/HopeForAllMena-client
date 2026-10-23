@@ -29,10 +29,10 @@ export function SectionShell({
 
       {/* ── Page header ─────────────────────────── */}
       <div
-        className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${isRTL ? 'sm:flex-row-reverse' : ''}`}
+        className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 ${''}`}
       >
         <div className={isRTL ? 'text-right' : 'text-left'}>
-          <div className={`flex items-center gap-2.5 mb-0.5 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center gap-2.5 mb-0.5 ${''}`}>
             <div className="w-1 h-5 rounded-full bg-brand flex-shrink-0" />
             <h2 className="text-xl font-semibold text-foreground tracking-tight">{title}</h2>
           </div>
@@ -49,7 +49,7 @@ export function SectionShell({
       {filters && (
         <Card className="border border-border shadow-xs">
           <CardContent className="p-3 sm:p-4">
-            <div className={`flex flex-col sm:flex-row gap-3 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+            <div className={`flex flex-col sm:flex-row gap-3 ${''}`}>
               {filters}
             </div>
           </CardContent>
