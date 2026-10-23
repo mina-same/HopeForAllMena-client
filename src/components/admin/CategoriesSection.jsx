@@ -14,6 +14,7 @@ import { useI18next } from 'gatsby-plugin-react-i18next';
 import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 
 const categoryIcons = [
   'FolderOpen', 'Book', 'Tag', 'Code', 'Database', 'Shield', 'Cloud', 'Brain', 'Heart', 'Star', 'Rocket', 'Search'
@@ -32,19 +33,15 @@ const categoryColors = [
 
 export function CategoriesSection() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const { t } = useTranslation('CategoriesManagement');
   const { language: currentLanguage } = useI18next();
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [statusFilter, setStatusFilter] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalCategories, setTotalCategories] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   // Delete confirmation modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -62,58 +59,49 @@ export function CategoriesSection() {
     sortOrder: 0
   });
 
-  // Fetch categories
+  const categoryParams = {
+    page: currentPage,
+    limit: 10,
+    search: searchTerm,
+    sortBy: 'createdAt',
+    sortOrder: 'asc'
+  };
+
+  const categoriesQuery = useQuery({
+    queryKey: ['categories', categoryParams],
+    queryFn: () => categoriesAPI.getCategories(categoryParams).then(res => res.data.data),
+    placeholderData: keepPreviousData
+  });
+  const categories = categoriesQuery.data?.categories ?? [];
+  const totalPages = categoriesQuery.data?.pagination.totalPages ?? 1;
+  const totalCategories = categoriesQuery.data?.pagination.totalCategories ?? 0;
+  const loading = categoriesQuery.isLoading;
+
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        const params = {
-          page: currentPage,
-          limit: 10,
-          search: searchTerm,
-          sortBy: 'createdAt',
-          sortOrder: 'asc'
-        };
+    if (categoriesQuery.isError) {
+      const error = categoriesQuery.error;
+      console.error('Failed to fetch categories:', error);
+      console.error('Error details:', error.response?.data);
+      console.error('Error status:', error.response?.status);
+      console.error('Validation errors:', error.response?.data?.errors);
 
-        console.log('Frontend: Fetching categories with params:', params);
-        const { authStorage } = require('../../utils/storage');
-        console.log('Frontend: Auth token exists:', !!authStorage.getToken());
-        console.log('Frontend: User logged in:', !!authStorage.getUser());
-        const response = await categoriesAPI.getCategories(params);
-        console.log('Frontend: Categories response:', response.data);
-        console.log('Frontend: Categories data:', response.data.data.categories);
-        response.data.data.categories.forEach(cat => {
-          console.log(`Frontend: Category ${cat.name_en} has booksCount: ${cat.booksCount}`);
+      if (error.response?.status === 401) {
+        toast({
+          title: t('errors.authError'),
+          description: t('errors.authError'),
+          variant: "destructive"
         });
-        setCategories(response.data.data.categories);
-        setTotalPages(response.data.data.pagination.totalPages);
-        setTotalCategories(response.data.data.pagination.totalCategories);
-      } catch (error) {
-        console.error('Failed to fetch categories:', error);
-        console.error('Error details:', error.response?.data);
-        console.error('Error status:', error.response?.status);
-        console.error('Validation errors:', error.response?.data?.errors);
-
-        if (error.response?.status === 401) {
-          toast({
-            title: t('errors.authError'),
-            description: t('errors.authError'),
-            variant: "destructive"
-          });
-        } else {
-          toast({
-            title: t('errors.loadCategories'),
-            description: error.response?.data?.message || t('errors.loadCategories'),
-            variant: "destructive"
-          });
-        }
-      } finally {
-        setLoading(false);
+      } else {
+        toast({
+          title: t('errors.loadCategories'),
+          description: error.response?.data?.message || t('errors.loadCategories'),
+          variant: "destructive"
+        });
       }
-    };
+    }
+  }, [categoriesQuery.isError]);
 
-    fetchCategories();
-  }, [currentPage, searchTerm, statusFilter, toast, t, refetchTrigger]);
+  const fetchCategories = () => queryClient.invalidateQueries({ queryKey: ['categories'] });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -215,7 +203,7 @@ export function CategoriesSection() {
         parentCategory: 'none',
         sortOrder: 0
       });
-      setRefetchTrigger(prev => prev + 1);
+      fetchCategories();
     } catch (error) {
       console.error('Failed to save category:', error);
       console.error('Category creation error details:', error.response?.data);
@@ -264,7 +252,8 @@ export function CategoriesSection() {
         title: t('success.categoryDeleted', { name: categoryToDelete.name_en || categoryToDelete.name }),
         description: t('success.categoryDeleted', { name: categoryToDelete.name_en || categoryToDelete.name }),
       });
-      setRefetchTrigger(prev => prev + 1);
+      fetchCategories();
+      queryClient.invalidateQueries({ queryKey: ['books'] });
     } catch (error) {
       console.error('Failed to delete category:', error);
       toast({
@@ -286,7 +275,7 @@ export function CategoriesSection() {
         title: t('success.statusUpdated', { name: category.name_en || category.name, status: t(`status.${newStatus}`) }),
         description: t('success.statusUpdated', { name: category.name_en || category.name, status: t(`status.${newStatus}`) }),
       });
-      setRefetchTrigger(prev => prev + 1);
+      fetchCategories();
     } catch (error) {
       console.error('Failed to update status:', error);
       toast({

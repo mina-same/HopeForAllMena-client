@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { authStorage } from '../utils/storage';
 
+import { invalidateAfterWrite } from '../lib/queryClient';
+
 // API Configuration
 const API_BASE_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 
@@ -32,7 +34,11 @@ api.interceptors.request.use(
 
 // Response interceptor to handle auth errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Successful writes make cached lists stale (see lib/queryClient)
+    invalidateAfterWrite(response.config?.method);
+    return response;
+  },
   (error) => {
     if (error.response?.status === 401) {
       // Only redirect to login if we're not already on the login page

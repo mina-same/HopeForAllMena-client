@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { coursesAPI, enrollmentsAPI } from '../services/api';
 import coursesData from '../data/courses.json';
 import { authStorage } from '../utils/storage';
@@ -8,14 +9,14 @@ const CourseContext = createContext(null);
 // includeDrafts: admin views list every course status, public pages only published ones
 export const CourseProvider = ({ children, includeDrafts = false }) => {
   const listStatus = includeDrafts ? 'all' : 'published';
-  const [courses, setCourses] = useState([]);
+  const queryClient = useQueryClient();
   const [reviews, setReviews] = useState([]);
-  const [enrollments, setEnrollments] = useState([]);
-  const [institutions, setInstitutions] = useState(coursesData.institutions);
   const [companies] = useState(coursesData.companies);
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [mutating, setMutating] = useState(false);
   const [error, setError] = useState(null);
+  // Enrollments contain applicants' personal data and are admin-only
+  const [hasToken] = useState(() => !!authStorage.getToken());
   const [filters, setFiltersState] = useState({
     search: '',
     category: 'all',
@@ -29,101 +30,95 @@ export const CourseProvider = ({ children, includeDrafts = false }) => {
     sortBy: 'newest'
   });
 
-  // Load initial data
+  const coursesKey = ['courses', { status: listStatus, limit: 100 }];
+  const coursesQuery = useQuery({
+    queryKey: coursesKey,
+    queryFn: () => coursesAPI.getCourses({ status: listStatus, limit: 100 })
+  });
+  const enrollmentsQuery = useQuery({
+    queryKey: ['enrollments'],
+    queryFn: () => enrollmentsAPI.getEnrollments(),
+    enabled: hasToken
+  });
+  const institutionsQuery = useQuery({
+    queryKey: ['institutions'],
+    queryFn: () => coursesAPI.getInstitutions()
+  });
+
+  const courses = coursesQuery.isError
+    ? coursesData.courses || []
+    : coursesQuery.data?.data?.courses || [];
+  const enrollments = enrollmentsQuery.data?.data?.enrollments || [];
+  const institutions = institutionsQuery.data?.data?.institutions || coursesData.institutions;
+  const loading = coursesQuery.isLoading || enrollmentsQuery.isLoading || institutionsQuery.isLoading || mutating;
+
   useEffect(() => {
-    const loadInitialData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // Load courses, enrollments, and institutions in parallel
-        const [coursesResponse, enrollmentsResponse, institutionsResponse] = await Promise.allSettled([
-          coursesAPI.getCourses({ status: listStatus, limit: 100 }),
-          // Enrollments contain applicants' personal data and are admin-only
-          authStorage.getToken() ? enrollmentsAPI.getEnrollments() : Promise.resolve({ data: { enrollments: [] } }),
-          coursesAPI.getInstitutions()
-        ]);
-        
-        // Handle courses
-        if (coursesResponse.status === 'fulfilled') {
-          setCourses(coursesResponse.value.data?.courses || []);
-        } else {
-          console.warn('Failed to load courses, using fallback data:', coursesResponse.reason);
-          setCourses(coursesData.courses || []);
-        }
-        
-        // Handle enrollments
-        if (enrollmentsResponse.status === 'fulfilled') {
-          setEnrollments(enrollmentsResponse.value.data?.enrollments || []);
-        } else {
-          console.warn('Failed to load enrollments:', enrollmentsResponse.reason);
-        }
-        
-        // Handle institutions
-        if (institutionsResponse.status === 'fulfilled') {
-          setInstitutions(institutionsResponse.value.data?.institutions || coursesData.institutions);
-        }
-        
-      } catch (err) {
-        console.error('Error loading initial data:', err);
-        setError('Failed to load course data');
-        // Use fallback data
-        setCourses(coursesData.courses || []);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadInitialData();
-  }, []);
+    if (coursesQuery.isError) {
+      console.warn('Failed to load courses, using fallback data:', coursesQuery.error);
+    }
+  }, [coursesQuery.isError]);
+
+  useEffect(() => {
+    if (enrollmentsQuery.isError) {
+      console.warn('Failed to load enrollments:', enrollmentsQuery.error);
+    }
+  }, [enrollmentsQuery.isError]);
+
+  const refreshCourses = () => queryClient.invalidateQueries({ queryKey: ['courses'] });
+  const refreshEnrollments = () => queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+
+  const setCourses = (updater) => {
+    queryClient.setQueryData(coursesKey, (old) => {
+      const prev = old?.data?.courses || [];
+      const next = typeof updater === 'function' ? updater(prev) : updater;
+      return { ...old, data: { ...old?.data, courses: next } };
+    });
+  };
 
   const addCourse = async (courseData) => {
     try {
-      setLoading(true);
+      setMutating(true);
       const response = await coursesAPI.createCourse(courseData);
       const newCourse = response.data.course;
-      setCourses(prev => [newCourse, ...prev]);
+      await refreshCourses();
       return newCourse;
     } catch (error) {
       console.error('Error creating course:', error);
       setError('Failed to create course');
       throw error;
     } finally {
-      setLoading(false);
+      setMutating(false);
     }
   };
 
   const updateCourse = async (id, courseData) => {
     try {
-      setLoading(true);
+      setMutating(true);
       const response = await coursesAPI.updateCourse(id, courseData);
       const updatedCourse = response.data.course;
-      setCourses(prev => prev.map(course => 
-        course._id === id || course.id === id ? updatedCourse : course
-      ));
+      await refreshCourses();
       return updatedCourse;
     } catch (error) {
       console.error('Error updating course:', error);
       setError('Failed to update course');
       throw error;
     } finally {
-      setLoading(false);
+      setMutating(false);
     }
   };
 
   const deleteCourse = async (id) => {
     try {
-      setLoading(true);
+      setMutating(true);
       await coursesAPI.deleteCourse(id);
-      setCourses(prev => prev.filter(course => course._id !== id && course.id !== id));
       setReviews(prev => prev.filter(review => review.courseId !== id));
-      setEnrollments(prev => prev.filter(enrollment => enrollment.courseId !== id));
+      await Promise.all([refreshCourses(), refreshEnrollments()]);
     } catch (error) {
       console.error('Error deleting course:', error);
       setError('Failed to delete course');
       throw error;
     } finally {
-      setLoading(false);
+      setMutating(false);
     }
   };
 
@@ -159,30 +154,24 @@ export const CourseProvider = ({ children, includeDrafts = false }) => {
 
   const addEnrollment = async (enrollmentData) => {
     try {
-      setLoading(true);
+      setMutating(true);
       const response = await enrollmentsAPI.createEnrollment(enrollmentData);
       const newEnrollment = response.data.enrollment;
-      setEnrollments(prev => [newEnrollment, ...prev]);
-      
       // Refresh courses to get updated enrollment counts
-      const coursesResponse = await coursesAPI.getCourses({ status: listStatus, limit: 100 });
-      if (coursesResponse.data?.courses) {
-        setCourses(coursesResponse.data.courses);
-      }
-      
+      await Promise.all([refreshEnrollments(), refreshCourses()]);
       return newEnrollment;
     } catch (error) {
       console.error('Error creating enrollment:', error);
       setError('Failed to create enrollment');
       throw error;
     } finally {
-      setLoading(false);
+      setMutating(false);
     }
   };
 
   const updateEnrollmentStatus = async (id, status) => {
     try {
-      setLoading(true);
+      setMutating(true);
       let response;
       
       if (status === 'approved') {
@@ -194,43 +183,30 @@ export const CourseProvider = ({ children, includeDrafts = false }) => {
       }
       
       const updatedEnrollment = response.data.enrollment;
-      setEnrollments(prev => prev.map(enrollment => 
-        enrollment._id === id || enrollment.id === id ? updatedEnrollment : enrollment
-      ));
-      
       // Refresh courses to get updated enrollment counts
-      const coursesResponse = await coursesAPI.getCourses({ status: listStatus, limit: 100 });
-      if (coursesResponse.data?.courses) {
-        setCourses(coursesResponse.data.courses);
-      }
-      
+      await Promise.all([refreshEnrollments(), refreshCourses()]);
       return updatedEnrollment;
     } catch (error) {
       console.error('Error updating enrollment status:', error);
       setError('Failed to update enrollment status');
       throw error;
     } finally {
-      setLoading(false);
+      setMutating(false);
     }
   };
 
   const deleteEnrollment = async (id) => {
     try {
-      setLoading(true);
+      setMutating(true);
       await enrollmentsAPI.deleteEnrollment(id);
-      setEnrollments(prev => prev.filter(e => e._id !== id && e.id !== id));
-      
       // Refresh courses to get updated enrollment counts
-      const coursesResponse = await coursesAPI.getCourses({ status: listStatus, limit: 100 });
-      if (coursesResponse.data?.courses) {
-        setCourses(coursesResponse.data.courses);
-      }
+      await Promise.all([refreshEnrollments(), refreshCourses()]);
     } catch (error) {
       console.error('Error deleting enrollment:', error);
       setError('Failed to delete enrollment');
       throw error;
     } finally {
-      setLoading(false);
+      setMutating(false);
     }
   };
 

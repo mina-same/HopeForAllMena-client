@@ -31,7 +31,7 @@
   },
   "categories": {
     "news": "News",
-    "events": "Events", 
+    "events": "Events",
     "updates": "Updates",
     "stories": "Stories",
     "announcements": "Announcements"
@@ -86,5 +86,48 @@
   "messages": {
     "createSuccess": "Blog post created successfully!",
     "createError": "Failed to create blog post."
+  },
+  "edit": {
+    "content": "Blog Content",
+    "settings": "Blog Settings",
+    "category": "Category",
+    "contentAr": "Content (Arabic)",
+    "contentEn": "Content (English) *",
+    "currentImage": "Current Image:",
+    "draft": "Draft",
+    "published": "Published",
+    "title": "Edit Blog Post",
+    "excerptAr": "Excerpt (Arabic)",
+    "excerptEn": "Excerpt (English)",
+    "featuredImage": "Featured Image",
+    "loadingData": "Loading blog data...",
+    "loading": "Loading...",
+    "newImagePreview": "New Image Preview:",
+    "status": "Status",
+    "tagsAr": "Tags (Arabic)",
+    "tagsEn": "Tags (English)",
+    "titleAr": "Title (Arabic)",
+    "titleEn": "Title (English) *",
+    "subtitle": "Update your blog post content and settings",
+    "featuredPost": "Featured Post",
+    "excerptPh": "Brief description of the blog post...",
+    "titlePh": "Enter blog title...",
+    "contentPh": "Write your blog content here...",
+    "tagsPh": "tag1, tag2, tag3...",
+    "notFound": "Blog not found",
+    "loadFailed": "Failed to load blog data",
+    "required": "Title and content are required",
+    "updateFailed": "Failed to update blog",
+    "back": "Back to Blogs",
+    "excerptHint": "This will be shown in blog previews and search results",
+    "tagsHint": "Separate tags with commas",
+    "featuredHint": "Featured posts appear prominently on the homepage",
+    "updating": "Updating...",
+    "update": "Update Blog Post",
+    "imageHint": "Upload a new image to replace the current one (optional)"
+  },
+  "preview": {
+    "draft": "Draft",
+    "published": "Published"
   }
 }

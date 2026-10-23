@@ -53,6 +53,7 @@
     "rejected": "مرفوضة"
   },
   "actions": {
+    "close": "إغلاق",
     "view": "عرض التفاصيل",
     "downloadAttachments": "تحميل الملفات",
     "updateStatus": "تحديث الحالة"

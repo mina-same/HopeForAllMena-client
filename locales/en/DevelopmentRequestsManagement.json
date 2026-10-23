@@ -53,6 +53,7 @@
     "rejected": "Rejected"
   },
   "actions": {
+    "close": "Close",
     "view": "View Details",
     "downloadAttachments": "Download Files",
     "updateStatus": "Update Status"

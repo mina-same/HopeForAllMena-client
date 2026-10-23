@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 // Removed MUI date pickers - using native HTML date inputs instead
 import moment from 'moment';
+import 'moment/locale/ar';
+import { useTranslation } from 'gatsby-plugin-react-i18next';
 import eventService from '../../services/eventService';
 import { IconCheck, IconX, IconPlus, IconCalendar, IconList, IconWorld, IconStar, IconPhoto, IconMail, IconPhone, IconBrandWhatsapp, IconBrandFacebook, IconBrandInstagram, IconMapPin, IconUser, IconClock, IconCategory, IconInfoCircle } from '@tabler/icons-react';
 import BlankCard from '../../components/Calendar/BlankCard';
@@ -23,6 +25,7 @@ const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 
 // Mobile Event List Component
 const MobileEventList = ({ events, onEventClick, onAddEvent }) => {
+  const { t } = useTranslation('Calendar');
   const groupedEvents = events.reduce((groups, event) => {
     const date = moment(event.start).format('YYYY-MM-DD');
     if (!groups[date]) {
@@ -39,8 +42,8 @@ const MobileEventList = ({ events, onEventClick, onAddEvent }) => {
       {sortedDates.length === 0 ? (
         <div style={{ textAlign: 'center', padding: '40px 0', color: '#666' }}>
           <IconCalendar size={48} style={{ opacity: 0.3, marginBottom: '16px' }} />
-          <Typography variant="body1" style={{ marginBottom: '8px' }}>No events scheduled</Typography>
-          <Typography variant="body2" color="textSecondary">Tap the + button to add your first event</Typography>
+          <Typography variant="body1" style={{ marginBottom: '8px' }}>{t('text.noEvents')}</Typography>
+          <Typography variant="body2" color="textSecondary">{t('text.tapToAdd')}</Typography>
         </div>
       ) : (
         sortedDates.map(date => (
@@ -101,13 +104,14 @@ const MobileEventForm = ({
   onStartChange, onEndChange, onColorChange, onSubmit, onDelete, onCancel,
   ColorVariation 
 }) => {
+  const { t } = useTranslation('Calendar');
   return (
     <form onSubmit={onSubmit} style={{ paddingBottom: '20px' }}>
       <TextField
-        placeholder="Event Title"
+        placeholder={t('placeholders.eventTitle')}
         variant="outlined"
         fullWidth
-        label="Title"
+        label={t('fields.title')}
         value={title}
         onChange={onTitleChange}
         style={{ marginBottom: '16px' }}
@@ -115,10 +119,10 @@ const MobileEventForm = ({
       />
       
       <TextField
-        placeholder="Event Description"
+        placeholder={t('placeholders.eventDescription')}
         variant="outlined"
         fullWidth
-        label="Description"
+        label={t('fields.description')}
         multiline
         rows={3}
         value={description}
@@ -128,10 +132,10 @@ const MobileEventForm = ({
       />
       
       <TextField
-        placeholder="Event Location"
+        placeholder={t('placeholders.eventLocation')}
         variant="outlined"
         fullWidth
-        label="Location"
+        label={t('fields.location')}
         value={location}
         onChange={onLocationChange}
         style={{ marginBottom: '16px' }}
@@ -139,7 +143,7 @@ const MobileEventForm = ({
       />
 
       <TextField
-        label="Start Date & Time"
+        label={t('fields.startDateTime')}
         type="datetime-local"
         value={start ? moment(start).format('YYYY-MM-DDTHH:mm') : ''}
         onChange={(e) => onStartChange(new Date(e.target.value))}
@@ -150,7 +154,7 @@ const MobileEventForm = ({
       />
 
       <TextField
-        label="End Date & Time"
+        label={t('fields.endDateTime')}
         type="datetime-local"
         value={end ? moment(end).format('YYYY-MM-DDTHH:mm') : ''}
         onChange={(e) => onEndChange(new Date(e.target.value))}
@@ -163,7 +167,7 @@ const MobileEventForm = ({
       />
 
       <Typography variant="subtitle1" style={{ fontWeight: 600, marginBottom: '12px' }}>
-        Event Color
+        {t('text.eventColor')}
       </Typography>
       
       <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
@@ -197,7 +201,7 @@ const MobileEventForm = ({
           fullWidth
           size="large"
         >
-          Cancel
+          {t('text.cancel')}
         </Button>
         
         {update && (
@@ -208,7 +212,7 @@ const MobileEventForm = ({
             fullWidth
             size="large"
           >
-            Delete
+            {t('text.delete')}
           </Button>
         )}
         
@@ -220,7 +224,7 @@ const MobileEventForm = ({
           fullWidth
           size="large"
         >
-          {update ? 'Update' : 'Add Event'}
+          {update ? t('actions.update') : t('actions.addEvent')}
         </Button>
       </div>
     </form>
@@ -240,6 +244,15 @@ const getEventColor = (colorValue) => {
 };
 
 const BigCalendar = () => {
+  const { t, i18n } = useTranslation('Calendar');
+  const isRTL = i18n.language === 'ar';
+  const calendarCulture = isRTL ? 'ar' : 'en-GB';
+  const calendarMessages = {
+    today: t('toolbar.today'), previous: t('toolbar.previous'), next: t('toolbar.next'),
+    month: t('toolbar.month'), week: t('toolbar.week'), day: t('toolbar.day'), agenda: t('toolbar.agenda'),
+    date: t('toolbar.date'), time: t('toolbar.time'), event: t('toolbar.event'),
+    noEventsInRange: t('toolbar.noEventsInRange'), showMore: (count) => t('toolbar.showMore', { count }),
+  };
   const [calevents, setCalEvents] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
@@ -344,7 +357,7 @@ const BigCalendar = () => {
       );
       setCalEvents(transformedEvents);
     } catch (err) {
-      setError('Failed to load events. Please try again.');
+      setError(t('errors.loadFailed'));
       console.error('Error loading events:', err);
     } finally {
       setLoading(false);
@@ -437,17 +450,17 @@ const BigCalendar = () => {
     
     // Validation
     if (!title.trim()) {
-      setError('Event title is required.');
+      setError(t('errors.titleRequired'));
       return;
     }
     
     if (!start || !end) {
-      setError('Start and end dates are required.');
+      setError(t('errors.datesRequired'));
       return;
     }
     
     if (start >= end) {
-      setError('End date must be after start date.');
+      setError(t('errors.endAfterStart'));
       return;
     }
     
@@ -513,7 +526,7 @@ const BigCalendar = () => {
       handleClose();
       setError(null); // Clear any previous errors
     } catch (err) {
-      const errorMessage = err.message || 'Failed to update event. Please try again.';
+      const errorMessage = err.message || t('errors.updateFailed');
       setError(errorMessage);
       console.error('Error updating event:', err);
     }
@@ -526,17 +539,17 @@ const BigCalendar = () => {
     
     // Validation
     if (!title.trim()) {
-      setError('Event title is required.');
+      setError(t('errors.titleRequired'));
       return;
     }
     
     if (!start || !end) {
-      setError('Start and end dates are required.');
+      setError(t('errors.datesRequired'));
       return;
     }
     
     if (start >= end) {
-      setError('End date must be after start date.');
+      setError(t('errors.endAfterStart'));
       return;
     }
     
@@ -602,7 +615,7 @@ const BigCalendar = () => {
       handleClose();
       setError(null); // Clear any previous errors
     } catch (err) {
-      const errorMessage = err.message || 'Failed to create event. Please try again.';
+      const errorMessage = err.message || t('errors.createFailed');
       setError(errorMessage);
       console.error('Error creating event:', err);
     }
@@ -614,7 +627,7 @@ const BigCalendar = () => {
       await loadEvents(); // Reload events from server
       handleClose();
     } catch (err) {
-      setError('Failed to delete event. Please try again.');
+      setError(t('errors.deleteFailed'));
       console.error('Error deleting event:', err);
     }
   };
@@ -728,7 +741,7 @@ const BigCalendar = () => {
       <BlankCard className="rounded-xl">
         <CardContent className="rounded-xl shadow-none">
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
-            <Typography>Loading calendar events...</Typography>
+            <Typography>{t('text.loading')}</Typography>
           </div>
         </CardContent>
       </BlankCard>
@@ -766,24 +779,24 @@ const BigCalendar = () => {
           alignItems: 'center'
         }}>
           <Typography variant="body2" sx={{ fontWeight: 700, color: '#333' }}>
-            Legend:
+            {t('text.legend')}
           </Typography>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <IconWorld size={16} style={{ color: '#667eea' }} />
             <Typography variant="body2" sx={{ color: '#666' }}>
-              Public Event (appears on Events page)
+              {t('text.legendPublic')}
             </Typography>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <IconStar size={16} style={{ color: '#ffc107', fill: '#ffc107' }} />
             <Typography variant="body2" sx={{ color: '#666' }}>
-              Featured (appears on Home page)
+              {t('text.legendFeatured')}
             </Typography>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <div style={{ width: '4px', height: '16px', backgroundColor: '#000', borderRadius: '2px' }} />
             <Typography variant="body2" sx={{ color: '#666' }}>
-              Bold black border
+              {t('text.legendBorder')}
             </Typography>
           </div>
         </div>
@@ -837,6 +850,9 @@ const BigCalendar = () => {
                 onView={setCurrentView}
                 views={isSmallMobile ? ['agenda'] : ['month', 'week', 'day', 'agenda']}
                 localizer={localizer}
+                culture={calendarCulture}
+                rtl={isRTL}
+                messages={calendarMessages}
                 style={{ 
                   height: isSmallMobile ? '400px' : '500px',
                   fontSize: '12px'
@@ -868,6 +884,9 @@ const BigCalendar = () => {
             onView={setCurrentView}
             views={['month', 'week', 'day', 'agenda']}
             localizer={localizer}
+            culture={calendarCulture}
+            rtl={isRTL}
+            messages={calendarMessages}
             style={{ height: 'calc(100vh - 400px)' }}
             onSelectEvent={(event) => editEvent(event)}
             onSelectSlot={(slotInfo) => addNewEventAlert(slotInfo)}
@@ -898,7 +917,7 @@ const BigCalendar = () => {
         <AppBar position="static" color="transparent" elevation={0} style={{ borderBottom: '1px solid #e0e0e0' }}>
           <Toolbar style={{ justifyContent: 'space-between', minHeight: '56px' }}>
             <Typography variant="h6" style={{ fontWeight: 600 }}>
-              {update ? 'Update Event' : 'Add Event'}
+              {update ? t('actions.updateEvent') : t('actions.addEvent')}
             </Typography>
             <IconButton onClick={handleClose} size="small">
               <IconX size={20} />
@@ -970,12 +989,12 @@ const BigCalendar = () => {
           <div style={{ position: 'relative', zIndex: 1 }}>
             <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, display: 'flex', alignItems: 'center', gap: 2 }}>
               <IconCalendar size={32} />
-              {update ? 'Update Event' : 'Create New Event'}
+              {update ? t('actions.updateEvent') : t('actions.createNewEvent')}
             </Typography>
             <Typography variant="body1" sx={{ opacity: 0.9, fontSize: '15px' }}>
             {!update
-                ? 'Fill in the details below to create an amazing event'
-                : 'Update your event information and settings'}
+                ? t('actions.createSubtitle')
+                : t('actions.updateSubtitle')}
             </Typography>
           </div>
         </div>
@@ -1010,14 +1029,14 @@ const BigCalendar = () => {
               }}>
                 <IconInfoCircle size={20} color="white" />
               </div>
-              Basic Information
+              {t('text.basicInfo')}
           </Typography>
 
           <TextField
-              placeholder="e.g., Annual Charity Gala"
+              placeholder={t('placeholders.titleExample')}
             variant="outlined"
             fullWidth
-            label="Event Title"
+            label={t('fields.eventTitle')}
             value={title}
             onChange={inputChangeHandler}
               sx={{
@@ -1039,10 +1058,10 @@ const BigCalendar = () => {
           />
           
           <TextField
-              placeholder="Tell people what this event is about..."
+              placeholder={t('placeholders.about')}
             variant="outlined"
             fullWidth
-            label="Description"
+            label={t('fields.description')}
             multiline
               rows={4}
             value={description}
@@ -1063,10 +1082,10 @@ const BigCalendar = () => {
           />
           
           <TextField
-              placeholder="e.g., Downtown Convention Center, 123 Main St"
+              placeholder={t('placeholders.addressExample')}
             variant="outlined"
             fullWidth
-            label="Address"
+            label={t('fields.address')}
             value={address}
             onChange={(e) => setAddress(e.target.value)}
               sx={{
@@ -1093,7 +1112,7 @@ const BigCalendar = () => {
               placeholder="e.g., https://maps.google.com/?q=..."
             variant="outlined"
             fullWidth
-            label="Map Link (Optional)"
+            label={t('fields.mapLink')}
             value={location}
             onChange={(e) => setLocation(e.target.value)}
               sx={{
@@ -1115,7 +1134,7 @@ const BigCalendar = () => {
               }}
             />
             <Typography variant="caption" sx={{ mt: 1, display: 'block', color: '#999' }}>
-              💡 Paste a Google Maps link to show the location on a map
+              {t('text.mapHint')}
             </Typography>
           </div>
           
@@ -1144,12 +1163,12 @@ const BigCalendar = () => {
               }}>
                 <IconCategory size={20} color="white" />
               </div>
-              Event Category & Color
+              {t('text.categoryColor')}
             </Typography>
             
             <TextField
               select
-              label="Select Category"
+              label={t('fields.selectCategory')}
               value={category}
               onChange={(e) => handleCategoryChange(e.target.value)}
               fullWidth
@@ -1163,12 +1182,12 @@ const BigCalendar = () => {
                 }
               }}
             >
-              <option value="other">🔹 Other</option>
-              <option value="meeting">💼 Meeting</option>
-              <option value="training">📚 Training</option>
-              <option value="sunday-school">⛪ Sunday School</option>
-              <option value="workshop">🛠️ Workshop</option>
-              <option value="conference">🎤 Conference</option>
+              <option value="other">🔹 {t('categories.other')}</option>
+              <option value="meeting">💼 {t('categories.meeting')}</option>
+              <option value="training">📚 {t('categories.training')}</option>
+              <option value="sunday-school">⛪ {t('categories.sunday-school')}</option>
+              <option value="workshop">🛠️ {t('categories.workshop')}</option>
+              <option value="conference">🎤 {t('categories.conference')}</option>
             </TextField>
 
             {/* Color Preview & Picker */}
@@ -1181,7 +1200,7 @@ const BigCalendar = () => {
                 border: '2px solid #fff',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.15)'
               }} />
-              Selected Color for {category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
+              {t('text.selectedColorFor', { category: t(`categories.${category}`) })}
             </Typography>
             
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -1223,7 +1242,7 @@ const BigCalendar = () => {
               ))}
             </div>
             <Typography variant="caption" sx={{ mt: 2, display: 'block', color: '#999' }}>
-              💡 Color auto-selects based on category, but you can change it manually
+              {t('text.colorHint')}
             </Typography>
           </div>
           
@@ -1257,10 +1276,10 @@ const BigCalendar = () => {
                 </div>
                 <div style={{ flex: 1 }}>
                   <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a1a1a', fontSize: '16px' }}>
-                    Public Event
+                    {t('text.publicEvent')}
                   </Typography>
                   <Typography variant="caption" sx={{ color: '#666', fontSize: '13px' }}>
-                    Make this event visible on your website
+                    {t('text.publicHint')}
                   </Typography>
                 </div>
               </div>
@@ -1314,7 +1333,7 @@ const BigCalendar = () => {
                     <IconCheck size={20} color="white" />
                   </div>
                   <Typography variant="body2" sx={{ color: '#667eea', fontWeight: 600, fontSize: '14px' }}>
-                    Great! This event will be displayed on /events with all the details below
+                    {t('text.publicOn')}
                   </Typography>
                 </div>
               </div>
@@ -1353,14 +1372,14 @@ const BigCalendar = () => {
                   }}>
                     <IconWorld size={20} color="white" />
                   </div>
-                  Multilingual Content (Arabic)
+                  {t('text.arabicContent')}
                 </Typography>
                 
           <TextField
                   placeholder="العنوان بالعربية"
                   variant="outlined"
                   fullWidth
-                  label="Title (Arabic)"
+                  label={t('fields.titleAr')}
                   value={titleAr}
                   onChange={(e) => setTitleAr(e.target.value)}
                   inputProps={{ dir: 'rtl' }}
@@ -1378,7 +1397,7 @@ const BigCalendar = () => {
                   placeholder="الوصف بالعربية"
                   variant="outlined"
                   fullWidth
-                  label="Description (Arabic)"
+                  label={t('fields.descriptionAr')}
                   multiline
                   rows={4}
                   value={descriptionAr}
@@ -1445,12 +1464,12 @@ const BigCalendar = () => {
                   }}>
                     <IconCategory size={20} color="white" />
                   </div>
-                  Event Settings
+                  {t('text.eventSettings')}
                 </Typography>
                 
                 <TextField
                   select
-                  label="Event Status"
+                  label={t('fields.eventStatus')}
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                   fullWidth
@@ -1463,10 +1482,10 @@ const BigCalendar = () => {
                     }
                   }}
                 >
-                  <option value="scheduled">📅 Scheduled</option>
-                  <option value="confirmed">✅ Confirmed</option>
-                  <option value="completed">✔️ Completed</option>
-                  <option value="cancelled">❌ Cancelled</option>
+                  <option value="scheduled">📅 {t('statuses.scheduled')}</option>
+                  <option value="confirmed">✅ {t('statuses.confirmed')}</option>
+                  <option value="completed">✔️ {t('statuses.completed')}</option>
+                  <option value="cancelled">❌ {t('statuses.cancelled')}</option>
                 </TextField>
                 
                 {/* Featured Toggle */}
@@ -1495,10 +1514,10 @@ const BigCalendar = () => {
                     </div>
                     <div>
                       <Typography variant="subtitle1" sx={{ fontWeight: 600, fontSize: '14px' }}>
-                        Featured Event
+                        {t('text.featuredEvent')}
                       </Typography>
                       <Typography variant="caption" sx={{ color: '#666', fontSize: '12px' }}>
-                        Highlight on homepage
+                        {t('text.featuredHint')}
                       </Typography>
                     </div>
                   </div>
@@ -1556,7 +1575,7 @@ const BigCalendar = () => {
                   }}>
                     <IconPhoto size={20} color="white" />
                   </div>
-                  Event Image
+                  {t('text.eventImage')}
                 </Typography>
                 
                 <div style={{
@@ -1607,10 +1626,10 @@ const BigCalendar = () => {
                     <>
                       <IconPhoto size={48} color="#ccc" style={{ marginBottom: '12px' }} />
                       <Typography variant="body1" sx={{ fontWeight: 600, mb: 1 }}>
-                        Drop your image here or click to browse
+                        {t('text.dropImage')}
                       </Typography>
                       <Typography variant="caption" sx={{ color: '#999' }}>
-                        Supports: JPG, PNG, GIF (Max: 5MB)
+                        {t('text.imageTypes')}
                       </Typography>
                     </>
                   ) : (
@@ -1641,7 +1660,7 @@ const BigCalendar = () => {
                           }
                         }}
                       >
-                        Change Image
+                        {t('text.changeImage')}
                       </Button>
                     </div>
                   )}
@@ -1673,7 +1692,7 @@ const BigCalendar = () => {
                   }}>
                     <IconMail size={20} color="white" />
                   </div>
-                  Contact Information
+                  {t('text.contactInfo')}
                 </Typography>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -1681,7 +1700,7 @@ const BigCalendar = () => {
                     placeholder="contact@example.com"
                     variant="outlined"
                     fullWidth
-                    label="Email"
+                    label={t('fields.email')}
                     type="email"
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
@@ -1701,7 +1720,7 @@ const BigCalendar = () => {
                     placeholder="+1234567890"
                     variant="outlined"
                     fullWidth
-                    label="Phone"
+                    label={t('fields.phone')}
                     value={contactPhone}
                     onChange={(e) => setContactPhone(e.target.value)}
                     sx={{
@@ -1720,7 +1739,7 @@ const BigCalendar = () => {
                     placeholder="+1234567890"
                     variant="outlined"
                     fullWidth
-                    label="WhatsApp"
+                    label={t('fields.whatsapp')}
                     value={contactWhatsapp}
                     onChange={(e) => setContactWhatsapp(e.target.value)}
                     sx={{
@@ -1739,7 +1758,7 @@ const BigCalendar = () => {
                     placeholder="https://facebook.com/event"
                     variant="outlined"
                     fullWidth
-                    label="Facebook URL"
+                    label={t('fields.facebookUrl')}
                     value={contactFacebook}
                     onChange={(e) => setContactFacebook(e.target.value)}
                     sx={{
@@ -1758,7 +1777,7 @@ const BigCalendar = () => {
                     placeholder="https://instagram.com/event"
                     variant="outlined"
                     fullWidth
-                    label="Instagram URL"
+                    label={t('fields.instagramUrl')}
                     value={contactInstagram}
                     onChange={(e) => setContactInstagram(e.target.value)}
                     sx={{
@@ -1774,10 +1793,10 @@ const BigCalendar = () => {
                     }}
                   />
                   <TextField
-                    placeholder="leave empty for auto-generation"
+                    placeholder={t('placeholders.slugAuto')}
                     variant="outlined"
                     fullWidth
-                    label="URL Slug (optional)"
+                    label={t('fields.urlSlug')}
                     value={slug}
                     onChange={(e) => setSlug(e.target.value)}
                     helperText="SEO-friendly URL"
@@ -1816,15 +1835,15 @@ const BigCalendar = () => {
                   }}>
                     <IconUser size={20} color="#666" />
                   </div>
-                  Organizer Information
+                  {t('text.organizerInfo')}
                 </Typography>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                   <TextField
-                    placeholder="Organizer Name"
+                    placeholder={t('placeholders.organizerName')}
                     variant="outlined"
                     fullWidth
-                    label="Organizer Name"
+                    label={t('fields.organizerName')}
                     value={organizerName}
                     onChange={(e) => setOrganizerName(e.target.value)}
                     sx={{
@@ -1843,7 +1862,7 @@ const BigCalendar = () => {
                     placeholder="اسم المنظم"
                     variant="outlined"
                     fullWidth
-                    label="Organizer Name (Arabic)"
+                    label={t('fields.organizerNameAr')}
                     value={organizerNameAr}
                     onChange={(e) => setOrganizerNameAr(e.target.value)}
                     inputProps={{ dir: 'rtl' }}
@@ -1858,7 +1877,7 @@ const BigCalendar = () => {
                     placeholder="organizer@example.com"
                     variant="outlined"
                     fullWidth
-                    label="Organizer Email"
+                    label={t('fields.organizerEmail')}
                     type="email"
                     value={organizerEmail}
                     onChange={(e) => setOrganizerEmail(e.target.value)}
@@ -1878,7 +1897,7 @@ const BigCalendar = () => {
                     placeholder="+1234567890"
                     variant="outlined"
                     fullWidth
-                    label="Organizer Phone"
+                    label={t('fields.organizerPhone')}
                     value={organizerPhone}
                     onChange={(e) => setOrganizerPhone(e.target.value)}
                     sx={{
@@ -1923,12 +1942,12 @@ const BigCalendar = () => {
               }}>
                 <IconClock size={20} color="white" />
               </div>
-              Date & Time
+              {t('text.dateTime')}
             </Typography>
             
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <TextField
-                label="Start Date & Time"
+                label={t('fields.startDateTime')}
             type="datetime-local"
             value={start ? moment(start).format('YYYY-MM-DDTHH:mm') : ''}
             onChange={(e) => handleStartChange(new Date(e.target.value))}
@@ -1943,7 +1962,7 @@ const BigCalendar = () => {
             }}
           />
           <TextField
-                label="End Date & Time"
+                label={t('fields.endDateTime')}
             type="datetime-local"
             value={end ? moment(end).format('YYYY-MM-DDTHH:mm') : ''}
             onChange={(e) => handleEndChange(new Date(e.target.value))}
@@ -1987,7 +2006,7 @@ const BigCalendar = () => {
               }
             }}
           >
-            Cancel
+            {t('text.cancel')}
           </Button>
 
           {update && (
@@ -2011,7 +2030,7 @@ const BigCalendar = () => {
                 transition: 'all 0.3s ease'
               }}
             >
-              🗑️ Delete
+              {t('text.deleteIcon')}
             </Button>
           )}
           
@@ -2039,7 +2058,7 @@ const BigCalendar = () => {
               transition: 'all 0.3s ease'
             }}
           >
-            {update ? '✓ Update Event' : '✨ Create Event'}
+            {update ? t('actions.updateEventCheck') : t('actions.createEventSpark')}
           </Button>
         </DialogActions>
         {/* ------------------------------------------- */}

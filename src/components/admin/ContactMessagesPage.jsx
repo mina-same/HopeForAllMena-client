@@ -10,6 +10,7 @@ import { SectionShell, SearchInput } from '../ui/SectionShell';
 import contactMessageService from '../../services/contactMessageService';
 import { useTranslation } from 'gatsby-plugin-react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
+import { cachedGet } from '../../lib/queryClient';
 
 
 const ContactMessagesPage = () => {
@@ -31,13 +32,14 @@ const ContactMessagesPage = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await contactMessageService.getContactMessages({
+        const params = {
           page: pagination.currentPage,
           limit: 20,
           search: searchTerm,
           status: statusFilter !== 'all' ? statusFilter : undefined,
           type: typeFilter !== 'all' ? typeFilter : undefined
-        });
+        };
+        const response = await cachedGet(['contact-messages', params], () => contactMessageService.getContactMessages(params));
 
         // Transform API data to match component expectations
         const transformedMessages = response.data.messages.map(msg => ({

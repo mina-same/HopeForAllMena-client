@@ -4,14 +4,12 @@
   "addCourse": "Add Course",
   "searchPlaceholder": "Search courses, instructors, or institutions...",
   "coursesCount": "Courses ({{count}})",
-  
   "stats": {
     "totalCourses": "Total Courses",
     "categories": "Categories",
     "totalEnrollments": "Total Enrollments",
     "avgRating": "Avg Rating"
   },
-  
   "form": {
     "createTitle": "Add New Course",
     "editTitle": "Edit Course",
@@ -19,7 +17,6 @@
     "courseDetails": "Course Details",
     "datesEnrollment": "Dates and Enrollment",
     "institutionInstructor": "Institution and Instructor",
-    
     "fields": {
       "title": "Course Title",
       "titlePlaceholder": "Enter course title",
@@ -42,19 +39,16 @@
       "instructorName": "Instructor Name",
       "instructorPlaceholder": "Enter instructor name"
     },
-    
     "levels": {
       "beginner": "Beginner",
       "intermediate": "Intermediate",
       "advanced": "Advanced"
     },
-    
     "formats": {
       "online": "Online",
       "offline": "Offline",
       "hybrid": "Hybrid"
     },
-    
     "buttons": {
       "cancel": "Cancel",
       "create": "Add Course",
@@ -62,19 +56,108 @@
       "creating": "Creating...",
       "updating": "Updating..."
     },
-    
     "placeholders": {
       "selectInstitution": "Select institution"
+    },
+    "ui": {
+      "title": "Course Title *",
+      "titlePh": "Enter course title",
+      "shortDesc": "Short Description",
+      "shortDescPh": "Brief description of the course",
+      "fullDesc": "Full Description",
+      "fullDescPh": "Detailed course description",
+      "category": "Category",
+      "categoryPh": "e.g., Programming, Design",
+      "level": "Level",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced",
+      "format": "Format",
+      "online": "Online",
+      "offline": "Offline",
+      "hybrid": "Hybrid",
+      "duration": "Duration",
+      "durationPh": "e.g., 8 weeks, 40 hours",
+      "price": "Price",
+      "pricePh": "0 for free",
+      "maxStudents": "Max Students",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "instructor": "Instructor",
+      "instructorPh": "Instructor name",
+      "status": "Status",
+      "draft": "Draft",
+      "published": "Published",
+      "archived": "Archived",
+      "arabicTitle": "Arabic Title",
+      "subcategory": "Subcategory",
+      "subcategoryPh": "e.g., Web Development",
+      "language": "Language",
+      "english": "English",
+      "arabic": "Arabic",
+      "both": "Both",
+      "totalHours": "Total Hours",
+      "totalHoursPh": "Total course hours",
+      "schedule": "Schedule",
+      "schedulePh": "e.g., Mon-Wed-Fri 6-8 PM",
+      "day": "Day",
+      "dayPh": "Select day",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "startTime": "Start Time",
+      "endTime": "End Time",
+      "discountedPrice": "Discounted Price",
+      "discountedPricePh": "Discounted price",
+      "actualPrice": "Actual Price",
+      "actualPricePh": "Original price",
+      "enableInstallments": "Enable Installments",
+      "installments": "Number of Installments",
+      "prerequisites": "Prerequisites (comma-separated)",
+      "prerequisitesPh": "Basic programming, Mathematics",
+      "tags": "Tags (comma-separated)",
+      "tagsPh": "programming, web development, javascript",
+      "minAge": "Minimum Age",
+      "maxAge": "Maximum Age",
+      "featured": "Featured Course",
+      "tabBasic": "Basic Information",
+      "tabDetails": "Details",
+      "tabSchedule": "Schedule",
+      "tabPricing": "Pricing",
+      "tabAdvanced": "Advanced",
+      "addTitle": "Add New Course",
+      "editTitle": "Edit Course",
+      "cancel": "Cancel",
+      "saving": "Saving...",
+      "create": "Create Course",
+      "update": "Update Course",
+      "deleteTitle": "Delete Course",
+      "delete": "Delete",
+      "deleteConfirm": "Are you sure you want to delete \"{{title}}\"? This action cannot be undone."
+    },
+    "toast": {
+      "successTitle": "Success",
+      "errorTitle": "Error",
+      "updated": "Course updated successfully",
+      "created": "Course created successfully",
+      "deleted": "Course deleted successfully",
+      "deleteFailed": "Failed to delete course",
+      "saveFailed": "Failed to save course"
     }
   },
-  
   "filters": {
     "allCategories": "All Categories",
     "filterByCategory": "Filter by category"
   },
-  
   "table": {
     "headers": {
+      "title": "Title",
+      "duration": "Duration",
+      "status": "Status",
       "course": "Course",
       "instructor": "Instructor",
       "institution": "Institution",
@@ -89,40 +172,34 @@
     "free": "Free",
     "seatsLeft": "seats left"
   },
-  
   "status": {
     "draft": "Draft",
     "published": "Published",
     "archived": "Archived",
     "cancelled": "Cancelled"
   },
-  
   "actions": {
     "edit": "Edit",
     "delete": "Delete",
     "view": "View"
   },
-  
   "deleteModal": {
     "title": "Delete Course",
     "description": "Are you sure you want to delete \"{{courseName}}\"? This action cannot be undone.",
     "confirmText": "Yes, delete course",
     "cancelText": "Cancel"
   },
-  
   "loading": {
     "courses": "Loading courses...",
     "creating": "Creating course...",
     "updating": "Updating course...",
     "deleting": "Deleting course..."
   },
-  
   "success": {
     "courseAdded": "Course added successfully",
-    "courseUpdated": "Course updated successfully", 
+    "courseUpdated": "Course updated successfully",
     "courseDeleted": "Course deleted successfully"
   },
-  
   "errors": {
     "loadCourses": "Failed to load courses",
     "createCourse": "Failed to create course",
@@ -133,7 +210,6 @@
     "invalidDate": "Please enter a valid date",
     "endDateAfterStart": "End date must be after start date"
   },
-  
   "empty": {
     "title": "No courses found",
     "description": "No courses match your filters.",

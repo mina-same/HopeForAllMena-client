@@ -29,6 +29,7 @@
   "table": {
     "title": "Blog Posts ({{count}})",
     "headers": {
+      "thumbnail": "Image",
       "title": "Title",
       "author": "Author",
       "category": "Category",

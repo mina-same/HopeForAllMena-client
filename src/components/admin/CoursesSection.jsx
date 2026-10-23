@@ -11,6 +11,7 @@ import { useToast } from '../../hooks/use-toast';
 import { useCourses } from '../../context/CourseContext';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import { useI18next } from 'gatsby-plugin-react-i18next';
+import { useTranslation } from 'react-i18next';
 import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
@@ -18,6 +19,7 @@ import { SectionShell, SearchInput } from '../ui/SectionShell';
 export function CoursesSection() {
   const { toast } = useToast();
   const { language: currentLanguage } = useI18next();
+  const { t } = useTranslation('CoursesManagement');
   const {
     courses,
     loading,
@@ -312,15 +314,15 @@ export function CoursesSection() {
       if (editingCourse) {
         await updateCourse(editingCourse.id || editingCourse._id, courseForm);
         toast({
-          title: "Success",
-          description: "Course updated successfully",
+          title: t('form.toast.successTitle'),
+          description: t('form.toast.updated'),
           variant: "default"
         });
       } else {
         await addCourse(courseForm);
         toast({
-          title: "Success",
-          description: "Course created successfully",
+          title: t('form.toast.successTitle'),
+          description: t('form.toast.created'),
           variant: "default"
         });
       }
@@ -330,8 +332,8 @@ export function CoursesSection() {
     } catch (error) {
       console.error('Error saving course:', error);
       toast({
-        title: "Error",
-        description: editingCourse ? "Failed to update course" : "Failed to create course",
+        title: t('form.toast.errorTitle'),
+        description: t('form.toast.saveFailed'),
         variant: "destructive"
       });
     } finally {
@@ -468,15 +470,15 @@ export function CoursesSection() {
     try {
       await deleteCourse(courseToDelete.id || courseToDelete._id);
       toast({
-        title: "Success",
-        description: "Course deleted successfully",
+        title: t('form.toast.successTitle'),
+        description: t('form.toast.deleted'),
         variant: "default"
       });
     } catch (error) {
       console.error('Error deleting course:', error);
       toast({
-        title: "Error",
-        description: "Failed to delete course",
+        title: t('form.toast.errorTitle'),
+        description: t('form.toast.deleteFailed'),
         variant: "destructive"
       });
     } finally {
@@ -516,7 +518,7 @@ export function CoursesSection() {
     },
     {
       key: 'title',
-      label: 'Title',
+      label: t('table.headers.title'),
       render: (course) => (
         <div>
           <div className="font-medium line-clamp-1">{course.title}</div>
@@ -528,39 +530,39 @@ export function CoursesSection() {
     },
     {
       key: 'instructor',
-      label: 'Instructor',
+      label: t('table.headers.instructor'),
       render: (course) => course.instructor || '-'
     },
     {
       key: 'duration',
-      label: 'Duration',
+      label: t('table.headers.duration'),
       render: (course) => course.duration || '-'
     },
     {
       key: 'level',
-      label: 'Level',
+      label: t('table.headers.level'),
       render: (course) => (
         <Badge
           variant={course.level === 'beginner' ? 'default' :
                   course.level === 'intermediate' ? 'secondary' : 'destructive'}
           className="text-xs"
         >
-          {course.level}
+          {t(`form.levels.${course.level}`, course.level)}
         </Badge>
       )
     },
     {
       key: 'status',
-      label: 'Status',
+      label: t('table.headers.status'),
       render: (course) => (
         <Badge variant="outline" className="text-xs">
-          {course.status}
+          {t(`status.${course.status}`, course.status)}
         </Badge>
       )
     },
     {
       key: '_actions',
-      label: 'Actions',
+      label: t('table.headers.actions'),
       align: 'end',
       render: (course) => (
         <div className="flex gap-1 justify-end">
@@ -585,13 +587,13 @@ export function CoursesSection() {
 
   return (
     <SectionShell
-      title="Courses Management"
-      subtitle="Manage your courses and training programs"
+      title={t('title')}
+      subtitle={t('description')}
       dir={dir}
       actions={
         <Button onClick={() => { resetForm(); setIsDialogOpen(true); }} className="bg-blue-600 hover:bg-blue-700">
-          <Plus className="h-4 w-4 mr-2" />
-          Add Course
+          <Plus className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+          {t('addCourse')}
         </Button>
       }
       filters={
@@ -600,16 +602,16 @@ export function CoursesSection() {
             <SearchInput
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search courses..."
+              placeholder={t('searchPlaceholder')}
               dir={dir}
             />
           </div>
           <Select value={categoryFilter} onValueChange={setCategoryFilter}>
             <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Filter by category" />
+              <SelectValue placeholder={t('filters.filterByCategory')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="all">{t('filters.allCategories')}</SelectItem>
               {categories.map(category => (
                 <SelectItem key={category} value={category}>{category}</SelectItem>
               ))}
@@ -622,11 +624,11 @@ export function CoursesSection() {
         columns={columns}
         data={filteredCourses}
         loading={loading}
-        emptyTitle="No courses found"
+        emptyTitle={t('empty.title')}
         emptyDescription={
           searchTerm || categoryFilter !== 'all'
-            ? 'Try adjusting your search or filters'
-            : 'Get started by creating your first course'
+            ? t('empty.description')
+            : t('empty.noCoursesYet')
         }
         dir={dir}
       />
@@ -637,7 +639,7 @@ export function CoursesSection() {
           setIsDialogOpen(open);
           if (!open) resetForm();
         }}
-        title={editingCourse ? 'Edit Course' : 'Add New Course'}
+        title={editingCourse ? t('form.ui.editTitle') : t('form.ui.addTitle')}
         size="xl"
         dir={dir}
         disabled={isSubmitting}
@@ -649,10 +651,10 @@ export function CoursesSection() {
               onClick={() => setIsDialogOpen(false)}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('form.ui.cancel')}
             </Button>
             <Button type="submit" form="course-form" disabled={isSubmitting}>
-              {isSubmitting ? 'Saving...' : editingCourse ? 'Update Course' : 'Create Course'}
+              {isSubmitting ? t('form.ui.saving') : editingCourse ? t('form.ui.update') : t('form.ui.create')}
             </Button>
           </>
         }
@@ -662,11 +664,11 @@ export function CoursesSection() {
           <div className="border-b border-border">
             <nav className="flex space-x-8" aria-label="Tabs">
               {[
-                { id: 'basic', name: 'Basic Information' },
-                { id: 'details', name: 'Details' },
-                { id: 'schedule', name: 'Schedule' },
-                { id: 'pricing', name: 'Pricing' },
-                { id: 'advanced', name: 'Advanced' }
+                { id: 'basic', name: t('form.ui.tabBasic') },
+                { id: 'details', name: t('form.ui.tabDetails') },
+                { id: 'schedule', name: t('form.ui.tabSchedule') },
+                { id: 'pricing', name: t('form.ui.tabPricing') },
+                { id: 'advanced', name: t('form.ui.tabAdvanced') }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -690,37 +692,37 @@ export function CoursesSection() {
               {/* Basic Information */}
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <Label htmlFor="title">Course Title *</Label>
+                  <Label htmlFor="title">{t('form.ui.title')}</Label>
                   <Input
                     id="title"
                     name="title"
                     value={courseForm.title}
                     onChange={handleInputChange}
                     required
-                    placeholder="Enter course title"
+                    placeholder={t('form.ui.titlePh')}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="shortDescription">Short Description</Label>
+                  <Label htmlFor="shortDescription">{t('form.ui.shortDesc')}</Label>
                   <Textarea
                     id="shortDescription"
                     name="shortDescription"
                     value={courseForm.shortDescription}
                     onChange={handleInputChange}
-                    placeholder="Brief description of the course"
+                    placeholder={t('form.ui.shortDescPh')}
                     rows={2}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="description">Full Description</Label>
+                  <Label htmlFor="description">{t('form.ui.fullDesc')}</Label>
                   <Textarea
                     id="description"
                     name="description"
                     value={courseForm.description}
                     onChange={handleInputChange}
-                    placeholder="Detailed course description"
+                    placeholder={t('form.ui.fullDescPh')}
                     rows={4}
                   />
                 </div>
@@ -729,57 +731,57 @@ export function CoursesSection() {
               {/* Course Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="category">Category</Label>
+                  <Label htmlFor="category">{t('form.ui.category')}</Label>
                   <Input
                     id="category"
                     name="category"
                     value={courseForm.category}
                     onChange={handleInputChange}
-                    placeholder="e.g., Programming, Design"
+                    placeholder={t('form.ui.categoryPh')}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="level">Level</Label>
+                  <Label htmlFor="level">{t('form.ui.level')}</Label>
                   <Select value={courseForm.level} onValueChange={(value) => setCourseForm(prev => ({...prev, level: value}))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="beginner">Beginner</SelectItem>
-                      <SelectItem value="intermediate">Intermediate</SelectItem>
-                      <SelectItem value="advanced">Advanced</SelectItem>
+                      <SelectItem value="beginner">{t('form.ui.beginner')}</SelectItem>
+                      <SelectItem value="intermediate">{t('form.ui.intermediate')}</SelectItem>
+                      <SelectItem value="advanced">{t('form.ui.advanced')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label htmlFor="format">Format</Label>
+                  <Label htmlFor="format">{t('form.ui.format')}</Label>
                   <Select value={courseForm.format} onValueChange={(value) => setCourseForm(prev => ({...prev, format: value}))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="online">Online</SelectItem>
-                      <SelectItem value="offline">Offline</SelectItem>
-                      <SelectItem value="hybrid">Hybrid</SelectItem>
+                      <SelectItem value="online">{t('form.ui.online')}</SelectItem>
+                      <SelectItem value="offline">{t('form.ui.offline')}</SelectItem>
+                      <SelectItem value="hybrid">{t('form.ui.hybrid')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div>
-                  <Label htmlFor="duration">Duration</Label>
+                  <Label htmlFor="duration">{t('form.ui.duration')}</Label>
                   <Input
                     id="duration"
                     name="duration"
                     value={courseForm.duration}
                     onChange={handleInputChange}
-                    placeholder="e.g., 8 weeks, 40 hours"
+                    placeholder={t('form.ui.durationPh')}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="price">Price</Label>
+                  <Label htmlFor="price">{t('form.ui.price')}</Label>
                   <Input
                     id="price"
                     name="price"
@@ -787,12 +789,12 @@ export function CoursesSection() {
                     min="0"
                     value={courseForm.price}
                     onChange={handleInputChange}
-                    placeholder="0 for free"
+                    placeholder={t('form.ui.pricePh')}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="maxStudents">Max Students</Label>
+                  <Label htmlFor="maxStudents">{t('form.ui.maxStudents')}</Label>
                   <Input
                     id="maxStudents"
                     name="maxStudents"
@@ -804,7 +806,7 @@ export function CoursesSection() {
                 </div>
 
                 <div>
-                  <Label htmlFor="startDate">Start Date</Label>
+                  <Label htmlFor="startDate">{t('form.ui.startDate')}</Label>
                   <Input
                     id="startDate"
                     name="startDate"
@@ -815,7 +817,7 @@ export function CoursesSection() {
                 </div>
 
                 <div>
-                  <Label htmlFor="endDate">End Date</Label>
+                  <Label htmlFor="endDate">{t('form.ui.endDate')}</Label>
                   <Input
                     id="endDate"
                     name="endDate"
@@ -826,26 +828,26 @@ export function CoursesSection() {
                 </div>
 
                 <div>
-                  <Label htmlFor="instructor">Instructor</Label>
+                  <Label htmlFor="instructor">{t('form.ui.instructor')}</Label>
                   <Input
                     id="instructor"
                     name="instructor"
                     value={courseForm.instructor}
                     onChange={handleInputChange}
-                    placeholder="Instructor name"
+                    placeholder={t('form.ui.instructorPh')}
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="status">Status</Label>
+                  <Label htmlFor="status">{t('form.ui.status')}</Label>
                   <Select value={courseForm.status} onValueChange={(value) => setCourseForm(prev => ({...prev, status: value}))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="published">Published</SelectItem>
-                      <SelectItem value="archived">Archived</SelectItem>
+                      <SelectItem value="draft">{t('form.ui.draft')}</SelectItem>
+                      <SelectItem value="published">{t('form.ui.published')}</SelectItem>
+                      <SelectItem value="archived">{t('form.ui.archived')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -857,40 +859,40 @@ export function CoursesSection() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="titleAr">Arabic Title</Label>
+                  <Label htmlFor="titleAr">{t('form.ui.arabicTitle')}</Label>
                   <Input
                     id="titleAr"
                     name="titleAr"
                     value={courseForm.titleAr}
                     onChange={handleInputChange}
-                    placeholder="العنوان بالعربية"
+                    placeholder={t('form.ui.arabicTitle')}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="subcategory">Subcategory</Label>
+                  <Label htmlFor="subcategory">{t('form.ui.subcategory')}</Label>
                   <Input
                     id="subcategory"
                     name="subcategory"
                     value={courseForm.subcategory}
                     onChange={handleInputChange}
-                    placeholder="e.g., Web Development"
+                    placeholder={t('form.ui.subcategoryPh')}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="language">Language</Label>
+                  <Label htmlFor="language">{t('form.ui.language')}</Label>
                   <Select value={courseForm.language} onValueChange={(value) => setCourseForm(prev => ({...prev, language: value}))}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="English">English</SelectItem>
-                      <SelectItem value="Arabic">Arabic</SelectItem>
-                      <SelectItem value="Both">Both</SelectItem>
+                      <SelectItem value="English">{t('form.ui.english')}</SelectItem>
+                      <SelectItem value="Arabic">{t('form.ui.arabic')}</SelectItem>
+                      <SelectItem value="Both">{t('form.ui.both')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="totalHours">Total Hours</Label>
+                  <Label htmlFor="totalHours">{t('form.ui.totalHours')}</Label>
                   <Input
                     id="totalHours"
                     name="totalHours"
@@ -898,7 +900,7 @@ export function CoursesSection() {
                     min="0"
                     value={courseForm.totalHours}
                     onChange={handleInputChange}
-                    placeholder="Total course hours"
+                    placeholder={t('form.ui.totalHoursPh')}
                   />
                 </div>
               </div>
@@ -909,34 +911,34 @@ export function CoursesSection() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="schedule">Schedule</Label>
+                  <Label htmlFor="schedule">{t('form.ui.schedule')}</Label>
                   <Input
                     id="schedule"
                     name="schedule"
                     value={courseForm.schedule}
                     onChange={handleInputChange}
-                    placeholder="e.g., Mon-Wed-Fri 6-8 PM"
+                    placeholder={t('form.ui.schedulePh')}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="weeklySchedule.day">Day</Label>
+                  <Label htmlFor="weeklySchedule.day">{t('form.ui.day')}</Label>
                   <Select value={courseForm.weeklySchedule.day} onValueChange={(value) => setCourseForm(prev => ({...prev, weeklySchedule: {...prev.weeklySchedule, day: value}}))}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select day" />
+                      <SelectValue placeholder={t('form.ui.dayPh')} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Monday">Monday</SelectItem>
-                      <SelectItem value="Tuesday">Tuesday</SelectItem>
-                      <SelectItem value="Wednesday">Wednesday</SelectItem>
-                      <SelectItem value="Thursday">Thursday</SelectItem>
-                      <SelectItem value="Friday">Friday</SelectItem>
-                      <SelectItem value="Saturday">Saturday</SelectItem>
-                      <SelectItem value="Sunday">Sunday</SelectItem>
+                      <SelectItem value="Monday">{t('form.ui.monday')}</SelectItem>
+                      <SelectItem value="Tuesday">{t('form.ui.tuesday')}</SelectItem>
+                      <SelectItem value="Wednesday">{t('form.ui.wednesday')}</SelectItem>
+                      <SelectItem value="Thursday">{t('form.ui.thursday')}</SelectItem>
+                      <SelectItem value="Friday">{t('form.ui.friday')}</SelectItem>
+                      <SelectItem value="Saturday">{t('form.ui.saturday')}</SelectItem>
+                      <SelectItem value="Sunday">{t('form.ui.sunday')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="weeklySchedule.startTime">Start Time</Label>
+                  <Label htmlFor="weeklySchedule.startTime">{t('form.ui.startTime')}</Label>
                   <Input
                     id="weeklySchedule.startTime"
                     name="weeklySchedule.startTime"
@@ -946,7 +948,7 @@ export function CoursesSection() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="weeklySchedule.endTime">End Time</Label>
+                  <Label htmlFor="weeklySchedule.endTime">{t('form.ui.endTime')}</Label>
                   <Input
                     id="weeklySchedule.endTime"
                     name="weeklySchedule.endTime"
@@ -963,7 +965,7 @@ export function CoursesSection() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="discountedPrice">Discounted Price</Label>
+                  <Label htmlFor="discountedPrice">{t('form.ui.discountedPrice')}</Label>
                   <Input
                     id="discountedPrice"
                     name="discountedPrice"
@@ -971,11 +973,11 @@ export function CoursesSection() {
                     min="0"
                     value={courseForm.discountedPrice}
                     onChange={handleInputChange}
-                    placeholder="Discounted price"
+                    placeholder={t('form.ui.discountedPricePh')}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="actualPrice">Actual Price</Label>
+                  <Label htmlFor="actualPrice">{t('form.ui.actualPrice')}</Label>
                   <Input
                     id="actualPrice"
                     name="actualPrice"
@@ -983,7 +985,7 @@ export function CoursesSection() {
                     min="0"
                     value={courseForm.actualPrice}
                     onChange={handleInputChange}
-                    placeholder="Original price"
+                    placeholder={t('form.ui.actualPricePh')}
                   />
                 </div>
                 <div className="flex items-center space-x-2">
@@ -992,11 +994,11 @@ export function CoursesSection() {
                     checked={courseForm.paymentInstallments.enabled}
                     onCheckedChange={(checked) => setCourseForm(prev => ({...prev, paymentInstallments: {...prev.paymentInstallments, enabled: checked}}))}
                   />
-                  <Label htmlFor="paymentInstallments.enabled">Enable Installments</Label>
+                  <Label htmlFor="paymentInstallments.enabled">{t('form.ui.enableInstallments')}</Label>
                 </div>
                 {courseForm.paymentInstallments.enabled && (
                   <div>
-                    <Label htmlFor="paymentInstallments.numberOfInstallments">Number of Installments</Label>
+                    <Label htmlFor="paymentInstallments.numberOfInstallments">{t('form.ui.installments')}</Label>
                     <Input
                       id="paymentInstallments.numberOfInstallments"
                       name="paymentInstallments.numberOfInstallments"
@@ -1015,28 +1017,28 @@ export function CoursesSection() {
             <div className="space-y-4">
               <div className="grid grid-cols-1 gap-4">
                 <div>
-                  <Label htmlFor="prerequisites">Prerequisites (comma-separated)</Label>
+                  <Label htmlFor="prerequisites">{t('form.ui.prerequisites')}</Label>
                   <Textarea
                     id="prerequisites"
                     value={courseForm.prerequisites.join(', ')}
                     onChange={(e) => handleArrayChange('prerequisites', e.target.value)}
-                    placeholder="Basic programming, Mathematics"
+                    placeholder={t('form.ui.prerequisitesPh')}
                     rows={2}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="tags">Tags (comma-separated)</Label>
+                  <Label htmlFor="tags">{t('form.ui.tags')}</Label>
                   <Textarea
                     id="tags"
                     value={courseForm.tags.join(', ')}
                     onChange={(e) => handleArrayChange('tags', e.target.value)}
-                    placeholder="programming, web development, javascript"
+                    placeholder={t('form.ui.tagsPh')}
                     rows={2}
                   />
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="minAge">Minimum Age</Label>
+                    <Label htmlFor="minAge">{t('form.ui.minAge')}</Label>
                     <Input
                       id="minAge"
                       name="minAge"
@@ -1047,7 +1049,7 @@ export function CoursesSection() {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="maxAge">Maximum Age</Label>
+                    <Label htmlFor="maxAge">{t('form.ui.maxAge')}</Label>
                     <Input
                       id="maxAge"
                       name="maxAge"
@@ -1064,7 +1066,7 @@ export function CoursesSection() {
                     checked={courseForm.featured}
                     onCheckedChange={(checked) => setCourseForm(prev => ({...prev, featured: checked}))}
                   />
-                  <Label htmlFor="featured">Featured Course</Label>
+                  <Label htmlFor="featured">{t('form.ui.featured')}</Label>
                 </div>
               </div>
             </div>
@@ -1077,10 +1079,10 @@ export function CoursesSection() {
         isOpen={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
         onConfirm={confirmDelete}
-        title="Delete Course"
-        description={`Are you sure you want to delete "${courseToDelete?.title}"? This action cannot be undone.`}
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('form.ui.deleteTitle')}
+        description={t('form.ui.deleteConfirm', { title: courseToDelete?.title })}
+        confirmText={t('form.ui.delete')}
+        cancelText={t('form.ui.cancel')}
         isLoading={isDeleting}
         variant="danger"
       />

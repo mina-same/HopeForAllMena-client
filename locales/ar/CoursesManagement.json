@@ -4,14 +4,12 @@
   "addCourse": "إضافة دورة",
   "searchPlaceholder": "البحث في الدورات أو المدربين أو المؤسسات...",
   "coursesCount": "الدورات ({{count}})",
-  
   "stats": {
     "totalCourses": "إجمالي الدورات",
     "categories": "الفئات",
     "totalEnrollments": "إجمالي التسجيلات",
     "avgRating": "متوسط التقييم"
   },
-  
   "form": {
     "createTitle": "إضافة دورة جديدة",
     "editTitle": "تعديل الدورة",
@@ -19,7 +17,6 @@
     "courseDetails": "تفاصيل الدورة",
     "datesEnrollment": "التواريخ والتسجيل",
     "institutionInstructor": "المؤسسة والمدرب",
-    
     "fields": {
       "title": "عنوان الدورة",
       "titlePlaceholder": "أدخل عنوان الدورة",
@@ -42,19 +39,16 @@
       "instructorName": "اسم المدرب",
       "instructorPlaceholder": "أدخل اسم المدرب"
     },
-    
     "levels": {
       "beginner": "مبتدئ",
       "intermediate": "متوسط",
       "advanced": "متقدم"
     },
-    
     "formats": {
       "online": "عبر الإنترنت",
       "offline": "حضوري",
       "hybrid": "مختلط"
     },
-    
     "buttons": {
       "cancel": "إلغاء",
       "create": "إضافة دورة",
@@ -62,19 +56,108 @@
       "creating": "جاري الإنشاء...",
       "updating": "جاري التحديث..."
     },
-    
     "placeholders": {
       "selectInstitution": "اختر المؤسسة"
+    },
+    "ui": {
+      "title": "عنوان الدورة *",
+      "titlePh": "أدخل عنوان الدورة",
+      "shortDesc": "وصف مختصر",
+      "shortDescPh": "وصف مختصر للدورة",
+      "fullDesc": "الوصف الكامل",
+      "fullDescPh": "وصف تفصيلي للدورة",
+      "category": "الفئة",
+      "categoryPh": "مثال: برمجة، تصميم",
+      "level": "المستوى",
+      "beginner": "مبتدئ",
+      "intermediate": "متوسط",
+      "advanced": "متقدم",
+      "format": "نوع الدراسة",
+      "online": "عبر الإنترنت",
+      "offline": "حضوري",
+      "hybrid": "مختلط",
+      "duration": "المدة",
+      "durationPh": "مثال: 8 أسابيع، 40 ساعة",
+      "price": "السعر",
+      "pricePh": "0 للمجان",
+      "maxStudents": "الحد الأقصى للطلاب",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "instructor": "المدرب",
+      "instructorPh": "اسم المدرب",
+      "status": "الحالة",
+      "draft": "مسودة",
+      "published": "منشورة",
+      "archived": "مؤرشفة",
+      "arabicTitle": "العنوان بالعربية",
+      "subcategory": "الفئة الفرعية",
+      "subcategoryPh": "مثال: تطوير المواقع",
+      "language": "اللغة",
+      "english": "الإنجليزية",
+      "arabic": "العربية",
+      "both": "كلاهما",
+      "totalHours": "إجمالي الساعات",
+      "totalHoursPh": "إجمالي ساعات الدورة",
+      "schedule": "الجدول",
+      "schedulePh": "مثال: الإثنين والأربعاء والجمعة 6-8 مساءً",
+      "day": "اليوم",
+      "dayPh": "اختر اليوم",
+      "monday": "الإثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت",
+      "sunday": "الأحد",
+      "startTime": "وقت البدء",
+      "endTime": "وقت الانتهاء",
+      "discountedPrice": "السعر بعد الخصم",
+      "discountedPricePh": "السعر بعد الخصم",
+      "actualPrice": "السعر الأصلي",
+      "actualPricePh": "السعر الأصلي",
+      "enableInstallments": "تفعيل التقسيط",
+      "installments": "عدد الأقساط",
+      "prerequisites": "المتطلبات المسبقة (مفصولة بفواصل)",
+      "prerequisitesPh": "أساسيات البرمجة، الرياضيات",
+      "tags": "الوسوم (مفصولة بفواصل)",
+      "tagsPh": "برمجة، تطوير المواقع",
+      "minAge": "الحد الأدنى للعمر",
+      "maxAge": "الحد الأقصى للعمر",
+      "featured": "دورة مميزة",
+      "tabBasic": "المعلومات الأساسية",
+      "tabDetails": "التفاصيل",
+      "tabSchedule": "الجدول",
+      "tabPricing": "التسعير",
+      "tabAdvanced": "متقدم",
+      "addTitle": "إضافة دورة جديدة",
+      "editTitle": "تعديل الدورة",
+      "cancel": "إلغاء",
+      "saving": "جارٍ الحفظ...",
+      "create": "إنشاء الدورة",
+      "update": "تحديث الدورة",
+      "deleteTitle": "حذف الدورة",
+      "delete": "حذف",
+      "deleteConfirm": "هل أنت متأكد من حذف \"{{title}}\"؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "toast": {
+      "successTitle": "تم بنجاح",
+      "errorTitle": "خطأ",
+      "updated": "تم تحديث الدورة بنجاح",
+      "created": "تم إنشاء الدورة بنجاح",
+      "deleted": "تم حذف الدورة بنجاح",
+      "deleteFailed": "فشل حذف الدورة",
+      "saveFailed": "فشل حفظ الدورة"
     }
   },
-  
   "filters": {
     "allCategories": "جميع الفئات",
     "filterByCategory": "تصفية حسب الفئة"
   },
-  
   "table": {
     "headers": {
+      "title": "العنوان",
+      "duration": "المدة",
+      "status": "الحالة",
       "course": "الدورة",
       "instructor": "المدرب",
       "institution": "المؤسسة",
@@ -89,40 +172,34 @@
     "free": "مجاني",
     "seatsLeft": "مقعد متبقي"
   },
-  
   "status": {
     "draft": "مسودة",
     "published": "منشور",
     "archived": "مؤرشف",
     "cancelled": "ملغي"
   },
-  
   "actions": {
     "edit": "تعديل",
     "delete": "حذف",
     "view": "عرض"
   },
-  
   "deleteModal": {
     "title": "حذف الدورة",
     "description": "هل أنت متأكد من حذف \"{{courseName}}\"؟ لا يمكن التراجع عن هذا الإجراء.",
     "confirmText": "نعم، احذف الدورة",
     "cancelText": "إلغاء"
   },
-  
   "loading": {
     "courses": "جاري تحميل الدورات...",
     "creating": "جاري إنشاء الدورة...",
     "updating": "جاري تحديث الدورة...",
     "deleting": "جاري حذف الدورة..."
   },
-  
   "success": {
     "courseAdded": "تم إضافة الدورة بنجاح",
     "courseUpdated": "تم تحديث الدورة بنجاح",
     "courseDeleted": "تم حذف الدورة بنجاح"
   },
-  
   "errors": {
     "loadCourses": "فشل في تحميل الدورات",
     "createCourse": "فشل في إنشاء الدورة",
@@ -133,7 +210,6 @@
     "invalidDate": "يرجى إدخال تاريخ صحيح",
     "endDateAfterStart": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية"
   },
-  
   "empty": {
     "title": "لم يتم العثور على دورات",
     "description": "لا توجد دورات تطابق المرشحات المحددة.",

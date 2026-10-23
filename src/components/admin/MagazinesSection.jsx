@@ -12,60 +12,55 @@ import { Eye, Check, X, Trash2, BookOpen, MapPin, Church, Hash, Package, Truck }
 import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 
 export const MagazinesSection = () => {
   const { t } = useTranslation('MagazinesManagement');
   const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
-  const [magazineRequests, setMagazineRequests] = useState([]);
-  const [statistics, setStatistics] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    totalCount: 0
+
+  const requestParams = {
+    search: searchTerm || undefined,
+    status: statusFilter === 'all' ? undefined : statusFilter,
+    limit: 50 // Get more results for admin view
+  };
+
+  const requestsQuery = useQuery({
+    queryKey: ['magazines', requestParams],
+    queryFn: () => magazineRequestsAPI.getAllRequests(requestParams),
+    placeholderData: keepPreviousData
   });
+  const magazineRequests = requestsQuery.data?.data?.requests ?? [];
+  const loading = requestsQuery.isLoading;
+
+  const statisticsQuery = useQuery({
+    queryKey: ['magazines', 'statistics'],
+    queryFn: () => magazineRequestsAPI.getStatistics()
+  });
+  const statistics = statisticsQuery.data?.data ?? null;
 
   useEffect(() => {
-    fetchRequests();
-    fetchStatistics();
-  }, [searchTerm, statusFilter]);
-
-  const fetchRequests = async () => {
-    try {
-      setLoading(true);
-      const params = {
-        search: searchTerm || undefined,
-        status: statusFilter === 'all' ? undefined : statusFilter,
-        limit: 50 // Get more results for admin view
-      };
-
-      const response = await magazineRequestsAPI.getAllRequests(params);
-      setMagazineRequests(response.data.requests);
-      setPagination(response.data.pagination);
-    } catch (error) {
-      console.error('Error fetching requests:', error);
+    if (requestsQuery.isError) {
+      console.error('Error fetching requests:', requestsQuery.error);
       toast({
         title: t('toast.error'),
         description: t('toast.failedToFetch'),
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [requestsQuery.isError]);
 
-  const fetchStatistics = async () => {
-    try {
-      const response = await magazineRequestsAPI.getStatistics();
-      setStatistics(response.data);
-    } catch (error) {
-      console.error('Error fetching statistics:', error);
+  useEffect(() => {
+    if (statisticsQuery.isError) {
+      console.error('Error fetching statistics:', statisticsQuery.error);
     }
-  };
+  }, [statisticsQuery.isError]);
+
+  const fetchRequests = () => queryClient.invalidateQueries({ queryKey: ['magazines'] });
 
   const filteredRequests = magazineRequests;
 
@@ -77,7 +72,6 @@ export const MagazinesSection = () => {
         description: t('toast.statusUpdated', { status: t(`status.${status}`) }),
       });
       fetchRequests();
-      fetchStatistics();
     } catch (error) {
       console.error('Error updating status:', error);
       toast({
@@ -96,7 +90,6 @@ export const MagazinesSection = () => {
         description: t('toast.requestDeleted'),
       });
       fetchRequests();
-      fetchStatistics();
     } catch (error) {
       console.error('Error deleting request:', error);
       toast({

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { authAPI } from '../services/api';
 import { authStorage } from '../utils/storage';
 
@@ -24,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const queryClient = useQueryClient();
 
   const clearSession = useCallback(() => {
     authStorage.clearAuth();
@@ -91,6 +93,8 @@ export const AuthProvider = ({ children }) => {
       // The local session is cleared below even if the server call fails
     }
     clearSession();
+    // Cached admin data must not survive into the next session
+    queryClient.clear();
   };
 
   const updateUser = (userData) => {

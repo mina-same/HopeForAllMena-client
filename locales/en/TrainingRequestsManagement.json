@@ -46,6 +46,7 @@
     "cancelled": "Cancelled"
   },
   "actions": {
+    "close": "Close",
     "view": "View Details",
     "approve": "Approve",
     "cancel": "Cancel",

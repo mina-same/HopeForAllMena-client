@@ -43,6 +43,8 @@
     "comments": "التعليقات"
   },
   "dashboard": {
+    "unreadMessages": "رسائل غير مقروءة",
+    "blogs": "المدونات",
     "title": "لوحة التحكم",
     "subtitle": "مرحباً بك في لوحة إدارة دار النشر",
     "totalBooks": "إجمالي الكتب",
@@ -107,5 +109,29 @@
     "logoutDescription": "هل أنت متأكد من أنك تريد تسجيل الخروج؟ ستحتاج إلى تسجيل الدخول مرة أخرى للوصول إلى لوحة الإدارة.",
     "logout": "تسجيل الخروج",
     "cancel": "إلغاء"
+  },
+  "dashboardUi": {
+    "countries": "الدول",
+    "fromAnalytics": "من التحليلات",
+    "leadersTraining": "تدريب القادة",
+    "publishedBooks": "الكتب المنشورة",
+    "totalBooks": "إجمالي الكتب",
+    "givenMagazines": "المجلات الموزعة",
+    "loading": "جارٍ تحميل لوحة التحكم...",
+    "noActivity": "لا يوجد نشاط حديث",
+    "dbConnection": "الاتصال بقاعدة البيانات",
+    "apiServices": "خدمات الواجهة البرمجية",
+    "fileStorage": "تخزين الملفات",
+    "online": "متصل",
+    "active": "نشط",
+    "available": "متاح",
+    "pendingReviews": "مراجعات معلقة",
+    "items": "{{count}} عنصر",
+    "newReview": "مراجعة جديدة لكتاب \"{{title}}\"",
+    "book": "كتاب",
+    "stars": "{{count}} نجوم",
+    "newMessage": "رسالة جديدة من {{name}}",
+    "unknown": "غير معروف",
+    "newBlog": "مقال جديد: \"{{title}}\""
   }
 }

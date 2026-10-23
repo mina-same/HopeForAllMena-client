@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import eventService from '../services/eventService';
 
 const CalendarContext = createContext(null);
@@ -27,36 +28,28 @@ export const CalendarProvider = ({ children }) => {
     { id: 'social', name: 'Social', color: 'hsl(320 70% 60%)', icon: 'coffee' }
   ];
 
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // Cached so reopening the calendar shows events instantly; local edits below stay local as before
+  const eventsQuery = useQuery({
+    queryKey: ['calendar-events'],
+    queryFn: () => eventService.getAllEvents()
+  });
+  const toCalendarEvents = (payload) =>
+    payload?.data ? payload.data.map(event => eventService.transformEventForCalendar(event)) : [];
 
-  // Fetch events from API on component mount
+  const [events, setEvents] = useState(() => toCalendarEvents(eventsQuery.data));
+  const loading = eventsQuery.isLoading;
+  const error = eventsQuery.isError ? 'Failed to load events. Please try again.' : null;
+
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await eventService.getAllEvents();
-        
-        // Transform API events to calendar format
-        const transformedEvents = response.data.map(event => 
-          eventService.transformEventForCalendar(event)
-        );
-        
-        setEvents(transformedEvents);
-      } catch (err) {
-        console.error('Failed to fetch events:', err);
-        setError('Failed to load events. Please try again.');
-        // Keep empty array on error instead of showing hardcoded events
-        setEvents([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (eventsQuery.isError) {
+      console.error('Failed to fetch events:', eventsQuery.error);
+      setEvents([]);
+    }
+  }, [eventsQuery.isError]);
 
-    fetchEvents();
-  }, []);
+  useEffect(() => {
+    if (eventsQuery.data) setEvents(toCalendarEvents(eventsQuery.data));
+  }, [eventsQuery.data]);
 
   const addEvent = (eventData) => {
     const newEvent = {

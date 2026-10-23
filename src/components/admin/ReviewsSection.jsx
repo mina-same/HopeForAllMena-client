@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Star, CheckCircle, XCircle, Clock, MessageSquare } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -12,19 +12,17 @@ import { Link, useI18next } from 'gatsby-plugin-react-i18next';
 import '../../styles/ReviewsManagement-rtl.css';
 import { DataTable } from '../ui/DataTable';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 
 export function ReviewsSection() {
   const { t } = useTranslation('ReviewsManagement');
   const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
-  const [reviews, setReviews] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [ratingFilter, setRatingFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalReviews, setTotalReviews] = useState(0);
 
   // Moderation modal state
   const [showModerateModal, setShowModerateModal] = useState(false);
@@ -33,42 +31,44 @@ export function ReviewsSection() {
   const [moderationNotes, setModerationNotes] = useState('');
   const [isModerating, setIsModerating] = useState(false);
 
-  // Fetch reviews
-  const fetchReviews = useCallback(async () => {
-    try {
-      setLoading(true);
-      const params = {
-        page: currentPage,
-        limit: 10,
-        search: searchTerm,
-        status: statusFilter === 'all' ? '' : statusFilter,
-        rating: ratingFilter === 'all' ? '' : ratingFilter,
-        sortBy: 'createdAt',
-        sortOrder: 'desc',
-        language: currentLanguage
-      };
+  const reviewParams = {
+    page: currentPage,
+    limit: 10,
+    search: searchTerm,
+    status: statusFilter === 'all' ? '' : statusFilter,
+    rating: ratingFilter === 'all' ? '' : ratingFilter,
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+    language: currentLanguage
+  };
 
-      const response = await reviewsAPI.getReviews(params);
-      if (response.status === 'success') {
-        setReviews(response.data.reviews);
-        setTotalPages(response.data.pagination.totalPages);
-        setTotalReviews(response.data.pagination.totalReviews);
-      }
-    } catch (error) {
-      console.error('Failed to fetch reviews:', error);
+  const reviewsQuery = useQuery({
+    queryKey: ['reviews', reviewParams],
+    queryFn: () => reviewsAPI.getReviews(reviewParams),
+    placeholderData: keepPreviousData
+  });
+  const reviewsData = reviewsQuery.data?.status === 'success' ? reviewsQuery.data.data : undefined;
+  const reviews = reviewsData?.reviews ?? [];
+  const totalPages = reviewsData?.pagination.totalPages ?? 1;
+  const totalReviews = reviewsData?.pagination.totalReviews ?? 0;
+  const loading = reviewsQuery.isLoading;
+
+  useEffect(() => {
+    if (reviewsQuery.isError) {
+      console.error('Failed to fetch reviews:', reviewsQuery.error);
       toast({
         title: t('toast.error'),
         description: t('toast.fetchError'),
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
-  }, [currentPage, searchTerm, statusFilter, ratingFilter, currentLanguage, toast, t]);
+  }, [reviewsQuery.isError]);
 
-  useEffect(() => {
-    fetchReviews();
-  }, [currentPage, searchTerm, statusFilter, ratingFilter, currentLanguage, fetchReviews]);
+  // Moderation can change book rating aggregates too
+  const fetchReviews = () => {
+    queryClient.invalidateQueries({ queryKey: ['reviews'] });
+    queryClient.invalidateQueries({ queryKey: ['books'] });
+  };
 
   const confirmModeration = async () => {
     if (!reviewToModerate || !moderationStatus) return;

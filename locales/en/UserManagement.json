@@ -155,6 +155,10 @@
     "blogs": {
       "label": "Blog Management",
       "description": "Manage blog posts and content"
+    },
+    "development-requests": {
+      "label": "Development Requests",
+      "description": "Review church development project requests"
     }
   },
   "status": {
@@ -180,6 +184,8 @@
     "updateUser": "Failed to update user. Please try again.",
     "deleteUser": "Failed to delete user. Please try again.",
     "updateStatus": "Failed to update user status. Please try again.",
-    "general": "An error occurred. Please try again."
+    "general": "An error occurred. Please try again.",
+    "emailTaken": "Email address is already taken",
+    "usernameTaken": "Username is already taken"
   }
 }

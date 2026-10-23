@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Edit3, Eye, Trash2, Plus, FileText, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
@@ -12,13 +12,13 @@ import blogAPI from '../../services/blogAPI';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import { DataTable } from '../ui/DataTable';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 
 const AllBlogs = () => {
   const { token } = useAuth();
   const { t } = useTranslation('BlogsManagement');
   const { language: currentLanguage, navigate } = useI18next();
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const [message, setMessage] = useState({ type: '', text: '' });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [blogToDelete, setBlogToDelete] = useState(null);
@@ -29,39 +29,37 @@ const AllBlogs = () => {
   });
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 10,
-    total: 0,
-    totalPages: 0
+    limit: 10
   });
 
-  const fetchBlogs = useCallback(async () => {
-    try {
-      setLoading(true);
-      const queryParams = {
-        page: pagination.page,
-        limit: pagination.limit,
-        language: currentLanguage,
-        ...filters
-      };
+  const blogParams = {
+    page: pagination.page,
+    limit: pagination.limit,
+    language: currentLanguage,
+    ...filters
+  };
 
-      const response = await blogAPI.getAllBlogs(queryParams, token);
-      setBlogs(response.blogs || []);
-      setPagination(prev => ({
-        ...prev,
-        total: response.pagination?.total || 0,
-        totalPages: response.pagination?.totalPages || 0
-      }));
-    } catch (error) {
-      console.error('Error fetching blogs:', error);
-      setMessage({ type: 'danger', text: t('messages.fetchError') });
-    } finally {
-      setLoading(false);
-    }
-  }, [filters, pagination.page, pagination.limit, currentLanguage, token, t]);
+  const blogsQuery = useQuery({
+    queryKey: ['blogs', blogParams],
+    queryFn: () => blogAPI.getAllBlogs(blogParams, token),
+    placeholderData: keepPreviousData
+  });
+  const blogs = blogsQuery.data?.blogs || [];
+  const totalPages = blogsQuery.data?.pagination?.totalPages || 0;
+  const loading = blogsQuery.isLoading;
 
   useEffect(() => {
-    fetchBlogs();
-  }, [fetchBlogs]);
+    if (blogsQuery.isError) {
+      console.error('Error fetching blogs:', blogsQuery.error);
+      setMessage({ type: 'danger', text: t('messages.fetchError') });
+    }
+  }, [blogsQuery.isError]);
+
+  // Deleting a blog also removes its comments
+  const fetchBlogs = () => {
+    queryClient.invalidateQueries({ queryKey: ['blogs'] });
+    queryClient.invalidateQueries({ queryKey: ['comments'] });
+  };
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -314,7 +312,7 @@ const AllBlogs = () => {
         emptyIcon={FileText}
         countLabel={t('table.title', { count: blogs.length })}
         currentPage={pagination.page}
-        totalPages={pagination.totalPages}
+        totalPages={totalPages}
         onPageChange={(page) => setPagination(prev => ({ ...prev, page }))}
         dir={dir}
       />

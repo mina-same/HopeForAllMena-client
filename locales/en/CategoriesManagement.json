@@ -41,6 +41,10 @@
   },
   
   "table": {
+    "status": "Status",
+    "books": "Books",
+    "description": "Description",
+    "name": "Name",
     "headers": {
       "category": "Category",
       "books": "Books",

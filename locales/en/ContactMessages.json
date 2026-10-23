@@ -1,4 +1,17 @@
 {
+  "table": {
+    "status": "Status",
+    "date": "Date",
+    "subject": "Subject",
+    "sender": "Sender",
+    "headers": {
+      "actions": "Actions",
+      "status": "Status",
+      "date": "Date",
+      "subject": "Subject",
+      "sender": "Sender"
+    }
+  },
   "title": "Contact Messages",
   "description": "Manage customer inquiries and book orders",
   "searchPlaceholder": "Search messages...",
@@ -77,7 +90,7 @@
   },
   "empty": {
     "title": "No Messages Found",
-    "noMessages": "No messages found.",
+    "noMessages": "No messages have been received yet.",
     "withFilters": "No messages match your current filters. Try adjusting your search criteria."
   },
   "message": {
@@ -91,6 +104,7 @@
     "respondedOn": "Responded on:"
   },
   "actions": {
+    "close": "Close",
     "markAsRead": "Mark as Read",
     "markAsResolved": "Mark as Resolved",
     "respond": "Respond"

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useI18next, useTranslation } from 'gatsby-plugin-react-i18next';
+import { useQuery } from '@tanstack/react-query';
 import { authStorage } from '../../utils/storage';
 import {
   Book,
@@ -48,8 +49,6 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
   const [trainingOpen, setTrainingOpen] = useState(true);
   const [developmentOpen, setDevelopmentOpen] = useState(true);
   const [blogOpen, setBlogOpen] = useState(true);
-  const [pendingReviews, setPendingReviews] = useState(0);
-  const [unreadMessages, setUnreadMessages] = useState(0);
   const { user, hasAnyPermission } = useAuth();
   const { t } = useTranslation('Admin');
   const { i18n } = useI18next();
@@ -89,55 +88,32 @@ export function AdminSidebar({ activeSection, onSectionChange }) {
     return hasAnyPermission(requiredPermissions);
   }, [hasAnyPermission, sectionPermissions]);
 
-  // Fetch notification counts
-  useEffect(() => {
-    const fetchNotificationCounts = async () => {
-      try {
-        // Get auth token
-        const token = authStorage.getToken();
-        const headers = {
-          'Content-Type': 'application/json',
-        };
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        // Fetch pending reviews count
-        if (hasSectionPermission('reviews')) {
-          const reviewsResponse = await fetch(`${process.env.GATSBY_API_URL || 'http://localhost:5001/api'}/reviews?status=pending&limit=1`, {
-            headers
-          });
-          if (reviewsResponse.ok) {
-            const reviewsData = await reviewsResponse.json();
-            setPendingReviews(reviewsData.totalCount || 0);
-          }
-        }
-
-        // Fetch unread contact messages count
-        if (hasSectionPermission('contact-messages')) {
-          const messagesResponse = await fetch(`${process.env.GATSBY_API_URL || 'http://localhost:5001/api'}/contact-messages?status=unread`, {
-            headers
-          });
-          if (messagesResponse.ok) {
-            const messagesData = await messagesResponse.json();
-            setUnreadMessages(messagesData.totalCount || 0);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch notification counts:', error);
-        // Set to 0 on error to avoid showing incorrect counts
-        setPendingReviews(0);
-        setUnreadMessages(0);
-      }
-    };
-
-    if (user) {
-      fetchNotificationCounts();
-      // Refresh counts every 30 seconds
-      const interval = setInterval(fetchNotificationCounts, 30000);
-      return () => clearInterval(interval);
-    }
-  }, [user, hasSectionPermission]);
+  // Notification badge counts, cached and polled every 30s by TanStack Query
+  const canSeeReviews = hasSectionPermission('reviews');
+  const canSeeMessages = hasSectionPermission('contact-messages');
+  const { data: counts } = useQuery({
+    queryKey: ['admin', 'notificationCounts', canSeeReviews, canSeeMessages],
+    enabled: !!user,
+    refetchInterval: 30000,
+    queryFn: async () => {
+      const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
+      const token = authStorage.getToken();
+      const headers = { 'Content-Type': 'application/json', ...(token && { Authorization: `Bearer ${token}` }) };
+      const getTotal = async (url, field) => {
+        const response = await fetch(url, { headers });
+        if (!response.ok) return 0;
+        const data = await response.json();
+        return data.data?.pagination?.[field] || 0;
+      };
+      const [reviews, messages] = await Promise.all([
+        canSeeReviews ? getTotal(`${API_URL}/reviews?status=pending&limit=1`, 'totalReviews') : 0,
+        canSeeMessages ? getTotal(`${API_URL}/contact-messages?status=new&limit=1`, 'totalMessages') : 0,
+      ]);
+      return { reviews, messages };
+    },
+  });
+  const pendingReviews = counts?.reviews || 0;
+  const unreadMessages = counts?.messages || 0;
 
   // Filter main items based on permissions
   const mainItems = [

@@ -18,6 +18,7 @@ import './UserManagement-rtl.css';
 import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
+import { cachedGet } from '../../lib/queryClient';
 
 const availablePermissions = [
   { id: 'books', label: 'Books & Publishing', description: 'Manage books, authors, categories, and reviews' },
@@ -100,10 +101,10 @@ const FormDialog = React.memo(({
         const message = errorData.message.toLowerCase();
 
         if (message.includes('email')) {
-          errors.email = VALIDATION_MESSAGES.email.taken || 'Email address is already taken';
+          errors.email = VALIDATION_MESSAGES.email.taken || t('errors.emailTaken');
         }
         if (message.includes('username')) {
-          errors.username = VALIDATION_MESSAGES.username.taken || 'Username is already taken';
+          errors.username = VALIDATION_MESSAGES.username.taken || t('errors.usernameTaken');
         }
         if (message.includes('name')) {
           errors.name = VALIDATION_MESSAGES.name.required;
@@ -534,7 +535,7 @@ export function UserManagementSection() {
         sortOrder: 'desc'
       };
 
-      const response = await usersAPI.getUsers(params);
+      const response = await cachedGet(['users', params], () => usersAPI.getUsers(params));
 
       if (response.status === 'success') {
         setUsers(response.data.users);
@@ -653,8 +654,8 @@ export function UserManagementSection() {
 
   const getPermissionLabel = useCallback((permissionId) => {
     const permission = availablePermissions.find(p => p.id === permissionId);
-    return permission ? permission.label : permissionId;
-  }, []);
+    return permission ? t(`permissions.${permission.id}.label`, permission.label) : permissionId;
+  }, [t]);
 
   // Create initial form data for create dialog
   const createFormData = useMemo(() => ({

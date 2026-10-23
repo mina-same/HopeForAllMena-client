@@ -43,6 +43,8 @@
     "comments": "Comments"
   },
   "dashboard": {
+    "unreadMessages": "Unread Messages",
+    "blogs": "Blogs",
     "title": "Dashboard",
     "subtitle": "Welcome to your publishing house management dashboard",
     "totalBooks": "Total Books",
@@ -107,5 +109,29 @@
     "logoutDescription": "Are you sure you want to logout? You will need to sign in again to access the admin panel.",
     "logout": "Logout",
     "cancel": "Cancel"
+  },
+  "dashboardUi": {
+    "countries": "Countries",
+    "fromAnalytics": "From Analytics",
+    "leadersTraining": "Leaders Training",
+    "publishedBooks": "Published Books",
+    "totalBooks": "Total Books",
+    "givenMagazines": "Given Magazines",
+    "loading": "Loading dashboard...",
+    "noActivity": "No recent activity",
+    "dbConnection": "Database Connection",
+    "apiServices": "API Services",
+    "fileStorage": "File Storage",
+    "online": "Online",
+    "active": "Active",
+    "available": "Available",
+    "pendingReviews": "Pending Reviews",
+    "items": "{{count}} items",
+    "newReview": "New review for \"{{title}}\"",
+    "book": "Book",
+    "stars": "{{count}} stars",
+    "newMessage": "New message from {{name}}",
+    "unknown": "Unknown",
+    "newBlog": "New blog: \"{{title}}\""
   }
 }

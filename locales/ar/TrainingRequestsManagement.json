@@ -46,6 +46,7 @@
     "cancelled": "ملغية"
   },
   "actions": {
+    "close": "إغلاق",
     "view": "عرض التفاصيل",
     "approve": "موافقة",
     "cancel": "إلغاء",

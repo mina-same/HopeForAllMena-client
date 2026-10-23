@@ -41,6 +41,10 @@
   },
   
   "table": {
+    "status": "الحالة",
+    "books": "الكتب",
+    "description": "الوصف",
+    "name": "الاسم",
     "headers": {
       "category": "الفئة",
       "books": "الكتب",

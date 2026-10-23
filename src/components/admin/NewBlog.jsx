@@ -566,14 +566,14 @@ const NewBlog = () => {
                   <div className="space-y-2">
                     <div className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
-                        <span className="px-2 py-1 bg-gray-500 text-white rounded text-xs">Draft</span>
+                        <span className="px-2 py-1 bg-gray-500 text-white rounded text-xs">{t('preview.draft')}</span>
                         <span className="text-sm text-gray-600">{t('guidelines.statusInfo.draft')}</span>
                       </div>
                       <Eye className="h-4 w-4 text-gray-400" />
                     </div>
                     <div className={`flex items-center justify-between p-3 bg-gray-50 rounded-lg ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
                       <div className={`flex items-center gap-2 ${currentLanguage === 'ar' ? 'flex-row' : ''}`}>
-                        <span className="px-2 py-1 bg-green-500 text-white rounded text-xs">Published</span>
+                        <span className="px-2 py-1 bg-green-500 text-white rounded text-xs">{t('preview.published')}</span>
                         <span className="text-sm text-gray-600">{t('guidelines.statusInfo.published')}</span>
                       </div>
                       <Eye className="h-4 w-4 text-green-500" />

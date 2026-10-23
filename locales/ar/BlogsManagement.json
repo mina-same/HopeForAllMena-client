@@ -29,6 +29,7 @@
   "table": {
     "title": "منشورات المدونة ({{count}})",
     "headers": {
+      "thumbnail": "الصورة",
       "title": "العنوان",
       "author": "الكاتب",
       "category": "الفئة",

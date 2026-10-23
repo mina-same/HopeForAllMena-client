@@ -19,6 +19,12 @@
     }
   },
   "table": {
+    "headers": {
+      "actions": "Actions",
+      "date": "Date",
+      "rating": "Rating",
+      "reviewer": "Reviewer"
+    },
     "title": "Reviews",
     "count": "Reviews ({{count}})",
     "reviewFor": "Review for:",

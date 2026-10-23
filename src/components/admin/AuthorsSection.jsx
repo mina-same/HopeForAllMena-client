@@ -15,23 +15,20 @@ import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 
 export function AuthorsSection() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const { t } = useTranslation('AuthorsManagement');
   const { language: currentLanguage } = useI18next();
-  const [authors, setAuthors] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingAuthor, setEditingAuthor] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [featuredFilter, setFeaturedFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalAuthors, setTotalAuthors] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   // Delete confirmation modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -50,40 +47,39 @@ export function AuthorsSection() {
     avatarUrl: ''
   });
 
-  // Fetch authors
+  const authorParams = {
+    page: currentPage,
+    limit: 10,
+    search: searchTerm,
+    status: statusFilter === 'all' ? '' : statusFilter,
+    featured: featuredFilter === 'all' ? '' : featuredFilter,
+    sortBy: 'createdAt',
+    sortOrder: 'desc',
+    language: currentLanguage
+  };
+
+  const authorsQuery = useQuery({
+    queryKey: ['authors', authorParams],
+    queryFn: () => authorsAPI.getAuthors(authorParams).then(res => res.data.data),
+    placeholderData: keepPreviousData
+  });
+  const authors = authorsQuery.data?.authors ?? [];
+  const totalPages = authorsQuery.data?.pagination.totalPages ?? 1;
+  const totalAuthors = authorsQuery.data?.pagination.totalAuthors ?? 0;
+  const loading = authorsQuery.isLoading;
+
   useEffect(() => {
-    const fetchAuthors = async () => {
-      try {
-        setLoading(true);
-        const params = {
-          page: currentPage,
-          limit: 10,
-          search: searchTerm,
-          status: statusFilter === 'all' ? '' : statusFilter,
-          featured: featuredFilter === 'all' ? '' : featuredFilter,
-          sortBy: 'createdAt',
-          sortOrder: 'desc',
-          language: currentLanguage
-        };
+    if (authorsQuery.isError) {
+      console.error('Failed to fetch authors:', authorsQuery.error);
+      toast({
+        title: t('toast.errors.validationError'),
+        description: t('toast.errors.fetchAuthors'),
+        variant: "destructive"
+      });
+    }
+  }, [authorsQuery.isError]);
 
-        const response = await authorsAPI.getAuthors(params);
-        setAuthors(response.data.data.authors);
-        setTotalPages(response.data.data.pagination.totalPages);
-        setTotalAuthors(response.data.data.pagination.totalAuthors);
-      } catch (error) {
-        console.error('Failed to fetch authors:', error);
-        toast({
-          title: t('toast.errors.validationError'),
-          description: t('toast.errors.fetchAuthors'),
-          variant: "destructive"
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAuthors();
-  }, [currentPage, searchTerm, statusFilter, featuredFilter, currentLanguage, toast, t, refetchTrigger]);
+  const fetchAuthors = () => queryClient.invalidateQueries({ queryKey: ['authors'] });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -163,7 +159,7 @@ export function AuthorsSection() {
         biographyAr: '',
         avatarUrl: ''
       });
-      setRefetchTrigger(prev => prev + 1);
+      fetchAuthors();
     } catch (error) {
       console.error('Failed to save author:', error);
       toast({
@@ -208,7 +204,8 @@ export function AuthorsSection() {
         title: t('toast.authorDeleted', { name: currentLanguage === 'ar' ? authorToDelete.nameAr || authorToDelete.name : authorToDelete.name }),
         description: t('toast.authorDeleted', { name: currentLanguage === 'ar' ? authorToDelete.nameAr || authorToDelete.name : authorToDelete.name }),
       });
-      setRefetchTrigger(prev => prev + 1);
+      fetchAuthors();
+      queryClient.invalidateQueries({ queryKey: ['books'] });
     } catch (error) {
       console.error('Failed to delete author:', error);
       toast({
@@ -233,7 +230,7 @@ export function AuthorsSection() {
         title: t('toast.statusUpdated', { name: authorName, status: statusText }),
         description: t('toast.statusUpdated', { name: authorName, status: statusText }),
       });
-      setRefetchTrigger(prev => prev + 1);
+      fetchAuthors();
     } catch (error) {
       console.error('Failed to update status:', error);
       toast({

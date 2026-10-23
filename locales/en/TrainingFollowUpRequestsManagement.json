@@ -114,10 +114,36 @@
   },
   "tshirtSizes": {
     "size6": "Size 6",
-    "size8": "Size 8", 
+    "size8": "Size 8",
     "size10": "Size 10",
     "sizeL": "Size L",
     "sizeXL": "Size XL",
     "sizeXXL": "Size XXL"
+  },
+  "detailsUi": {
+    "contactInfo": "Contact Information",
+    "trainer": "Trainer:",
+    "requester": "Requester:",
+    "church": "Church:",
+    "phone": "Phone:",
+    "address": "Address:",
+    "served": "People Served:",
+    "tshirtSizes": "T-shirt Sizes",
+    "totalTshirts": "Total T-shirts:",
+    "booksRequested": "Books Requested",
+    "copies": "Copies needed:",
+    "attendeeFile": "Attendee Names File",
+    "requestDetails": "Request Details",
+    "submitted": "Submitted:",
+    "status": "Status:",
+    "notes": "Notes:",
+    "requestDetailsColon": "Request Details:",
+    "unknownBook": "Unknown Book",
+    "downloadFailed": "Failed to download file",
+    "deleteFailed": "Failed to delete request",
+    "noMatches": "No matching requests found",
+    "noRequests": "No Follow-up Requests",
+    "adjustSearch": "Try adjusting your search or filter criteria.",
+    "willAppear": "Follow-up requests will appear here when submitted."
   }
 }

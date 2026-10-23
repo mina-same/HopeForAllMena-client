@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useBookstore } from '../../context/BookstoreContext';
@@ -31,7 +32,7 @@ const DashboardOverview = () => {
   const { user, token } = useAuth();
   const { books, reviews, contacts } = useBookstore();
   
-  const [stats, setStats] = useState({
+  const emptyStats = {
     totalBooks: 0,
     totalReviews: 0,
     totalMessages: 0,
@@ -46,15 +47,13 @@ const DashboardOverview = () => {
     acceptedTraining: 0,
     publishedBooks: 0,
     givenMagazines: 0
-  });
+  };
   
-  const [loading, setLoading] = useState(true);
-  const [recentActivity, setRecentActivity] = useState([]);
 
-  useEffect(() => {
+  // Cached under 'dashboard-stats': returning to the dashboard reuses recent data
+  // instead of re-running ~10 API requests on every visit.
     const fetchDashboardData = async () => {
       try {
-        setLoading(true);
         
         // Fetch all statistics in parallel using optimized stats endpoints
         const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
@@ -172,7 +171,6 @@ const DashboardOverview = () => {
           givenMagazines: totalMagazinesGiven
         };
 
-        setStats(newStats);
 
         // Prepare recent activity
         const activity = [];
@@ -182,8 +180,8 @@ const DashboardOverview = () => {
           activity.push({
             id: `review-${review._id}`,
             type: 'review',
-            title: `New review for "${review.bookTitle || review.book?.title || 'Book'}"`,
-            description: `${review.rating} stars - ${(review.comment || review.review || '').substring(0, 50)}...`,
+            title: t('dashboardUi.newReview', { title: review.bookTitle || review.book?.title || t('dashboardUi.book') }),
+            description: `${t('dashboardUi.stars', { count: review.rating })} - ${(review.comment || review.review || '').substring(0, 50)}...`,
             time: new Date(review.createdAt || review.date).toLocaleDateString(),
             icon: Star,
             color: 'text-yellow-500',
@@ -196,7 +194,7 @@ const DashboardOverview = () => {
           activity.push({
             id: `message-${message._id}`,
             type: 'message',
-            title: `New message from ${message.name || message.sender || 'Unknown'}`,
+            title: t('dashboardUi.newMessage', { name: message.name || message.sender || t('dashboardUi.unknown') }),
             description: (message.message || message.content || '').substring(0, 50) + '...',
             time: new Date(message.createdAt || message.date).toLocaleDateString(),
             icon: MessageSquare,
@@ -210,7 +208,7 @@ const DashboardOverview = () => {
           activity.push({
             id: `blog-${blog._id}`,
             type: 'blog',
-            title: `New blog: "${blog.title}"`,
+            title: t('dashboardUi.newBlog', { title: blog.title }),
             description: (blog.excerpt || blog.content || '').substring(0, 50) + '...',
             time: new Date(blog.createdAt || blog.publishedAt).toLocaleDateString(),
             icon: FileText,
@@ -219,12 +217,12 @@ const DashboardOverview = () => {
           });
         });
 
-        setRecentActivity(activity.slice(0, 5));
+        return { stats: newStats, activity: activity.slice(0, 5) };
 
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
         // Set fallback stats with actual data from context
-        setStats({
+        return { activity: [], stats: {
           totalBooks: books.length,
           totalReviews: reviews.length,
           totalMessages: contacts.length,
@@ -238,27 +236,31 @@ const DashboardOverview = () => {
           acceptedTraining: 0,
           publishedBooks: books.length,
           givenMagazines: 0
-        });
-      } finally {
-        setLoading(false);
+        } };
       }
     };
 
-    fetchDashboardData();
-  }, [books.length, reviews.length, contacts.length, token]);
+  const { data: dashboard, isLoading: loading } = useQuery({
+    // Language in the key: activity titles are translated inside the queryFn
+    queryKey: ['dashboard-stats', { language: currentLanguage }],
+    queryFn: fetchDashboardData,
+    enabled: !!token,
+  });
+  const stats = dashboard?.stats || emptyStats;
+  const recentActivity = dashboard?.activity || [];
 
   const statCards = [
     {
-      title: 'Countries',
+      title: t('dashboardUi.countries'),
       value: stats.totalCountries,
       icon: Globe,
       color: 'text-blue-600',
       bgColor: 'bg-blue-50',
       borderColor: 'border-blue-200',
-      trend: 'From Analytics'
+      trend: t('dashboardUi.fromAnalytics')
     },
     {
-      title: 'Leaders Training',
+      title: t('dashboardUi.leadersTraining'),
       value: stats.acceptedTraining,
       icon: GraduationCap,
       color: 'text-purple-600',
@@ -267,16 +269,16 @@ const DashboardOverview = () => {
       trend: 'Accepted'
     },
     {
-      title: 'Published Books',
+      title: t('dashboardUi.publishedBooks'),
       value: stats.publishedBooks,
       icon: BookMarked,
       color: 'text-green-600',
       bgColor: 'bg-green-50',
       borderColor: 'border-green-200',
-      trend: 'Total Books'
+      trend: t('dashboardUi.totalBooks')
     },
     {
-      title: 'Given Magazines',
+      title: t('dashboardUi.givenMagazines'),
       value: stats.givenMagazines.toLocaleString(),
       icon: BookOpen,
       color: 'text-orange-600',
@@ -332,7 +334,7 @@ const DashboardOverview = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading dashboard...</p>
+          <p className="text-muted-foreground">{t('dashboardUi.loading')}</p>
         </div>
       </div>
     );
@@ -471,7 +473,7 @@ const DashboardOverview = () => {
               ) : (
                 <div className="text-center py-10">
                   <Activity className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
-                  <p className="text-sm text-muted-foreground">No recent activity</p>
+                  <p className="text-sm text-muted-foreground">{t('dashboardUi.noActivity')}</p>
                 </div>
               )}
             </div>
@@ -489,13 +491,13 @@ const DashboardOverview = () => {
           <CardContent className="pt-0">
             <div className="space-y-1">
               {[
-                { icon: CheckCircle, label: 'Database Connection', status: 'Online', ok: true },
-                { icon: CheckCircle, label: 'API Services', status: 'Active', ok: true },
-                { icon: CheckCircle, label: 'File Storage', status: 'Available', ok: true },
+                { icon: CheckCircle, label: t('dashboardUi.dbConnection'), status: t('dashboardUi.online'), ok: true },
+                { icon: CheckCircle, label: t('dashboardUi.apiServices'), status: t('dashboardUi.active'), ok: true },
+                { icon: CheckCircle, label: t('dashboardUi.fileStorage'), status: t('dashboardUi.available'), ok: true },
                 {
                   icon: AlertCircle,
-                  label: 'Pending Reviews',
-                  status: `${stats.pendingReviews} items`,
+                  label: t('dashboardUi.pendingReviews'),
+                  status: t('dashboardUi.items', { count: stats.pendingReviews }),
                   ok: stats.pendingReviews === 0,
                 },
               ].map(({ icon: Icon, label, status, ok }) => (

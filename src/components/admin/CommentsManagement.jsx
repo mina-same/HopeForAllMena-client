@@ -12,78 +12,71 @@ import { useI18next, Link } from 'gatsby-plugin-react-i18next';
 import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 
 const CommentsManagement = () => {
   const { user, token } = useAuth();
   const { t } = useTranslation('CommentsManagement');
   const { language: currentLanguage } = useI18next();
-  const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const [filters, setFilters] = useState({
     status: '',
     blogId: '',
     search: ''
   });
-  const [pagination, setPagination] = useState({
-    currentPage: 1,
-    totalPages: 1,
-    total: 0
-  });
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedComments, setSelectedComments] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [bulkAction, setBulkAction] = useState('');
 
+  const commentParams = {
+    page: currentPage,
+    limit: 10,
+    status: filters.status,
+    search: filters.search
+  };
+
+  // Only add blogId if it's a valid ObjectId (24 character hex string)
+  if (filters.blogId && filters.blogId.length === 24 && /^[0-9a-fA-F]{24}$/.test(filters.blogId)) {
+    commentParams.blogId = filters.blogId;
+  }
+
+  const commentsQuery = useQuery({
+    queryKey: ['comments', commentParams],
+    queryFn: () => blogAPI.getAllComments(commentParams, token),
+    placeholderData: keepPreviousData
+  });
+  const comments = commentsQuery.isError ? [] : (commentsQuery.data?.comments || []);
+  const pagination = {
+    currentPage,
+    totalPages: commentsQuery.data?.totalPages || 1,
+    total: commentsQuery.data?.total || 0
+  };
+  const loading = commentsQuery.isLoading;
+
   useEffect(() => {
-    fetchComments();
-  }, [filters, pagination.currentPage, currentLanguage]);
+    const response = commentsQuery.data;
+    if (!response) return;
+    if (response.comments && response.comments.length === 0) {
+      setMessage({ type: 'info', text: t('messages.noCommentsFound') });
+    } else {
+      setMessage({ type: '', text: '' });
+    }
+  }, [commentsQuery.data]);
 
-  const fetchComments = async () => {
-    try {
-      setLoading(true);
-      const params = {
-        page: pagination.currentPage,
-        limit: 10,
-        status: filters.status,
-        search: filters.search
-      };
-
-      // Only add blogId if it's a valid ObjectId (24 character hex string)
-      if (filters.blogId && filters.blogId.length === 24 && /^[0-9a-fA-F]{24}$/.test(filters.blogId)) {
-        params.blogId = filters.blogId;
-      }
-
-      console.log('Fetching comments with params:', params);
-      console.log('Using token:', token ? 'Token present' : 'No token');
-
-      const response = await blogAPI.getAllComments(params, token);
-      console.log('Comments response:', response);
-
-      setComments(response.comments || []);
-      setPagination({
-        currentPage: response.currentPage || 1,
-        totalPages: response.totalPages || 1,
-        total: response.total || 0
-      });
-
-      if (response.comments && response.comments.length === 0) {
-        setMessage({ type: 'info', text: t('messages.noCommentsFound') });
-      } else {
-        setMessage({ type: '', text: '' });
-      }
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-      console.error('Error details:', error.message);
+  useEffect(() => {
+    if (commentsQuery.isError) {
+      console.error('Error fetching comments:', commentsQuery.error);
       setMessage({
         type: 'danger',
-        text: t('messages.fetchError', { error: error.message })
+        text: t('messages.fetchError', { error: commentsQuery.error?.message })
       });
-      setComments([]);
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [commentsQuery.isError]);
+
+  const fetchComments = () => queryClient.invalidateQueries({ queryKey: ['comments'] });
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -91,7 +84,7 @@ const CommentsManagement = () => {
       ...prev,
       [name]: value
     }));
-    setPagination(prev => ({ ...prev, currentPage: 1 }));
+    setCurrentPage(1);
   };
 
   const handleStatusChange = async (commentId, newStatus) => {
@@ -480,7 +473,7 @@ const CommentsManagement = () => {
         countLabel={`${t('table.title')} ${t('table.count', { count: comments.length })}`}
         currentPage={pagination.currentPage}
         totalPages={pagination.totalPages}
-        onPageChange={(newPage) => setPagination(prev => ({ ...prev, currentPage: newPage }))}
+        onPageChange={(newPage) => setCurrentPage(newPage)}
         dir={dir}
       />
 

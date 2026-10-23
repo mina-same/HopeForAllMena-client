@@ -6,6 +6,7 @@ import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { useToast } from '../../hooks/use-toast';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { booksAPI, authorsAPI, categoriesAPI } from '../../services/publishingAPI';
 import ConfirmationModal from '../ui/ConfirmationModal';
 import ImageUpload from '../ui/image-upload';
@@ -17,12 +18,9 @@ import { useI18next } from 'gatsby-plugin-react-i18next';
 
 export function BooksSection() {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const { t } = useTranslation('BooksManagement');
   const { language: currentLanguage } = useI18next();
-  const [books, setBooks] = useState([]);
-  const [authors, setAuthors] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -31,8 +29,6 @@ export function BooksSection() {
   const [authorFilter, setAuthorFilter] = useState('');
   const [featuredFilter, setFeaturedFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalBooks, setTotalBooks] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploadingCover, setIsUploadingCover] = useState(false);
 
@@ -64,56 +60,54 @@ export function BooksSection() {
     metaDescriptionAr: ''
   });
 
-  // Fetch books
-  const fetchBooks = async () => {
-    try {
-      setLoading(true);
-      const params = {
-        page: currentPage,
-        limit: 10,
-        search: searchTerm,
-        status: statusFilter === 'all' ? '' : statusFilter,
-        category: categoryFilter === 'all' ? '' : categoryFilter,
-        author: authorFilter === 'all' ? '' : authorFilter,
-        featured: featuredFilter === 'all' ? '' : featuredFilter,
-        sortBy: 'createdAt',
-        sortOrder: 'desc'
-      };
+  const bookParams = {
+    page: currentPage,
+    limit: 10,
+    search: searchTerm,
+    status: statusFilter === 'all' ? '' : statusFilter,
+    category: categoryFilter === 'all' ? '' : categoryFilter,
+    author: authorFilter === 'all' ? '' : authorFilter,
+    featured: featuredFilter === 'all' ? '' : featuredFilter,
+    sortBy: 'createdAt',
+    sortOrder: 'desc'
+  };
 
-      const response = await booksAPI.getBooks(params);
-      setBooks(response.data.data.books);
-      setTotalPages(response.data.data.pagination.totalPages);
-      setTotalBooks(response.data.data.pagination.totalBooks);
-    } catch (error) {
-      console.error('Failed to fetch books:', error);
+  // Cached per filter set, so returning to this section shows data instantly
+  const booksQuery = useQuery({
+    queryKey: ['books', bookParams],
+    queryFn: () => booksAPI.getBooks(bookParams).then(res => res.data.data),
+    placeholderData: keepPreviousData
+  });
+  const books = booksQuery.data?.books ?? [];
+  const totalPages = booksQuery.data?.pagination.totalPages ?? 1;
+  const totalBooks = booksQuery.data?.pagination.totalBooks ?? 0;
+  const loading = booksQuery.isLoading;
+
+  // Authors and categories for dropdowns
+  const authorsQuery = useQuery({
+    queryKey: ['authors', { limit: 100, status: 'active' }],
+    queryFn: () => authorsAPI.getAuthors({ limit: 100, status: 'active' }).then(res => res.data.data)
+  });
+  const categoriesQuery = useQuery({
+    queryKey: ['categories', { limit: 100, status: 'active' }],
+    queryFn: () => categoriesAPI.getCategories({ limit: 100, status: 'active' }).then(res => res.data.data)
+  });
+  const authors = authorsQuery.data?.authors ?? [];
+  const categories = categoriesQuery.data?.categories ?? [];
+
+  useEffect(() => {
+    if (booksQuery.isError) {
+      console.error('Failed to fetch books:', booksQuery.error);
       toast({
         title: t('errors.loadBooks'),
         description: t('errors.loadBooks'),
         variant: "destructive"
       });
-    } finally {
-      setLoading(false);
     }
-  };
+  }, [booksQuery.isError]);
 
-  // Fetch authors and categories for dropdowns
-  const fetchAuthorsAndCategories = async () => {
-    try {
-      const [authorsResponse, categoriesResponse] = await Promise.all([
-        authorsAPI.getAuthors({ limit: 100, status: 'active' }),
-        categoriesAPI.getCategories({ limit: 100, status: 'active' })
-      ]);
-      setAuthors(authorsResponse.data.data.authors);
-      setCategories(categoriesResponse.data.data.categories);
-    } catch (error) {
-      console.error('Failed to fetch authors and categories:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchBooks();
-    fetchAuthorsAndCategories();
-  }, [currentPage, searchTerm, statusFilter, categoryFilter, authorFilter, featuredFilter]);
+  // Marks every cached book list stale so the visible one refetches
+  const fetchBooks = () => queryClient.invalidateQueries({ queryKey: ['books'] });
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;

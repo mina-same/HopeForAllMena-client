@@ -15,6 +15,7 @@ import { authStorage } from '../../utils/storage';
 import { DataTable } from '../ui/DataTable';
 import { AdminModal } from '../ui/AdminModal';
 import { SectionShell, SearchInput } from '../ui/SectionShell';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 
@@ -22,14 +23,12 @@ const TrainingBooksSection = () => {
   const { t } = useTranslation('TrainingBooksManagement');
   const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
-  const [trainingBooks, setTrainingBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingBook, setEditingBook] = useState(null);
-  const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
     nameAr: '',
@@ -40,39 +39,40 @@ const TrainingBooksSection = () => {
     isActive: true
   });
 
-  useEffect(() => {
-    const fetchTrainingBooks = async () => {
-      try {
-        // Get auth token for admin requests to fetch all books (including inactive)
-        const token = authStorage.getToken();
-        const headers = { 'Content-Type': 'application/json' };
-        if (token) {
-          headers.Authorization = `Bearer ${token}`;
-        }
-
-        const response = await fetch(`${API_URL}/training-books`, {
-          method: 'GET',
-          headers
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setTrainingBooks(data);
-        } else {
-          throw new Error('Failed to fetch training books');
-        }
-      } catch (error) {
-        toast({
-          title: t('errors.loadBooks'),
-          description: t('errors.loadBooks'),
-          variant: "destructive",
-        });
-      } finally {
-        setLoading(false);
+  const trainingBooksQuery = useQuery({
+    queryKey: ['training-books'],
+    queryFn: async () => {
+      // Get auth token for admin requests to fetch all books (including inactive)
+      const token = authStorage.getToken();
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
       }
-    };
 
-    fetchTrainingBooks();
-  }, [refetchTrigger, currentLanguage, t, toast]);
+      const response = await fetch(`${API_URL}/training-books`, {
+        method: 'GET',
+        headers
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch training books');
+      }
+      return response.json();
+    }
+  });
+  const trainingBooks = trainingBooksQuery.data ?? [];
+  const loading = trainingBooksQuery.isLoading;
+
+  useEffect(() => {
+    if (trainingBooksQuery.isError) {
+      toast({
+        title: t('errors.loadBooks'),
+        description: t('errors.loadBooks'),
+        variant: "destructive",
+      });
+    }
+  }, [trainingBooksQuery.isError]);
+
+  const fetchTrainingBooks = () => queryClient.invalidateQueries({ queryKey: ['training-books'] });
 
   // Filter books based on search term and status filter
   const filteredBooks = trainingBooks.filter(book => {
@@ -110,7 +110,7 @@ const TrainingBooksSection = () => {
           title: t('success.bookCreated'),
           description: editingBook ? t('success.bookUpdated') : t('success.bookCreated'),
         });
-        setRefetchTrigger(prev => prev + 1);
+        fetchTrainingBooks();
         resetForm();
       } else {
         const errorData = await response.json();
@@ -157,7 +157,7 @@ const TrainingBooksSection = () => {
           title: t('success.bookDeleted'),
           description: t('success.bookDeleted'),
         });
-        setRefetchTrigger(prev => prev + 1);
+        fetchTrainingBooks();
       } else {
         throw new Error('Failed to delete training book');
       }

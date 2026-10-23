@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -74,10 +75,9 @@ const AnalyticsManagement = () => {
   const { t } = useTranslation('AnalyticsManagement');
   const { language: currentLanguage } = useI18next();
   const { user, token } = useAuth();
+  const queryClient = useQueryClient();
   const [timeRange, setTimeRange] = useState('12'); // months
   const [chartType, setChartType] = useState('line');
-  const [monthlyData, setMonthlyData] = useState([]);
-  const [currentStats, setCurrentStats] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
     countries: '',
@@ -85,81 +85,79 @@ const AnalyticsManagement = () => {
     publishedBooks: '',
     givenMagazines: ''
   });
-  const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch current stats from backend
-  const fetchStats = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await factCounterService.getStats();
-      setCurrentStats(response.data);
-      setEditForm({
-        countries: (response.data.countries || response.data.members || 0).toString(),
-        leadersTraining: response.data.leadersTraining.toString(),
-        publishedBooks: response.data.publishedBooks.toString(),
-        givenMagazines: response.data.givenMagazines.toString()
-      });
-      setError(null);
-    } catch (err) {
+  const statsQuery = useQuery({
+    queryKey: ['fact-counter-stats'],
+    queryFn: () => factCounterService.getStats()
+  });
+  const currentStats = statsQuery.data?.data ?? null;
+  const loading = statsQuery.isLoading;
+
+  useEffect(() => {
+    const stats = statsQuery.data?.data;
+    if (!stats || isEditing) return;
+    setEditForm({
+      countries: (stats.countries || stats.members || 0).toString(),
+      leadersTraining: stats.leadersTraining.toString(),
+      publishedBooks: stats.publishedBooks.toString(),
+      givenMagazines: stats.givenMagazines.toString()
+    });
+    setError(null);
+  }, [statsQuery.data]);
+
+  useEffect(() => {
+    if (statsQuery.isError) {
       setError(t('errors.loadStats'));
-      console.error('Error fetching stats:', err);
-    } finally {
-      setLoading(false);
+      console.error('Error fetching stats:', statsQuery.error);
     }
-  }, [t]);
+  }, [statsQuery.isError]);
 
-  useEffect(() => {
-    fetchStats();
-  }, [fetchStats]);
+  const months = parseInt(timeRange);
+  const historyQuery = useQuery({
+    queryKey: ['fact-counter-history', { months }],
+    queryFn: () => factCounterService.getHistory(months),
+    enabled: !!currentStats,
+    placeholderData: keepPreviousData,
+    retry: false
+  });
 
-  // Generate monthly data based on current stats and time range
-  useEffect(() => {
-    const generateMonthlyData = async () => {
-      if (!currentStats) return;
+  // Fallback to mock data if history API fails
+  const fallbackMonthlyData = useMemo(() => {
+    if (!historyQuery.isError || !currentStats) return null;
+    const data = [];
 
-      try {
-        const response = await factCounterService.getHistory(parseInt(timeRange));
-        setMonthlyData(response.data.history);
-      } catch (err) {
-        // Fallback to mock data if history API fails
-        const months = parseInt(timeRange);
-        const data = [];
-        
-        for (let i = months - 1; i >= 0; i--) {
-          const date = subMonths(new Date(), i);
-          const monthLabel = format(date, 'MMM yyyy');
-          
-          // Generate realistic growth patterns for each metric
-          const currentCountries = currentStats.countries || currentStats.members || 0;
-          const monthData = {
-            month: monthLabel,
-            date: date,
-            countries: Math.floor(currentCountries * (0.7 + (months - i) * 0.3 / months) + Math.random() * 5),
-            leadersTraining: Math.floor(currentStats.leadersTraining * (0.6 + (months - i) * 0.4 / months) + Math.random() * 30),
-            publishedBooks: Math.floor(currentStats.publishedBooks * (0.5 + (months - i) * 0.5 / months) + Math.random() * 5),
-            givenMagazines: Math.floor(currentStats.givenMagazines * (0.6 + (months - i) * 0.4 / months) + Math.random() * 500)
-          };
-          
-          data.push(monthData);
-        }
-        
-        // Ensure the last month matches current totals
-        if (data.length > 0) {
-          const lastMonth = data[data.length - 1];
-          lastMonth.countries = currentStats.countries || currentStats.members || 0;
-          lastMonth.leadersTraining = currentStats.leadersTraining;
-          lastMonth.publishedBooks = currentStats.publishedBooks;
-          lastMonth.givenMagazines = currentStats.givenMagazines;
-        }
-        
-        setMonthlyData(data);
-      }
-    };
+    for (let i = months - 1; i >= 0; i--) {
+      const date = subMonths(new Date(), i);
+      const monthLabel = format(date, 'MMM yyyy');
 
-    generateMonthlyData();
-  }, [timeRange, currentStats]);
+      // Generate realistic growth patterns for each metric
+      const currentCountries = currentStats.countries || currentStats.members || 0;
+      const monthData = {
+        month: monthLabel,
+        date: date,
+        countries: Math.floor(currentCountries * (0.7 + (months - i) * 0.3 / months) + Math.random() * 5),
+        leadersTraining: Math.floor(currentStats.leadersTraining * (0.6 + (months - i) * 0.4 / months) + Math.random() * 30),
+        publishedBooks: Math.floor(currentStats.publishedBooks * (0.5 + (months - i) * 0.5 / months) + Math.random() * 5),
+        givenMagazines: Math.floor(currentStats.givenMagazines * (0.6 + (months - i) * 0.4 / months) + Math.random() * 500)
+      };
+
+      data.push(monthData);
+    }
+
+    // Ensure the last month matches current totals
+    if (data.length > 0) {
+      const lastMonth = data[data.length - 1];
+      lastMonth.countries = currentStats.countries || currentStats.members || 0;
+      lastMonth.leadersTraining = currentStats.leadersTraining;
+      lastMonth.publishedBooks = currentStats.publishedBooks;
+      lastMonth.givenMagazines = currentStats.givenMagazines;
+    }
+
+    return data;
+  }, [historyQuery.isError, currentStats, months]);
+  const monthlyData = fallbackMonthlyData ?? historyQuery.data?.data?.history ?? [];
 
   // Handle form input changes
   const handleInputChange = (field, value) => {
@@ -187,7 +185,8 @@ const AnalyticsManagement = () => {
       };
 
       const response = await factCounterService.updateStats(updates, token);
-      setCurrentStats(response.data);
+      queryClient.setQueryData(['fact-counter-stats'], response);
+      queryClient.invalidateQueries({ queryKey: ['fact-counter-history'] });
       setIsEditing(false);
       setError(null);
       

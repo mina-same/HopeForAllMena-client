@@ -11,6 +11,8 @@ import { useToast } from '../../hooks/use-toast';
 import { cn } from '../../lib/utils';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { authStorage } from '../../utils/storage';
 
 const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 
@@ -43,55 +45,49 @@ const DevelopmentProjectRequestsSection = () => {
   const { t } = useTranslation('DevelopmentRequestsManagement');
   const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
   const [selectedRequest, setSelectedRequest] = useState(null);
-  const [requests, setRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [refetchTrigger, setRefetchTrigger] = useState(0);
+
+  const token = authStorage.getToken();
+  const requestsQuery = useQuery({
+    queryKey: ['development-requests'],
+    queryFn: async () => {
+      const response = await fetch(`${API_URL}/development-project-requests`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        const error = new Error('Failed to fetch development project requests');
+        error.status = response.status;
+        throw error;
+      }
+      return response.json();
+    },
+    enabled: !!token
+  });
+  const requests = (requestsQuery.data?.requests || []).map(toRow);
+  const loading = requestsQuery.isLoading;
 
   useEffect(() => {
-    const fetchRequests = async () => {
-      try {
-        const { authStorage } = require('../../utils/storage');
-        const token = authStorage.getToken();
+    if (!token) console.log('No authentication token found');
+  }, [token]);
 
-        if (!token) {
-          console.log('No authentication token found');
-          setRequests([]);
-          setLoading(false);
-          return;
-        }
-
-        const response = await fetch(`${API_URL}/development-project-requests`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setRequests((data.requests || []).map(toRow));
-        } else if (response.status === 401) {
-          console.log('Authentication failed - token may be invalid');
-          setRequests([]);
-        } else {
-          throw new Error('Failed to fetch development project requests');
-        }
-      } catch (error) {
-        console.error('Error fetching development project requests:', error);
-        toast({
-          title: t('errors.title'),
-          description: t('errors.loadFailed'),
-          variant: "destructive",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRequests();
-  }, [refetchTrigger, t, toast]);
+  useEffect(() => {
+    if (!requestsQuery.isError) return;
+    if (requestsQuery.error?.status === 401) {
+      console.log('Authentication failed - token may be invalid');
+      return;
+    }
+    console.error('Error fetching development project requests:', requestsQuery.error);
+    toast({
+      title: t('errors.title'),
+      description: t('errors.loadFailed'),
+      variant: "destructive",
+    });
+  }, [requestsQuery.isError]);
 
   const updateRequestStatus = async (requestId, newStatus) => {
     try {
@@ -113,7 +109,7 @@ const DevelopmentProjectRequestsSection = () => {
           description: t(`statusMessages.${newStatus}`),
         });
 
-        setRefetchTrigger(prev => prev + 1);
+        queryClient.invalidateQueries({ queryKey: ['development-requests'] });
       } else {
         throw new Error('Failed to update request status');
       }

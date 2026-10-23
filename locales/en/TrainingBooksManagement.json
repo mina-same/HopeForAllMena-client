@@ -45,6 +45,9 @@
   },
 
   "table": {
+    "status": "Status",
+    "title": "Title",
+    "cover": "Cover",
     "updated": "Updated",
     "parts": "Parts"
   },

@@ -12,6 +12,7 @@ import { cn } from '../../lib/utils';
 import { useTranslation } from 'react-i18next';
 import { useI18next } from 'gatsby-plugin-react-i18next';
 import '../../styles/TrainingFollowUpRequestsManagement-rtl.css';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const API_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 
@@ -19,68 +20,60 @@ const TrainingFollowUpRequestsSection = () => {
   const { t } = useTranslation('TrainingFollowUpRequestsManagement');
   const { language: currentLanguage } = useI18next();
   const { toast } = useToast();
-  const [requests, setRequests] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [requestToDelete, setRequestToDelete] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  const [refetchTrigger, setRefetchTrigger] = useState(0);
+
+  const requestsQuery = useQuery({
+    queryKey: ['training-followup-requests'],
+    queryFn: async () => {
+      console.log('Fetching follow-up requests...');
+      const { authStorage } = require('../../utils/storage');
+      const token = authStorage.getToken();
+      console.log('Token exists:', !!token);
+
+      const response = await fetch(`${API_URL}/training-follow-ups`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API Error response:', errorText);
+        const error = new Error(`Failed to fetch follow-up requests: ${response.status}`);
+        error.status = response.status;
+        throw error;
+      }
+      return response.json();
+    }
+  });
+  const requests = requestsQuery.data?.followUps || [];
+  const loading = requestsQuery.isLoading;
 
   useEffect(() => {
-    const fetchFollowUpRequests = async () => {
-      try {
-        console.log('Fetching follow-up requests...');
-        const { authStorage } = require('../../utils/storage');
-        const token = authStorage.getToken();
-        console.log('Token exists:', !!token);
-        console.log('Using token from: authStorage');
-
-        const response = await fetch(`${API_URL}/training-follow-ups`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-
-        console.log('Response status:', response.status);
-        console.log('Response ok:', response.ok);
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log('API Response data:', data);
-          console.log('Follow-ups array:', data.followUps);
-          console.log('Follow-ups length:', data.followUps?.length);
-          setRequests(data.followUps || []);
-        } else {
-          const errorText = await response.text();
-          console.error('API Error response:', errorText);
-
-          if (response.status === 401) {
-            toast({
-              title: t('errors.authRequired'),
-              description: t('errors.authMessage'),
-              variant: "destructive",
-              duration: 8000,
-            });
-          }
-
-          throw new Error(`Failed to fetch follow-up requests: ${response.status}`);
-        }
-      } catch (error) {
-        console.error('Fetch error:', error);
+    if (requestsQuery.isError) {
+      console.error('Fetch error:', requestsQuery.error);
+      if (requestsQuery.error?.status === 401) {
         toast({
-          title: t('errors.title'),
-          description: t('errors.loadFailed'),
+          title: t('errors.authRequired'),
+          description: t('errors.authMessage'),
           variant: "destructive",
+          duration: 8000,
         });
-      } finally {
-        setLoading(false);
       }
-    };
+      toast({
+        title: t('errors.title'),
+        description: t('errors.loadFailed'),
+        variant: "destructive",
+      });
+    }
+  }, [requestsQuery.isError]);
 
-    fetchFollowUpRequests();
-  }, [refetchTrigger, t, toast]);
+  const refreshRequests = () => queryClient.invalidateQueries({ queryKey: ['training-followup-requests'] });
 
   const updateRequestStatus = async (requestId, newStatus) => {
     try {
@@ -122,7 +115,7 @@ const TrainingFollowUpRequestsSection = () => {
         });
 
         console.log('Refreshing requests list...');
-        setRefetchTrigger(prev => prev + 1); // Refresh the list
+        refreshRequests();
       } else {
         const errorText = await response.text();
         console.error('❌ Update failed - Response:', errorText);
@@ -173,7 +166,7 @@ const TrainingFollowUpRequestsSection = () => {
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
       } else {
-        throw new Error('Failed to download file');
+        throw new Error(t('detailsUi.downloadFailed'));
       }
     } catch (error) {
       toast({
@@ -201,11 +194,11 @@ const TrainingFollowUpRequestsSection = () => {
           description: t('statusMessages.deleted'),
         });
 
-        setRefetchTrigger(prev => prev + 1); // Refresh the list
+        refreshRequests();
         setDeleteDialogOpen(false);
         setRequestToDelete(null);
       } else {
-        throw new Error('Failed to delete request');
+        throw new Error(t('detailsUi.deleteFailed'));
       }
     } catch (error) {
       toast({
@@ -471,8 +464,8 @@ const TrainingFollowUpRequestsSection = () => {
         columns={columns}
         data={filteredRequests}
         loading={loading}
-        emptyTitle={searchTerm || statusFilter !== 'all' ? 'No matching requests found' : 'No Follow-up Requests'}
-        emptyDescription={searchTerm || statusFilter !== 'all' ? 'Try adjusting your search or filter criteria.' : 'Follow-up requests will appear here when submitted.'}
+        emptyTitle={searchTerm || statusFilter !== 'all' ? t('detailsUi.noMatches') : t('detailsUi.noRequests')}
+        emptyDescription={searchTerm || statusFilter !== 'all' ? t('detailsUi.adjustSearch') : t('detailsUi.willAppear')}
         emptyIcon={<Shirt className="h-12 w-12 text-muted-foreground opacity-50" />}
         countLabel={t('table.count', { count: filteredRequests.length })}
         dir={dir}
@@ -496,37 +489,37 @@ const TrainingFollowUpRequestsSection = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-foreground mb-3">Contact Information</h4>
+                  <h4 className="font-semibold text-foreground mb-3">{t('detailsUi.contactInfo')}</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Trainer:</span>
+                      <span className="text-muted-foreground">{t('detailsUi.trainer')}</span>
                       <span className="font-medium">{selectedRequest.trainerName}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Requester:</span>
+                      <span className="text-muted-foreground">{t('detailsUi.requester')}</span>
                       <span className="font-medium">{selectedRequest.name}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Church:</span>
+                      <span className="text-muted-foreground">{t('detailsUi.church')}</span>
                       <span className="font-medium">{selectedRequest.churchName}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Phone:</span>
+                      <span className="text-muted-foreground">{t('detailsUi.phone')}</span>
                       <span className="font-medium">{selectedRequest.phoneNumber}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Address:</span>
+                      <span className="text-muted-foreground">{t('detailsUi.address')}</span>
                       <span className="font-medium">{selectedRequest.address || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">People Served:</span>
+                      <span className="text-muted-foreground">{t('detailsUi.served')}</span>
                       <span className="font-medium">{selectedRequest.numberOfServed}</span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-foreground mb-3">T-shirt Sizes</h4>
+                  <h4 className="font-semibold text-foreground mb-3">{t('detailsUi.tshirtSizes')}</h4>
                   <div className="grid grid-cols-2 gap-2 text-sm">
                     {Object.entries(selectedRequest.tshirtSizes || {}).filter(([size]) => size !== '_id').map(([size, quantity]) => (
                       <div key={size} className="flex justify-between p-2 bg-muted/50 rounded">
@@ -539,7 +532,7 @@ const TrainingFollowUpRequestsSection = () => {
                   </div>
                   <div className="mt-2 p-2 bg-primary/10 rounded text-sm">
                     <div className="flex justify-between font-medium">
-                      <span>Total T-shirts:</span>
+                      <span>{t('detailsUi.totalTshirts')}</span>
                       <span>{Object.entries(selectedRequest.tshirtSizes || {}).filter(([size]) => size !== '_id').reduce((total, [, qty]) => total + (parseInt(qty) || 0), 0)}</span>
                     </div>
                   </div>
@@ -548,14 +541,14 @@ const TrainingFollowUpRequestsSection = () => {
 
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-foreground mb-3">Books Requested</h4>
+                  <h4 className="font-semibold text-foreground mb-3">{t('detailsUi.booksRequested')}</h4>
                   <div className="space-y-3">
                     {(selectedRequest.books || []).map((book, i) => (
                       <div key={i} className="p-3 border border-border rounded-lg">
-                        <p className="font-medium text-sm">{book.bookName || 'Unknown Book'}</p>
+                        <p className="font-medium text-sm">{book.bookName || t('detailsUi.unknownBook')}</p>
                         <p className="text-sm text-muted-foreground">{book.partName}</p>
                         <div className="flex justify-between items-center mt-2">
-                          <span className="text-xs text-muted-foreground">Copies needed:</span>
+                          <span className="text-xs text-muted-foreground">{t('detailsUi.copies')}</span>
                           <Badge variant="secondary">{book.copies}</Badge>
                         </div>
                       </div>
@@ -565,7 +558,7 @@ const TrainingFollowUpRequestsSection = () => {
 
                 {selectedRequest.servedListFile && (
                   <div>
-                    <h4 className="font-semibold text-foreground mb-3">Attendee Names File</h4>
+                    <h4 className="font-semibold text-foreground mb-3">{t('detailsUi.attendeeFile')}</h4>
                     <div className="p-3 border border-border rounded-lg bg-muted/30">
                       <div className="flex items-center gap-2">
                         <Download className="h-4 w-4 text-muted-foreground" />
@@ -587,16 +580,16 @@ const TrainingFollowUpRequestsSection = () => {
                 )}
 
                 <div>
-                  <h4 className="font-semibold text-foreground mb-3">Request Details</h4>
+                  <h4 className="font-semibold text-foreground mb-3">{t('detailsUi.requestDetails')}</h4>
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Submitted:</span>
+                      <span className="text-muted-foreground">{t('detailsUi.submitted')}</span>
                       <span className="font-medium">
                         {new Date(selectedRequest.createdAt).toLocaleDateString()}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Status:</span>
+                      <span className="text-muted-foreground">{t('detailsUi.status')}</span>
                       <Badge
                         variant={getStatusBadgeVariant(selectedRequest.status)}
                         className={cn("capitalize", getStatusColor(selectedRequest.status))}
@@ -606,7 +599,7 @@ const TrainingFollowUpRequestsSection = () => {
                     </div>
                     {selectedRequest.notes && (
                       <div>
-                        <span className="text-muted-foreground">Notes:</span>
+                        <span className="text-muted-foreground">{t('detailsUi.notes')}</span>
                         <p className="font-medium mt-1">{selectedRequest.notes}</p>
                       </div>
                     )}
@@ -661,7 +654,7 @@ const TrainingFollowUpRequestsSection = () => {
 
           {requestToDelete && (
             <div className="p-3 bg-muted rounded-lg border border-border">
-              <p className="text-sm text-muted-foreground mb-1">Request Details:</p>
+              <p className="text-sm text-muted-foreground mb-1">{t('detailsUi.requestDetailsColon')}</p>
               <p className="font-semibold text-foreground">{requestToDelete.name}</p>
               <p className="text-sm text-muted-foreground">{requestToDelete.churchName}</p>
               <p className="text-xs text-muted-foreground mt-1">

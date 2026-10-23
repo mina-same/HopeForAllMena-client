@@ -4,9 +4,13 @@ import QuillEditor from '../ui/QuillEditor';
 import { useAuth } from '../../context/AuthContext';
 import blogAPI from '../../services/blogAPI';
 import { ArrowLeft, Save } from 'lucide-react';
+import { useTranslation } from 'gatsby-plugin-react-i18next';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const EditBlog = ({ blogId, onBack }) => {
+  const { t } = useTranslation('NewBlog');
   const { user, token } = useAuth();
+  const queryClient = useQueryClient();
   const [formData, setFormData] = useState({
     title: '',
     titleAr: '',
@@ -24,7 +28,7 @@ const EditBlog = ({ blogId, onBack }) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [loadingBlog, setLoadingBlog] = useState(true);
+  const [initializedId, setInitializedId] = useState(null);
   const [message, setMessage] = useState({ type: '', text: '' });
 
   const categories = [
@@ -35,44 +39,46 @@ const EditBlog = ({ blogId, onBack }) => {
     { value: 'announcements', label: 'Announcements' }
   ];
 
-  // Fetch blog data for editing
-  useEffect(() => {
-    const fetchBlog = async () => {
-      try {
-        setLoadingBlog(true);
-        const response = await blogAPI.getAllBlogs({ limit: 1000 }, token);
-        const blog = response.blogs.find(b => b._id === blogId);
-        
-        if (blog) {
-          setFormData({
-            title: blog.title || '',
-            titleAr: blog.titleAr || '',
-            content: blog.content || '',
-            contentAr: blog.contentAr || '',
-            excerpt: blog.excerpt || '',
-            excerptAr: blog.excerptAr || '',
-            category: blog.category || 'news',
-            tags: Array.isArray(blog.tags) ? blog.tags.join(', ') : (blog.tags || ''),
-            tagsAr: Array.isArray(blog.tagsAr) ? blog.tagsAr.join(', ') : (blog.tagsAr || ''),
-            status: blog.status || 'draft',
-            featured: blog.featured || false
-          });
-          setCurrentImage(blog.image);
-        } else {
-          setMessage({ type: 'danger', text: 'Blog not found' });
-        }
-      } catch (error) {
-        console.error('Error fetching blog:', error);
-        setMessage({ type: 'danger', text: 'Failed to load blog data' });
-      } finally {
-        setLoadingBlog(false);
-      }
-    };
+  // The API has no admin get-by-id, so the blog is looked up in the full list
+  const blogsQuery = useQuery({
+    queryKey: ['blogs', { limit: 1000 }],
+    queryFn: () => blogAPI.getAllBlogs({ limit: 1000 }, token),
+    enabled: !!blogId
+  });
+  const loadingBlog = blogsQuery.isPending || (blogsQuery.isSuccess && initializedId !== blogId);
 
-    if (blogId) {
-      fetchBlog();
+  // Copy the blog into the form once per id so refetches don't overwrite edits
+  useEffect(() => {
+    if (!blogsQuery.isSuccess || initializedId === blogId) return;
+    const blog = blogsQuery.data?.blogs?.find(b => b._id === blogId);
+
+    if (blog) {
+      setFormData({
+        title: blog.title || '',
+        titleAr: blog.titleAr || '',
+        content: blog.content || '',
+        contentAr: blog.contentAr || '',
+        excerpt: blog.excerpt || '',
+        excerptAr: blog.excerptAr || '',
+        category: blog.category || 'news',
+        tags: Array.isArray(blog.tags) ? blog.tags.join(', ') : (blog.tags || ''),
+        tagsAr: Array.isArray(blog.tagsAr) ? blog.tagsAr.join(', ') : (blog.tagsAr || ''),
+        status: blog.status || 'draft',
+        featured: blog.featured || false
+      });
+      setCurrentImage(blog.image);
+    } else {
+      setMessage({ type: 'danger', text: t('edit.notFound') });
     }
-  }, [blogId, token]);
+    setInitializedId(blogId);
+  }, [blogsQuery.isSuccess, blogsQuery.data, blogId, initializedId]);
+
+  useEffect(() => {
+    if (blogsQuery.isError) {
+      console.error('Error fetching blog:', blogsQuery.error);
+      setMessage({ type: 'danger', text: t('edit.loadFailed') });
+    }
+  }, [blogsQuery.isError]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -98,7 +104,7 @@ const EditBlog = ({ blogId, onBack }) => {
     e.preventDefault();
     
     if (!formData.title.trim() || !formData.content.trim()) {
-      setMessage({ type: 'danger', text: 'Title and content are required' });
+      setMessage({ type: 'danger', text: t('edit.required') });
       return;
     }
 
@@ -118,6 +124,7 @@ const EditBlog = ({ blogId, onBack }) => {
       }
 
       await blogAPI.updateBlog(blogId, blogData, token);
+      queryClient.invalidateQueries({ queryKey: ['blogs'] });
       setMessage({ type: 'success', text: 'Blog updated successfully!' });
       
       // Clear form after successful update
@@ -127,7 +134,7 @@ const EditBlog = ({ blogId, onBack }) => {
       
     } catch (error) {
       console.error('Error updating blog:', error);
-      setMessage({ type: 'danger', text: error.message || 'Failed to update blog' });
+      setMessage({ type: 'danger', text: error.message || t('edit.updateFailed') });
     } finally {
       setLoading(false);
     }
@@ -149,9 +156,9 @@ const EditBlog = ({ blogId, onBack }) => {
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '400px' }}>
         <div className="text-center">
           <div className="spinner-border text-primary mb-3" role="status">
-            <span className="visually-hidden">Loading...</span>
+            <span className="visually-hidden">{t('edit.loading')}</span>
           </div>
-          <p className="text-muted">Loading blog data...</p>
+          <p className="text-muted">{t('edit.loadingData')}</p>
         </div>
       </div>
     );
@@ -169,11 +176,11 @@ const EditBlog = ({ blogId, onBack }) => {
             className="d-flex align-items-center gap-2"
           >
             <ArrowLeft size={16} />
-            Back to Blogs
+            {t('edit.back')}
           </Button>
           <div>
-            <h2 className="mb-1 fw-bold text-dark">Edit Blog Post</h2>
-            <p className="text-muted mb-0 small">Update your blog post content and settings</p>
+            <h2 className="mb-1 fw-bold text-dark">{t('edit.title')}</h2>
+            <p className="text-muted mb-0 small">{t('edit.subtitle')}</p>
           </div>
         </div>
       </div>
@@ -190,19 +197,19 @@ const EditBlog = ({ blogId, onBack }) => {
             {/* Main Content Card */}
             <Card className="border-0 shadow-sm mb-4">
               <Card.Body className="p-4">
-                <h5 className="card-title mb-4 text-dark fw-semibold">Blog Content</h5>
+                <h5 className="card-title mb-4 text-dark fw-semibold">{t('edit.content')}</h5>
                 
                 {/* Title */}
                 <Row>
                   <Col md={6}>
                     <Form.Group className="mb-4">
-                      <Form.Label className="fw-medium text-dark">Title (English) *</Form.Label>
+                      <Form.Label className="fw-medium text-dark">{t('edit.titleEn')}</Form.Label>
                       <Form.Control
                         type="text"
                         name="title"
                         value={formData.title}
                         onChange={handleChange}
-                        placeholder="Enter blog title..."
+                        placeholder={t('edit.titlePh')}
                         required
                         className="form-control-lg border-2"
                         style={{ 
@@ -214,7 +221,7 @@ const EditBlog = ({ blogId, onBack }) => {
                   </Col>
                   <Col md={6}>
                     <Form.Group className="mb-4">
-                      <Form.Label className="fw-medium text-dark">Title (Arabic)</Form.Label>
+                      <Form.Label className="fw-medium text-dark">{t('edit.titleAr')}</Form.Label>
                       <Form.Control
                         type="text"
                         name="titleAr"
@@ -236,14 +243,14 @@ const EditBlog = ({ blogId, onBack }) => {
                 <Row>
                   <Col md={6}>
                     <Form.Group className="mb-4">
-                      <Form.Label className="fw-medium text-dark">Excerpt (English)</Form.Label>
+                      <Form.Label className="fw-medium text-dark">{t('edit.excerptEn')}</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={3}
                         name="excerpt"
                         value={formData.excerpt}
                         onChange={handleChange}
-                        placeholder="Brief description of the blog post..."
+                        placeholder={t('edit.excerptPh')}
                         className="border-2"
                         style={{ 
                           borderColor: '#e9ecef',
@@ -251,13 +258,13 @@ const EditBlog = ({ blogId, onBack }) => {
                         }}
                       />
                       <Form.Text className="text-muted">
-                        This will be shown in blog previews and search results
+                        {t('edit.excerptHint')}
                       </Form.Text>
                     </Form.Group>
                   </Col>
                   <Col md={6}>
                     <Form.Group className="mb-4">
-                      <Form.Label className="fw-medium text-dark">Excerpt (Arabic)</Form.Label>
+                      <Form.Label className="fw-medium text-dark">{t('edit.excerptAr')}</Form.Label>
                       <Form.Control
                         as="textarea"
                         rows={3}
@@ -281,12 +288,12 @@ const EditBlog = ({ blogId, onBack }) => {
 
                 {/* Content */}
                 <Form.Group className="mb-4">
-                  <Form.Label className="fw-medium text-dark">Content (English) *</Form.Label>
+                  <Form.Label className="fw-medium text-dark">{t('edit.contentEn')}</Form.Label>
                   <div style={{ backgroundColor: '#f8f9fa', borderRadius: '8px', padding: '1px' }}>
                     <QuillEditor
                       value={formData.content}
                       onChange={(content) => setFormData(prev => ({ ...prev, content }))}
-                      placeholder="Write your blog content here..."
+                      placeholder={t('edit.contentPh')}
                       style={{ 
                         minHeight: '350px',
                         backgroundColor: 'white',
@@ -297,7 +304,7 @@ const EditBlog = ({ blogId, onBack }) => {
                 </Form.Group>
 
                 <Form.Group className="mb-4">
-                  <Form.Label className="fw-medium text-dark">Content (Arabic)</Form.Label>
+                  <Form.Label className="fw-medium text-dark">{t('edit.contentAr')}</Form.Label>
                   <div style={{ backgroundColor: '#f8f9fa', borderRadius: '8px', padding: '1px' }}>
                     <QuillEditor
                       value={formData.contentAr}
@@ -320,11 +327,11 @@ const EditBlog = ({ blogId, onBack }) => {
             {/* Settings Card */}
             <Card className="border-0 shadow-sm mb-4">
               <Card.Body className="p-4">
-                <h5 className="card-title mb-4 text-dark fw-semibold">Blog Settings</h5>
+                <h5 className="card-title mb-4 text-dark fw-semibold">{t('edit.settings')}</h5>
 
                 {/* Status */}
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-medium text-dark">Status</Form.Label>
+                  <Form.Label className="fw-medium text-dark">{t('edit.status')}</Form.Label>
                   <Form.Select
                     name="status"
                     value={formData.status}
@@ -335,14 +342,14 @@ const EditBlog = ({ blogId, onBack }) => {
                       backgroundColor: '#f8f9fa'
                     }}
                   >
-                    <option value="draft">Draft</option>
-                    <option value="published">Published</option>
+                    <option value="draft">{t('edit.draft')}</option>
+                    <option value="published">{t('edit.published')}</option>
                   </Form.Select>
                 </Form.Group>
 
                 {/* Category */}
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-medium text-dark">Category</Form.Label>
+                  <Form.Label className="fw-medium text-dark">{t('edit.category')}</Form.Label>
                   <Form.Select
                     name="category"
                     value={formData.category}
@@ -355,7 +362,7 @@ const EditBlog = ({ blogId, onBack }) => {
                   >
                     {categories.map(cat => (
                       <option key={cat.value} value={cat.value}>
-                        {cat.label}
+                        {t(`categories.${cat.value}`, cat.label)}
                       </option>
                     ))}
                   </Form.Select>
@@ -363,13 +370,13 @@ const EditBlog = ({ blogId, onBack }) => {
 
                 {/* Tags */}
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-medium text-dark">Tags (English)</Form.Label>
+                  <Form.Label className="fw-medium text-dark">{t('edit.tagsEn')}</Form.Label>
                   <Form.Control
                     type="text"
                     name="tags"
                     value={formData.tags}
                     onChange={handleChange}
-                    placeholder="tag1, tag2, tag3..."
+                    placeholder={t('edit.tagsPh')}
                     className="border-2"
                     style={{ 
                       borderColor: '#e9ecef',
@@ -377,13 +384,13 @@ const EditBlog = ({ blogId, onBack }) => {
                     }}
                   />
                   <Form.Text className="text-muted">
-                    Separate tags with commas
+                    {t('edit.tagsHint')}
                   </Form.Text>
                 </Form.Group>
 
                 {/* Arabic Tags */}
                 <Form.Group className="mb-3">
-                  <Form.Label className="fw-medium text-dark">Tags (Arabic)</Form.Label>
+                  <Form.Label className="fw-medium text-dark">{t('edit.tagsAr')}</Form.Label>
                   <Form.Control
                     type="text"
                     name="tagsAr"
@@ -409,11 +416,11 @@ const EditBlog = ({ blogId, onBack }) => {
                     name="featured"
                     checked={formData.featured}
                     onChange={handleChange}
-                    label="Featured Post"
+                    label={t('edit.featuredPost')}
                     className="fw-medium"
                   />
                   <Form.Text className="text-muted">
-                    Featured posts appear prominently on the homepage
+                    {t('edit.featuredHint')}
                   </Form.Text>
                 </Form.Group>
 
@@ -433,14 +440,14 @@ const EditBlog = ({ blogId, onBack }) => {
                     {loading ? (
                       <>
                         <div className="spinner-border spinner-border-sm" role="status">
-                          <span className="visually-hidden">Loading...</span>
+                          <span className="visually-hidden">{t('edit.loading')}</span>
                         </div>
-                        Updating...
+                        {t('edit.updating')}
                       </>
                     ) : (
                       <>
                         <Save size={16} />
-                        Update Blog Post
+                        {t('edit.update')}
                       </>
                     )}
                   </Button>
@@ -451,12 +458,12 @@ const EditBlog = ({ blogId, onBack }) => {
             {/* Image Card */}
             <Card className="border-0 shadow-sm">
               <Card.Body className="p-4">
-                <h5 className="card-title mb-3 text-dark fw-semibold">Featured Image</h5>
+                <h5 className="card-title mb-3 text-dark fw-semibold">{t('edit.featuredImage')}</h5>
                 
                 {/* Current Image */}
                 {currentImage && !imagePreview && (
                   <div className="mb-3">
-                    <p className="small text-muted mb-2">Current Image:</p>
+                    <p className="small text-muted mb-2">{t('edit.currentImage')}</p>
                     <img
                       src={currentImage}
                       alt="Current blog"
@@ -469,7 +476,7 @@ const EditBlog = ({ blogId, onBack }) => {
                 {/* New Image Preview */}
                 {imagePreview && (
                   <div className="mb-3">
-                    <p className="small text-muted mb-2">New Image Preview:</p>
+                    <p className="small text-muted mb-2">{t('edit.newImagePreview')}</p>
                     <img
                       src={imagePreview}
                       alt="Preview"
@@ -491,7 +498,7 @@ const EditBlog = ({ blogId, onBack }) => {
                     }}
                   />
                   <Form.Text className="text-muted">
-                    Upload a new image to replace the current one (optional)
+                    {t('edit.imageHint')}
                   </Form.Text>
                 </Form.Group>
               </Card.Body>

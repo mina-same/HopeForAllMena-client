@@ -19,6 +19,12 @@
     }
   },
   "table": {
+    "headers": {
+      "actions": "الإجراءات",
+      "date": "التاريخ",
+      "rating": "التقييم",
+      "reviewer": "المراجِع"
+    },
     "title": "المراجعات",
     "count": "المراجعات ({{count}})",
     "reviewFor": "مراجعة لـ:",

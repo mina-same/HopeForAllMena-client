@@ -2,6 +2,8 @@ import React from 'react';
 import { BookstoreProvider } from './src/context/BookstoreContext';
 import { AuthProvider } from './src/context/AuthContext';
 import { CourseProvider } from './src/context/CourseContext';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient, installWriteInvalidation } from './src/lib/queryClient';
 import './src/assets/css/tailwind.css';
 import './src/i18n';
 import { languageFromPath, rememberLanguage } from './src/i18n/language';
@@ -50,12 +52,19 @@ export const wrapPageElement = ({ element, props }) => {
 
 export const wrapRootElement = ({ element }) => {
   return (
-    <AuthProvider>
-      <BookstoreProvider>
-        <CourseProvider>
-          {element}
-        </CourseProvider>
-      </BookstoreProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <BookstoreProvider>
+          <CourseProvider>
+            {element}
+          </CourseProvider>
+        </BookstoreProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
+};
+
+// Clear cached API data after any successful write so lists never show stale data
+export const onClientEntry = () => {
+  installWriteInvalidation();
 };
