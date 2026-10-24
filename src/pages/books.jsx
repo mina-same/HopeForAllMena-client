@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Star, ChevronRight } from 'lucide-react';
 import { graphql } from 'gatsby';
 import { Link, useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
@@ -53,8 +54,13 @@ const TrendingProducts = () => {
   const [velocity, setVelocity] = useState(0);
   const [lastX, setLastX] = useState(0);
   const [lastTime, setLastTime] = useState(0);
-  const [books, setBooks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // Latest 8 published books, cached per language with TanStack Query
+  const trendingQuery = useQuery({
+    queryKey: ['books', 'trending', currentLanguage],
+    queryFn: () => booksAPI.getBooks({ page: 1, limit: 8, sortBy: 'createdAt', sortOrder: 'desc', status: 'published', language: currentLanguage }),
+  });
+  const books = trendingQuery.data?.data?.books || [];
+  const loading = trendingQuery.isPending;
   const [currentSlide, setCurrentSlide] = useState(0);
   const sliderRef = useRef(null);
   const animationRef = useRef(null);
@@ -93,46 +99,6 @@ const TrendingProducts = () => {
     }
   }, [books.length]);
 
-  // Fetch latest 8 books from database
-  useEffect(() => {
-    const fetchLatestBooks = async () => {
-      try {
-        setLoading(true);
-        const apiParams = {
-          page: 1,
-          limit: 8,
-          sortBy: 'createdAt',
-          sortOrder: 'desc',
-          status: 'published',
-          language: currentLanguage // Add language parameter for API
-        };
-        
-        console.log('=== API CALL DEBUG ===');
-        console.log('API Parameters:', apiParams);
-        console.log('Current Language:', currentLanguage);
-        
-        const response = await booksAPI.getBooks(apiParams);
-        
-        console.log('=== API RESPONSE DEBUG ===');
-        console.log('Response Status:', response.status);
-        console.log('Response Data:', response.data);
-        if (response.data?.books?.length > 0) {
-          console.log('First Book Sample:', response.data.books[0]);
-          console.log('First Book Author:', response.data.books[0].author);
-        }
-        
-        if (response.status === 'success') {
-          setBooks(response.data.books);
-        }
-      } catch (error) {
-        console.error('Error fetching latest books:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLatestBooks();
-  }, [currentLanguage]); // Re-fetch when language changes
 
   // Update current slide on scroll
   useEffect(() => {
@@ -261,6 +227,9 @@ const TrendingProducts = () => {
     };
   }, []);
 
+  // Nothing to show (no books yet, or the request failed): hide the carousel
+  if (!loading && books.length === 0) return null;
+
   return (
     <section className="mx-auto py-4 md:py-8 px-4">
 
@@ -295,10 +264,13 @@ const TrendingProducts = () => {
           onTouchEnd={handleTouchEnd}
         >
           {loading ? (
-            <div className="flex items-center justify-center w-full h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2194D1]"></div>
-              <span className="ml-3 text-gray-600">{t('trending.loading')}</span>
-            </div>
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="animate-pulse flex-shrink-0 w-64 rounded-2xl border border-gray-100 bg-white p-3" aria-hidden="true">
+                <div className="aspect-[3/4] w-full rounded-xl bg-gray-200" />
+                <div className="mt-3 h-4 w-3/4 rounded bg-gray-200" />
+                <div className="mt-2 h-3 w-1/2 rounded bg-gray-100" />
+              </div>
+            ))
           ) : (
             books.map((book, index) => {
               // Handle Arabic content based on language - using correct database field names

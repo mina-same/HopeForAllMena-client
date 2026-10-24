@@ -12,9 +12,21 @@
     "logoTitle": "Alexandria Bible College – Formulate • Empower • Impact"
   },
   "pillars": {
-    "formulate": { "title": "Formulate", "titleEn": "تشكيل", "text": "Forming mind and character on a firm biblical foundation." },
-    "empower": { "title": "Empower", "titleEn": "تمكين", "text": "Equipping servants spiritually, biblically, and skillfully to serve with confidence." },
-    "impact": { "title": "Impact", "titleEn": "تأثير", "text": "Releasing ministry that reaches from the church into the community." }
+    "formulate": {
+      "title": "Formulate",
+      "titleEn": "تشكيل",
+      "text": "Forming mind and character on a firm biblical foundation."
+    },
+    "empower": {
+      "title": "Empower",
+      "titleEn": "تمكين",
+      "text": "Equipping servants spiritually, biblically, and skillfully to serve with confidence."
+    },
+    "impact": {
+      "title": "Impact",
+      "titleEn": "تأثير",
+      "text": "Releasing ministry that reaches from the church into the community."
+    }
   },
   "about": {
     "badge": "Who We Are",
@@ -40,21 +52,59 @@
     "badge": "Our Core Values",
     "title": "Our Core Values",
     "subtitle": "",
-    "order": ["teamwork", "biblical", "empowerment", "partnership"],
-    "biblical": { "title": "Biblical Foundation", "content": "We rely on the Holy Bible as the primary reference for teaching and training." },
-    "teamwork": { "title": "Teamwork", "content": "We are committed to working as one integrated team, placing experience and knowledge at the service of the church." },
-    "empowerment": { "title": "Empowerment", "content": "We believe in empowering servants spiritually, biblically, and skillfully to lead with confidence and effectiveness." },
-    "partnership": { "title": "Partnership", "content": "We collaborate with churches and institutions to strengthen local church ministry and expand its impact" }
+    "order": [
+      "teamwork",
+      "biblical",
+      "empowerment",
+      "partnership"
+    ],
+    "biblical": {
+      "title": "Biblical Foundation",
+      "content": "We rely on the Holy Bible as the primary reference for teaching and training."
+    },
+    "teamwork": {
+      "title": "Teamwork",
+      "content": "We are committed to working as one integrated team, placing experience and knowledge at the service of the church."
+    },
+    "empowerment": {
+      "title": "Empowerment",
+      "content": "We believe in empowering servants spiritually, biblically, and skillfully to lead with confidence and effectiveness."
+    },
+    "partnership": {
+      "title": "Partnership",
+      "content": "We collaborate with churches and institutions to strengthen local church ministry and expand its impact"
+    }
   },
   "programs": {
     "badge": "Diplomas & Training Programs",
-    "title": "",
+    "title": "Diplomas and Training Programs",
     "subtitle": "",
-    "order": ["impact", "care", "shepherd", "access"],
-    "impact": { "name": "IMPACT", "title": "Diploma in Christian Education", "content": "Diploma in Christian Education for Sunday School Servants" },
-    "access": { "name": "ACCESS", "title": "Middle & High School Servants", "content": "Specialized Program for Middle & High School Servants" },
-    "care": { "name": "CARE", "title": "Child & Family Counseling", "content": "Diploma in Child and Family Counseling" },
-    "shepherd": { "name": "SHEPHERD", "title": "Church Administration", "content": "Diploma in Church Administration" }
+    "order": [
+      "impact",
+      "care",
+      "shepherd",
+      "access"
+    ],
+    "impact": {
+      "name": "IMPACT",
+      "title": "Diploma in Christian Education",
+      "content": "Diploma in Christian Education for Sunday School Servants"
+    },
+    "access": {
+      "name": "ACCESS",
+      "title": "Middle & High School Servants",
+      "content": "Specialized Program for Middle & High School Servants"
+    },
+    "care": {
+      "name": "CARE",
+      "title": "Child & Family Counseling",
+      "content": "Diploma in Child and Family Counseling"
+    },
+    "shepherd": {
+      "name": "SHEPHERD",
+      "title": "Church Administration",
+      "content": "Diploma in Church Administration"
+    }
   },
   "gallery": {
     "badge": "From the classroom",
@@ -71,8 +121,14 @@
   },
   "addresses": {
     "title": "Our Locations",
-    "alexandria": { "city": "Alexandria", "address": "Hope For All Office – 37 Sidi El-Metwally Street, Attarin" },
-    "cairo": { "city": "Cairo", "address": "Hope For All Office – 11 El-Masoud Street, Abbasiya" }
+    "alexandria": {
+      "city": "Alexandria",
+      "address": "Hope For All Office – 37 Sidi El-Metwally Street, Attarin"
+    },
+    "cairo": {
+      "city": "Cairo",
+      "address": "Hope For All Office – 11 El-Masoud Street, Abbasiya"
+    }
   },
   "cta": {
     "title": "Start your journey at the academy",

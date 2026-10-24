@@ -207,7 +207,7 @@ export default function BookDetail({ location, params }) {
     e.preventDefault()
 
     if (!book?._id) {
-      setReviewError('Book information not available')
+      setReviewError(t('reviews.errors.bookNotAvailable'))
       return
     }
 
@@ -220,8 +220,17 @@ export default function BookDetail({ location, params }) {
       setReviewError(t('reviews.errors.titleRequired'))
       return
     }
+    // Same limits as the server, so visitors see a clear reason instead of a 400
+    if (reviewForm.title.trim().length < 5 || reviewForm.title.trim().length > 100) {
+      setReviewError(t('reviews.errors.titleLength'))
+      return
+    }
     if (!reviewForm.content.trim()) {
       setReviewError(t('reviews.errors.contentRequired'))
+      return
+    }
+    if (reviewForm.content.trim().length < 20 || reviewForm.content.trim().length > 1000) {
+      setReviewError(t('reviews.errors.contentLength'))
       return
     }
     if (!reviewForm.name.trim()) {
@@ -230,6 +239,10 @@ export default function BookDetail({ location, params }) {
     }
     if (!reviewForm.email.trim()) {
       setReviewError(t('reviews.errors.emailRequired'))
+      return
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(reviewForm.email.trim())) {
+      setReviewError(t('reviews.errors.emailInvalid'))
       return
     }
 
@@ -280,8 +293,11 @@ export default function BookDetail({ location, params }) {
     } catch (err) {
       console.error('Error submitting review:', err)
 
-      if (err.response?.data?.message) {
-        setReviewError(err.response.data.message)
+      const serverMessage = err.response?.data?.message || ''
+      if (/already reviewed/i.test(serverMessage)) {
+        setReviewError(t('reviews.errors.alreadyReviewed'))
+      } else if (err.response?.status === 400) {
+        setReviewError(t('reviews.errors.invalidData'))
       } else if (err.response?.status === 401) {
         setReviewError(t('reviews.errors.loginRequired'))
       } else if (err.response?.status === 400) {

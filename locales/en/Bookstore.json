@@ -24,7 +24,7 @@
       "title": "Sort by",
       "default": "Default",
       "title_asc": "Title A-Z",
-      "title_desc": "Title Z-A", 
+      "title_desc": "Title Z-A",
       "price_asc": "Price Low to High",
       "price_desc": "Price High to Low",
       "rating_desc": "Highest Rated",
@@ -68,14 +68,18 @@
   "error": {
     "loadBooks": "Failed to load books. Please try again.",
     "loadCategories": "Failed to load categories.",
-    "networkError": "Unable to connect to server. Please make sure the server is running.",
+    "networkError": "Could not connect. Please check your internet connection and try again.",
     "notFound": "Books API endpoint not found.",
     "serverError": "Server error. Please try again later.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "title": "Couldn't load the books",
+    "showingSaved": "Showing saved results. The latest list could not be loaded."
   },
   "empty": {
     "noBooks": "No books found",
     "noResults": "No books match your current filters.",
-    "tryDifferentFilters": "Try adjusting your filters or search criteria."
+    "tryDifferentFilters": "Try adjusting your filters or search criteria.",
+    "comingSoon": "New books will be added soon. Please check back later.",
+    "clearFilters": "Clear filters"
   }
 }

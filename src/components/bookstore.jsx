@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
+import { BookOpen, RefreshCw, WifiOff } from 'lucide-react';
 import { useTranslation, useI18next } from 'gatsby-plugin-react-i18next';
 import { FilterSidebar } from './bookstore/FilterSidebar';
 import { ProductToolbar } from './bookstore/ProductToolbar';
@@ -22,150 +24,52 @@ const Bookstore = () => {
     rating: 0,
     publicationYear: ''
   });
-  const [books, setBooks] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [totalBooks, setTotalBooks] = useState(0);
+  // Categories rarely change: cache them for 10 minutes per language
+  const categoriesQuery = useQuery({
+    queryKey: ['categories', 'public', currentLanguage],
+    queryFn: () => categoriesAPI.getCategories({ limit: 100, language: currentLanguage }),
+    staleTime: 10 * 60 * 1000,
+  });
+  const categories = categoriesQuery.data?.data?.categories || [];
 
-  // Fetch books and categories on component mount and when dependencies change
-  useEffect(() => {
-    const fetchBooksAndCategories = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        // Build API parameters
-        const params = {
-          page: currentPage,
-          limit: itemsPerPage,
-          status: 'published',
-          language: currentLanguage // Add language parameter for API
-        };
-
-        // Add sorting
-        if (sortBy && sortBy !== 'default') {
-          params.sortBy = sortBy;
-          params.sortOrder = sortOrder;
-        }
-
-        // Add filters
-        if (filters.categories.length > 0) {
-          // Find the category ID from the category name
-          const selectedCategory = categories.find(cat => cat.name_en === filters.categories[0]);
-          if (selectedCategory) {
-            params.category = selectedCategory._id;
-          }
-        }
-        if (filters.rating > 0) {
-          params.minRating = filters.rating;
-        }
-        if (filters.publicationYear) {
-          params.publicationYear = filters.publicationYear;
-        }
-
-        // Fetch books and categories in parallel
-        const [booksResponse, categoriesResponse] = await Promise.all([
-          booksAPI.getBooks(params),
-          categoriesAPI.getCategories({ limit: 100, language: currentLanguage })
-        ]);
-
-        if (booksResponse.status === 'success') {
-          setBooks(booksResponse.data.books);
-          setTotalBooks(booksResponse.data.pagination.totalBooks);
-        }
-
-        if (categoriesResponse.status === 'success') {
-          setCategories(categoriesResponse.data.categories);
-        }
-
-      } catch (err) {
-        console.error('Error fetching books:', err);
-        
-        let errorMessage = t('error.loadBooks');
-        if (err.code === 'ECONNREFUSED' || err.message?.includes('Network Error')) {
-          errorMessage = t('error.networkError');
-        } else if (err.response?.status === 404) {
-          errorMessage = t('error.notFound');
-        } else if (err.response?.status >= 500) {
-          errorMessage = t('error.serverError');
-        }
-        
-        setError(errorMessage);
-        setBooks([]);
-        setTotalBooks(0);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBooksAndCategories();
-  }, [currentPage, itemsPerPage, filters, sortBy, sortOrder, currentLanguage]); // Re-fetch when language changes
-
-  // Manual retry function
-  const retryFetch = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const params = {
-        page: currentPage,
-        limit: itemsPerPage,
-        status: 'published'
-      };
-
-      if (sortBy && sortBy !== 'default') {
-        params.sortBy = sortBy;
-        params.sortOrder = sortOrder;
-      }
-
-      if (filters.categories.length > 0) {
-        // Find the category ID from the category name
-        const selectedCategory = categories.find(cat => cat.name_en === filters.categories[0]);
-        if (selectedCategory) {
-          params.category = selectedCategory._id;
-        }
-      }
-      if (filters.rating > 0) {
-        params.minRating = filters.rating;
-      }
-      if (filters.publicationYear) {
-        params.publicationYear = filters.publicationYear;
-      }
-
-      const [booksResponse, categoriesResponse] = await Promise.all([
-        booksAPI.getBooks(params),
-        categoriesAPI.getCategories({ limit: 100 })
-      ]);
-
-      if (booksResponse.status === 'success') {
-        setBooks(booksResponse.data.books);
-        setTotalBooks(booksResponse.data.pagination.totalBooks);
-      }
-
-      if (categoriesResponse.status === 'success') {
-        setCategories(categoriesResponse.data.categories);
-      }
-
-    } catch (err) {
-      console.error('Error fetching books:', err);
-      
-      let errorMessage = 'Failed to load books. Please try again.';
-      if (err.code === 'ECONNREFUSED' || err.message?.includes('Network Error')) {
-        errorMessage = 'Unable to connect to server. Please make sure the server is running.';
-      } else if (err.response?.status === 404) {
-        errorMessage = 'Books API endpoint not found.';
-      } else if (err.response?.status >= 500) {
-        errorMessage = 'Server error. Please try again later.';
-      }
-      
-      setError(errorMessage);
-      setBooks([]);
-      setTotalBooks(0);
-    } finally {
-      setLoading(false);
+  const params = useMemo(() => {
+    const p = { page: currentPage, limit: itemsPerPage, status: 'published', language: currentLanguage };
+    if (sortBy && sortBy !== 'default') {
+      p.sortBy = sortBy;
+      p.sortOrder = sortOrder;
     }
-  }, [currentPage, itemsPerPage, filters, sortBy, sortOrder]);
+    if (filters.categories.length > 0) {
+      const selectedCategory = categories.find(cat => cat.name_en === filters.categories[0]);
+      if (selectedCategory) p.category = selectedCategory._id;
+    }
+    if (filters.rating > 0) p.minRating = filters.rating;
+    if (filters.publicationYear) p.publicationYear = filters.publicationYear;
+    return p;
+  }, [currentPage, itemsPerPage, sortBy, sortOrder, filters, categories, currentLanguage]);
+
+  // Each page/filter combination is cached; keepPreviousData leaves the current
+  // books on screen while the next page loads instead of flashing a spinner.
+  const booksQuery = useQuery({
+    queryKey: ['books', 'public', params],
+    queryFn: () => booksAPI.getBooks(params),
+    placeholderData: keepPreviousData,
+  });
+  const books = booksQuery.data?.data?.books || [];
+  const totalBooks = booksQuery.data?.data?.pagination?.totalBooks || 0;
+  const loading = booksQuery.isPending;
+  const hasFilters = filters.categories.length > 0 || filters.rating > 0 || !!filters.publicationYear;
+
+  const errorMessage = (() => {
+    const err = booksQuery.error;
+    if (!err) return null;
+    if (err.code === 'ECONNABORTED' || err.code === 'ECONNREFUSED' || err.message?.includes('Network Error') || err.message?.includes('timeout')) {
+      return t('error.networkError');
+    }
+    if (err.response?.status >= 500) return t('error.serverError');
+    return t('error.loadBooks');
+  })();
+  const error = booksQuery.isError && books.length === 0 ? errorMessage : null;
+  const retryFetch = () => booksQuery.refetch();
 
   // Transform database books to match component expectations with Arabic support
   const transformedBooks = useMemo(() => {
@@ -183,23 +87,6 @@ const Bookstore = () => {
       
       const categoryName = currentLanguage === 'ar' ? 
         (book.category?.name_ar || book.category?.name_en) : book.category?.name_en;
-
-      // Debug: Log the first book transformation when Arabic
-      if (currentLanguage === 'ar' && index === 0) {
-        console.log('=== BOOKSTORE TRANSFORMATION DEBUG ===');
-        console.log('Original book:', book);
-        console.log('Transformed values:', {
-          bookTitle,
-          authorName,
-          categoryName,
-          bookDescription
-        });
-        console.log('Available Arabic fields:', {
-          titleAr: book.titleAr,
-          authorNameAr: book.author?.nameAr,
-          categoryNameAr: book.category?.name_ar
-        });
-      }
 
       return {
         id: book._id,
@@ -291,26 +178,53 @@ const Bookstore = () => {
 
       {/* Products Grid/List */}
       <div className="px-3 xs:px-4 sm:px-6 py-4">
+        {booksQuery.isError && books.length > 0 && (
+          <div className="mb-4 flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-2 text-sm text-amber-800">
+            <span>{t('error.showingSaved')}</span>
+            <button onClick={retryFetch} className="font-semibold underline">{t('error.retry')}</button>
+          </div>
+        )}
         {loading ? (
-          <div className="text-center py-8 xs:py-12">
-            <div className="animate-spin rounded-full h-8 xs:h-10 sm:h-12 w-8 xs:w-10 sm:w-12 border-b-2 border-[#2194D1] mx-auto"></div>
-            <p className="text-muted-foreground mt-3 xs:mt-4 text-sm xs:text-base">{t('loading.books')}</p>
+          <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 xs:gap-4 sm:gap-6" aria-busy="true" aria-label={t('loading.books')}>
+            {Array.from({ length: itemsPerPage }).map((_, i) => (
+              <div key={i} className="animate-pulse rounded-2xl border border-gray-100 bg-white p-3">
+                <div className="aspect-[3/4] w-full rounded-xl bg-gray-200" />
+                <div className="mt-3 h-4 w-3/4 rounded bg-gray-200" />
+                <div className="mt-2 h-3 w-1/2 rounded bg-gray-100" />
+              </div>
+            ))}
           </div>
         ) : error ? (
-          <div className="text-center py-8 xs:py-12 px-4">
-            <h3 className="text-base xs:text-lg font-semibold text-red-600">Error</h3>
-            <p className="text-muted-foreground mt-2 text-sm xs:text-base max-w-md mx-auto">{error}</p>
-            <button 
+          <div className="mx-auto my-8 max-w-md rounded-2xl border border-gray-100 bg-white px-6 py-10 text-center shadow-sm">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-[#2194D1]">
+              <WifiOff className="h-7 w-7" aria-hidden="true" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">{t('error.title')}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{error}</p>
+            <button
               onClick={retryFetch}
-              className="mt-4 px-4 xs:px-6 py-2 xs:py-3 bg-[#2194D1] text-white rounded-lg hover:bg-[#1e7fb8] text-sm xs:text-base transition-colors duration-200"
+              disabled={booksQuery.isFetching}
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#2194D1] px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#1e7fb8] disabled:opacity-60"
             >
-              {t('error.retry')}
+              <RefreshCw className={`h-4 w-4 ${booksQuery.isFetching ? 'animate-spin' : ''}`} aria-hidden="true" />
+              {booksQuery.isFetching ? t('loading.books') : t('error.retry')}
             </button>
           </div>
         ) : transformedBooks.length === 0 ? (
-          <div className="text-center py-8 xs:py-12 px-4">
-            <h3 className="text-base xs:text-lg font-semibold text-muted-foreground">{t('empty.noBooks')}</h3>
-            <p className="text-muted-foreground mt-2 text-sm xs:text-base max-w-md mx-auto">{t('empty.tryDifferentFilters')}</p>
+          <div className="mx-auto my-8 max-w-md rounded-2xl border border-gray-100 bg-white px-6 py-10 text-center shadow-sm">
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gray-50 text-gray-400">
+              <BookOpen className="h-7 w-7" aria-hidden="true" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900">{t('empty.noBooks')}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{hasFilters ? t('empty.tryDifferentFilters') : t('empty.comingSoon')}</p>
+            {hasFilters && (
+              <button
+                onClick={() => handleFiltersChange({ categories: [], rating: 0, publicationYear: '' })}
+                className="mt-6 rounded-full border border-[#2194D1] px-6 py-2.5 text-sm font-semibold text-[#2194D1] transition-colors hover:bg-[#2194D1] hover:text-white"
+              >
+                {t('empty.clearFilters')}
+              </button>
+            )}
           </div>
         ) : (
           <>

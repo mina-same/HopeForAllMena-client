@@ -9,7 +9,7 @@ const API_BASE_URL = process.env.GATSBY_API_URL || 'http://localhost:5001/api';
 // Create axios instance with default config
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 10000,
+  timeout: 30000, // slow connections took >10s and showed a load error
   headers: {
     'Content-Type': 'application/json',
   },

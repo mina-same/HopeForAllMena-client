@@ -71,7 +71,11 @@
       "emailRequired": "Please enter your email",
       "loginRequired": "You need to be logged in to submit a review",
       "invalidData": "Invalid review data. Please check your input.",
-      "submitFailed": "Failed to submit review. Please try again."
+      "submitFailed": "Failed to submit review. Please try again.",
+      "titleLength": "The review title must be between 5 and 100 characters.",
+      "contentLength": "Your review must be between 20 and 1000 characters.",
+      "emailInvalid": "Please enter a valid email address.",
+      "alreadyReviewed": "You have already reviewed this book. Only one review per book is allowed."
     }
   },
   "relatedBooks": {
