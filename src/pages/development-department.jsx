@@ -70,10 +70,10 @@ const DevelopmentDepartment = () => {
   ];
 
   return (
-    <Layout pageTitle={t("pageTitle")}>
+    <Layout pageTitle={t("pageTitle")} description={t("vision.text")}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader titleAs="h2" title={t("title")} crumbTitle={t("breadcrumb")} image={devHall} />
+      <PageHeader titleAs={t("about.title") ? "h2" : "h1"} title={t("title")} crumbTitle={t("breadcrumb")} image={devHall} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
         {/* Who we are */}

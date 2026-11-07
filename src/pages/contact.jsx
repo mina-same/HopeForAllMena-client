@@ -14,7 +14,7 @@ const Contact = () => {
   const { t } = useTranslation('Contact');
 
   return (
-    <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`}>
+    <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`} description={t("form.description")}>
       <HeaderTwo />
       <StickyHeader />
       <PageHeader title={t('pageTitle')} crumbTitle={t('crumbTitle')} />

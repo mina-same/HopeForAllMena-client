@@ -14,7 +14,7 @@ const News = () => {
   const isRTL = currentLanguage === "ar";
 
   return (
-    <Layout pageTitle={`${t("page.title")} || Hope for All Mena`}>
+    <Layout pageTitle={`${t("page.title")} || Hope for All Mena`} description={t("page.description")}>
       <div dir={isRTL ? "rtl" : "ltr"}>
         <HeaderTwo />
         <StickyHeader />

@@ -132,7 +132,7 @@ const TrainingNewRequestPage = () => {
   minDate.setDate(minDate.getDate() + 14);
 
   return (
-    <Layout pageTitle={t('pageTitle')}>
+    <Layout pageTitle={t('pageTitle')} description={t("seoDescription")}>
       <HeaderTwo />
       <StickyHeader />
       <div className={`min-h-screen bg-background ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>

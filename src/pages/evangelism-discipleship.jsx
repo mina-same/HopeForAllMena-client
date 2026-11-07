@@ -66,7 +66,7 @@ const EvangelismDiscipleship = () => {
   const philosophyBody = t("philosophy.body");
 
   return (
-    <Layout pageTitle={`${t("pageTitle")} || Hope for All Mena`}>
+    <Layout pageTitle={`${t("pageTitle")} || Hope for All Mena`} description={t("heroSection.description")}>
       <HeaderTwo />
       <StickyHeader />
       <PageHeader titleAs="h2" title={t("pageTitle")} crumbTitle={t("pageTitle")} image={missionImage} />

@@ -403,7 +403,7 @@ const TrendingPage = () => {
   const { t } = useTranslation('Books');
 
   return (
-    <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`}>
+    <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`} description={t("heroSlider.slide1.description")}>
       <HeaderTwo />
       <div className="min-h-screen">
         {/* Header */}

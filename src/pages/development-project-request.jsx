@@ -399,8 +399,7 @@ const DevelopmentProjectRequestPage = () => {
   };
 
   return (
-    <Layout pageTitle={t("pageTitle")}
-    >
+    <Layout pageTitle={t("pageTitle")} description={t("header.description")}>
       <HeaderTwo />
       <StickyHeader />
       <div className={`min-h-screen bg-background ${isRTL ? "rtl" : "ltr"}`} dir={isRTL ? "rtl" : "ltr"}>

@@ -42,7 +42,7 @@ const DonationCard = () => {
                     }
                 `}</style>
             )}
-            <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`}>
+            <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`} description={t("header.description")}>
                 <HeaderTwo/>
                 <StickyHeader/>
                 <PageHeader titleAs="h2" title={t('pageTitle')} crumbTitle={t('crumbTitle')} />

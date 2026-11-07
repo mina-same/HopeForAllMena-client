@@ -55,7 +55,7 @@ const PublishingHouse = () => {
   ];
 
   return (
-    <Layout pageTitle={`${t("pageTitle")} || Hope For All Mena Ministry`}>
+    <Layout pageTitle={`${t("pageTitle")} || Hope For All Mena Ministry`} description={t("browseBooks.description")}>
       <HeaderTwo />
       <StickyHeader />
       <PageHeader titleAs="h2" title={t("pageTitle")} crumbTitle={t("crumbTitle")} />

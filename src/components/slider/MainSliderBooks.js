@@ -60,9 +60,10 @@ const MainSliderBooks = () => {
             <Row className="row justify-content-end">
               <Col xl={7} lg={12} className="text-right">
                 <p>{t('heroSlider.slide1.subtitle', { count: bookCount })}</p>
-                <h2>
+                {/* First slide headline is the page's single H1 (SEO) */}
+                <h1>
                   {t('heroSlider.slide1.title')}
-                </h2>
+                </h1>
                 <Link
                   to="/books#collection"
                   className="scroll-to-target thm-btn"

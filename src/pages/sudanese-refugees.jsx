@@ -42,7 +42,7 @@ const SudaneseRefugees = () => {
   const isRTL = currentLanguage === "ar";
 
   return (
-    <Layout pageTitle={`${t("pageTitle")} || Hope for All Mena`}>
+    <Layout pageTitle={`${t("pageTitle")} || Hope for All Mena`} description={t("goals.items.support")}>
       <HeaderTwo />
       <StickyHeader />
       <PageHeader titleAs="h2" title={t("pageTitle")} crumbTitle={t("pageTitle")} image={heroImage} />

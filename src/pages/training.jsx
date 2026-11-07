@@ -122,7 +122,7 @@ const TrainingPage = () => {
   }, []);
 
   return (
-    <Layout pageTitle={t('pageTitle')}>
+    <Layout pageTitle={t('pageTitle')} description={t("hero.description")}>
       <HeaderTwo />
       <StickyHeader />
       <div className="min-h-screen bg-background" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>

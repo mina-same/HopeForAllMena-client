@@ -23,7 +23,7 @@ const TrainingSelectionPage = () => {
   };
 
   return (
-    <Layout pageTitle={t('pageTitle')}>
+    <Layout pageTitle={t('pageTitle')} description={t("seoDescription")}>
 
       <HeaderTwo />
       <StickyHeader />
