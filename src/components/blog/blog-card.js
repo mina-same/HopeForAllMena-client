@@ -8,7 +8,7 @@ const BlogCard = ({ image, title, date, text, link, commentCount, author, curren
     <div className={`blog-card ${currentLanguage === 'ar' ? 'rtl-card' : ''}`} dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
       <div className="blog-card__inner">
         <div className="blog-card__image">
-          <img src={image} alt="" />
+          <img src={image} alt={title} />
           <div className="blog-card__date">{date}</div>
         </div>
         <div className="blog-card__content">

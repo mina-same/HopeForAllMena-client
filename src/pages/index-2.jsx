@@ -21,7 +21,7 @@ import Footer from "../components/footer";
 
 const HomeTwo = () => {
   return (
-    <Layout pageTitle="Home Two || Hope for All Mena || Charity React Next Template">
+    <Layout pageTitle="Home Two || Hope for All Mena">
       <HeaderTwo />
       <StickyHeader extraClassName="stricky-header-two" />
       <MainSliderTwo />

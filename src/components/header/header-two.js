@@ -34,7 +34,7 @@ const HeaderTwo = () => {
         <Container>
           <div className="logo-box">
             <Link to="/">
-              <img src={logoDark} width="80" alt="" />
+              <img src={logoDark} width="80" alt="Hope For All Mena" />
             </Link>
             <span className="fa fa-bars mobile-nav__toggler"></span>
           </div>

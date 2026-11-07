@@ -255,7 +255,7 @@ const MagazinePage = () => {
   const currentLanguage = i18n?.resolvedLanguage || 'en';
 
   return (
-    <Layout >
+    <Layout pageTitle={`${t('publishingExcellence')} || Hope For All Mena`} description={t('heroDescription')}>
       <HeaderTwo />
       <StickyHeader />
 

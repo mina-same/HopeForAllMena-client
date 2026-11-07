@@ -57,7 +57,7 @@ const Footer = () => {
                     src={logoLight}
                     className="footer-widget__logo"
                     width="90"
-                    alt=""
+                    alt="Hope For All Mena"
                   />
                 </Link>
                 <h1 style={{

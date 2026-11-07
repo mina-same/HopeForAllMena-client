@@ -9,7 +9,7 @@ import HeaderTwo from "../components/header/header-two";
 
 const CauseDetails = () => {
   return (
-    <Layout pageTitle="Cause Details || Hope for All Mena || Charity React Next Template">
+    <Layout pageTitle="Cause Details || Hope for All Mena">
       <HeaderTwo />
       <StickyHeader />
       <PageHeader title="Cause Details" crumbTitle="Cause Details" />

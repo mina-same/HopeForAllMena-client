@@ -10,7 +10,7 @@ import HeaderTwo from "../components/header/header-two";
 
 const BecomeVolunteer = () => {
   return (
-    <Layout pageTitle="Become a Volunteer || Hope for All Mena || Charity React Next Template">
+    <Layout pageTitle="Become a Volunteer || Hope for All Mena">
       <HeaderTwo />
       <StickyHeader />
       <PageHeader title="Become a Volunteer" crumbTitle="Become Volunteer" />

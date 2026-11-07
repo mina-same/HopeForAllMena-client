@@ -7,6 +7,7 @@ import SearchPopup from "./search-popup";
 import AppleTouch from "../assets/images/favicons/apple-touch-icon.png";
 import Fevicon32 from "../assets/images/favicons/favicon-32x32.png";
 import Fevicon16 from "../assets/images/favicons/favicon-16x16.png";
+import LogoImage from "../assets/images/logo-dark.png";
 
 import "../assets/css/tailwind.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,9 +23,23 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 
-const Layout = ({ pageTitle, children }) => {
+const SITE_URL = "https://www.hopeforallmena.com";
+const SITE_NAME = "Hope For All Mena"; // same as siteMetadata.title
+const DEFAULT_DESCRIPTION = {
+  // Taken verbatim from locales/*/About.json → visionMission.header.description
+  en: "Empowering church leaders across the Middle East and North Africa to transform communities through intentional discipleship",
+  ar: "تمكين قادة الكنائس في الشرق الأوسط وشمال أفريقيا لتحويل المجتمعات من خلال التلمذة المقصودة",
+};
+
+const Layout = ({ pageTitle, description, image, noindex = false, children }) => {
   const [hasMounted, setHasMounted] = useState(false);
-  const { i18n } = useI18next();
+  const { i18n, language = "en", languages = ["en", "ar"], originalPath = "/", defaultLanguage = "en" } = useI18next();
+  const localizedUrl = (lng) =>
+    `${SITE_URL}${lng === defaultLanguage ? "" : `/${lng}`}${originalPath}`;
+  const canonicalUrl = localizedUrl(language);
+  const metaDescription = description || DEFAULT_DESCRIPTION[language] || DEFAULT_DESCRIPTION.en;
+  const ogImage = image ? (image.startsWith("http") ? image : `${SITE_URL}${image}`) : `${SITE_URL}${LogoImage}`;
+  const fullTitle = pageTitle || SITE_NAME;
   const handleRadius = () => {
     const dynamicRadius = document.querySelectorAll(".dynamic-radius");
     dynamicRadius.forEach(function (btn) {
@@ -55,14 +70,41 @@ const Layout = ({ pageTitle, children }) => {
     }
   }, [hasMounted, i18n?.resolvedLanguage]);
 
-  if (!hasMounted) {
-    return null;
-  }
   return (
     <div>
-      <Helmet>
+      <Helmet htmlAttributes={{ lang: language, dir: language === "ar" ? "rtl" : "ltr" }}>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>{pageTitle}</title>
+        <title>{fullTitle}</title>
+        <meta name="description" content={metaDescription} />
+        {noindex && <meta name="robots" content="noindex, nofollow" />}
+        <link rel="canonical" href={canonicalUrl} />
+        {languages.map((lng) => (
+          <link key={lng} rel="alternate" hrefLang={lng} href={localizedUrl(lng)} />
+        ))}
+        <link rel="alternate" hrefLang="x-default" href={localizedUrl(defaultLanguage)} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content={SITE_NAME} />
+        <meta property="og:title" content={fullTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:locale" content={language === "ar" ? "ar_EG" : "en_US"} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={fullTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={ogImage} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NGO",
+            name: SITE_NAME,
+            url: SITE_URL,
+            logo: `${SITE_URL}${LogoImage}`,
+            email: "info@hopeforallmena.org",
+            description: DEFAULT_DESCRIPTION.en,
+            areaServed: "Middle East and North Africa",
+          })}
+        </script>
         <link rel="apple-touch-icon" sizes="180x180" href={AppleTouch} />
         <link rel="icon" type="image/png" sizes="32x32" href={Fevicon32} />
         <link rel="icon" type="image/png" sizes="16x16" href={Fevicon16} />

@@ -72,7 +72,7 @@ const UnauthorizedPage = () => {
   };
 
   return (
-    <Layout pageTitle="Access Denied || Hope for All Mena || Charity React Next Template">
+    <Layout pageTitle="Access Denied || Hope for All Mena">
       <HeaderTwo />
       <StickyHeader />
 

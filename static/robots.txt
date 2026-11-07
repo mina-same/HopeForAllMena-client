@@ -1,0 +1,11 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /ar/admin/
+Disallow: /login/
+Disallow: /ar/login/
+Disallow: /unauthorized/
+Disallow: /ar/unauthorized/
+Disallow: /color-test/
+Disallow: /ar/color-test/
+
+Sitemap: https://www.hopeforallmena.com/sitemap-index.xml

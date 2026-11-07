@@ -2,7 +2,7 @@ module.exports = {
   siteMetadata: {
     title: 'Hope For All Mena',
     description: 'Connecting, Equipment and Multiplying',
-    siteUrl: 'http://localhost:8000',
+    siteUrl: 'https://www.hopeforallmena.com',
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -28,7 +28,7 @@ module.exports = {
         localeJsonSourceName: `locale`,
         languages: ['en', 'ar'],
         defaultLanguage: 'en',
-        siteUrl: 'http://localhost:8000',
+        siteUrl: 'https://www.hopeforallmena.com',
         i18nextOptions: {
           interpolation: {
             escapeValue: false
@@ -51,6 +51,12 @@ module.exports = {
       },
     },
     `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`
+    `gatsby-plugin-sharp`,
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        excludes: [`/admin/*`, `/ar/admin/*`, `/login/*`, `/ar/login/*`, `/unauthorized/*`, `/ar/unauthorized/*`, `/color-test/*`, `/ar/color-test/*`, `/index-2/*`, `/ar/index-2/*`, `/404/*`, `/ar/404/*`, `/404.html`, `/ar/404.html`, `/dev-404-page/*`],
+      },
+    }
   ]
 };

@@ -23,7 +23,7 @@ import CausesHome from "../components/causes/featured-events";
 
 const HomeOne = () => {
   return (
-    <Layout pageTitle="Home One || Hope For All Mena">
+    <Layout pageTitle="Hope For All Mena">
       <HeaderTwo />
       <StickyHeader />
       <MainSlider />

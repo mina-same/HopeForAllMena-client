@@ -356,7 +356,7 @@ export default function BookDetail({ location, params }) {
   }
 
   return (
-    <Layout>
+    <Layout pageTitle={`${currentLanguage === 'ar' ? (book.titleAr || book.title) : book.title} || Hope For All Mena`} description={currentLanguage === 'ar' ? (book.descriptionAr || book.description) : book.description} image={book.coverImageUrl}>
       {/* Header */}
       <HeaderTwo />
       <StickyHeader />

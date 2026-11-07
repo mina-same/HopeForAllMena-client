@@ -76,7 +76,7 @@ const MobileNav = () => {
 
         <div className={`logo-box ${currentLanguage === 'ar' ? 'rtl' : 'ltr'}`}>
           <Link to="/">
-            <img src={logoLight} width="101" alt="" />
+            <img src={logoLight} width="101" alt="Hope For All Mena" />
           </Link>
         </div>
         

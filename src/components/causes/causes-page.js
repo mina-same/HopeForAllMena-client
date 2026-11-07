@@ -79,7 +79,7 @@ const CausesPage = () => {
               <div className="cause-card" key={`cause-card-key-${index}`}>
                 <div className="cause-card__inner">
                   <div className="cause-card__image">
-                    <img src={image} alt="" />
+                    <img src={image} alt={title} />
                   </div>
                   <div className="cause-card__content">
                     <div className="cause-card__top">

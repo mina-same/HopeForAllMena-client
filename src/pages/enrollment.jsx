@@ -245,7 +245,7 @@ const EnrollmentPage = ({ location }) => {
     };
 
     return (
-        <Layout>
+        <Layout pageTitle={`${t('title')} || Hope For All Mena`}>
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @keyframes float {

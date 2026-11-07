@@ -250,7 +250,7 @@ const TrainingFollowUpRequestPage = () => {
   };
 
   return (
-    <Layout>
+    <Layout pageTitle={t('pageTitle')} description={t('seoDescription')}>
       <HeaderTwo />
       <StickyHeader />
       <div className={`min-h-screen bg-background ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
