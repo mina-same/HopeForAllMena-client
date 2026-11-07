@@ -3,6 +3,7 @@ import { Container } from "react-bootstrap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import GalleryCard from "./gallery-card";
+import { useI18next } from "gatsby-plugin-react-i18next";
 
 // Import magazine giveaway images
 import magazineImage1 from "../../assets/images/magazines/give away/01.jpeg";
@@ -26,7 +27,27 @@ import resourceImage2 from "../../assets/images/resources/about-1-2.jpg";
 
 // Swiper v11 uses modules via props
 
+// Alt text for the magazine giveaway photos (01-14.jpeg): [English, Arabic]
+const captions = [
+  ["A volunteer hands Magazines of Hope to women and children at a street market", "متطوع يوزع مجلات الرجاء على السيدات والأطفال في سوق شعبي"],
+  ["A volunteer gives a magazine to a young boy on a busy street", "متطوع يقدم مجلة لطفل صغير في شارع مزدحم"],
+  ["Volunteers share magazines with families at an outdoor market", "متطوعون يوزعون المجلات على العائلات في سوق مفتوح"],
+  ["A volunteer offers a magazine at a market stall", "متطوع يقدم مجلة عند أحد أكشاك السوق"],
+  ["Children read the magazines a volunteer handed them", "أطفال يقرؤون المجلات التي قدمها لهم أحد المتطوعين"],
+  ["A volunteer gives a magazine to a child in a stroller", "متطوع يقدم مجلة لطفل في عربة أطفال"],
+  ["A volunteer hands magazines to passengers in a microbus", "متطوع يوزع المجلات على ركاب ميكروباص"],
+  ["A volunteer gives a magazine to a girl walking home from school", "متطوع يقدم مجلة لطفلة في طريق عودتها من المدرسة"],
+  ["A volunteer hands magazines to passengers in a tuk-tuk", "متطوع يوزع المجلات على ركاب توك توك"],
+  ["Children reading their new magazines on the street", "أطفال يقرؤون مجلاتهم الجديدة في الشارع"],
+  ["Volunteers give magazines to children on a crowded street", "متطوعون يوزعون المجلات على الأطفال في شارع مزدحم"],
+  ["Children receive magazines from a volunteer", "أطفال يستلمون المجلات من أحد المتطوعين"],
+  ["Families and children receive magazines on the street", "عائلات وأطفال يستلمون المجلات في الشارع"],
+  ["Children holding their magazines at the giveaway", "أطفال يحملون مجلاتهم أثناء التوزيع"],
+];
+
 const GalleryHome = () => {
+  const { language } = useI18next();
+  const isAr = language === "ar";
   const galleryOptions = {
     spaceBetween: 100,
     slidesPerView: 4,
@@ -68,46 +89,46 @@ const GalleryHome = () => {
         <Swiper modules={[Autoplay]} {...galleryOptions}>
           {/* Magazine Giveaway Images */}
           <SwiperSlide>
-            <GalleryCard image={magazineImage1} />
+            <GalleryCard image={magazineImage1} alt={captions[0][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage2} />
+            <GalleryCard image={magazineImage2} alt={captions[1][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage3} />
+            <GalleryCard image={magazineImage3} alt={captions[2][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage4} />
+            <GalleryCard image={magazineImage4} alt={captions[3][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage5} />
+            <GalleryCard image={magazineImage5} alt={captions[4][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage6} />
+            <GalleryCard image={magazineImage6} alt={captions[5][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage7} />
+            <GalleryCard image={magazineImage7} alt={captions[6][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage8} />
+            <GalleryCard image={magazineImage8} alt={captions[7][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage9} />
+            <GalleryCard image={magazineImage9} alt={captions[8][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage10} />
+            <GalleryCard image={magazineImage10} alt={captions[9][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage11} />
+            <GalleryCard image={magazineImage11} alt={captions[10][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage12} />
+            <GalleryCard image={magazineImage12} alt={captions[11][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage13} />
+            <GalleryCard image={magazineImage13} alt={captions[12][isAr ? 1 : 0]} />
           </SwiperSlide>
           <SwiperSlide>
-            <GalleryCard image={magazineImage14} />
+            <GalleryCard image={magazineImage14} alt={captions[13][isAr ? 1 : 0]} />
           </SwiperSlide>
           
           {/* Resource Images */}

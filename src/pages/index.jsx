@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql } from "gatsby";
 import Layout from "../components/layout";
+import { useI18next } from "gatsby-plugin-react-i18next";
 import StickyHeader from "../components/header/sticky-header";
 import MainSlider from "../components/slider/main-slider";
 import VideoCardTwo from "../components/videos/video-card-two";
@@ -22,8 +23,9 @@ import TrendingProducts from "../components/bookstore/TrendingProducts";
 import CausesHome from "../components/causes/featured-events";
 
 const HomeOne = () => {
+  const { language } = useI18next();
   return (
-    <Layout pageTitle="Hope For All Mena">
+    <Layout pageTitle={language === "ar" ? "Hope For All Mena | مضاعفة التلاميذ عبر الشرق الأوسط" : "Hope For All Mena | Multiplying Disciples Across the Middle East"}>
       <HeaderTwo />
       <StickyHeader />
       <MainSlider />

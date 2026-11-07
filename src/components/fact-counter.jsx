@@ -33,6 +33,8 @@ const FactCounter = () => {
   });
   const [factCounterData, setFactCounterData] = useState(DEFAULT_FACT_COUNTER_DATA);
   const [loading, setLoading] = useState(true);
+  const [hasMounted, setHasMounted] = useState(false);
+  useEffect(() => setHasMounted(true), []);
   const sectionRef = useRef(null);
 
   // Fetch data from backend on component mount
@@ -124,11 +126,16 @@ const FactCounter = () => {
                 key={`fact-counter-key-${index}`}
               >
                 <h3>
-                  <CountUp 
-                    end={counter.startCounter ? count : 0} 
-                    duration={2.5}
-                    separator=","
-                  />
+                  {/* Server HTML shows the real number (crawlers/SEO); the browser animates it */}
+                  {hasMounted ? (
+                    <CountUp 
+                      end={counter.startCounter ? count : 0} 
+                      duration={2.5}
+                      separator=","
+                    />
+                  ) : (
+                    <span>{Number(count).toLocaleString('en-US')}</span>
+                  )}
                 </h3>
                 <p>{t(textKey)}</p>
                 <span>+</span>

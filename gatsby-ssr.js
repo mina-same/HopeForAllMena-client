@@ -35,3 +35,16 @@ export const onRenderBody = ({ setHeadComponents }) => {
     />,
   ]);
 };
+
+// Speed / SEO: Gatsby inlines all CSS (~760 KB) into every page. Link the same CSS file
+// instead, so the HTML stays small and the browser caches the CSS across pages.
+export const onPreRenderHTML = ({ getHeadComponents, replaceHeadComponents }) => {
+  if (process.env.NODE_ENV !== 'production') return;
+  const headComponents = getHeadComponents().map((el) => {
+    if (el && el.type === 'style' && el.props && el.props['data-href']) {
+      return <link key={el.props['data-href']} rel="stylesheet" href={el.props['data-href']} />;
+    }
+    return el;
+  });
+  replaceHeadComponents(headComponents);
+};

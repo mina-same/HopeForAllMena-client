@@ -5,7 +5,7 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { cn } from "../../lib/utils";
 
-const GalleryCard = ({ image }) => {
+const GalleryCard = ({ image, alt = "" }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -14,7 +14,7 @@ const GalleryCard = ({ image }) => {
         <img
           src={image}
           className="img-fluid"
-          alt=""
+          alt={alt}
           style={{
             width: "100%",
             height: "100%",
@@ -29,7 +29,7 @@ const GalleryCard = ({ image }) => {
             onClick={() => setOpen(true)}
             aria-label="open image"
           >
-            <img src={image} className="img-fluid sr-only" alt="" />
+            <img src={image} className="img-fluid sr-only" alt={alt} />
             <i className="fal fa-plus"></i>
           </button>
         </div>
@@ -37,7 +37,7 @@ const GalleryCard = ({ image }) => {
       <Lightbox
         open={open}
         close={() => setOpen(false)}
-        slides={[{ src: image }]}
+        slides={[{ src: image, alt }]}
       />
     </>
   );
