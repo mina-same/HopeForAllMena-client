@@ -45,7 +45,7 @@ const DonationCard = () => {
             <Layout pageTitle={`${t('pageTitle')} || Hope For All Mena Ministry`}>
                 <HeaderTwo/>
                 <StickyHeader/>
-                <PageHeader title={t('pageTitle')} crumbTitle={t('crumbTitle')} />
+                <PageHeader titleAs="h2" title={t('pageTitle')} crumbTitle={t('crumbTitle')} />
                 <div className="donation-container w-full max-w-4xl mx-auto space-y-8 py-14" dir={currentLanguage === 'ar' ? 'rtl' : 'ltr'}>
                 {/* Header */}
                 <div className="text-center space-y-4">

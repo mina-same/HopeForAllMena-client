@@ -58,7 +58,7 @@ const PublishingHouse = () => {
     <Layout pageTitle={`${t("pageTitle")} || Hope For All Mena Ministry`}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title={t("pageTitle")} crumbTitle={t("crumbTitle")} />
+      <PageHeader titleAs="h2" title={t("pageTitle")} crumbTitle={t("crumbTitle")} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
         {/* Intro */}

@@ -7,5 +7,7 @@ Disallow: /unauthorized/
 Disallow: /ar/unauthorized/
 Disallow: /color-test/
 Disallow: /ar/color-test/
+Disallow: /Calendar/
+Disallow: /ar/Calendar/
 
 Sitemap: https://www.hopeforallmena.com/sitemap-index.xml

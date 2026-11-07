@@ -55,7 +55,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-sitemap`,
       options: {
-        excludes: [`/admin/*`, `/ar/admin/*`, `/login/*`, `/ar/login/*`, `/unauthorized/*`, `/ar/unauthorized/*`, `/color-test/*`, `/ar/color-test/*`, `/index-2/*`, `/ar/index-2/*`, `/404/*`, `/ar/404/*`, `/404.html`, `/ar/404.html`, `/dev-404-page/*`],
+        // Keep private, test, error and ID-less detail-template pages out of the sitemap
+        resolvePages: ({ allSitePage: { nodes } }) => {
+          const blocked = /^(\/ar)?\/(admin|login|unauthorized|color-test|index-2|404|dev-404-page|bookDetils|news-details|event-details|cause-details|orderPage|Calendar|MagazineRequestPage)(\/|\.html|$)/;
+          return nodes.filter(({ path }) => !path.includes('*') && !blocked.test(path));
+        },
       },
     }
   ]

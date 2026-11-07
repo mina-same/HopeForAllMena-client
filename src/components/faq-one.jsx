@@ -1,18 +1,16 @@
 import React from "react";
-import { Accordion, Container, Row, Col, Card } from "react-bootstrap";
+import { Accordion, Container, Row, Col, Card, useAccordionButton } from "react-bootstrap";
 import heart from "../assets/images/shapes/heart-2-1.png";
 import heart1 from "../assets/images/shapes/about-count-heart-1-1.png";
 import faqImage from "../assets/images/resources/faq-box-1-1.jpg";
 
 // Custom toggle component for the Accordion header
 const ContextAwareToggle = ({ children, eventKey }) => {
+  // react-bootstrap v2 removed Accordion.Toggle; useAccordionButton replaces it
+  const onClick = useAccordionButton(eventKey);
   return (
     <h2 className="para-title">
-      <Accordion.Toggle
-        as="span"
-        eventKey={eventKey}
-        style={{ cursor: "pointer" }}
-      >
+      <span onClick={onClick} style={{ cursor: "pointer" }}>
         <i
           className={`far ${
             // Note: You may need to manage the icon state manually if needed
@@ -21,7 +19,7 @@ const ContextAwareToggle = ({ children, eventKey }) => {
           }`}
         ></i>
         {children}
-      </Accordion.Toggle>
+      </span>
     </h2>
   );
 };

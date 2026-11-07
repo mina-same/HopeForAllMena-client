@@ -131,7 +131,7 @@ const MagazineRequestPage = () => {
   };
 
   return (
-    <Layout >
+    <Layout pageTitle={`${t('request.title')} || Hope For All Mena`}>
       <HeaderTwo/>
       <StickyHeader/>
       <div className="min-h-screen bg-background">

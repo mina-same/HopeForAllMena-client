@@ -69,7 +69,7 @@ const EvangelismDiscipleship = () => {
     <Layout pageTitle={`${t("pageTitle")} || Hope for All Mena`}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title={t("pageTitle")} crumbTitle={t("pageTitle")} image={missionImage} />
+      <PageHeader titleAs="h2" title={t("pageTitle")} crumbTitle={t("pageTitle")} image={missionImage} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
         {/* Intro */}

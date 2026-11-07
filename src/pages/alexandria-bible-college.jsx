@@ -74,7 +74,7 @@ const AlexandriaBibleCollege = () => {
     <Layout pageTitle={`${t("pageTitle")} || Hope For All Mena Ministry`}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title={t("pageTitle")} crumbTitle={t("crumbTitle")} image={abcClassIntl} />
+      <PageHeader titleAs="h2" title={t("pageTitle")} crumbTitle={t("crumbTitle")} image={abcClassIntl} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
         {/* Intro */}

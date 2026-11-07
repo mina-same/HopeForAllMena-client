@@ -60,7 +60,11 @@ const Footer = () => {
                     alt="Hope For All Mena"
                   />
                 </Link>
-                <h1 style={{
+                {/* <p> styled like the old <h1>, so each page keeps a single H1 for SEO */}
+                <p style={{
+                  fontFamily: "var(--heading-font)",
+                  lineHeight: 1.2,
+                  marginTop: 0,
                   color: "#ffffff",
                   fontSize: "1rem",
                   fontWeight: "700",
@@ -70,7 +74,7 @@ const Footer = () => {
                   textShadow: "2px 2px 4px rgba(0,0,0,0.2)"
                 }}>
                   {t('footer.organizationName')}
-                </h1>
+                </p>
                 <p>
                   {t('footer.tagline')}
                 </p>

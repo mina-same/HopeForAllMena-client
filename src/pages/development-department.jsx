@@ -73,7 +73,7 @@ const DevelopmentDepartment = () => {
     <Layout pageTitle={t("pageTitle")}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title={t("title")} crumbTitle={t("breadcrumb")} image={devHall} />
+      <PageHeader titleAs="h2" title={t("title")} crumbTitle={t("breadcrumb")} image={devHall} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
         {/* Who we are */}

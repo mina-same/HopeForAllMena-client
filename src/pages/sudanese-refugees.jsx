@@ -45,7 +45,7 @@ const SudaneseRefugees = () => {
     <Layout pageTitle={`${t("pageTitle")} || Hope for All Mena`}>
       <HeaderTwo />
       <StickyHeader />
-      <PageHeader title={t("pageTitle")} crumbTitle={t("pageTitle")} image={heroImage} />
+      <PageHeader titleAs="h2" title={t("pageTitle")} crumbTitle={t("pageTitle")} image={heroImage} />
 
       <div className="dept" dir={isRTL ? "rtl" : "ltr"}>
         {/* Intro */}

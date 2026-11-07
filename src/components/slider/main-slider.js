@@ -53,9 +53,10 @@ const MainSlider = () => {
             <Row className={`row ${currentLanguage === 'ar' ? 'justify-content-start' : 'justify-content-end'}`}>
               <Col xl={7} lg={12} className={`${currentLanguage === 'ar' ? 'text-right' : 'text-right'}`}>
                 <p>{t('slides.evangelism.title')}</p>
-                <h2>
+                {/* First slide headline is the page's single H1 (SEO) */}
+                <h1>
                   {t('slides.evangelism.description')}
-                </h2>
+                </h1>
                 <Link
                   to={serviceLinks.evangelism}
                   className="thm-btn"
