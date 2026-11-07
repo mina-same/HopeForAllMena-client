@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { graphql } from "gatsby";
 import { Link } from "gatsby-plugin-react-i18next";
 import Layout from "../components/layout";
+import { useTranslation, useI18next } from "gatsby-plugin-react-i18next";
 import StickyHeader from "../components/header/sticky-header";
 import PageHeader from "../components/page-header";
 import Footer from "../components/footer";
@@ -55,8 +56,10 @@ const servicesData = [
 ];
 
 const Services = () => {
+  const { t } = useTranslation();
+  const { language } = useI18next();
   return (
-    <Layout pageTitle="Our Services || Hope For All Mena Ministry">
+    <Layout pageTitle={language === "ar" ? `${t('crumbTitle', { ns: 'AlexandriaBibleCollege' })} || Hope For All Mena Ministry` : "Our Services || Hope For All Mena Ministry"}>
       <HeaderTwo />
       <StickyHeader />
       <PageHeader title="Our Services" crumbTitle="Services" />

@@ -194,4 +194,48 @@ exports.onPostBuild = async ({ reporter }) => {
     }
   }
   reporter.info(`Optimized ${files.length} images: ${(before / 1048576).toFixed(1)} MB -> ${(after / 1048576).toFixed(1)} MB`);
+
+  // Modern format: make a .webp next to each image and point the built HTML/CSS/JS/JSON at it
+  // when it is smaller. Originals stay in place, so any reference we miss still works.
+  // App/touch icons stay PNG (iOS needs PNG).
+  const renames = [];
+  for (const file of files) {
+    if (/^(apple-touch-icon|favicon|android-chrome|icon)/i.test(file)) continue;
+    const filePath = path.join(dir, file);
+    const webpName = file.replace(/\.(jpe?g|png)$/i, '.webp');
+    try {
+      const webp = await sharp(fs.readFileSync(filePath), { failOn: 'none' }).webp({ quality: 78 }).toBuffer();
+      if (webp.length < fs.statSync(filePath).size) {
+        fs.writeFileSync(path.join(dir, webpName), webp);
+        renames.push([file, webpName]);
+      }
+    } catch (e) {
+      reporter.warn(`WebP skipped ${file}: ${e.message}`);
+    }
+  }
+  const pub = path.join(__dirname, 'public');
+  const textFiles = [];
+  const walk = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const full = path.join(d, e.name);
+      if (e.isDirectory()) walk(full);
+      else if (/\.(html|css|js|json)$/i.test(e.name)) textFiles.push(full);
+    }
+  };
+  walk(pub);
+  let rewritten = 0;
+  for (const f of textFiles) {
+    let text = fs.readFileSync(f, 'utf8');
+    const original = text;
+    for (const [from, to] of renames) {
+      for (const [a, b] of [[from, to], [encodeURI(from), encodeURI(to)]]) {
+        if (text.includes(`static/${a}`)) text = text.split(`static/${a}`).join(`static/${b}`);
+      }
+    }
+    if (text !== original) {
+      fs.writeFileSync(f, text);
+      rewritten += 1;
+    }
+  }
+  reporter.info(`WebP: ${renames.length} images converted, references updated in ${rewritten} files`);
 };
