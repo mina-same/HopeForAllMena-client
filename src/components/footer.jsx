@@ -106,7 +106,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <a 
-                      href="tel:+20128141662" 
+                      href="tel:+201281416629" 
                       title="Cairo Office"
                       style={{
                         paddingLeft: currentLanguage === 'ar' ? '0' : '15px',

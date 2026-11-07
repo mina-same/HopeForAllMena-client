@@ -109,3 +109,89 @@ exports.onCreateWebpackConfig = ({ actions, stage }) => {
 
   actions.setWebpackConfig(config);
 };
+
+// AEO: write public/llms.txt (a plain-text site summary for AI answer engines) from the
+// built pages' own <title> and meta description, so it never drifts from the site content.
+const writeLlmsTxt = (reporter) => {
+  const fs = require('fs');
+  const pub = path.join(__dirname, 'public');
+  const site = 'https://www.hopeforallmena.com';
+  const blocked = /^(ar\/)?(admin|login|unauthorized|color-test|index-2|404|dev-404-page|bookDetils|news-details|event-details|cause-details|orderPage|Calendar|MagazineRequestPage|page-data|static|_gatsby|~partytown)(\/|$)/;
+  const decode = (t) => t.replace(/&amp;/g, '&').replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+  const read = (rel) => {
+    const html = fs.readFileSync(path.join(pub, rel, 'index.html'), 'utf8');
+    const title = (html.match(/<title[^>]*>([^<]*)<\/title>/) || [])[1];
+    const desc = (html.match(/name="description" content="([^"]*)"/) || [])[1];
+    return title ? { url: `${site}/${rel}`, title: decode(title), desc: desc ? decode(desc) : '' } : null;
+  };
+  const pages = [];
+  const walk = (rel) => {
+    for (const e of fs.readdirSync(path.join(pub, rel), { withFileTypes: true })) {
+      if (!e.isDirectory()) continue;
+      const child = rel ? `${rel}${e.name}/` : `${e.name}/`;
+      if (blocked.test(child) || child.includes('*')) continue;
+      if (fs.existsSync(path.join(pub, child, 'index.html'))) {
+        const pg = read(child);
+        if (pg) pages.push(pg);
+      }
+      walk(child);
+    }
+  };
+  walk('');
+  const home = read('');
+  const line = (pg) => `- [${pg.title}](${pg.url})${pg.desc ? `: ${pg.desc}` : ''}`;
+  const en = pages.filter((pg) => !pg.url.startsWith(`${site}/ar/`)).sort((a, b) => a.url.localeCompare(b.url));
+  const ar = pages.filter((pg) => pg.url.startsWith(`${site}/ar/`)).sort((a, b) => a.url.localeCompare(b.url));
+  const out = [
+    `# ${home.title}`,
+    '',
+    `> ${home.desc}`,
+    '',
+    'Contact: hope4allmena@gmail.com · Alexandria +20 155 510 3774 · Cairo +20 128 141 6629',
+    '',
+    '## Pages (English)',
+    ...en.map(line),
+    '',
+    '## الصفحات (العربية)',
+    `- [${home.title}](${site}/ar/)`,
+    ...ar.map(line),
+    '',
+  ].join('\n');
+  fs.writeFileSync(path.join(pub, 'llms.txt'), out);
+  reporter.info(`llms.txt written with ${pages.length + 1} pages`);
+};
+
+// SEO / speed: shrink the built images in public/static (originals in src/ are untouched).
+// Resizes anything wider than 1920px and recompresses; a file is only replaced if it gets smaller.
+exports.onPostBuild = async ({ reporter }) => {
+  writeLlmsTxt(reporter);
+  const fs = require('fs');
+  const sharp = require('sharp');
+  const dir = path.join(__dirname, 'public', 'static');
+  if (!fs.existsSync(dir)) return;
+  const files = fs.readdirSync(dir).filter((f) => /\.(jpe?g|png)$/i.test(f));
+  let before = 0;
+  let after = 0;
+  for (const file of files) {
+    const filePath = path.join(dir, file);
+    const input = fs.readFileSync(filePath);
+    before += input.length;
+    try {
+      let img = sharp(input, { failOn: 'none' }).rotate().resize({ width: 1920, withoutEnlargement: true });
+      img = /\.png$/i.test(file)
+        ? img.png({ compressionLevel: 9, effort: 8 })
+        : img.jpeg({ quality: 78, mozjpeg: true });
+      const output = await img.toBuffer();
+      if (output.length < input.length) {
+        fs.writeFileSync(filePath, output);
+        after += output.length;
+      } else {
+        after += input.length;
+      }
+    } catch (e) {
+      after += input.length;
+      reporter.warn(`Image optimize skipped ${file}: ${e.message}`);
+    }
+  }
+  reporter.info(`Optimized ${files.length} images: ${(before / 1048576).toFixed(1)} MB -> ${(after / 1048576).toFixed(1)} MB`);
+};

@@ -47,7 +47,7 @@ module.exports = {
         background_color: `#ffffff`,
         theme_color: `#2194D1`,
         display: `minimal-ui`,
-        icon: `src/assets/images/favicons/favicon-32x32.png`,
+        icon: `src/assets/images/logos/hope4AllMena.png`,
       },
     },
     `gatsby-transformer-sharp`,

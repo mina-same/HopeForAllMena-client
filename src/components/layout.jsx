@@ -7,7 +7,6 @@ import SearchPopup from "./search-popup";
 import AppleTouch from "../assets/images/favicons/apple-touch-icon.png";
 import Fevicon32 from "../assets/images/favicons/favicon-32x32.png";
 import Fevicon16 from "../assets/images/favicons/favicon-16x16.png";
-import LogoImage from "../assets/images/logo-dark.png";
 
 import "../assets/css/tailwind.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -24,6 +23,8 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 
 const SITE_URL = "https://www.hopeforallmena.com";
+// Served from /static as a real file (an imported image can be inlined as base64, breaking og:image)
+const LOGO_URL = `${SITE_URL}/logo.png`;
 const SITE_NAME = "Hope For All Mena"; // same as siteMetadata.title
 const DEFAULT_DESCRIPTION = {
   // Taken verbatim from locales/*/About.json → visionMission.header.description
@@ -38,7 +39,7 @@ const Layout = ({ pageTitle, description, image, noindex = false, children }) =>
     `${SITE_URL}${lng === defaultLanguage ? "" : `/${lng}`}${originalPath}`;
   const canonicalUrl = localizedUrl(language);
   const metaDescription = description || DEFAULT_DESCRIPTION[language] || DEFAULT_DESCRIPTION.en;
-  const ogImage = image ? (image.startsWith("http") ? image : `${SITE_URL}${image}`) : `${SITE_URL}${LogoImage}`;
+  const ogImage = !image || image.startsWith("data:") ? LOGO_URL : image.startsWith("http") ? image : `${SITE_URL}${image}`;
   const fullTitle = pageTitle || SITE_NAME;
   const handleRadius = () => {
     const dynamicRadius = document.querySelectorAll(".dynamic-radius");
@@ -93,21 +94,72 @@ const Layout = ({ pageTitle, description, image, noindex = false, children }) =>
         <meta name="twitter:title" content={fullTitle} />
         <meta name="twitter:description" content={metaDescription} />
         <meta name="twitter:image" content={ogImage} />
+        {/* Structured data for search + answer engines (Google, AI Overviews, ChatGPT, Perplexity).
+            All values come from the existing footer / locale content. */}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "NGO",
-            name: SITE_NAME,
-            url: SITE_URL,
-            logo: `${SITE_URL}${LogoImage}`,
-            email: "info@hopeforallmena.org",
-            description: DEFAULT_DESCRIPTION.en,
-            areaServed: "Middle East and North Africa",
+            "@graph": [
+              {
+                "@type": "NGO",
+                "@id": `${SITE_URL}/#organization`,
+                name: SITE_NAME,
+                alternateName: "الرجاء للجميع الشرق الأوسط",
+                url: SITE_URL,
+                logo: LOGO_URL,
+                slogan: "Connecting, Equipment and Multiplying",
+                description: DEFAULT_DESCRIPTION.en,
+                email: "hope4allmena@gmail.com",
+                areaServed: "Middle East and North Africa",
+                address: [
+                  { "@type": "PostalAddress", streetAddress: "37 Sidi El-Metwally Street, Attarin", addressLocality: "Alexandria", addressCountry: "EG" },
+                  { "@type": "PostalAddress", streetAddress: "11 El-Masoud Street, off Abbasiya Street", addressLocality: "Cairo", addressCountry: "EG" },
+                ],
+                contactPoint: [
+                  { "@type": "ContactPoint", telephone: "+20 155 510 3774", contactType: "customer support", areaServed: "EG", availableLanguage: ["English", "Arabic"], name: "Alexandria Office" },
+                  { "@type": "ContactPoint", telephone: "+20 128 141 6629", contactType: "customer support", areaServed: "EG", availableLanguage: ["English", "Arabic"], name: "Cairo Office" },
+                ],
+                sameAs: [
+                  "https://www.facebook.com/profile.php?id=61556019641884",
+                  "https://www.facebook.com/profile.php?id=100083974131611",
+                  "https://www.facebook.com/profile.php?id=100054468594764",
+                ],
+              },
+              {
+                "@type": "WebSite",
+                "@id": `${SITE_URL}/#website`,
+                url: SITE_URL,
+                name: SITE_NAME,
+                inLanguage: ["en", "ar"],
+                publisher: { "@id": `${SITE_URL}/#organization` },
+              },
+              {
+                "@type": "WebPage",
+                "@id": `${canonicalUrl}#webpage`,
+                url: canonicalUrl,
+                name: fullTitle,
+                description: metaDescription,
+                inLanguage: language,
+                isPartOf: { "@id": `${SITE_URL}/#website` },
+                about: { "@id": `${SITE_URL}/#organization` },
+              },
+              ...(originalPath !== "/"
+                ? [{
+                    "@type": "BreadcrumbList",
+                    itemListElement: [
+                      { "@type": "ListItem", position: 1, name: SITE_NAME, item: localizedUrl(language).replace(originalPath, "/") },
+                      { "@type": "ListItem", position: 2, name: fullTitle.split(/\s*(\|\||–|-)\s*/)[0], item: canonicalUrl },
+                    ],
+                  }]
+                : []),
+            ],
           })}
         </script>
         <link rel="apple-touch-icon" sizes="180x180" href={AppleTouch} />
         <link rel="icon" type="image/png" sizes="32x32" href={Fevicon32} />
         <link rel="icon" type="image/png" sizes="16x16" href={Fevicon16} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap"
           rel="stylesheet"

@@ -19,3 +19,19 @@ export const wrapRootElement = ({ element }) => {
     </QueryClientProvider>
   );
 };
+
+// Google Analytics 4 — only added when GATSBY_GA_MEASUREMENT_ID is set at build time
+// (e.g. GATSBY_GA_MEASUREMENT_ID=G-XXXXXXXXXX in the hosting env vars or .env.production).
+export const onRenderBody = ({ setHeadComponents }) => {
+  const gaId = process.env.GATSBY_GA_MEASUREMENT_ID;
+  if (!gaId) return;
+  setHeadComponents([
+    <script key="ga4-src" async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />,
+    <script
+      key="ga4-init"
+      dangerouslySetInnerHTML={{
+        __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${gaId}');`,
+      }}
+    />,
+  ]);
+};
