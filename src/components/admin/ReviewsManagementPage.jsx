@@ -16,9 +16,9 @@ const ReviewsManagementPage = () => {
   const [selectedReview, setSelectedReview] = useState(null);
 
   const filteredReviews = reviews.filter(review => {
-    const matchesSearch = review.bookTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         review.reviewer.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         review.comment.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = String(review.bookTitle ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(review.reviewer ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(review.comment ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || review.status === statusFilter;
     return matchesSearch && matchesStatus;
   });

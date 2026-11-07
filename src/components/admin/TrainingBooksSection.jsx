@@ -77,8 +77,8 @@ const TrainingBooksSection = () => {
   // Filter books based on search term and status filter
   const filteredBooks = trainingBooks.filter(book => {
     const matchesSearch = searchTerm === '' ||
-                         book.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (book.nameAr && book.nameAr.toLowerCase().includes(searchTerm.toLowerCase()));
+                         String(book.name ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (book.nameAr && String(book.nameAr ?? "").toLowerCase().includes(searchTerm.toLowerCase()));
 
     const matchesStatus = statusFilter === 'all' ||
                          (statusFilter === 'active' && book.isActive === true) ||

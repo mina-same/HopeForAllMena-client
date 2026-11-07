@@ -67,10 +67,10 @@ const ContactMessagesPage = () => {
   const refreshMessages = () => queryClient.invalidateQueries({ queryKey: ['contact-messages'] });
 
   const filteredMessages = messages.filter(message => {
-    const matchesSearch = message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         message.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         message.message.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = String(message.name ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(message.email ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(message.subject ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(message.message ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     // Rows map the API's 'new' status to 'unread' (see above)
     const matchesStatus = statusFilter === 'all' || message.status === (statusFilter === 'new' ? 'unread' : statusFilter);
     const matchesType = typeFilter === 'all' || message.type === typeFilter;

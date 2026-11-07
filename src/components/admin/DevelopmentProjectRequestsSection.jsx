@@ -152,12 +152,12 @@ const DevelopmentProjectRequestsSection = () => {
   // Filter requests based on search term and status
   const filteredRequests = requests.filter(request => {
     const matchesSearch = !searchTerm.trim() ||
-                         request.requesterName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.phoneNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.churchName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.projectTitle?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.projectCategory?.toLowerCase().includes(searchTerm.toLowerCase());
+                         String(request.requesterName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.email ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.phoneNumber ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.churchName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.projectTitle ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.projectCategory ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
     return matchesSearch && matchesStatus;
   });

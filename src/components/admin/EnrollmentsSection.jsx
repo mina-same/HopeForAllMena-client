@@ -26,9 +26,9 @@ export const EnrollmentsSection = () => {
 
   const filteredEnrollments = enrollments.filter(enrollment => {
     const course = courses.find(c => c.id === enrollment.courseId);
-    const matchesSearch = enrollment.studentName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         enrollment.studentEmail?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         course?.title.toLowerCase().includes(searchTerm.toLowerCase()) || false;
+    const matchesSearch = String(enrollment.studentName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(enrollment.studentEmail ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(course?.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) || false;
     const matchesStatus = statusFilter === 'all' || enrollment.status === statusFilter;
     return matchesSearch && matchesStatus;
   });

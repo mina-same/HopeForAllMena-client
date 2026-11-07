@@ -104,9 +104,9 @@ export const EventsSection = () => {
   const fetchEvents = () => queryClient.invalidateQueries({ queryKey: ['events'] });
 
   const filteredEvents = events.filter(event => {
-    const matchesSearch = event.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         event.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         event.organizer?.name?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = String(event.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(event.location ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(event.organizer?.name ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory;
     const matchesStatus = selectedStatus === 'all' || event.status === selectedStatus;
     return matchesSearch && matchesCategory && matchesStatus;

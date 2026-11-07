@@ -231,11 +231,11 @@ const TrainingFollowUpRequestsSection = () => {
 
   // Filter requests based on search term and status
   const filteredRequests = requests.filter(request => {
-    const matchesSearch = request.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.phoneNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.trainingType?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.companyName?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = String(request.fullName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.email ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.phoneNumber ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.trainingType ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.companyName ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
     return matchesSearch && matchesStatus;
   });

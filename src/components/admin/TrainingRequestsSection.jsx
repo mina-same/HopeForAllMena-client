@@ -112,12 +112,12 @@ const TrainingRequestsSection = () => {
 
   // Filter requests based on search term and status
   const filteredRequests = requests.filter(request => {
-    const matchesSearch = request.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.phoneNumber?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.churchName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.serviceType?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         request.churchAddress?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = String(request.name ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.email ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.phoneNumber ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.churchName ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.serviceType ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(request.churchAddress ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || request.status === statusFilter;
     return matchesSearch && matchesStatus;
   });

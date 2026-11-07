@@ -490,8 +490,8 @@ export function CoursesSection() {
 
   // Filter courses
   const filteredCourses = courses.filter(course => {
-    const matchesSearch = course.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         course.instructor?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = String(course.title ?? "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         String(course.instructor ?? "").toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || course.category === categoryFilter;
 
     return matchesSearch && matchesCategory;
