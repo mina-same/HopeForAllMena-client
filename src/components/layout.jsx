@@ -102,7 +102,15 @@ const Layout = ({ pageTitle, description, image, noindex = false, children }) =>
                 "@type": "NGO",
                 "@id": `${SITE_URL}/#organization`,
                 name: SITE_NAME,
-                alternateName: "الرجاء للجميع الشرق الأوسط",
+                // Every name the ministry uses, so AI/search engines don't confuse it with
+                // the unrelated "Hope for MENA" (Hope4MENA) organization.
+                alternateName: ["Hope For All MENA Ministry", "Hope for All", "Hope4AllMena", "خدمة رجاء للجميع", "رجاء للجميع الشرق الأوسط", "الرجاء للجميع الشرق الأوسط"],
+                // Facts below are from the site's own About text (locales/*/VideoCardTwo.json)
+                disambiguatingDescription: "Hope for All is a ministry affiliated with the Board of Education of the Evangelical Synod of the Nile. It is a ministry dedicated to preparing and qualifying servants and leaders in the local church, the Middle East, and North Africa to be able to train others as well. The ministry was founded in 2008 by Rev. Dr. Radi Atallah.",
+                foundingDate: "2008",
+                founder: { "@type": "Person", name: "Rev. Dr. Radi Atallah" },
+                memberOf: { "@type": "Organization", name: "Board of Education of the Evangelical Synod of the Nile" },
+                foundingLocation: { "@type": "Place", name: "Egypt" },
                 url: SITE_URL,
                 logo: LOGO_URL,
                 slogan: "Connecting, Equipment and Multiplying",
