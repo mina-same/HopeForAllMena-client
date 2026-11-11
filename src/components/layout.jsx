@@ -5,8 +5,6 @@ import MobileNav from "./mobile-nav";
 import SearchPopup from "./search-popup";
 
 import AppleTouch from "../assets/images/favicons/apple-touch-icon.png";
-import Fevicon32 from "../assets/images/favicons/favicon-32x32.png";
-import Fevicon16 from "../assets/images/favicons/favicon-16x16.png";
 
 import "../assets/css/tailwind.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -156,8 +154,11 @@ const Layout = ({ pageTitle, description, image, noindex = false, children }) =>
           })}
         </script>
         <link rel="apple-touch-icon" sizes="180x180" href={AppleTouch} />
-        <link rel="icon" type="image/png" sizes="32x32" href={Fevicon32} />
-        <link rel="icon" type="image/png" sizes="16x16" href={Fevicon16} />
+        {/* Real files (not inlined data: URIs) in sizes Google accepts (multiples of 48px) */}
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
